@@ -24,8 +24,8 @@
 #'
 #' @examples
 #' 
-#' essai1 = gendata(20,1,0.3,p1c = c(0.2,0.4,0.1,0.3),p2c = c(0.6,0.4))
-#' essai2 = gendata(20,1,0.3,p1c = c(0.6,0.4),p2c = c(0.7,0.3))
+#' essai1 = gendata(20,1,0.3, p1c = c(0.2,0.4,0.1,0.3), p2c = c(0.6,0.4))
+#' essai2 = gendata(20,1,0.3, p1c = c(0.6,0.4), p2c = c(0.7,0.3))
 gendata = function(n1,k,rho,p1c,p2c){
 
   # Si la somme des proportions des cat?gories des chacune des covariables
