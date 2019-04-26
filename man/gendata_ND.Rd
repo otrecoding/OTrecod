@@ -29,17 +29,16 @@ delta = cor(X1,X3), mu = cor(X2,X3)}
 \item{valY1}{: Les labels de chaque classe pour Y cat?gorielle en base 1}
 
 \item{valY2}{: Les labels de chaque classe pour Y cat?gorielle en base 2}
-
-\item{rho}{: Correlation entre X1 et X2 (continues)}
-
-\item{delta}{: Correlation entre X1 et X3 (continues)}
-
-\item{mu}{: Correlation entre X2 et X3 (continues)}
 }
 \value{
 missing documentation
 }
 \description{
+- rho    : Correlation entre X1 et X2 (continues)
+- delta  : Correlation entre X1 et X3 (continues)
+- mu     : Correlation entre X2 et X3 (continues)
+}
+\details{
 Quel que soit le nombre de classes de X1 et X2, elles 
 sont au format numerique en sortie
 }
