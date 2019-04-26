@@ -159,14 +159,6 @@ cout = function(dat, choix_dist = "E"){
 
 }
 
-
-
-
-
-
-
-
-
 #' simpond(x)
 #' Cette fonction propose des arrondis aux effectifs de la matrice de simplexe
 #' lorsque cette dernière n'est pas uniquement composée d'entiers
@@ -212,8 +204,7 @@ simpond = function(x){
 
 
 
-#------------------ Fonction AFFECTATION ------------------------------------------------------------------------------------------------
-
+#' affectation(simplx,dat,choix_dist = "E")
 #' Cette fonction est la partie II/II de la methode FOT
 #'
 #' @param simplx Vecteur des couts de passage estime par la fonction cout()
@@ -225,25 +216,6 @@ simpond = function(x){
 #' @export
 #'
 #' @examples
-#'
-#' t1 = Sys.time(); yy = affectation(xx$solution,datae_new);
-#' t2 = Sys.time(); difftime(t2,t1); yy
-#'
-#' t1 = Sys.time(); yy = affectation(xx_NA$solution,datae_new_NA);
-#' t2 = Sys.time(); difftime(t2,t1); yy
-#'
-#' t1 = Sys.time(); yy = affectation(zz$solution,datae_new,"H");
-#' t2 = Sys.time(); difftime(t2,t1); yy
-#'
-#' t1 = Sys.time(); yy = affectation(c1$solution,newBDD);
-#' t2 = Sys.time(); difftime(t2,t1); yy
-#'
-#' t1 = Sys.time(); yy = affectation(c2$solution,newBDD2);
-#' t2 = Sys.time(); difftime(t2,t1); yy
-#'
-#' t1 = Sys.time(); yy = affectation(c3$solution,newBDD2,"H");
-#' t2 = Sys.time(); difftime(t2,t1); yy
-#'
 #' set.seed(410747+4);
 #' datgen = gendata(10,0.5,0,c(0.90,0.10),c(0.90,0.10))
 #' datgen2 = datgen
@@ -251,7 +223,6 @@ simpond = function(x){
 #' datgen2[datgen2[,1]==2,"Y1"] = NA
 #' affectation(cout(datgen2,"E")$solution,datgen2)
 affectation = function(simplx,dat,choix_dist = "E"){
-
 
   n1 = nrow(dat[dat[,1]==1,])               # nbr de sujets ds base 1
   n2 = nrow(dat[dat[,1]==2,])               # nbr de sujets ds base 2
@@ -264,8 +235,6 @@ affectation = function(simplx,dat,choix_dist = "E"){
 
   val1  = sort(unique(dat[dat[,1]==1,2]))   # Les modalit?s de Y dans la base 1
   val2  = sort(unique(dat[dat[,1]==2,3]))   # Les modalit?s de Y dans la base 2
-
-
 
   # I. CONVERSION DES Y[base 1] EN Y[base 2]
 
