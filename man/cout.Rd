@@ -14,6 +14,9 @@ par exemple)}
 \item{choix_dist}{(FACULTATIF) Distance euclidienne "E" par d?faut, sinon "H" pour
 distance de Hamming}
 }
+\value{
+missed documentation
+}
 \description{
 Cette fonction est la partie I/II de la méthode FOT
 Elle estime les co?ts de passage entre les modalit?s Y1 et Y2

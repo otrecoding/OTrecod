@@ -56,6 +56,9 @@ ou qualis}
 
 \item{seedsim}{: G?n?rateur al?atoire (tir? au sort par d?faut)}
 }
+\value{
+missing documentation
+}
 \description{
 IV.  FONCTIONS D'ESTIMATION DES ERREURS
 Cette fonction retourne sur une ligne, les erreurs moyennes de pr?diction

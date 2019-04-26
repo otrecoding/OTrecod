@@ -36,8 +36,10 @@ delta = cor(X1,X3), mu = cor(X2,X3)}
 
 \item{mu}{: Correlation entre X2 et X3 (continues)}
 }
+\value{
+missing documentation
+}
 \description{
-SIMULATION DE DONNEES POUR APPROCHE NON DETERMINISTE
--> Cette fonction genere une BDD de la forme [Base|Y1|Y2|X1|X2|X3] avec les
-   covariables X1, X2 categorielles ? k1 et K2 modalites resp., et X3 continue
+Quel que soit le nombre de classes de X1 et X2, elles 
+sont au format numerique en sortie
 }
