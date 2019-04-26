@@ -7,19 +7,19 @@
 prepar_cov(dat, quali = NULL, quanti = NULL, info = 90)
 }
 \arguments{
-\item{dat}{: BDD compos?e de 3 1?res colonnes fixes et ordonn?es (base,Y1,Y2)
+\item{dat}{BDD compos?e de 3 1?res colonnes fixes et ordonn?es (base,Y1,Y2)
 la partie variable est compos?e de covariables souhait?es qualis
 (?ventuellement) puis quantis (?ventuellement)}
 
-\item{quali}{: A REMPLIR UNIQUEMENT si certaines covariables sont souhait?es qualis,
+\item{quali}{A REMPLIR UNIQUEMENT si certaines covariables sont souhait?es qualis,
+indiquez les n? de colonnes correspondant}
+
+\item{quanti}{A REMPLIR UNIQUEMENT si certaines covariables sont souhait?es quantis,
 indiquez les n? de colonnes correspondant}
 
 \item{info}{: A REMPLIR UNIQUEMENT si vous avez un m?lange de covariables quantis et
         qualis ... % d'information mini prise en compte par les CP de l'AFDM
 -------------------------------------------------------------------------------}
-
-\item{quanti:}{A REMPLIR UNIQUEMENT si certaines covariables sont souhait?es quantis,
-indiquez les n? de colonnes correspondant}
 }
 \value{
 missing documentation
