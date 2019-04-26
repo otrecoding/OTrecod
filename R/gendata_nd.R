@@ -56,8 +56,8 @@ gendata_ND =function(n1,k,cormat,px1c,px2c,r2,py1c,py2c,valY1,valY2){
 
   X_glob = mvtnorm::rmvnorm(n,mean=c(0,0,0),sigma = corrcov)
 
-  qx1c = qnorm(px1cc,mean = 0, sd = 1)
-  qx2c = qnorm(px2cc,mean = 0, sd = 1)
+  qx1c = stats::qnorm(px1cc,mean = 0, sd = 1)
+  qx2c = stats::qnorm(px2cc,mean = 0, sd = 1)
 
 
   # Discr?tisation des covariables X1 et X2 en fonction des dsitributions
@@ -80,7 +80,7 @@ gendata_ND =function(n1,k,cormat,px1c,px2c,r2,py1c,py2c,valY1,valY2){
 
   sigma2 = ((3 + 2*rho + 2*delta + 2*mu)*(1 - r2))/r2
 
-  Y = X_glob[,1] + X_glob[,2] + X_glob[,3] + rnorm(n,0,sqrt(sigma2))
+  Y = X_glob[,1] + X_glob[,2] + X_glob[,3] + stats::rnorm(n,0,sqrt(sigma2))
 
 
   # --> sd(Y) ?tant diff?rent de 1, on la standardise:
@@ -97,10 +97,10 @@ gendata_ND =function(n1,k,cormat,px1c,px2c,r2,py1c,py2c,valY1,valY2){
   #py1cc = cumsum(py1c[1:(length(py1c)-1)])
   #py2cc = cumsum(py2c[1:(length(py2c)-1)])
 
-  #qy1c = qnorm(py1cc,mean = 0, sd = 1)
+  #qy1c = stats::qnorm(py1cc,mean = 0, sd = 1)
 
-  Y1 = cut(Ynorm, breaks = c(min(Ynorm)-1,quantile(Ynorm, c( 0.25, 0.5, 0.75)),max(Ynorm)+1), include.lowest = TRUE,labels=valY1)
-  Y2 = cut(Ynorm, breaks = c(min(Ynorm)-1,quantile(Ynorm, c(1/3,  2/3)),max(Ynorm)+1), include.lowest = TRUE,labels=valY2)
+  Y1 = cut(Ynorm, breaks = c(min(Ynorm)-1,stats::quantile(Ynorm, c( 0.25, 0.5, 0.75)),max(Ynorm)+1), include.lowest = TRUE,labels=valY1)
+  Y2 = cut(Ynorm, breaks = c(min(Ynorm)-1,stats::quantile(Ynorm, c(1/3,  2/3)),max(Ynorm)+1), include.lowest = TRUE,labels=valY2)
 
   # Conversion en outcomes discrets
 
