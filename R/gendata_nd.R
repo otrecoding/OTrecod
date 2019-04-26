@@ -4,6 +4,10 @@
 #' -> Cette fonction genere une BDD de la forme [Base|Y1|Y2|X1|X2|X3] avec les
 #'    covariables X1, X2 categorielles ? k1 et K2 modalites resp., et X3 continue
 #'
+#' - rho    : Correlation entre X1 et X2 (continues)
+#' - delta  : Correlation entre X1 et X3 (continues)
+#' - mu     : Correlation entre X2 et X3 (continues)
+#' 
 #' Quel que soit le nombre de classes de X1 et X2, elles 
 #' sont au format numerique en sortie
 #' 
@@ -11,9 +15,6 @@
 #' @param k      : Coefficient de proportionnalite entre les 2 bases
 #' @param cormat : vecteur contenant les correlations: rho = cor(X1,X2),
 #'                 delta = cor(X1,X3), mu = cor(X2,X3)
-#' @param rho    : Correlation entre X1 et X2 (continues)
-#' @param delta  : Correlation entre X1 et X3 (continues)
-#' @param mu     : Correlation entre X2 et X3 (continues)
 #' @param px1c   : Proportion de patients dans chaque classe de X1
 #' @param px2c   : Proportion de patients dans chaque classe de X2
 #' @param  r2    : R^2 de la regression lineaire Ycontinue = f(X1,X2,X3)
@@ -25,7 +26,6 @@
 #' @return missing documentation
 #' @export
 #'
-
 gendata_ND =function(n1,k,cormat,px1c,px2c,r2,py1c,py2c,valY1,valY2){
 
   # Si la somme des proportions des cat?gories des chacune des covariables
