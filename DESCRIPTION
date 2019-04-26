@@ -26,7 +26,8 @@ Imports:
     RColorBrewer,
     gplots, 
     mvtnorm, 
-    FactoMineR 
+    FactoMineR,
+    qpdf
 Suggests: 
     testthat,
     knitr,
