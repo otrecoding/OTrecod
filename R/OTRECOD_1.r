@@ -9,8 +9,6 @@
 library(MASS)        # Pour les r?gressions logistiques ordonn?es
 library(StatMatch)
 
-
-
 #' compare_lists()
 #'    Function which compare the elements of two lists of same lengths
 #'    The order of entry of the 2 lists have no importance
