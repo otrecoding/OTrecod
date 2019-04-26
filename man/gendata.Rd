@@ -23,6 +23,9 @@ gendata(n1, k, rho, p1c, p2c)
 
 \item{p2c}{Distribution de la covariable X2 cat?gorielle (format: c(,))}
 }
+\value{
+missing documentation
+}
 \description{
 SIMULATION DE DONNEES POUR APPROCHE DETERMINISTE
  

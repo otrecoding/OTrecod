@@ -4,6 +4,9 @@
 #' -> Cette fonction genere une BDD de la forme [Base|Y1|Y2|X1|X2|X3] avec les
 #'    covariables X1, X2 categorielles ? k1 et K2 modalites resp., et X3 continue
 #'
+#' Quel que soit le nombre de classes de X1 et X2, elles 
+#' sont au format numerique en sortie
+#' 
 #' @param n1     : Nombre de patients dans la base 1
 #' @param k      : Coefficient de proportionnalite entre les 2 bases
 #' @param cormat : vecteur contenant les correlations: rho = cor(X1,X2),
@@ -19,11 +22,10 @@
 #' @param valY1  : Les labels de chaque classe pour Y cat?gorielle en base 1
 #' @param valY2  : Les labels de chaque classe pour Y cat?gorielle en base 2
 #'
-#' @return
+#' @return missing documentation
 #' @export
 #'
-#' # Quel que soit le nombre de classes de X1 et X2, elles 
-#' # sont au format numerique en sortie
+
 gendata_ND =function(n1,k,cormat,px1c,px2c,r2,py1c,py2c,valY1,valY2){
 
   # Si la somme des proportions des cat?gories des chacune des covariables

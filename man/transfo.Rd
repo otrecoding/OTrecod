@@ -15,6 +15,9 @@ transfo(x, nom = NULL)
 binaires correspondantes en sortie
 La modalite de reference est la 1ere (cf levels(x) au prealable)}
 }
+\value{
+missing documentation
+}
 \description{
 fonction TRANSFO
   Cette fonction transforme une variables qualitative (format facteur) ? k

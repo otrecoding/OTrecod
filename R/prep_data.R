@@ -14,7 +14,7 @@
 #'        binaires correspondantes en sortie
 #'        La modalite de reference est la 1ere (cf levels(x) au prealable)
 #'
-#' @return
+#' @return missing documentation
 #' @export
 #'
 transfo = function(x,nom=NULL){
@@ -94,7 +94,8 @@ transfo = function(x,nom=NULL){
 #'         qualis ... % d'information mini prise en compte par les CP de l'AFDM
 #'-------------------------------------------------------------------------------
 #'
-#' @return
+#' @return missing documentation
+#' 
 #' @export
 #'
 prepar_cov = function(dat, quali = NULL,quanti = NULL, info = 90){

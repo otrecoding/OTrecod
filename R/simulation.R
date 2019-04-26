@@ -28,7 +28,8 @@
 #' @param  bdd        : Jeu de donn?es non simul?
 #' @param  seedsim    : G?n?rateur al?atoire (tir? au sort par d?faut)
 #'
-#' @return
+#' @return missing documentation
+#' 
 #' @export
 #'
 #' @examples
@@ -225,10 +226,10 @@ simul_glob = function(n_1=NULL, coeff=NULL, p1cc=NULL, p2cc=NULL, qual = NULL, q
   # METHODE PR:
   #-------------
   t1 = Sys.time()
-  data1= subset(datgen,ident==1)
-  data2= subset(datgen,ident==2)
+  data1= subset(datgen, ident==1)
+  data2= subset(datgen, ident==2)
   reg1 = nnet::multinom(Y1  ~ X1 + X2 + X3, data = data1)
-  data2$predY1 = predict(reg1, newdata = data2[,c(4,5,6)] )
+  data2$predY1 = stats::predict(reg1, newdata = data2[,c(4,5,6)] )
   reg2 = nnet::multinom(Y2  ~ X1 + X2 + X3, data = data2)
   data1$predY2 = predict(reg2, newdata = data1[,c(4,5,6)] )
   datnew$PR = c(data1$predY2,data2$predY1)

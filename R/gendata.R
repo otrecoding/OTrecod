@@ -19,7 +19,7 @@
 #' @param p1c Distribution de la covariable X1 cat?gorielle (format: c(,))c
 #' @param p2c Distribution de la covariable X2 cat?gorielle (format: c(,)) 
 #'
-#' @return
+#' @return missing documentation
 #' @export
 #'
 #' @examples

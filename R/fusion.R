@@ -12,7 +12,7 @@
 #' @param choix_dist (FACULTATIF) Distance euclidienne "E" par d?faut, sinon "H" pour
 #'             distance de Hamming
 #'
-#' @return
+#' @return missed documentation
 #' @export
 #'
 cout = function(dat, choix_dist = "E"){

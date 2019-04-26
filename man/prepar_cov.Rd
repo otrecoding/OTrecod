@@ -21,6 +21,9 @@ indiquez les n? de colonnes correspondant}
 \item{quanti:}{A REMPLIR UNIQUEMENT si certaines covariables sont souhait?es quantis,
 indiquez les n? de colonnes correspondant}
 }
+\value{
+missing documentation
+}
 \description{
 Cette fonction effectue un travail pr?paratoire sur les covariables
 }
