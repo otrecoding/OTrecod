@@ -2,7 +2,8 @@
 % Please edit documentation in R/fusion.R
 \name{affectation}
 \alias{affectation}
-\title{Cette fonction est la partie II/II de la methode FOT}
+\title{affectation(simplx,dat,choix_dist = "E")
+Cette fonction est la partie II/II de la methode FOT}
 \usage{
 affectation(simplx, dat, choix_dist = "E")
 }
@@ -16,28 +17,10 @@ ou quantis (apres transformation par fct prepar-cov() par exemple)}
 de Hamming}
 }
 \description{
+affectation(simplx,dat,choix_dist = "E")
 Cette fonction est la partie II/II de la methode FOT
 }
 \examples{
-
-t1 = Sys.time(); yy = affectation(xx$solution,datae_new);
-t2 = Sys.time(); difftime(t2,t1); yy
-
-t1 = Sys.time(); yy = affectation(xx_NA$solution,datae_new_NA);
-t2 = Sys.time(); difftime(t2,t1); yy
-
-t1 = Sys.time(); yy = affectation(zz$solution,datae_new,"H");
-t2 = Sys.time(); difftime(t2,t1); yy
-
-t1 = Sys.time(); yy = affectation(c1$solution,newBDD);
-t2 = Sys.time(); difftime(t2,t1); yy
-
-t1 = Sys.time(); yy = affectation(c2$solution,newBDD2);
-t2 = Sys.time(); difftime(t2,t1); yy
-
-t1 = Sys.time(); yy = affectation(c3$solution,newBDD2,"H");
-t2 = Sys.time(); difftime(t2,t1); yy
-
 set.seed(410747+4);
 datgen = gendata(10,0.5,0,c(0.90,0.10),c(0.90,0.10))
 datgen2 = datgen

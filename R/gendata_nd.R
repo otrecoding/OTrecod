@@ -22,33 +22,6 @@
 #' @return
 #' @export
 #'
-#' @examples
-#'
-#' tab1 = gendata_ND(
-#'   n1     =  50,
-#'   k      =  1,
-#'   cormat =  c(0.5,0.4,0.3),
-#'   px1c   =  c(0.4,0.6),
-#'   px2c   =  c(0.5,0.4,0.1),
-#'   r2     =  0.56,
-#'   py1c   =  c(0.25,0.25,0.25,0.25),
-#'   py2c   =  c(0.333,0.334,0.333),
-#'   valY1  =  c(1,2,3,4),
-#'   valY2  =  c(2,1,3)
-#' )
-#'
-#' tab2 = gendata_ND(
-#'   n1     =  25,
-#'   k      =  2,
-#'   cormat =  c(0.5,0.4,0.3),
-#'   px1c   =  c(0.4,0.6),
-#'   px2c   =  c(0.7,0.3),
-#'   r2     =  0.60,
-#'   py1c   =  c(0.333,0.334,0.333),
-#'   py2c   =  c(0.25,0.25,0.25,0.25),
-#'   valY1  =  c(1,2,3),
-#'   valY2  =  c(2,1,3,4)
-#' )
 #' # Quel que soit le nombre de classes de X1 et X2, elles 
 #' # sont au format numerique en sortie
 gendata_ND =function(n1,k,cormat,px1c,px2c,r2,py1c,py2c,valY1,valY2){
