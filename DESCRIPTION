@@ -2,14 +2,17 @@ Package: OTrecod
 Type: Package
 Title: Optimal transport to recode data
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: Gregory Guernec <yourself@somewhere.net>
+Authors@R: as.person(c(
+    "Gregory Guernec <gregory.guernec@inserm.fr> [aut, cre]", 
+    "Valerie Gares <valerie.gares@insa-rennes.fr> [aut]",
+    "Pierre Navaro <navaro@math.cnrs.fr> [ctb]"
+  ))
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: MASS, StatMatch, KernSmooth, boot, nlme, nnet, mice
+Imports: MASS, StatMatch, KernSmooth, boot, nlme, nnet, mice, gdata, FNN, linprog 
 Suggests: 
     testthat,
     knitr,
