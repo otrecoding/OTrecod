@@ -24,8 +24,8 @@ compare_lists()
    The order of entry of the 2 lists have no importance
 }
 \examples{
-data1 = data.frame(Gender = rep(c("m","f"),5),Age = rnorm(5,20,4))
-data2 = data.frame(Gender = rep(c("m","f"),5),Age = rnorm(5,21,5))
+data1 = data.frame(Gender = rep(c("m","f"),5),Age = stats::rnorm(5,20,4))
+data2 = data.frame(Gender = rep(c("m","f"),5),Age = stats::rnorm(5,21,5))
 
 list1 = list(A = 1:4, B = as.factor(c("A","B","C")), C = matrix(1:6,ncol = 3))
 list2 = list(A = 1:4, B = as.factor(c("A","B")), C = matrix(1:6,ncol = 3))
