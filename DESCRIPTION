@@ -12,8 +12,21 @@ Description: More about what it does (maybe more than one line)
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: MASS, StatMatch, KernSmooth, boot, nlme, nnet, mice, gdata, 
-         FNN, linprog, RColorBrewer
+Imports: 
+    MASS, 
+    StatMatch, 
+    KernSmooth, 
+    boot, 
+    nlme, 
+    nnet, 
+    mice, 
+    gdata, 
+    FNN, 
+    linprog, 
+    RColorBrewer,
+    gplots, 
+    mvtnorm, 
+    FactoMineR 
 Suggests: 
     testthat,
     knitr,
