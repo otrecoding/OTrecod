@@ -15,26 +15,6 @@
 #' @return
 #' @export
 #'
-#' @examples
-#' # datae_new = datae[,c(1,4,5,2,3)]
-#' # summary(datae_new)
-#' # t1 = Sys.time(); xx = cout(datae_new);     t2 = Sys.time(); difftime(t2,t1); xx
-#' # t1 = Sys.time(); zz = cout(datae_new,"H"); t2 = Sys.time(); difftime(t2,t1); zz
-#' # 
-#' # summary(newBDD)
-#' # t1 = Sys.time(); c1 = cout(newBDD);      t2 = Sys.time(); difftime(t2,t1); c1
-#' # 
-#' # summary(newBDD2)
-#' # t1 = Sys.time(); c2 = cout(newBDD2);     t2 = Sys.time(); difftime(t2,t1); c2
-#' # t1 = Sys.time(); c3 = cout(newBDD2,"H"); t2 = Sys.time(); difftime(t2,t1); c3
-#' # 
-#' # 
-#' # # AJOUT DES NA: On sp?cifie les Y manquants en base 1 et 2: --> OK aussi
-#' # datae_new_NA = datae_new
-#' # datae_new_NA[datae_new_NA[,1]==1,"Ybase2"] = NA
-#' # datae_new_NA[datae_new_NA[,1]==2,"Ybase1"] = NA
-#' # t1 = Sys.time(); xx_NA = cout(datae_new_NA);
-#' # t2 = Sys.time(); difftime(t2,t1); xx_NA
 cout = function(dat, choix_dist = "E"){
 
 
@@ -170,16 +150,16 @@ cout = function(dat, choix_dist = "E"){
 #' @examples
 #' x = c(0.5,0,0.5,0.5,3.5); x; sum(x)
 #' simplex_new = simpond(x); simplex_new; sum(simplex_new)
-# #[1] 0.5 0.0 0.5 0.5 3.5
-# #[1] 5
-# 'x = c(127,18,0,14); x; sum(x)
-# 'simplex_new = simpond(x); simplex_new; sum(simplex_new)
-# # [1] 127  18  0  14
-# # [1] 159
-# 'x = c(0.5,3.5,0.25,0.75,0.5,0.5); sum(x)
+#' #[1] 0.5 0.0 0.5 0.5 3.5
+#' #[1] 5
+#' x = c(127,18,0,14); x; sum(x)
 #' simplex_new = simpond(x); simplex_new; sum(simplex_new)
-# #[1] 1 4 0 1 0 0
-# #[1] 6
+#' # [1] 127  18  0  14
+#' # [1] 159
+#' x = c(0.5,3.5,0.25,0.75,0.5,0.5); sum(x)
+#' simplex_new = simpond(x); simplex_new; sum(simplex_new)
+#' #[1] 1 4 0 1 0 0
+#' #[1] 6
 simpond = function(x){
 
   y = floor(x)
@@ -507,22 +487,6 @@ affectation = function(simplx,dat,choix_dist = "E"){
 #' @return un resultat
 #' @export
 #'
-#' @examples
-#'
-#' colnames(datae_new)[2:3] = c("Y1","Y2")
-#' datae_new[datae_new[,1]==1,"Y2"] = NA
-#' datae_new[datae_new[,1]==2,"Y1"] = NA
-#'
-#' imp_MICE(datae_new,5,"pmm","FREQ")
-#' #[1] 4 3 4 4 3 2 1 4 4 1 3 1 3 3 3 2 2 2 3 2
-#' set.seed(1236); imp_MICE(datae_new,5,"pmm","FREQ")
-#' #[1] 4 4 4 4 1 1 1 4 3 1 2 1 3 3 3 1 1 2 3 1
-#'
-#' datae_nw  = apply(datae_new[,2:5],2,as.factor)
-#' datae_nw2 = data.frame(base = datae_new[,1],datae_nw)
-#' summary(datae_nw2)
-#' set.seed(1236); imp_MICE(datae_nw2,5,c("polyreg","polyreg","pmm","pmm"),"FREQ")
-#' #[1] 4 3 4 3 2 1 1 4 3 1 3 1 3 3 3 2 1 1 3 2
 imp_MICE = function(datessai,R_mice,meth,calc){
 
   # Imputation MICE:
