@@ -29,21 +29,3 @@ Si toutes les covariables sont qualis --> Tableau Disjonctif Complet(binaires)
 Si les covariables sont qualis et quantis  --> Coordonn?es sur CP d'une AFDM
 Si toutes les covariables sont quantis --> Simple standardisation
 }
-\examples{
-
- newBDD  = prepar_cov(
- dat    = tab1,
- quali  = 4:5,
- quanti = 6
-)
- essai1 = data.frame(essai2[,1:3],essai1[,2:3])
- newBDD2 = prepar_cov(
-   dat    = essai1,
-   quali  = 4:5
- )
- set.seed(658914+9); essai3 = gendata(10,1,0,p1c = c(0.9,0.1),p2c = c(0.9,0.1))
- newBDD3 = prepar_cov(
-   dat    = essai3,
-   quali  = 4:5
- )
-}
