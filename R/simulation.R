@@ -4,29 +4,34 @@
 #' des m?thodes FOT et MICE appliqu?es sur donn?es simul?es par approche
 #' d?terministe ou non-d?terministe
 #'
-#' @param  M          : Nombre de r?p?titions
-#' @param  n_1        : Taille de la base 1
-#' @param  coeff      : Coefficient de proportionnalit? taille base 2
-#' @param  p1cc       : Proportion des cat?gories pour la covariable 1
-#' @param  p2cc       : Proportion des cat?gories pour la covariable 1
-#' @param  qual       : Les n? de colonnes des variables qualitatives
-#' @param  quan       : Les n? de colonnes des variables quantitatives
-#' @param  choose_dist: Choix de la distance pour la m?thode FOT ("E" ou "H")
-#' @param  rep_MICE   : Nbre de BDD ? imputer pour MICE
-#' @param  cov_MICE   : Sp?cifier si Y1, Y2, X1, X2 et X3 doivent ?tre consid?r?es dans
+#' M           : Nombre de r?p?titions
+#' 
+#' @param  n_1         : Taille de la base 1
+#' @param  coeff       : Coefficient de proportionnalit? taille base 2
+#' @param  p1cc        : Proportion des cat?gories pour la covariable 1
+#' @param  p2cc        : Proportion des cat?gories pour la covariable 1
+#' @param  qual        : Les n? de colonnes des variables qualitatives
+#' @param  quan        : Les n? de colonnes des variables quantitatives
+#' @param  choose_dist : Choix de la distance pour la m?thode FOT ("E" ou "H")
+#' @param  rho_cov     : missing documentation
+#' @param  rep_MICE    : Nbre de BDD ? imputer pour MICE
+#' @param  cov_MICE    : Sp?cifier si Y1, Y2, X1, X2 et X3 doivent ?tre consid?r?es dans
 #'                      MICE au format num?rique ("pmm") ou facteur ("polyreg")
 #' @param  calcu      : "FREQ" ou "MOY" selon que les variables imput?es soient quantis
 #'                       ou qualis
 #' @param  typ_simu   : D?terministe "D" ou Non D?terministe "ND"
 #'
-#' @param  Les coefficients suivants ne sont utilis?s que dans le cas non-d?terministe:
+#' Les coefficients suivants ne sont utilis?s que dans le cas non-d?terministe:
+#' 
 #' @param  r2t        : R^2 de la r?gression lin?aire Ycontinue = f(X1,X2,X3)
 #' @param  py1cc      : Proportion de patients dans chaque classe de Y en base 1
 #' @param  py2cc      : Proportion de patients dans chaque classe de Y en base 2
 #' @param  vlY1       : Les labels de chaque classe pour Y cat?gorielle en base 1
 #' @param  vlY2       : Les labels de chaque classe pour Y cat?gorielle en base 2
-#' @param  bdd        : Jeu de donn?es non simul?
-#' @param  seedsim    : G?n?rateur al?atoire (tir? au sort par d?faut)
+#' 
+#' bdd        : Jeu de donn?es non simul?
+#' 
+#' seedsim    : G?n?rateur al?atoire (tir? au sort par d?faut)
 #'
 #' @return missing documentation
 #' 
@@ -221,7 +226,9 @@ simul_glob = function(n_1=NULL, coeff=NULL, p1cc=NULL, p2cc=NULL, qual = NULL, q
 
   }
 
-
+  ### PN : Variable not initialized, so i set it to zero
+  ident <- 0
+  ###
 
   # METHODE PR:
   #-------------
@@ -231,7 +238,7 @@ simul_glob = function(n_1=NULL, coeff=NULL, p1cc=NULL, p2cc=NULL, qual = NULL, q
   reg1 = nnet::multinom(Y1  ~ X1 + X2 + X3, data = data1)
   data2$predY1 = stats::predict(reg1, newdata = data2[,c(4,5,6)] )
   reg2 = nnet::multinom(Y2  ~ X1 + X2 + X3, data = data2)
-  data1$predY2 = predict(reg2, newdata = data1[,c(4,5,6)] )
+  data1$predY2 = stats::predict(reg2, newdata = data1[,c(4,5,6)] )
   datnew$PR = c(data1$predY2,data2$predY1)
   peraffec_PR[1] = mean(as.numeric(datnew$PR != datnew$old))
 
