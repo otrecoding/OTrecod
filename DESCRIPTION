@@ -11,5 +11,10 @@ Encoding: UTF-8
 LazyData: true
 Imports: MASS, StatMatch, KernSmooth, boot, nlme, nnet, mice
 Suggests: 
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
 RoxygenNote: 6.1.1
+VignetteBuilder: knitr
+URL: https://github.com/otrecoding/OTrecod
+BugReports: https://github.com/otrecoding/OTrecod/issues
