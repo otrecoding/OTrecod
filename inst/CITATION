@@ -1,0 +1,9 @@
+@Article{,
+   author = {Gregory Guernec},
+   title = {OTrecod: Optimal transporting to recode variables},
+   journal = {The Journal Of Optimal Transport},
+   year = {2019},
+   volume = {3},
+   pages = {175--180},
+   url = {https://joot.org/archive/2019-3/guernec_et_al.pdf},
+}
