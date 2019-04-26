@@ -13,7 +13,8 @@ Imports: MASS, StatMatch, KernSmooth, boot, nlme, nnet, mice
 Suggests: 
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    pkgdown
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 URL: https://github.com/otrecoding/OTrecod
