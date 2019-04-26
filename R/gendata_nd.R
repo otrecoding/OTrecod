@@ -51,7 +51,6 @@
 #' )
 #' # Quel que soit le nombre de classes de X1 et X2, elles 
 #' # sont au format numerique en sortie
-
 gendata_ND =function(n1,k,cormat,px1c,px2c,r2,py1c,py2c,valY1,valY2){
 
   # Si la somme des proportions des cat?gories des chacune des covariables

@@ -50,11 +50,10 @@
 #' py2cc       = c(0.333,0.334,0.333)
 #' vlY1        = c(1,2,3,4)
 #' vlY2        = c(1,2,3)
-#' n1,k,cormat,px1c,px2c,r2,py1c,py2c,valY1,valY2
-#' simul_glob (n_1, coeff, p1cc, p2cc, qual , quan ,
-#'             choose_dist="E", rho_cov, rep_MICE=5, cov_MICE = "pmm", calcu="FREQ",
-#'             typ_simu,r2t , py1cc, py2cc,
-#'             vlY1, vlY2)
+#' #simul_glob (n_1, coeff, p1cc, p2cc, qual , quan ,
+#' #            choose_dist="E", rho_cov, rep_MICE=5, cov_MICE = "pmm", calcu="FREQ",
+#' #            typ_simu,r2t , py1cc, py2cc,
+#' #           vlY1, vlY2)
 simul_glob = function(n_1=NULL, coeff=NULL, p1cc=NULL, p2cc=NULL, qual = NULL, quan = NULL,
                       choose_dist="E", rho_cov=NULL, rep_MICE=5, cov_MICE = "pmm", calcu="FREQ",
                       typ_simu=NULL,r2t = NULL, py1cc = NULL, py2cc = NULL,
