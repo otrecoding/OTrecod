@@ -83,12 +83,12 @@ transfo = function(x,nom=NULL){
 #' Si les covariables sont qualis et quantis  --> Coordonn?es sur CP d'une AFDM
 #' Si toutes les covariables sont quantis --> Simple standardisation
 #'
-#' @param dat   : BDD compos?e de 3 1?res colonnes fixes et ordonn?es (base,Y1,Y2)
+#' @param dat  BDD compos?e de 3 1?res colonnes fixes et ordonn?es (base,Y1,Y2)
 #'         la partie variable est compos?e de covariables souhait?es qualis
 #'         (?ventuellement) puis quantis (?ventuellement)
-#' @param quali : A REMPLIR UNIQUEMENT si certaines covariables sont souhait?es qualis,
+#' @param quali A REMPLIR UNIQUEMENT si certaines covariables sont souhait?es qualis,
 #'         indiquez les n? de colonnes correspondant
-#' @param quanti: A REMPLIR UNIQUEMENT si certaines covariables sont souhait?es quantis,
+#' @param quanti A REMPLIR UNIQUEMENT si certaines covariables sont souhait?es quantis,
 #'         indiquez les n? de colonnes correspondant
 #' @param info  : A REMPLIR UNIQUEMENT si vous avez un m?lange de covariables quantis et
 #'         qualis ... % d'information mini prise en compte par les CP de l'AFDM
@@ -98,7 +98,7 @@ transfo = function(x,nom=NULL){
 #' 
 #' @export
 #'
-prepar_cov = function(dat, quali = NULL,quanti = NULL, info = 90){
+prepar_cov = function(dat, quali = NULL, quanti = NULL, info = 90){
   #------------------------------------------------
 
   if ((length(quanti)==0)&(length(quali)!=0)){
