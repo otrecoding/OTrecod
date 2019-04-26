@@ -26,6 +26,10 @@ simul_glob(n_1 = NULL, coeff = NULL, p1cc = NULL, p2cc = NULL,
 
 \item{quan}{: Les n? de colonnes des variables quantitatives}
 
+\item{choose_dist}{: Choix de la distance pour la m?thode FOT ("E" ou "H")}
+
+\item{rho_cov}{: missing documentation}
+
 \item{rep_MICE}{: Nbre de BDD ? imputer pour MICE}
 
 \item{cov_MICE}{: Sp?cifier si Y1, Y2, X1, X2 et X3 doivent ?tre consid?r?es dans
@@ -34,7 +38,9 @@ MICE au format num?rique ("pmm") ou facteur ("polyreg")}
 \item{calcu}{: "FREQ" ou "MOY" selon que les variables imput?es soient quantis
 ou qualis}
 
-\item{typ_simu}{: D?terministe "D" ou Non D?terministe "ND"}
+\item{typ_simu}{: D?terministe "D" ou Non D?terministe "ND"
+
+Les coefficients suivants ne sont utilis?s que dans le cas non-d?terministe:}
 
 \item{r2t}{: R^2 de la r?gression lin?aire Ycontinue = f(X1,X2,X3)}
 
@@ -44,26 +50,17 @@ ou qualis}
 
 \item{vlY1}{: Les labels de chaque classe pour Y cat?gorielle en base 1}
 
-\item{vlY2}{: Les labels de chaque classe pour Y cat?gorielle en base 2}
+\item{vlY2}{: Les labels de chaque classe pour Y cat?gorielle en base 2
 
-\item{M}{: Nombre de r?p?titions}
+bdd        : Jeu de donn?es non simul?
 
-\item{choose_dist:}{Choix de la distance pour la m?thode FOT ("E" ou "H")}
-
-\item{Les}{coefficients suivants ne sont utilis?s que dans le cas non-d?terministe:}
-
-\item{bdd}{: Jeu de donn?es non simul?}
-
-\item{seedsim}{: G?n?rateur al?atoire (tir? au sort par d?faut)}
+seedsim    : G?n?rateur al?atoire (tir? au sort par d?faut)}
 }
 \value{
 missing documentation
 }
 \description{
-IV.  FONCTIONS D'ESTIMATION DES ERREURS
-Cette fonction retourne sur une ligne, les erreurs moyennes de pr?diction
-des m?thodes FOT et MICE appliqu?es sur donn?es simul?es par approche
-d?terministe ou non-d?terministe
+M           : Nombre de r?p?titions
 }
 \examples{
 n.sim = 1
