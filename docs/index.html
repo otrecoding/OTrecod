@@ -19,7 +19,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-home">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -46,8 +46,30 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/otrecod.html">Vignette Title</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="news/index.html">Changelog</a>
+</li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/otrecoding/OTrecod">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -57,19 +79,57 @@
 
       
       </header><div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
+    
 
-
+    
+    
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 <div id="otrecod" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#otrecod" class="anchor"></a>OTrecod</h1></div>
-<p>R package for optimal transportation to recode variables</p>
-</div>
 
+<p><a href="https://cran.r-project.org/package=OTrecod"><img src="https://www.r-pkg.org/badges/version/OTrecod" alt="CRAN status"></a></p>
+<p>The goal of OTrecod is to …</p>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>You can install the released version of OTrecod from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"OTrecod"</span>)</a></code></pre></div>
+</div>
+<div id="example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example" class="anchor"></a>Example</h2>
+<p>This is a basic example which shows you how to solve a common problem:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co">## basic example code</span></a></code></pre></div>
+<p>What is special about using <code>README.Rmd</code> instead of just <code>README.md</code>? You can include R chunks like so:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(cars)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co">#&gt;      speed           dist       </span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">#&gt;  Min.   : 4.0   Min.   :  2.00  </span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co">#&gt;  1st Qu.:12.0   1st Qu.: 26.00  </span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">#&gt;  Median :15.0   Median : 36.00  </span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co">#&gt;  Mean   :15.4   Mean   : 42.98  </span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co">#&gt;  3rd Qu.:19.0   3rd Qu.: 56.00  </span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="co">#&gt;  Max.   :25.0   Max.   :120.00</span></a></code></pre></div>
+<p>You’ll still need to render <code>README.Rmd</code> regularly, to keep <code>README.md</code> up-to-date.</p>
+<p>You can also embed plots, for example:</p>
+<p><img src="reference/figures/README-pressure-1.png" width="100%"></p>
+<p>In that case, don’t forget to commit and push the resulting figure files, so they display on GitHub!</p>
+</div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div class="license">
+    <div class="links">
+<h2>Links</h2>
+<ul class="list-unstyled">
+<li>Browse source code at <br><a href="https://github.com/otrecoding/OTrecod">https://​github.com/​otrecoding/​OTrecod</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/otrecoding/OTrecod/issues">https://​github.com/​otrecoding/​OTrecod/​issues</a>
+</li>
+</ul>
+</div>
+<div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
 <li>file <a href="LICENSE-text.html">LICENSE</a>
@@ -83,14 +143,16 @@
 </ul>
 </div>
 
-  <div class="dev-status">
+      <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/otrecoding/OTrecod"><img src="https://travis-ci.org/otrecoding/OTrecod.svg?branch=master" alt="Travis build status"></a></li>
 </ul>
 </div>
 </div>
+
 </div>
+
 
       <footer><div class="copyright">
   <p>Developed by Gregory Guernec.</p>
