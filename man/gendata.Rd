@@ -34,6 +34,6 @@ SIMULATION DE DONNEES POUR APPROCHE DETERMINISTE
 }
 \examples{
 
-essai1 = gendata(20,1,0.3,p1c = c(0.2,0.4,0.1,0.3),p2c = c(0.6,0.4))
-essai2 = gendata(20,1,0.3,p1c = c(0.6,0.4),p2c = c(0.7,0.3))
+essai1 = gendata(20,1,0.3, p1c = c(0.2,0.4,0.1,0.3), p2c = c(0.6,0.4))
+essai2 = gendata(20,1,0.3, p1c = c(0.6,0.4), p2c = c(0.7,0.3))
 }
