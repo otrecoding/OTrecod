@@ -4,6 +4,16 @@ language: R
 sudo: false
 cache: packages
 
+r_packages:
+   - covr
+   - devtools
+
+r_github_packages:
+   - otrecoding/OTrecod
+
+after_success:
+   - Rscript -e 'covr::codecov()'
+
 before_deploy: Rscript -e 'remotes::install_cran("pkgdown")'
 
 deploy:
