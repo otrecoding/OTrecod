@@ -5,9 +5,9 @@
 
 [![Travis build
 status](https://travis-ci.org/otrecoding/OTrecod.svg?branch=master)](https://travis-ci.org/otrecoding/OTrecod)
-
 [![CRAN
 status](https://www.r-pkg.org/badges/version/OTrecod)](https://cran.r-project.org/package=OTrecod)
+[![codecov](https://codecov.io/gh/otrecoding/OTrecod/branch/master/graph/badge.svg)](https://codecov.io/gh/otrecoding/OTrecod)
 
 The goal of OTrecod is to …
 
@@ -17,7 +17,10 @@ You can install the released version of OTrecod from
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
+# Install release version from CRAN
 install.packages("OTrecod")
+# Install development version from GitHub
+devtools::install_github("otrecoding/OTrecod")
 ```
 
 ## Example
