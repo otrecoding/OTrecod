@@ -14,15 +14,12 @@
 #' @export
 #'
 #' @examples
-<<<<<<< HEAD:R/compare_lists.r
 #' data1 = data.frame(Gender = rep(c("m","f"),5),Age = rnorm(5,20,4))
 #' data2 = data.frame(Gender = rep(c("m","f"),5),Age = rnorm(5,21,5))
 #'
-=======
 #' data1 = data.frame(Gender = rep(c("m","f"),5),Age = stats::rnorm(5,20,4))
 #' data2 = data.frame(Gender = rep(c("m","f"),5),Age = stats::rnorm(5,21,5))
 #' 
->>>>>>> a3e2c131b4a74d0185e2de2c4f328684998f3cfa:R/OTRECOD_1.r
 #' list1 = list(A = 1:4, B = as.factor(c("A","B","C")), C = matrix(1:6,ncol = 3))
 #' list2 = list(A = 1:4, B = as.factor(c("A","B")), C = matrix(1:6,ncol = 3))
 #' list3 = list(A = 1:4, B = as.factor(c("A","B","C")),
