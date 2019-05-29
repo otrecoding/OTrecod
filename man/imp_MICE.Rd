@@ -46,20 +46,3 @@ ri          : Random indicator method for nonignorable data (numeric)
 sample      : Random sample from the observed values (any)
 fastpmm     : Experimental: Fast predictive mean matching using C++ (any)
 }
-\examples{
-
-colnames(datae_new)[2:3] = c("Y1","Y2")
-datae_new[datae_new[,1]==1,"Y2"] = NA
-datae_new[datae_new[,1]==2,"Y1"] = NA
-
-imp_MICE(datae_new,5,"pmm","FREQ")
-#[1] 4 3 4 4 3 2 1 4 4 1 3 1 3 3 3 2 2 2 3 2
-set.seed(1236); imp_MICE(datae_new,5,"pmm","FREQ")
-#[1] 4 4 4 4 1 1 1 4 3 1 2 1 3 3 3 1 1 2 3 1
-
-datae_nw  = apply(datae_new[,2:5],2,as.factor)
-datae_nw2 = data.frame(base = datae_new[,1],datae_nw)
-summary(datae_nw2)
-set.seed(1236); imp_MICE(datae_nw2,5,c("polyreg","polyreg","pmm","pmm"),"FREQ")
-#[1] 4 3 4 3 2 1 1 4 3 1 3 1 3 3 3 2 1 1 3 2
-}

@@ -14,28 +14,10 @@ par exemple)}
 \item{choix_dist}{(FACULTATIF) Distance euclidienne "E" par d?faut, sinon "H" pour
 distance de Hamming}
 }
+\value{
+missed documentation
+}
 \description{
 Cette fonction est la partie I/II de la méthode FOT
 Elle estime les co?ts de passage entre les modalit?s Y1 et Y2
-}
-\examples{
-# datae_new = datae[,c(1,4,5,2,3)]
-# summary(datae_new)
-# t1 = Sys.time(); xx = cout(datae_new);     t2 = Sys.time(); difftime(t2,t1); xx
-# t1 = Sys.time(); zz = cout(datae_new,"H"); t2 = Sys.time(); difftime(t2,t1); zz
-# 
-# summary(newBDD)
-# t1 = Sys.time(); c1 = cout(newBDD);      t2 = Sys.time(); difftime(t2,t1); c1
-# 
-# summary(newBDD2)
-# t1 = Sys.time(); c2 = cout(newBDD2);     t2 = Sys.time(); difftime(t2,t1); c2
-# t1 = Sys.time(); c3 = cout(newBDD2,"H"); t2 = Sys.time(); difftime(t2,t1); c3
-# 
-# 
-# # AJOUT DES NA: On sp?cifie les Y manquants en base 1 et 2: --> OK aussi
-# datae_new_NA = datae_new
-# datae_new_NA[datae_new_NA[,1]==1,"Ybase2"] = NA
-# datae_new_NA[datae_new_NA[,1]==2,"Ybase1"] = NA
-# t1 = Sys.time(); xx_NA = cout(datae_new_NA);
-# t2 = Sys.time(); difftime(t2,t1); xx_NA
 }
