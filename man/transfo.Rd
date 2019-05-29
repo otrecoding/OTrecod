@@ -15,19 +15,11 @@ transfo(x, nom = NULL)
 binaires correspondantes en sortie
 La modalite de reference est la 1ere (cf levels(x) au prealable)}
 }
+\value{
+missing documentation
+}
 \description{
 fonction TRANSFO
   Cette fonction transforme une variables qualitative (format facteur) ? k
   classes en (k-1) variables binaires
-}
-\examples{
-
-examp = as.factor(c(rep("A",10),rep("B",20),rep("C",15)))
-transfo(examp,nom="examp")
-transfo(c(rep(1,10),rep(2,5)))
-transfo(as.factor(c(rep(1,10),rep(2,5))))
-transfo(as.factor(rep(0,15)),"X2")
-transfo(as.factor(rep(1,15)),"X2")
-transfo(as.factor(rep(2,15)),"X2")
-
 }

@@ -29,45 +29,16 @@ delta = cor(X1,X3), mu = cor(X2,X3)}
 \item{valY1}{: Les labels de chaque classe pour Y cat?gorielle en base 1}
 
 \item{valY2}{: Les labels de chaque classe pour Y cat?gorielle en base 2}
-
-\item{rho}{: Correlation entre X1 et X2 (continues)}
-
-\item{delta}{: Correlation entre X1 et X3 (continues)}
-
-\item{mu}{: Correlation entre X2 et X3 (continues)}
+}
+\value{
+missing documentation
 }
 \description{
-SIMULATION DE DONNEES POUR APPROCHE NON DETERMINISTE
--> Cette fonction genere une BDD de la forme [Base|Y1|Y2|X1|X2|X3] avec les
-   covariables X1, X2 categorielles ? k1 et K2 modalites resp., et X3 continue
+- rho    : Correlation entre X1 et X2 (continues)
+- delta  : Correlation entre X1 et X3 (continues)
+- mu     : Correlation entre X2 et X3 (continues)
 }
-\examples{
-
-tab1 = gendata_ND(
-  n1     =  50,
-  k      =  1,
-  cormat =  c(0.5,0.4,0.3),
-  px1c   =  c(0.4,0.6),
-  px2c   =  c(0.5,0.4,0.1),
-  r2     =  0.56,
-  py1c   =  c(0.25,0.25,0.25,0.25),
-  py2c   =  c(0.333,0.334,0.333),
-  valY1  =  c(1,2,3,4),
-  valY2  =  c(2,1,3)
-)
-
-tab2 = gendata_ND(
-  n1     =  25,
-  k      =  2,
-  cormat =  c(0.5,0.4,0.3),
-  px1c   =  c(0.4,0.6),
-  px2c   =  c(0.7,0.3),
-  r2     =  0.60,
-  py1c   =  c(0.333,0.334,0.333),
-  py2c   =  c(0.25,0.25,0.25,0.25),
-  valY1  =  c(1,2,3),
-  valY2  =  c(2,1,3,4)
-)
-# Quel que soit le nombre de classes de X1 et X2, elles 
-# sont au format numerique en sortie
+\details{
+Quel que soit le nombre de classes de X1 et X2, elles 
+sont au format numerique en sortie
 }

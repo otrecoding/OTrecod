@@ -4,13 +4,17 @@
 #' -> Cette fonction genere une BDD de la forme [Base|Y1|Y2|X1|X2|X3] avec les
 #'    covariables X1, X2 categorielles ? k1 et K2 modalites resp., et X3 continue
 #'
+#' - rho    : Correlation entre X1 et X2 (continues)
+#' - delta  : Correlation entre X1 et X3 (continues)
+#' - mu     : Correlation entre X2 et X3 (continues)
+#' 
+#' Quel que soit le nombre de classes de X1 et X2, elles 
+#' sont au format numerique en sortie
+#' 
 #' @param n1     : Nombre de patients dans la base 1
 #' @param k      : Coefficient de proportionnalite entre les 2 bases
 #' @param cormat : vecteur contenant les correlations: rho = cor(X1,X2),
 #'                 delta = cor(X1,X3), mu = cor(X2,X3)
-#' @param rho    : Correlation entre X1 et X2 (continues)
-#' @param delta  : Correlation entre X1 et X3 (continues)
-#' @param mu     : Correlation entre X2 et X3 (continues)
 #' @param px1c   : Proportion de patients dans chaque classe de X1
 #' @param px2c   : Proportion de patients dans chaque classe de X2
 #' @param  r2    : R^2 de la regression lineaire Ycontinue = f(X1,X2,X3)
@@ -19,38 +23,9 @@
 #' @param valY1  : Les labels de chaque classe pour Y cat?gorielle en base 1
 #' @param valY2  : Les labels de chaque classe pour Y cat?gorielle en base 2
 #'
-#' @return
+#' @return missing documentation
 #' @export
 #'
-#' @examples
-#'
-#' tab1 = gendata_ND(
-#'   n1     =  50,
-#'   k      =  1,
-#'   cormat =  c(0.5,0.4,0.3),
-#'   px1c   =  c(0.4,0.6),
-#'   px2c   =  c(0.5,0.4,0.1),
-#'   r2     =  0.56,
-#'   py1c   =  c(0.25,0.25,0.25,0.25),
-#'   py2c   =  c(0.333,0.334,0.333),
-#'   valY1  =  c(1,2,3,4),
-#'   valY2  =  c(2,1,3)
-#' )
-#'
-#' tab2 = gendata_ND(
-#'   n1     =  25,
-#'   k      =  2,
-#'   cormat =  c(0.5,0.4,0.3),
-#'   px1c   =  c(0.4,0.6),
-#'   px2c   =  c(0.7,0.3),
-#'   r2     =  0.60,
-#'   py1c   =  c(0.333,0.334,0.333),
-#'   py2c   =  c(0.25,0.25,0.25,0.25),
-#'   valY1  =  c(1,2,3),
-#'   valY2  =  c(2,1,3,4)
-#' )
-#' # Quel que soit le nombre de classes de X1 et X2, elles 
-#' # sont au format numerique en sortie
 gendata_ND =function(n1,k,cormat,px1c,px2c,r2,py1c,py2c,valY1,valY2){
 
   # Si la somme des proportions des cat?gories des chacune des covariables
@@ -83,8 +58,8 @@ gendata_ND =function(n1,k,cormat,px1c,px2c,r2,py1c,py2c,valY1,valY2){
 
   X_glob = mvtnorm::rmvnorm(n,mean=c(0,0,0),sigma = corrcov)
 
-  qx1c = qnorm(px1cc,mean = 0, sd = 1)
-  qx2c = qnorm(px2cc,mean = 0, sd = 1)
+  qx1c = stats::qnorm(px1cc,mean = 0, sd = 1)
+  qx2c = stats::qnorm(px2cc,mean = 0, sd = 1)
 
 
   # Discr?tisation des covariables X1 et X2 en fonction des dsitributions
@@ -107,7 +82,7 @@ gendata_ND =function(n1,k,cormat,px1c,px2c,r2,py1c,py2c,valY1,valY2){
 
   sigma2 = ((3 + 2*rho + 2*delta + 2*mu)*(1 - r2))/r2
 
-  Y = X_glob[,1] + X_glob[,2] + X_glob[,3] + rnorm(n,0,sqrt(sigma2))
+  Y = X_glob[,1] + X_glob[,2] + X_glob[,3] + stats::rnorm(n,0,sqrt(sigma2))
 
 
   # --> sd(Y) ?tant diff?rent de 1, on la standardise:
@@ -124,10 +99,10 @@ gendata_ND =function(n1,k,cormat,px1c,px2c,r2,py1c,py2c,valY1,valY2){
   #py1cc = cumsum(py1c[1:(length(py1c)-1)])
   #py2cc = cumsum(py2c[1:(length(py2c)-1)])
 
-  #qy1c = qnorm(py1cc,mean = 0, sd = 1)
+  #qy1c = stats::qnorm(py1cc,mean = 0, sd = 1)
 
-  Y1 = cut(Ynorm, breaks = c(min(Ynorm)-1,quantile(Ynorm, c( 0.25, 0.5, 0.75)),max(Ynorm)+1), include.lowest = TRUE,labels=valY1)
-  Y2 = cut(Ynorm, breaks = c(min(Ynorm)-1,quantile(Ynorm, c(1/3,  2/3)),max(Ynorm)+1), include.lowest = TRUE,labels=valY2)
+  Y1 = cut(Ynorm, breaks = c(min(Ynorm)-1,stats::quantile(Ynorm, c( 0.25, 0.5, 0.75)),max(Ynorm)+1), include.lowest = TRUE,labels=valY1)
+  Y2 = cut(Ynorm, breaks = c(min(Ynorm)-1,stats::quantile(Ynorm, c(1/3,  2/3)),max(Ynorm)+1), include.lowest = TRUE,labels=valY2)
 
   # Conversion en outcomes discrets
 

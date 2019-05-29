@@ -7,19 +7,22 @@
 prepar_cov(dat, quali = NULL, quanti = NULL, info = 90)
 }
 \arguments{
-\item{dat}{: BDD compos?e de 3 1?res colonnes fixes et ordonn?es (base,Y1,Y2)
+\item{dat}{BDD compos?e de 3 1?res colonnes fixes et ordonn?es (base,Y1,Y2)
 la partie variable est compos?e de covariables souhait?es qualis
 (?ventuellement) puis quantis (?ventuellement)}
 
-\item{quali}{: A REMPLIR UNIQUEMENT si certaines covariables sont souhait?es qualis,
+\item{quali}{A REMPLIR UNIQUEMENT si certaines covariables sont souhait?es qualis,
+indiquez les n? de colonnes correspondant}
+
+\item{quanti}{A REMPLIR UNIQUEMENT si certaines covariables sont souhait?es quantis,
 indiquez les n? de colonnes correspondant}
 
 \item{info}{: A REMPLIR UNIQUEMENT si vous avez un m?lange de covariables quantis et
         qualis ... % d'information mini prise en compte par les CP de l'AFDM
 -------------------------------------------------------------------------------}
-
-\item{quanti:}{A REMPLIR UNIQUEMENT si certaines covariables sont souhait?es quantis,
-indiquez les n? de colonnes correspondant}
+}
+\value{
+missing documentation
 }
 \description{
 Cette fonction effectue un travail pr?paratoire sur les covariables
@@ -28,22 +31,4 @@ Cette fonction effectue un travail pr?paratoire sur les covariables
 Si toutes les covariables sont qualis --> Tableau Disjonctif Complet(binaires)
 Si les covariables sont qualis et quantis  --> Coordonn?es sur CP d'une AFDM
 Si toutes les covariables sont quantis --> Simple standardisation
-}
-\examples{
-
- newBDD  = prepar_cov(
- dat    = tab1,
- quali  = 4:5,
- quanti = 6
-)
- essai1 = data.frame(essai2[,1:3],essai1[,2:3])
- newBDD2 = prepar_cov(
-   dat    = essai1,
-   quali  = 4:5
- )
- set.seed(658914+9); essai3 = gendata(10,1,0,p1c = c(0.9,0.1),p2c = c(0.9,0.1))
- newBDD3 = prepar_cov(
-   dat    = essai3,
-   quali  = 4:5
- )
 }

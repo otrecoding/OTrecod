@@ -19,13 +19,13 @@
 #' @param p1c Distribution de la covariable X1 cat?gorielle (format: c(,))c
 #' @param p2c Distribution de la covariable X2 cat?gorielle (format: c(,)) 
 #'
-#' @return
+#' @return missing documentation
 #' @export
 #'
 #' @examples
 #' 
-#' essai1 = gendata(20,1,0.3,p1c = c(0.2,0.4,0.1,0.3),p2c = c(0.6,0.4))
-#' essai2 = gendata(20,1,0.3,p1c = c(0.6,0.4),p2c = c(0.7,0.3))
+#' essai1 = gendata(20,1,0.3, p1c = c(0.2,0.4,0.1,0.3), p2c = c(0.6,0.4))
+#' essai2 = gendata(20,1,0.3, p1c = c(0.6,0.4), p2c = c(0.7,0.3))
 gendata = function(n1,k,rho,p1c,p2c){
 
   # Si la somme des proportions des cat?gories des chacune des covariables
@@ -52,8 +52,8 @@ gendata = function(n1,k,rho,p1c,p2c){
   # correspondants:
 
   Y_glob = mvtnorm::rmvnorm(n,mean=c(0,0),sigma = corrcov)
-  q1c = qnorm(p1cc,mean = 0, sd = 1)
-  q2c = qnorm(p2cc,mean = 0, sd = 1)
+  q1c = stats::qnorm(p1cc,mean = 0, sd = 1)
+  q2c = stats::qnorm(p2cc,mean = 0, sd = 1)
 
 
   # Discr?tisation des covariables X1 et X2
