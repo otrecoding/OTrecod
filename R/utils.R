@@ -23,27 +23,27 @@
 #    indXB:: Dict{Int64,Array{Int64}}; # indexes of subjects of B with given X value
 #    DA::Array{Float64,2}
 #    DB::Array{Float64,2}
-
+setwd("C:\\Users\\vagares\\Google Drive\\3_Recherche\\R1_Recherche\\2_INSA\\DataMerging_4\\Programmes\\Data\\data\\SR-0.8")
+data_file = read.table("tab1.txt",sep =" ",header=TRUE)
 Instance  = function(data_file,norme){
-      data = read.table(data_file)
-
+      data = data_file
       # number of covariables
       nbcvar = dim(data)[2] - 3
 
       # recover the sets of individuals in base 1 and 2
-      base = data[2:dim(data)[1],1]
-      indA = base[base == 1]
-      indB = base[base == 2]
+      base = data[1:dim(data)[1],1]
+      indA = which(base == 1)
+      indB = which(base == 2)
       nA = length(indA)
       nB = length(indB)
 
       # recover the input data
-      Xobserv = data[2:dim(data)[1], 4:dim(data)[2]]
-      Yobserv = data[2:dim(data)[1], 2]
-      Zobserv = data[2:dim(data)[1], 3]
+      Xobserv = data[1:dim(data)[1], 4:dim(data)[2]]
+      Yobserv = data[1:dim(data)[1], 2]
+      Zobserv = data[1:dim(data)[1], 3]
 
       # modify order so that base A comes first and then base B
-      Xobserv = rbind(Xobserv[indA,],Xobserv[indB,])
+      Xobserv = cbind(Xobserv[indA,],Xobserv[indB,])
       Yobserv = c(Yobserv[indA],Yobserv[indB])
       Zobserv = c(Zobserv[indA],Zobserv[indB])
       indA = 1:nA;
