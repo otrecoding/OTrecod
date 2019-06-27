@@ -7,12 +7,12 @@ library(ompr)
 library(ompr.roi)
 #-------------------
 # Espace de travail ? charger depuis la dropbox qui contient tous les objets
-setwd("C:\\Users\\vagares\\Documents\\OTRecod\\OTrecod\\R")
+#☺setwd("C:\\Users\\vagares\\Documents\\OTRecod\\OTrecod\\R")
 
 
 ls()
 
-tab1_200 = read.table("tab1_200.txt",sep=" ")
+tab1 = read.csv2("tab.csv",sep=";")
 
 jointprobaA = jointprobaB = matrix(c(0.0834,0.0834,0.0832,0.0884,0.0826,0.0790,0.0908,0.0786,0.0806,0.0872,0.0816,0.0812),ncol = 3,byrow = T)
 
@@ -223,8 +223,8 @@ average_distance_to_closest=function(inst, percent_closest){
 
 #--------------------------------------
 # Exemple OK
-try1 = average_distance_to_closest(stock_res,1)
-average_distance = try1
+#try1 = average_distance_to_closest(stock_res,1)
+#average_distance = try1
 #--------------------------------------
 
 
