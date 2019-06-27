@@ -412,99 +412,28 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
     #@objective(indiv, Min, sum(CA[i,z]*assignA[i,z] for i in A, z in Z)
     #                        + sum(CB[j,y]*assignB[j,y] for j in B, y in Y))
     
-    Min = c(as.numeric(t(CA)),as.numeric(t(CB)))
+    result <-  MIPModel() %>%
+      add_variable(assignA[i,z],  i = A, z = Z,type = "continuous") %>%
+      add_variable(assignB[j,y],  j = B, y = Y,type = "continuous") %>%
+      set_objective(sum_expr(CA[i,z]*assignA[i,z], i = A,z=Z) + sum_expr(CB[j,y]*assignB[j,y], j = B,y=Y), "min") %>%
+      #set_objective(sum_expr(CA[i,z]*assignA[i,z], i = A,z=Z), "min") %>%
+      #add_constraint(sum_expr(assignA[i,z], i=indY[y])   == jointprobaA[y,z], y = Y, z = Z) %>%
+      #add_constraint(sum_expr(assignB[j,y], j = indZ[z]) == jointprobaB[y,z], y = Y, z = Z) %>%
+      add_constraint(sum_expr(assignA[i,z], z = Z) == 1/(length(A)),i = A) %>%
+      add_constraint(sum_expr(assignB[j,y], y = Y) == 1/(length(B)),j = B) %>%
+      solve_model(with_ROI(solver = "glpk"))
     
-
-    # Constraints
-    # - assign the individuals so as to satisfy the joint probability computed
-    #   with the model by group
-    # @constraint(indiv, ctjointprobaA[y in Y, z in Z],
-    #    sum(assignA[i,z] for i in indY[y]) == jointprobaA[y,z])
-        
-    
-    c1 = matrix(0,length(Z)*length(Y),length(A)*length(Z)+length(B)*length(Y))
-    b1 = numeric(length(Z)*length(Y))
-    for (y in Y){
-        for (z in Z){
-           for (i in indY[y]){
-                c1[length(Z)*(y-1)+ z,length(Z)*(i-1)+ z] = 1
-                b1[length(Z)*(y-1)+ z] = jointprobaA[y,z]
-           }
-        }
-    }
-
-    s1 = rep("==",length(Z)*length(Y))
-        
-        
-    # @constraint(indiv, ctjointprobaB[y in Y, z in Z],
-    #    sum(assignB[j,y] for j in indZ[z]) == jointprobaB[y,z])
-
-    c2 = matrix(0,length(Z)*length(Y),length(A)*length(Z)+length(B)*length(Y))
-    b2 = numeric(length(Z)*length(Y))
-    for (y in Y){
-         for (z in Z){
-            for (j in indZ[z]){
-                 c1[length(Z)*(y-1)+ z,length(A)*length(Z) + length(Y)*(j-1)+ y] = 1
-                 b1[length(Z)*(y-1)+ z] = jointprobaB[y,z]
-            }
-         }
-    }
-
-    s2 = rep("==",length(Z)*length(Y))
-
-
-
-    # - assign sufficient modality to each individual
-    # @constraint(indiv, ctassignA[i in A], sum(assignA[i,z] for z in Z) == 1/(length(A)))
-    
-    
-    c3 = matrix(0,length(A),length(A)*length(Z)+length(B)*length(Y))
-    b3 = numeric(length(A))
-    for (i in A){
-      for (z in Z){
-          c3[i,length(Z)*(i-1)+ z] = 1
-          b3[i] = 1/(length(A))
-        }
-      }
-    
-    
-    s3 = rep("==",length(A))
-    
-
-    
-    # @constraint(indiv, ctassignB[j in B], sum(assignB[j,y] for y in Y) == 1/(length(B)))
-
-    
-    c4 = matrix(0,length(B),length(A)*length(Z)+length(B)*length(Y))
-    b4 = numeric(length(B))
-    for (j in B){
-      for (y in Y){
-        c4[j,length(Y)*(j-1)+ y] = 1
-        b4[i] = 1/(length(B))
-      }
-    }
-    
-    
-    s4 = rep("==",length(B))
-
-
-    
-
-    # Solve the problem
-    # optimize!(indiv)
-    
-    c     = rbind(c1,c2,c3,c4)
-    b     = c(b1,b2,b3,b4)
-    s     = c(s1,s2,s3,s4)
-    # indiv = solveLP(cvec=Min, bvec=b, Amat=c, const.dir = s,lpSolve=TRUE)
-    indiv = solveLP(cvec=Min, bvec=b, Amat=c, const.dir = rep("==",1024),lpSolve=TRUE)
+    solution = get_solution(result, assignA[i,z]) 
+    assignA = matrix(solution[1:(length(A)*length(Z))], length(A),length(Z))
+    solution = get_solution(result, assignB[j,y])  
+    assignB=  matrix(solution, length(B),length(Z))
 
 
     # Extract the values of the solution
     # assignA_val = [value(assignA[i,z]) for i in A, z in Z]
     # assignB_val = [value(assignB[j,y]) for j in B, y in Y]
-    assignA = matrix(group$solution[1:(length(A)*length(Z))], length(A),length(Z))
-    assignB=  matrix(group$solution[(length(A)*length(Z)+1):(length(A)*length(Z)+length(B)*length(Y))], length(B),length(Z))
+   
+    
 
     # Transport the modality that maximizes frequency
     # YBtrans = [findmax([assignA_val[i,z]  for z in Z])[2] for i in A]             
