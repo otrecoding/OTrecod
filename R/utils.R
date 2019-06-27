@@ -411,10 +411,10 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
     #                        + sum(CB[j,y]*assignB[j,y] for j in B, y in Y))
     
     result <-  MIPModel() %>%
-      add_variable(assignA[i,z],  i = A, z = Z,type = "continuous") %>%
-      add_variable(assignB[j,y],  j = B, y = Y,type = "continuous") %>%
-      set_objective(sum_expr(CA[i,z]*assignA[i,z], i = A,z=Z) + sum_expr(CB[j,y]*assignB[j,y], j = B,y=Y), "min") %>%
-      #set_objective(sum_expr(CA[i,z]*assignA[i,z], i = A,z=Z), "min") %>%
+      add_variable(assignA[i,z],  i = A, z = Z,type = "continuous",lb=0) %>%
+      add_variable(assignB[j,y],  j = B, y = Y,type = "continuous",lb=0) %>%
+      #set_objective(sum_expr(CA[i,z]*assignA[i,z], i = A,z=Z) + sum_expr(CB[j,y]*assignB[j,y],j = B,y=Y), "min") %>%
+      set_objective(sum_expr(CA[i,z]*assignA[i,z], i = A,z=Z), "min") %>%
       #add_constraint(sum_expr(assignA[i,z], i=indY[y])   == jointprobaA[y,z], y = Y, z = Z) %>%
       #add_constraint(sum_expr(assignB[j,y], j = indZ[z]) == jointprobaB[y,z], y = Y, z = Z) %>%
       add_constraint(sum_expr(assignA[i,z], z = Z) == 1/(length(A)),i = A) %>%
