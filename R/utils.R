@@ -7,13 +7,12 @@ library(ompr)
 library(ompr.roi)
 #-------------------
 # Espace de travail ? charger depuis la dropbox qui contient tous les objets
-setwd("C:\\Users\\vagares\\Documents\\Dropbox\\Conversion Julia")
-# setwd("C:\\Users\\secr\\Dropbox\\Conversion Julia")
-load("otgroup_julia.RData")
+setwd("C:\\Users\\vagares\\Documents\\OTRecod\\OTrecod\\R")
+
+
 ls()
-tab1        = tab1[c(1:500,5001:5500),]
-tab1bis      = tab1[c(1:200,5001:5200),]
-write.table(tab1bis,"tab1_200.txt",sep=" ")
+
+tab1_200 = read.table("tab1_200.txt",sep=" ")
 
 jointprobaA = jointprobaB = matrix(c(0.0834,0.0834,0.0832,0.0884,0.0826,0.0790,0.0908,0.0786,0.0806,0.0872,0.0816,0.0812),ncol = 3,byrow = T)
 
@@ -180,14 +179,6 @@ Instance  = function(data_file,norme){
                   Yobserv=Yobserv, Zobserv=Zobserv, D=D, Y=Y, Z=Z,
                   indY=indY, indZ=indZ, indXA=indXA, indXB=indXB, DA=DA, DB=DB))
 }
-#--------------------------------------
-# Example OK
-# tab1bis   = tab1[c(1:500,5001:5500),]
-# stock_res = Instance(tab1bis,norme = 0)
-setwd("F:\\inserm1027\\cloeDM\\OT_new")
-tab1      = read.table("tab1.txt",sep =" ",header=TRUE)
-stock_res = Instance(tab1,norme = 1)
-#--------------------------------------
 
 
 average_distance_to_closest=function(inst, percent_closest){
@@ -366,7 +357,7 @@ individual_from_group_closest=function(inst, jointprobaA, jointprobaB, percent_c
 # total distance while satisfying the joint probability computed by the model by
 # group
 ###############################################################################
-
+inst=Instance(tab1_200,norme=1)
 individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_closest=1.0){
 
 
