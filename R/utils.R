@@ -1,4 +1,11 @@
-
+library(rdist)
+#--> Nouveaux packages pour l'optimisation (remplace linprog qui posait pb)
+library(dplyr)
+library(ROI)
+library(ROI.plugin.symphony)
+library(ompr)
+library(ompr.roi)
+#-------------------
 # Espace de travail ? charger depuis la dropbox qui contient tous les objets
 setwd("C:\\Users\\vagares\\Documents\\Dropbox\\Conversion Julia")
 # setwd("C:\\Users\\secr\\Dropbox\\Conversion Julia")
