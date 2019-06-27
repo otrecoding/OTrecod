@@ -1,14 +1,14 @@
 
 #-------------------------------------------------------------------------------
 # PB opimisation dans la fonction "individual_from_group_optimal"
-# (la dernière de ce fichier)
+# (la derni?re de ce fichier)
 #-------------------------------------------------------------------------------
 
 
 setwd("F:\\inserm1027\\cloeDM\\OT_new")
 tab1      = read.table("tab1.txt",sep =" ",header=TRUE)
 
-# Pour que ça tourne plus vite on ne conserve que 400 sujets (200 base A/200 base B)
+# Pour que ?a tourne plus vite on ne conserve que 400 sujets (200 base A/200 base B)
 tab1      = tab1[c(1:200,5001:5200),]
 
 
@@ -242,10 +242,10 @@ try1 = average_distance_to_closest(stock_res,1)
 
 
 inst = stock_res   # Pour pouvoir travailler directement dans la fonction
-                   # ci-dessous sans avoir à l'exécuter
+                   # ci-dessous sans avoir ? l'ex?cuter
 
 
-# --> PB pour utiliser le code relatif à l'optimisation via les nouveaux
+# --> PB pour utiliser le code relatif ? l'optimisation via les nouveaux
 #     packages
 
 ###############################################################################
@@ -333,8 +333,8 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
   
   result =  MIPModel() %>%
   
-    add_variable(assignA[i,z],  i = A, z = Z,type = "continuous") %>%
-    add_variable(assignB[j,y],  j = B, y = Y,type = "continuous") %>%
+    add_variable(assignA[i,z],  i = A, z = Z,type = "continuous",lb=0) %>%
+    add_variable(assignB[j,y],  j = B, y = Y,type = "continuous",lb=0) %>%
     set_objective(sum_expr(CA[i,z]*assignA[i,z], i = A,z=Z) + sum_expr(CB[j,y]*assignB[j,y], j = B,y=Y), "min") %>%
     #set_objective(sum_expr(CA[i,z]*assignA[i,z], i = A,z=Z), "min") %>%
     #add_constraint(sum_expr(assignA[i,z], i=indY[y])   == jointprobaA[y,z], y = Y, z = Z) %>%
