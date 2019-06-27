@@ -2,24 +2,19 @@ library(rdist)
 #--> Nouveaux packages pour l'optimisation (remplace linprog qui posait pb)
 library(dplyr)
 library(ROI)
-library(ROI.plugin.symphony)
+library(ROI.plugin.glpk)
 library(ompr)
 library(ompr.roi)
 #-------------------
 # Espace de travail ? charger depuis la dropbox qui contient tous les objets
-setwd("C:\\Users\\vagares\\Documents\\OTRecod\\OTrecod\\R")
-
-
 ls()
-
-tab1_200 = read.table("tab1_200.txt",sep=" ")
+library(here)
+tab1 = read.csv2(here("R/tab.csv"),sep=";")
 
 jointprobaA = jointprobaB = matrix(c(0.0834,0.0834,0.0832,0.0884,0.0826,0.0790,0.0908,0.0786,0.0806,0.0872,0.0816,0.0812),ncol = 3,byrow = T)
 
 # Packages utiles
 library(rdist); library(linprog); library(mvtnorm)
-
-
 
 Instance  = function(data_file,norme){
 
@@ -223,8 +218,8 @@ average_distance_to_closest=function(inst, percent_closest){
 
 #--------------------------------------
 # Exemple OK
-try1 = average_distance_to_closest(stock_res,1)
-average_distance = try1
+#try1 = average_distance_to_closest(stock_res,1)
+#average_distance = try1
 #--------------------------------------
 
 
@@ -357,7 +352,7 @@ individual_from_group_closest=function(inst, jointprobaA, jointprobaB, percent_c
 # total distance while satisfying the joint probability computed by the model by
 # group
 ###############################################################################
-inst=Instance(tab1_200,norme=1)
+inst=Instance(tab1,norme=1)
 individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_closest=1.0){
 
 
