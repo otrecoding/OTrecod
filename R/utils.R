@@ -357,7 +357,7 @@ individual_from_group_closest=function(inst, jointprobaA, jointprobaB, percent_c
 # total distance while satisfying the joint probability computed by the model by
 # group
 ###############################################################################
-inst=Instance(tab1_200,norme=1)
+inst=Instance(tab1,norme=1)
 individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_closest=1.0){
 
 
