@@ -9,7 +9,7 @@ library(ompr.roi)
 # Espace de travail ? charger depuis la dropbox qui contient tous les objets
 ls()
 library(here)
-tab1 = read.csv2(here("R/tab.csv"),sep=";")
+tab1 = read.csv2(here("data/tab.csv"),sep=";")
 
 jointprobaA = jointprobaB = matrix(c(0.0834,0.0834,0.0832,0.0884,0.0826,0.0790,0.0908,0.0786,0.0806,0.0872,0.0816,0.0812),ncol = 3,byrow = T)
 
