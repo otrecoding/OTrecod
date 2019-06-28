@@ -1,4 +1,4 @@
-OT=function(inst, percent_closest=0.2, maxrelax=0.0, norme=0, indiv_method, full_disp=false, solver_disp=false){
+OT = function(inst, percent_closest=0.2, maxrelax=0, norme=0, indiv_method, full_disp=false, solver_disp=false){
     
     tstart = Sys.time()
     
@@ -37,12 +37,12 @@ OT=function(inst, percent_closest=0.2, maxrelax=0.0, norme=0, indiv_method, full
     
     # Computation of the cost matrix as average distances between the
     # individuals of two groups
-    C = average_distance_to_closest(inst, percent_closest)[[1]];
+    C = average_distance_to_closest(inst, percent_closest)[[1]]
     
     # G: ----> Jusqu'ici OK !!
     #---------------------
     
-    if (maxrelax == 0.0){
+    if (maxrelax == 0){
         
         # Objective: minimize the distance between individuals of A and B
         
