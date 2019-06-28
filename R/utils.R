@@ -10,11 +10,10 @@ library(ompr.roi)
 ls()
 library(here)
 tab1 = read.csv2(here("R/tab.csv"),sep=";")
+tab1 = tab1[c(1:200,5001:5200),]; dim(tab1)
 
 jointprobaA = jointprobaB = matrix(c(0.0834,0.0834,0.0832,0.0884,0.0826,0.0790,0.0908,0.0786,0.0806,0.0872,0.0816,0.0812),ncol = 3,byrow = T)
 
-# Packages utiles
-library(rdist); library(linprog); library(mvtnorm)
 
 Instance  = function(data_file,norme){
 
