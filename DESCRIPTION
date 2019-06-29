@@ -13,20 +13,21 @@ License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    MASS, 
-    StatMatch, 
-    KernSmooth, 
-    boot, 
-    nlme, 
-    nnet, 
-    mice, 
-    gdata, 
-    FNN, 
-    linprog, 
+    MASS,
+    StatMatch,
+    KernSmooth,
+    boot,
+    nlme,
+    nnet,
+    mice,
+    gdata,
+    FNN,
+    linprog,
     RColorBrewer,
-    gplots, 
-    mvtnorm, 
-    FactoMineR
+    gplots,
+    mvtnorm,
+    FactoMineR,
+    Rcpp
 Suggests: 
     testthat,
     knitr,
@@ -37,3 +38,5 @@ RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 URL: https://github.com/otrecoding/OTrecod
 BugReports: https://github.com/otrecoding/OTrecod/issues
+LinkingTo: 
+    Rcpp
