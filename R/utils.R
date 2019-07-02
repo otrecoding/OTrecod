@@ -9,7 +9,8 @@ library(ompr.roi)
 # Espace de travail ? charger depuis la dropbox qui contient tous les objets
 ls()
 library(here)
-tab1 = read.csv2(here("data/tab.csv"),sep=";")
+
+tab1 = read.csv2("C:/Users/vagares/Documents/OTRecod/OTrecod/R/data/tab.csv",sep=";")
 
 jointprobaA = jointprobaB = matrix(c(0.0834,0.0834,0.0832,0.0884,0.0826,0.0790,0.0908,0.0786,0.0806,0.0872,0.0816,0.0812),ncol = 3,byrow = T)
 
@@ -404,14 +405,49 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
     # Objective: minimize the distance between individuals of A and B
     #@objective(indiv, Min, sum(CA[i,z]*assignA[i,z] for i in A, z in Z)
     #                        + sum(CB[j,y]*assignB[j,y] for j in B, y in Y))
+    library(nloptr)
+    eval_f = function(assign){
+      assignA = matrix(assign[1:(length(A)*length(Z))], length(A),length(Z))
+      assignB=  matrix(assign[(length(A)*length(Z)+1):(length(A)*length(Z)+length(B)*length(Y))], length(B),length(Y))
+      S1 =0
+      for (i in A){
+        for (z in Z){
+          S1 =S1 + CA[i,z]*assignA[i,z]
+        }
+      }
+      S2 =0
+      for (j in B){
+        for (y in Y){
+          S2 =S2 + CB[j,y]*assignB[j,y]
+        }
+      }
+      return(S1+S2)}
+    assign0 <- rep(0.5,length(A)*length(Z)+length(B)*length(Y))
+    opts <- list("algorithm"="NLOPT_LD_LBFGS",
+                 "xtol_rel"=1.0e-8)
+    res <- nloptr(x0=assign0,
+                   eval_f=eval_f,
+                   eval_grad_f=NULL)
+    CAf <- function(i,z) {
+      CA[i,z]
+    }
+    
+    CBf <- function(j,y) {
+      CA[j,y]
+    }
     
     result <-  MIPModel() %>%
       add_variable(assignA[i,z],  i = A, z = Z,type = "continuous",lb=0) %>%
       add_variable(assignB[j,y],  j = B, y = Y,type = "continuous",lb=0) %>%
-      #set_objective(sum_expr(CA[i,z]*assignA[i,z], i = A,z=Z) + sum_expr(CB[j,y]*assignB[j,y],j = B,y=Y), "min") %>%
-      set_objective(sum_expr(CA[i,z]*assignA[i,z], i = A,z=Z), "min") %>%
-      #add_constraint(sum_expr(assignA[i,z], i=indY[y])   == jointprobaA[y,z], y = Y, z = Z) %>%
-      #add_constraint(sum_expr(assignB[j,y], j = indZ[z]) == jointprobaB[y,z], y = Y, z = Z) %>%
+      set_objective(sum_expr(CAf(i,z)*assignA[i,z], i = A,z=Z) + sum_expr(CBf(j,y)*assignB[j,y],j = B,y=Y), "min") %>%
+      for (y in Y){
+        iy=indY[y]%>%
+      add_constraint(sum_expr(assignA[i,z], i=iy)   == jointprobaA[y,z], z = Z) %>%
+      }
+      for (z in Z){
+        jz=indZ[z]
+      add_constraint(sum_expr(assignB[j,y], j = jz) == jointprobaB[y,z], y = Y) %>%
+      }
       add_constraint(sum_expr(assignA[i,z], z = Z) == 1/(length(A)),i = A) %>%
       add_constraint(sum_expr(assignB[j,y], y = Y) == 1/(length(B)),j = B) %>%
       solve_model(with_ROI(solver = "glpk"))
