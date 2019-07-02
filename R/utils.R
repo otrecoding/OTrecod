@@ -10,7 +10,7 @@ library(ompr.roi)
 ls()
 library(here)
 
-tab1 = read.csv2("C:/Users/vagares/Documents/OTRecod/OTrecod/R/data/tab.csv",sep=";")
+tab1 = read.csv2(here("data/tab.csv"),sep=";")
 
 jointprobaA = jointprobaB = matrix(c(0.0834,0.0834,0.0832,0.0884,0.0826,0.0790,0.0908,0.0786,0.0806,0.0872,0.0816,0.0812),ncol = 3,byrow = T)
 
