@@ -1,5 +1,5 @@
 
-# OTjoint avec la partie optimisation à ajouter tout le reste de la fonction R ok
+# OTjoint avec la partie optimisation ? ajouter tout le reste de la fonction R ok
 
 # require(rdist)
 
@@ -99,68 +99,51 @@ OT_joint=function(inst, maxrelax=0.0, lambda_reg:=0.0, percent_closest=0.2, norm
     # println("... creating model")
     # Variables
     # - gammaA[x,y,z]: joint probability of X=x, Y=y and Z=z in base A
-    @variable(modelA, gammaA[x in 1:nbX, y in Y, z in Z] >= 0, base_name="gammaA")
+    result <-  MIPModel() %>%
+      add_variable(gammaA[x,y,z],x = 1:nbX, y=Y,z= Z,type = "continuous") %>%
+      add_variable(errorA_XY[x,y],x=1:nbX, y = Y, type = "continuous") %>%
+      add_variable(abserrorA_XY[x,y],x=1:nbX, y = Y, type = "continuous") %>%
+      add_variable(errorA_XZ[x,z],x=1:nbX, z = Z, type = "continuous") %>%
+      add_variable(abserrorA_XZ[x,z],x=1:nbX, z = Z, type = "continuous") %>%
+      add_variable(reg_absA[x1, x2,y,z],x1=1:nbX, x2= voisins_X[x1,],y=Y,z= Z, type = "continuous") %>%
+      set_objective(sum_expr(C[y,z] * gammaA[x,y,z],y = Y,z=Z, x = 1:nbX) + lambda_reg * sum_expr(1/length(voisins_X[x1,]) *reg_absA[x1,x2,y,z]) , "min") %>%
+      add_constraint(sum_expr(gammaA[x,y,z], z = Z) == estim_XA_YA[x,y] + errorA_XY[x,y], x = 1:nbX,y =Y) %>%
+      add_constraint(estim_XB[x]*sum_expr(gammaA[x,y,z],y = Y) == estim_XB_ZB[x,z] * estim_XA[x] + estim_XB[x]*errorA_XZ[x,z], x = 1:nbX, z = Z) %>%
+      add_constraint(errorA_XY[x,y] <= abserrorA_XY[x,y], x = 1:nbX,y =Y) %>%
+      add_constraint(-errorA_XY[x,y] <= abserrorA_XY[x,y], x = 1:nbX,y =Y) %>%
+      add_constraint(sum_expr(abserrorA_XY[x,y], x = 1:nbX,y = Y)<= maxrelax/2.0) %>%
+      add_constraint(sum_expr(errorA_XY[x,y], x = 1:nbX,y = Y)== 0.0) %>%
+      
+      add_constraint(errorA_XZ[x,z] <= abserrorA_XZ[x,z], x = 1:nbX,z =Z) %>%
+      add_constraint -errorA_XZ[x,z] <= abserrorA_XZ[x,z], x = 1:nbX,z =Z) %>%
+  add_constraint(sum_expr(abserrorA_XZ[x,z], x = 1:nbX,z = Z)<= maxrelax/2.0) %>%
+  add_constraint(sum_expr(errorA_XZ[x,z], x = 1:nbX,z = Z)<= maxrelax/2.0) %>%
+  solve_model(with_ROI(solver = "glpk"))
 
-    # - gammaB[x,y,z]: joint probability of X=x, Y=y and Z=z in base B
-    @variable(modelB, gammaB[x in 1:nbX, y in Y, z in Z] >= 0, base_name="gammaB")
+solution <- get_solution(result, gammaA[x,y,z]) 
 
-    @variable(modelA, errorA_XY[x in 1:nbX, y in Y], base_name="errorA_XY");
-    @variable(modelA, abserrorA_XY[x in 1:nbX, y in Y] >= 0, base_name="abserrorA_XY");
-    @variable(modelA, errorA_XZ[x in 1:nbX, z in Z], base_name="errorA_XZ");
-    @variable(modelA, abserrorA_XZ[x in 1:nbX, z in Z] >= 0, base_name="abserrorA_XZ");
+result <-  MIPModel() %>%
+  add_variable(gammaB[x,y,z],x = 1:nbX, y=Y,z= Z,type = "continuous") %>%
+  add_variable(errorB_XY[x,y],x=1:nbX, y = Y, type = "continuous") %>%
+  add_variable(abserrorB_XY[x,y],x=1:nbX, y = Y, type = "continuous") %>%
+  add_variable(errorB_XZ[x,z],x=1:nbX, z = Z, type = "continuous") %>%
+  add_variable(abserrorB_XZ[x,z],x=1:nbX, z = Z, type = "continuous") %>%
+  add_variable(reg_absB[x1, x2,y,z],x1=1:nbX, x2= voisins_X[x1,],y=Y,z= Z, type = "continuous") %>%
+  set_objective(sum_expr(C[y,z] * gammaB[x,y,z],y = Y,z=Z, x = 1:nbX) + lambda_reg *  sum(1/length(voisins_X[x1,]) *reg_absB[x1,x2,y,z] ) , "min") %>%
+  add_constraint(sum_expr(gammaB[x,y,z], y = Y) == estim_XB_ZB[x,z] + errorB_XZ[x,z], x = 1:nbX,z =Z) %>%
+  add_constraint(estim_XA[x]*sum_expr(gammaB[x,y,z] ,z = Z) == estim_XA_YA[x,y] * estim_XB[x] + estim_XA[x] * errorB_XY[x,y], x = 1:nbX, y = Y) %>%
+  add_constraint(errorB_XY[x,y] <= abserrorB_XY[x,y], x = 1:nbX,y =Y) %>%
+  add_constraint(-errorB_XY[x,y] <= abserrorB_XY[x,y], x = 1:nbX,y =Y) %>%
+  add_constraint(sum_expr( abserrorB_XY[x,y], x = 1:nbX,y = Y)<= maxrelax/2.0) %>%
+  add_constraint(sum_expr(errorB_XY[x,y], x = 1:nbX,y = Y)== 0.0) %>%
+  
+  add_constraint(errorB_XZ[x,z] <= abserrorB_XZ[x,z], x = 1:nbX,z =Z) %>%
+  add_constraint -errorB_XZ[x,z] <= abserrorB_XZ[x,z], x = 1:nbX,z =Z) %>%
+  add_constraint(sum_expr(abserrorB_XZ[x,z], x = 1:nbX,z = Z)<= maxrelax/2.0) %>%
+  add_constraint(sum_expr(errorB_XZ[x,z], x = 1:nbX,z = Z)<= maxrelax/2.0) %>%
+  solve_model(with_ROI(solver = "glpk"))
 
-    @variable(modelB, errorB_XY[x in 1:nbX, y in Y], base_name="errorB_XY");
-    @variable(modelB, abserrorB_XY[x in 1:nbX, y in Y] >= 0, base_name="abserrorB_XY");
-    @variable(modelB, errorB_XZ[x in 1:nbX, z in Z], base_name="errorB_XZ");
-    @variable(modelB, abserrorB_XZ[x in 1:nbX, z in Z] >= 0, base_name="abserrorB_XZ");
-
-    # Constraints
-    # - assign sufficient probability to each class of covariates with the same outcome
-    @constraint(modelA, ctYandXinA[x in 1:nbX, y in Y], sum(gammaA[x,y,z] for z in Z) == estim_XA_YA[x,y] + errorA_XY[x,y]);
-    @constraint(modelB, ctZandXinB[x in 1:nbX, z in Z], sum(gammaB[x,y,z] for y in Y) == estim_XB_ZB[x,z] + errorB_XZ[x,z]);
-
-
-    # - we impose that the probability of Y conditional to X is the same in the two databases
-    # - the consequence is that the probability of Y and Z conditional to Y is also the same in the two bases
-    @constraint(modelA, ctZandXinA[x in 1:nbX, z in Z], estim_XB[x]*sum(gammaA[x,y,z] for y in Y) == estim_XB_ZB[x,z] * estim_XA[x] + estim_XB[x]*errorA_XZ[x,z]);
-
-    @constraint(modelB, ctYandXinB[x in 1:nbX, y in Y], estim_XA[x]*sum(gammaB[x,y,z] for z in Z) == estim_XA_YA[x,y] * estim_XB[x] + estim_XA[x] * errorB_XY[x,y]);
-
-    # - recover the norm 1 of the error
-    @constraint(modelA,[x in 1:nbX, y in Y], errorA_XY[x,y] <= abserrorA_XY[x,y]);
-    @constraint(modelA,[x in 1:nbX, y in Y], -errorA_XY[x,y] <= abserrorA_XY[x,y]);
-    @constraint(modelA, sum( abserrorA_XY[x,y] for x in 1:nbX, y in Y) <= maxrelax/2.0);
-    @constraint(modelA, sum(errorA_XY[x,y] for x in 1:nbX, y in Y) == 0.0);
-    @constraint(modelA,[x in 1:nbX, z in Z], errorA_XZ[x,z] <= abserrorA_XZ[x,z]);
-    @constraint(modelA,[x in 1:nbX, z in Z], -errorA_XZ[x,z] <= abserrorA_XZ[x,z]);
-    @constraint(modelA, sum( abserrorA_XZ[x,z] for x in 1:nbX, z in Z) <= maxrelax/2.0);
-    @constraint(modelA, sum(errorA_XZ[x,z] for x in 1:nbX, z in Z) == 0.0);
-
-    @constraint(modelB,[x in 1:nbX, y in Y], errorB_XY[x,y] <= abserrorB_XY[x,y]);
-    @constraint(modelB,[x in 1:nbX, y in Y], -errorB_XY[x,y] <= abserrorB_XY[x,y]);
-    @constraint(modelB, sum( abserrorB_XY[x,y] for x in 1:nbX, y in Y) <= maxrelax/2.0);
-    @constraint(modelB, sum(errorB_XY[x,y] for x in 1:nbX, y in Y) == 0.0);
-    @constraint(modelB,[x in 1:nbX, z in Z], errorB_XZ[x,z] <= abserrorB_XZ[x,z]);
-    @constraint(modelB,[x in 1:nbX, z in Z], -errorB_XZ[x,z] <= abserrorB_XZ[x,z]);
-    @constraint(modelB, sum( abserrorB_XZ[x,z] for x in 1:nbX, z in Z) <= maxrelax/2.0);
-    @constraint(modelB, sum(errorB_XZ[x,z] for x in 1:nbX, z in Z) == 0.0);
-
-    # - regularization
-    @variable(modelA, reg_absA[x1 in 1:nbX, x2 in findall(voisins_X[x1,]), y in Y, z in Z] >= 0);
-    @constraint(modelA, [x1 in 1:nbX, x2 in findall(voisins_X[x1,]), y in Y, z in Z], reg_absA[x1,x2,y,z] >= gammaA[x1,y,z]/(max(1,length(indXA[x1]))/nA)-gammaA[x2,y,z]/(max(1,length(indXA[x2]))/nA));
-    @constraint(modelA, [x1 in 1:nbX, x2 in findall(voisins_X[x1,]), y in Y, z in Z], reg_absA[x1,x2,y,z] >= gammaA[x2,y,z]/(max(1,length(indXA[x2]))/nA)-gammaA[x1,y,z]/(max(1,length(indXA[x1]))/nA));
-    @expression(modelA, regterm, sum(1/length(voisins_X[x1,]) *reg_absA[x1,x2,y,z] for x1 in 1:nbX, x2 in findall(voisins_X[x1,]), y in Y, z in Z));
-
-    @variable(modelB, reg_absB[x1 in 1:nbX, x2 in findall(voisins_X[x1,]), y in Y, z in Z] >= 0);
-    @constraint(modelB, [x1 in 1:nbX, x2 in findall(voisins_X[x1,]), y in Y, z in Z], reg_absB[x1,x2,y,z] >= gammaB[x1,y,z]/(max(1,length(indXB[x1]))/nB)-gammaB[x2,y,z]/(max(1,length(indXB[x2]))/nB));
-    @constraint(modelB, [x1 in 1:nbX, x2 in findall(voisins_X[x1,]), y in Y, z in Z], reg_absB[x1,x2,y,z] >= gammaB[x2,y,z]/(max(1,length(indXB[x2]))/nB)-gammaB[x1,y,z]/(max(1,length(indXB[x1]))/nB));
-    @expression(modelB, regterm, sum(1/length(voisins_X[x1,]) *reg_absB[x1,x2,y,z] for x1 in 1:nbX, x2 in findall(voisins_X[x1,]), y in Y, z in Z));
-
-    # by default, the OT cost and regularization term are weighted to lie in the same interval
-    @objective(modelA, Min, sum(C[y,z] * gammaA[x,y,z]  for y in Y, z in Z, x in 1:nbX) + lambda_reg *  sum(1/length(voisins_X[x1,]) *reg_absA[x1,x2,y,z] for x1 in 1:nbX, x2 in findall(voisins_X[x1,]), y in Y, z in Z));
-
-    @objective(modelB, Min, sum(C[y,z] * gammaB[x,y,z]  for y in Y, z in Z, x in 1:nbX) + lambda_reg *  sum(1/length(voisins_X[x1,]) *reg_absB[x1,x2,y,z] for x1 in 1:nbX, x2 in findall(voisins_X[x1,]), y in Y, z in Z));
-
+solution <- get_solution(result, gammaB[x,y,z]) 
    # Solve the problem
    # optimize!(modelA);
    # optimize!(modelB);
