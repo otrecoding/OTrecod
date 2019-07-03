@@ -46,7 +46,7 @@ OT=function(inst, percent_closest=0.2, maxrelax=0.0, norme=0, indiv_method, full
         
         # Objective: minimize the distance between individuals of A and B
         
-        Min = c(as.numeric(C),rep(0,2*length(Y)+2*length(Z)))
+
         
         
         result <-  MIPModel() %>%
@@ -56,21 +56,22 @@ OT=function(inst, percent_closest=0.2, maxrelax=0.0, norme=0, indiv_method, full
             add_variable(deviationB[z], z = Z, type = "continuous") %>%
             add_variable(absdevB[z], z = Z, type = "continuous") %>%
             set_objective(sum_expr(C[y,z]*transport[y,z],y = Y,z=Z) , "min") %>%
-            add_constraint(sum_expr(transport[y,z], z = Z) == freqY[y] + deviationA[y], y =Y) %>%
-            add_constraint(sum_expr(transport[y,z],y = Y) == freqZ[z] + deviationB[z], z = Z) %>%
-            add_constraint(sum_expr(deviationA[y],y = Y)== 0) %>%
-            add_constraint(sum_expr(deviationB[z],z = Z)== 0) %>%
-            add_constraint(deviationB[z]<= absdevB[z], z = Z) %>%
-            add_constraint(deviationB[z]>= -absdevB[z], z = Z) %>%
-            add_constraint(sum_expr(absdevB[z],z=Z)<= maxrelax/2.0) %>%
+             add_constraint(sum_expr(transport[y,z], z = Z) - deviationA[y]== freqY[y] , y =Y) %>%
+             add_constraint(sum_expr(transport[y,z],y = Y) -deviationB[z] == freqZ[z] , z = Z) %>%
+             add_constraint(sum_expr(deviationA[y],y = Y)== 0) %>%
+             add_constraint(sum_expr(deviationB[z],z = Z)== 0) %>%
+             add_constraint(deviationB[z]<= absdevB[z], z = Z) %>%
+             add_constraint(deviationB[z]>= -absdevB[z], z = Z) %>%
+             add_constraint(sum_expr(absdevB[z],z=Z)<= maxrelax/2.0) %>%
             add_constraint(deviationA[y] <= absdevA[y],y =Y) %>%
-            add_constraint(deviationA[y] >= -absdevA[y],y =Y) %>%
-            add_constraint(sum_expr(absdevA[y],y = Y)<= maxrelax/2.0) %>%
+             add_constraint(deviationA[y] >= -absdevA[y],y =Y) %>%
+             add_constraint(sum_expr(absdevA[y],y = Y)<= maxrelax/2.0) %>%
             solve_model(with_ROI(solver = "glpk"))
         
         solution <- get_solution(result, transport[y,z])  
         
-    
+        transportA_val = matrix(solution$value, length(Y),length(Z))
+        transportB_val = transportA_val
     else{
         
         b2 = numeric(length(Z))
@@ -96,8 +97,8 @@ OT=function(inst, percent_closest=0.2, maxrelax=0.0, norme=0, indiv_method, full
             add_constraint(sum_expr(absdevB[z],z=Z)<= maxrelax/2.0) %>%
             solve_model(with_ROI(solver = "glpk"))
         
-        solution <- get_solution(result$value, transportA[y,z]) 
-        transportA = matrix(solution, length(Y),length(Z))
+        solution <- get_solution(result, transportA[y,z]) 
+        transportA_val = matrix(solution$value, length(Y),length(Z))
         
         b1 = numeric(length(Z))
         for (y in Y){
@@ -123,7 +124,7 @@ OT=function(inst, percent_closest=0.2, maxrelax=0.0, norme=0, indiv_method, full
             solve_model(with_ROI(solver = "glpk"))
         
         solution <- get_solution(result, transportB[y,z]) 
-        transportB = matrix(solution$value, length(Y),length(Z))
+        transportB_val = matrix(solution$value, length(Y),length(Z))
         
     }
     
