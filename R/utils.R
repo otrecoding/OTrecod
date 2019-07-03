@@ -11,7 +11,9 @@ ls()
 library(here)
 
 tab1 = read.csv2("C:/Users/vagares/Documents/OTRecod/OTrecod/R/data/tab.csv",sep=";")
-
+tab11 = tab1[1:100,]
+tab12 = tab1[5001:5100,]
+tab=rbind(tab11,tab12)
 jointprobaA = jointprobaB = matrix(c(0.0834,0.0834,0.0832,0.0884,0.0826,0.0790,0.0908,0.0786,0.0806,0.0872,0.0816,0.0812),ncol = 3,byrow = T)
 
 # Packages utiles
@@ -353,7 +355,7 @@ individual_from_group_closest=function(inst, jointprobaA, jointprobaB, percent_c
 # total distance while satisfying the joint probability computed by the model by
 # group
 ###############################################################################
-inst=Instance(tab1,norme=1)
+inst=Instance(tab,norme=1)
 individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_closest=1.0){
 
 
@@ -433,21 +435,15 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
     }
     
     CBf <- function(j,y) {
-      CA[j,y]
+      CB[j,y]
     }
     
     result <-  MIPModel() %>%
       add_variable(assignA[i,z],  i = A, z = Z,type = "continuous",lb=0) %>%
       add_variable(assignB[j,y],  j = B, y = Y,type = "continuous",lb=0) %>%
       set_objective(sum_expr(CAf(i,z)*assignA[i,z], i = A,z=Z) + sum_expr(CBf(j,y)*assignB[j,y],j = B,y=Y), "min") %>%
-      for (y in Y){
-        iy=indY[y]%>%
-      add_constraint(sum_expr(assignA[i,z], i=iy)   == jointprobaA[y,z], z = Z) %>%
-      }
-      for (z in Z){
-        jz=indZ[z]
-      add_constraint(sum_expr(assignB[j,y], j = jz) == jointprobaB[y,z], y = Y) %>%
-      }
+      add_constraint(sum_expr(assignA[i,z], i=indY[y])   == jointprobaA[y,z], z = Z, y = Y) %>%
+      add_constraint(sum_expr(assignB[j,y], j = indZ[z]) == jointprobaB[y,z], z = Z, y = Y) %>%
       add_constraint(sum_expr(assignA[i,z], z = Z) == 1/(length(A)),i = A) %>%
       add_constraint(sum_expr(assignB[j,y], y = Y) == 1/(length(B)),j = B) %>%
       solve_model(with_ROI(solver = "glpk"))
