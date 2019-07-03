@@ -96,7 +96,7 @@ OT=function(inst, percent_closest=0.2, maxrelax=0.0, norme=0, indiv_method, full
             add_constraint(sum_expr(absdevB[z],z=Z)<= maxrelax/2.0) %>%
             solve_model(with_ROI(solver = "glpk"))
         
-        solution <- get_solution(result, transportA[y,z]) 
+        solution <- get_solution(result$value, transportA[y,z]) 
         transportA = matrix(solution, length(Y),length(Z))
         
         b1 = numeric(length(Z))
@@ -123,7 +123,7 @@ OT=function(inst, percent_closest=0.2, maxrelax=0.0, norme=0, indiv_method, full
             solve_model(with_ROI(solver = "glpk"))
         
         solution <- get_solution(result, transportB[y,z]) 
-        transportB = matrix(solution, length(Y),length(Z))
+        transportB = matrix(solution$value, length(Y),length(Z))
         
     }
     
