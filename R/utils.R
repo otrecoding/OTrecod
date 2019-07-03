@@ -442,16 +442,16 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
       add_variable(assignA[i,z],  i = A, z = Z,type = "continuous",lb=0) %>%
       add_variable(assignB[j,y],  j = B, y = Y,type = "continuous",lb=0) %>%
       set_objective(sum_expr(CAf(i,z)*assignA[i,z], i = A,z=Z) + sum_expr(CBf(j,y)*assignB[j,y],j = B,y=Y), "min") %>%
-      add_constraint(sum_expr(assignA[i,z], i=indY[y])   == jointprobaA[y,z], z = Z, y = Y) %>%
-      add_constraint(sum_expr(assignB[j,y], j = indZ[z]) == jointprobaB[y,z], z = Z, y = Y) %>%
+      add_constraint(sum_expr(assignA[i,z], i=indY[[y]])   == jointprobaA[y,z], z = Z, y = Y) %>%
+      add_constraint(sum_expr(assignB[j,y], j = indZ[[z]]) == jointprobaB[y,z], z = Z, y = Y) %>%
       add_constraint(sum_expr(assignA[i,z], z = Z) == 1/(length(A)),i = A) %>%
       add_constraint(sum_expr(assignB[j,y], y = Y) == 1/(length(B)),j = B) %>%
       solve_model(with_ROI(solver = "glpk"))
     
     solution = get_solution(result, assignA[i,z]) 
-    assignA = matrix(solution[1:(length(A)*length(Z))], length(A),length(Z))
+    assignA = matrix(solution$value, length(A),length(Z))
     solution = get_solution(result, assignB[j,y])  
-    assignB=  matrix(solution, length(B),length(Z))
+    assignB=  matrix(solution$value, length(B),length(Y))
 
 
     # Extract the values of the solution
