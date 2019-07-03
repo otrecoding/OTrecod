@@ -407,29 +407,7 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
     # Objective: minimize the distance between individuals of A and B
     #@objective(indiv, Min, sum(CA[i,z]*assignA[i,z] for i in A, z in Z)
     #                        + sum(CB[j,y]*assignB[j,y] for j in B, y in Y))
-    library(nloptr)
-    eval_f = function(assign){
-      assignA = matrix(assign[1:(length(A)*length(Z))], length(A),length(Z))
-      assignB=  matrix(assign[(length(A)*length(Z)+1):(length(A)*length(Z)+length(B)*length(Y))], length(B),length(Y))
-      S1 =0
-      for (i in A){
-        for (z in Z){
-          S1 =S1 + CA[i,z]*assignA[i,z]
-        }
-      }
-      S2 =0
-      for (j in B){
-        for (y in Y){
-          S2 =S2 + CB[j,y]*assignB[j,y]
-        }
-      }
-      return(S1+S2)}
-    assign0 <- rep(0.5,length(A)*length(Z)+length(B)*length(Y))
-    opts <- list("algorithm"="NLOPT_LD_LBFGS",
-                 "xtol_rel"=1.0e-8)
-    res <- nloptr(x0=assign0,
-                   eval_f=eval_f,
-                   eval_grad_f=NULL)
+
     CAf <- function(i,z) {
       CA[i,z]
     }
@@ -444,7 +422,7 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
       set_objective(sum_expr(CAf(i,z)*assignA[i,z], i = A,z=Z) + sum_expr(CBf(j,y)*assignB[j,y],j = B,y=Y), "min") %>%
       add_constraint(sum_expr(assignA[i,z], i=indY[[y]])   == jointprobaA[y,z], z = Z, y = Y) %>%
       add_constraint(sum_expr(assignB[j,y], j = indZ[[z]]) == jointprobaB[y,z], z = Z, y = Y) %>%
-      add_constraint(sum_expr(assignA[i,z], z = Z) == 1/(length(A)),i = A) %>%
+      #add_constraint(sum_expr(assignA[i,z], z = Z) == 1/(length(A)),i = A) %>%
       add_constraint(sum_expr(assignB[j,y], y = Y) == 1/(length(B)),j = B) %>%
       solve_model(with_ROI(solver = "glpk"))
     
