@@ -25,66 +25,82 @@ OT_joint=function(inst, maxrelax=0.0, lambda_reg=0.0, percent_closest=0.2, norme
     # println("#################################################################\n")
 
 
-    tstart = time()
-
-    # Local redefinitions of parameters of  the instance
-    nA      = inst$nA;
-    nB      = inst$nB;
-    A       = 1:nA;
-    B       = 1:nB;
-    Y       = inst$Y;
-    Z       = inst$Z;
-    indY    = inst$indY;
-    indZ    = inst$indZ;
-    Xobserv = inst$Xobserv;
-    Yobserv = inst$Yobserv;
-    Zobserv = inst$Zobserv;
-
-    # Create a model for the optimal transport of individuals
-    # modelA = Model(with_optimizer(Gurobi.Optimizer,LogToConsole=0,Method=2,Crossover=0));#ClpSolver(LogLevel=0)); 
-    # modelB = Model(with_optimizer(Gurobi.Optimizer,LogToConsole=0,Method=2,Crossover=0));#Model(with_optimizer(Clp.Optimizer,LogLevel=0));
-
-
-    ###########################################################################
-    # Compute data for aggregation of the individuals
-    ###########################################################################
-    # println("... aggregating individuals")
-    indXA = inst$indXA; indXB = inst$indXB;
-    nbX = length(indXA);
-
-    # compute the neighbors of the covariates for regularization
-    Xvalues = unique(Xobserv)
-    # norme = 1
+  tstart = time()
+  
+  # Local redefinitions of parameters of  the instance
+  nA      = inst$nA;
+  nB      = inst$nB;
+  A       = 1:nA;
+  B       = 1:nB;
+  Y       = inst$Y;
+  Z       = inst$Z;
+  indY    = inst$indY;
+  indZ    = inst$indZ;
+  Xobserv = inst$Xobserv;
+  Yobserv = inst$Yobserv;
+  Zobserv = inst$Zobserv;
+  
+  # Create a model for the optimal transport of individuals
+  # modelA = Model(with_optimizer(Gurobi.Optimizer,LogToConsole=0,Method=2,Crossover=0));#ClpSolver(LogLevel=0)); 
+  # modelB = Model(with_optimizer(Gurobi.Optimizer,LogToConsole=0,Method=2,Crossover=0));#Model(with_optimizer(Clp.Optimizer,LogLevel=0));
+  
+  
+  ###########################################################################
+  # Compute data for aggregation of the individuals
+  ###########################################################################
+  # println("... aggregating individuals")
+  indXA = inst$indXA; indXB = inst$indXB;
+  nbX = length(indXA);
+  
+  # compute the neighbors of the covariates for regularization
+  Xvalues = unique(Xobserv)
+  # norme = 1
+  
+  if (norme == 0){
+    dist_X = cdist(Xvalues,Xvalues,"hamming")
     
-    if (norme == 0){dist_X = cdist(Xvalues,Xvalues,"hamming")}else if (norme == 1){dist_X = cdist(Xvalues,Xvalues,"manhattan")}
-    voisins_X = dist_X <= 1
-
-    # println("... computing costs")
-    C = average_distance_to_closest(inst, percent_closest)[1];
-
-    ###########################################################################
-    # Compute the estimators that appear in the model
-    ###########################################################################
-
-    estim_XA = estim_XB = estim_XA_YA =  estim_XB_ZB = list()
+  } else if (norme == 1){
+    dist_X = cdist(Xvalues,Xvalues,"manhattan")
+  }
+  voisins_X = dist_X <= 1
+  
+  # println("... computing costs")
+  C = average_distance_to_closest(inst, percent_closest)[1];
+  
+  ###########################################################################
+  # Compute the estimators that appear in the model
+  ###########################################################################
+  
+  estim_XA = estim_XB = estim_XA_YA =  estim_XB_ZB = list()
+  
+  for (x in 1:nbX){
     
-    for (x in 1:nbX){
+    estim_XA[[x]] = length(indXA[[x]])/nA
+    estim_XB[[x]] = length(indXB[[x]])/nB
     
-      estim_XA[[x]] = length(indXA[[x]])/nA
-      estim_XB[[x]] = length(indXB[[x]])/nB
-      
+  }
+  
+  for (x in 1:nbX){
+    
+    estim_XA_YA[[x]] = estim_XB_ZB[[x]] = numeric(0)
+    
+    
+    for (y in Y){  
+      estim_XA_YA[[x]][y] = length(indXA[[x]][Yobserv[indXA[[x]]] == y])/nA 
     }
     
-    for (x in 1:nbX){
-       for (y in Y){  
-        estim_XA_YA[[x]][y] = length(indXA[[x]][Yobserv[indXA[[x]]] == y])/nA 
-      }
-      
-      for (z in Z){
-        estim_XB_ZB[[x]][y] = length(indXB[[x]][Zobserv[indXB[[x]] + nA] == z])/nB
-      }
-      }
-      
+    for (z in Z){
+      estim_XB_ZB[[x]][z] = length(indXB[[x]][Zobserv[indXB[[x]] + nA] == z])/nB
+    }
+    
+  }
+  
+  
+  
+  Cf <- function(y,z) {
+    C[y,z]
+  }
+  
 
     ###########################################################################
     # Basic part of the model
@@ -99,20 +115,20 @@ OT_joint=function(inst, maxrelax=0.0, lambda_reg=0.0, percent_closest=0.2, norme
       add_variable(abserrorA_XY[x,y],x=1:nbX, y = Y, type = "continuous") %>%
       add_variable(errorA_XZ[x,z],x=1:nbX, z = Z, type = "continuous") %>%
       add_variable(abserrorA_XZ[x,z],x=1:nbX, z = Z, type = "continuous") %>%
-      add_variable(reg_absA[x1, x2,y,z],x1=1:nbX, x2= voisins_X[x1,],y=Y,z= Z, type = "continuous") %>%
-      set_objective(sum_expr(C[y,z] * gammaA[x,y,z],y = Y,z=Z, x = 1:nbX) + lambda_reg * sum_expr(1/length(voisins_X[x1,]) *reg_absA[x1,x2,y,z]) , "min") %>%
-      add_constraint(sum_expr(gammaA[x,y,z], z = Z) == estim_XA_YA[x,y] + errorA_XY[x,y], x = 1:nbX,y =Y) %>%
-      add_constraint(estim_XB[x]*sum_expr(gammaA[x,y,z],y = Y) == estim_XB_ZB[x,z] * estim_XA[x] + estim_XB[x]*errorA_XZ[x,z], x = 1:nbX, z = Z) %>%
-      add_constraint(errorA_XY[x,y] <= abserrorA_XY[x,y], x = 1:nbX,y =Y) %>%
-      add_constraint(-errorA_XY[x,y] <= abserrorA_XY[x,y], x = 1:nbX,y =Y) %>%
-      add_constraint(sum_expr(abserrorA_XY[x,y], x = 1:nbX,y = Y)<= maxrelax/2.0) %>%
-      add_constraint(sum_expr(errorA_XY[x,y], x = 1:nbX,y = Y)== 0.0) %>%
-      
-      add_constraint(errorA_XZ[x,z] <= abserrorA_XZ[x,z], x = 1:nbX,z =Z) %>%
-      add_constraint -errorA_XZ[x,z] <= abserrorA_XZ[x,z], x = 1:nbX,z =Z) %>%
-  add_constraint(sum_expr(abserrorA_XZ[x,z], x = 1:nbX,z = Z)<= maxrelax/2.0) %>%
-  add_constraint(sum_expr(errorA_XZ[x,z], x = 1:nbX,z = Z)<= maxrelax/2.0) %>%
-  solve_model(with_ROI(solver = "glpk"))
+      #add_variable(reg_absA[x1, x2,y,z],x1=1:nbX, x2= voisins_X[x1,],y=Y,z= Z, type = "continuous") %>%
+      #set_objective(sum_expr(C(y,z) * gammaA[x,y,z],y = Y,z=Z, x = 1:nbX) + lambda_reg * sum_expr(1/length(voisins_X[x1,]) *reg_absA[x1,x2,y,z]) , "min") %>%
+    set_objective(sum_expr(C(y,z) * gammaA[x,y,z],y = Y,z=Z, x = 1:nbX)) , "min") %>%
+    #add_constraint(sum_expr(gammaA[x,y,z], z = Z) - errorA_XY[x,y] == estim_XA_YA[[x]][y] , x = 1:nbX,y =Y) %>%
+      #add_constraint(estim_XB[[x]]*sum_expr(gammaA[x,y,z],y = Y)  - estim_XB[[x]]*errorA_XZ[[x]][z]== estim_XB_ZB[[x]][z] * estim_XA[[x]] , x = 1:nbX, z = Z) %>%
+      #add_constraint(errorA_XY[x,y] <= abserrorA_XY[x,y], x = 1:nbX,y =Y) %>%
+      #add_constraint(-errorA_XY[x,y] <= abserrorA_XY[x,y], x = 1:nbX,y =Y) %>%
+      #add_constraint(sum_expr(abserrorA_XY[x,y], x = 1:nbX,y = Y)<= maxrelax/2.0) %>%
+      #add_constraint(sum_expr(errorA_XY[x,y], x = 1:nbX,y = Y)== 0.0) %>%
+      #add_constraint(errorA_XZ[x,z] <= abserrorA_XZ[x,z], x = 1:nbX,z =Z) %>%
+     # add_constraint (-errorA_XZ[x,z] <= abserrorA_XZ[x,z], x = 1:nbX,z =Z) %>%
+     # add_constraint(sum_expr(abserrorA_XZ[x,z], x = 1:nbX,z = Z)<= maxrelax/2.0) %>%
+#add_constraint(sum_expr(errorA_XZ[x,z], x = 1:nbX,z = Z)<= maxrelax/2.0) %>%
+      solve_model(with_ROI(solver = "glpk"))
 
 solution <- get_solution(result, gammaA[x,y,z]) 
 
