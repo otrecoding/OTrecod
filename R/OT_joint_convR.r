@@ -15,7 +15,7 @@
 # solver_disp: if false, do not display the outputs of the solver
 #############################################################################################################################################################
 
-OT_joint=function(inst, maxrelax=0.0, lambda_reg:=0.0, percent_closest=0.2, norme=0, aggregate_tol=0.5, full_disp=false, solver_disp=false){
+OT_joint=function(inst, maxrelax=0.0, lambda_reg=0.0, percent_closest=0.2, norme=0, aggregate_tol=0.5, full_disp=false, solver_disp=false){
 
     # println("#################################################################")
     # println("AGGREGATE INDIVIDUALS WRT COVARIATES")
@@ -56,11 +56,7 @@ OT_joint=function(inst, maxrelax=0.0, lambda_reg:=0.0, percent_closest=0.2, norm
     Xvalues = unique(Xobserv)
     # norme = 1
     
-    if (norme == 0){
-        dist_X = cdist(Xvalues),Xvalues,"hamming")}
-    else if (norme == 1){
-        dist_X = cdist(Xvalues,Xvalues,"manhattan")
-    }
+    if (norme == 0){dist_X = cdist(Xvalues,Xvalues,"hamming")}else if (norme == 1){dist_X = cdist(Xvalues,Xvalues,"manhattan")}
     voisins_X = dist_X <= 1
 
     # println("... computing costs")
@@ -80,16 +76,14 @@ OT_joint=function(inst, maxrelax=0.0, lambda_reg:=0.0, percent_closest=0.2, norm
     }
     
     for (x in 1:nbX){
-      
-      for (y in Y){  
+       for (y in Y){  
         estim_XA_YA[[x]][y] = length(indXA[[x]][Yobserv[indXA[[x]]] == y])/nA 
       }
       
       for (z in Z){
         estim_XB_ZB[[x]][y] = length(indXB[[x]][Zobserv[indXB[[x]] + nA] == z])/nB
       }
-      
-    }
+      }
       
 
     ###########################################################################
