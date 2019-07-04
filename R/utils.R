@@ -10,6 +10,7 @@ library(ompr.roi)
 ls()
 library(here)
 
+
 tab1 = read.csv2("C:/Users/vagares/Documents/OTRecod/OTrecod/R/data/tab.csv",sep=";")
 tab11 = tab1[1:100,]
 tab12 = tab1[5001:5100,]
