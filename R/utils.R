@@ -423,7 +423,7 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
       set_objective(sum_expr(CAf(i,z)*assignA[i,z], i = A,z=Z) + sum_expr(CBf(j,y)*assignB[j,y],j = B,y=Y), "min") %>%
       add_constraint(sum_expr(assignA[i,z], i=indY[[y]])   == jointprobaA[y,z], z = Z, y = Y) %>%
       add_constraint(sum_expr(assignB[j,y], j = indZ[[z]]) == jointprobaB[y,z], z = Z, y = Y) %>%
-      #add_constraint(sum_expr(assignA[i,z], z = Z) == 1/(length(A)),i = A) %>%
+      add_constraint(sum_expr(assignA[i,z], z = Z) == 1/(length(A)),i = A) %>%
       add_constraint(sum_expr(assignB[j,y], y = Y) == 1/(length(B)),j = B) %>%
       solve_model(with_ROI(solver = "glpk"))
     
