@@ -50,11 +50,11 @@ OT=function(inst, percent_closest=0.2, maxrelax=0.0, norme=0, indiv_method, full
         
         
         result <-  MIPModel() %>%
-            add_variable(transport[y,z],y = Y, z= Z,type = "continuous") %>%
+            add_variable(transport[y,z],y = Y, z= Z,type = "continuous,lb=0") %>%
             add_variable(deviationA[y], y = Y, type = "continuous") %>%
-            add_variable(absdevA[y], y = Y, type = "continuous") %>%
+            add_variable(absdevA[y], y = Y, type = "continuous",lb=0) %>%
             add_variable(deviationB[z], z = Z, type = "continuous") %>%
-            add_variable(absdevB[z], z = Z, type = "continuous") %>%
+            add_variable(absdevB[z], z = Z, type = "continuous",lb=0) %>%
             set_objective(sum_expr(C[y,z]*transport[y,z],y = Y,z=Z) , "min") %>%
              add_constraint(sum_expr(transport[y,z], z = Z) - deviationA[y]== freqY[y] , y =Y) %>%
              add_constraint(sum_expr(transport[y,z],y = Y) -deviationB[z] == freqZ[z] , z = Z) %>%
@@ -85,9 +85,9 @@ OT=function(inst, percent_closest=0.2, maxrelax=0.0, norme=0, indiv_method, full
             b2[z]= sum(stc_sum2)}
         
         result <-  MIPModel() %>%
-            add_variable(transportA[y,z],y = Y, z= Z,type = "continuous") %>%
+            add_variable(transportA[y,z],y = Y, z= Z,type = "continuous",lb=0) %>%
             add_variable(deviationB[z], z = Z, type = "continuous") %>%
-            add_variable(absdevB[z], z = Z, type = "continuous") %>%
+            add_variable(absdevB[z], z = Z, type = "continuous",lb=0) %>%
             set_objective(sum_expr(C[y,z]*transportA[y,z],y = Y,z=Z) , "min") %>%
             add_constraint(sum_expr(transportA[y,z], z = Z) == freqY[y], y =Y) %>%
             add_constraint(sum_expr(transportA[y,z],y = Y) - deviationB[z] == b2[z] , z = Z) %>%
@@ -111,9 +111,9 @@ OT=function(inst, percent_closest=0.2, maxrelax=0.0, norme=0, indiv_method, full
             b1[y]= sum(stc_sum2)}
         
         result <-  MIPModel() %>%
-            add_variable(transportB[y,z],y = Y, z= Z,type = "continuous") %>%
+            add_variable(transportB[y,z],y = Y, z= Z,type = "continuous",lb=0) %>%
             add_variable(deviationA[y], y = Y, type = "continuous") %>%
-            add_variable(absdevA[y], y = Y, type = "continuous") %>%
+            add_variable(absdevA[y], y = Y, type = "continuous",lb=0) %>%
             set_objective(sum_expr(C[y,z]*transportB[y,z],y = Y,z=Z) , "min") %>%
             add_constraint(sum_expr(transportB[y,z], z = Z) - deviationA[y] == b1[y], y =Y) %>%
             add_constraint(sum_expr(transportB[y,z],y = Y) == freqZ[z], z = Z) %>%
