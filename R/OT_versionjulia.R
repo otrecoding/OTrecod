@@ -100,12 +100,12 @@ OT=function(inst, percent_closest=0.2, maxrelax=0.0, norme=0, indiv_method, full
         solution <- get_solution(result, transportA[y,z]) 
         transportA_val = matrix(solution$value, length(Y),length(Z))
         
-        b1 = numeric(length(Z))
+        b1 = numeric(length(Y))
         for (y in Y){
             stc_sum2 = vector(length = nbX)
             for (i in 1:nbX){
                 
-                stc_sum2[i] = ifelse(length(indXA[[i]])==0,1/length(Y),length(indXA[[i]][inst$Zobserv[indXA[[i]]] == z])/ length(indXA[[i]]))*length(indXB[[i]])/nB
+                stc_sum2[i] = ifelse(length(indXA[[i]])==0,1/length(Y),length(indXA[[i]][inst$Yobserv[indXA[[i]]] == y])/ length(indXA[[i]]))*length(indXB[[i]])/nB
                 
             } 
             b1[y]= sum(stc_sum2)}
@@ -133,14 +133,14 @@ OT=function(inst, percent_closest=0.2, maxrelax=0.0, norme=0, indiv_method, full
     
     # Get the individual transport from the group transport
     if (indiv_method == "sequential"){
-        
-        YApred = individual_from_group_closest(inst, transportA_val, transportB_val, percent_closest)$YAtrans
-        YBpred = individual_from_group_closest(inst, transportA_val, transportB_val, percent_closest)$YBtrans
+        ifgc = individual_from_group_closest(inst, transportA_val, transportB_val, percent_closest)
+        YApred = ifgc$YAtrans
+        YBpred = ifgc$YBtrans
         
     } else if (indiv_method == "optimal"){
-        
-        YApred = individual_from_group_optimal(inst, transportA_val, transportB_val, percent_closest)$YAtrans
-        YBpred = individual_from_group_optimal(inst, transportA_val, transportB_val, percent_closest)$YBtrans
+        ifgo = individual_from_group_optimal(inst, transportA_val, transportB_val, percent_closest)
+        YApred = ifgo$YAtrans
+        YBpred = ifgo$YBtrans
     }
     
     # Compute the estimated probability distributions from predictions
