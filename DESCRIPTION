@@ -1,14 +1,13 @@
 Package: OTrecod
 Type: Package
-Title: Optimal transport to recode data
+Title: Optimal Transport to recode data
 Version: 0.1.0
 Authors@R: as.person(c(
     "Gregory Guernec <gregory.guernec@inserm.fr> [aut, cre]", 
     "Valerie Gares <valerie.gares@insa-rennes.fr> [aut]",
     "Pierre Navaro <navaro@math.cnrs.fr> [ctb]"
   ))
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: OTrecod use optimal transport theory to merge databases.
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -40,5 +39,3 @@ RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 URL: https://github.com/otrecoding/OTrecod
 BugReports: https://github.com/otrecoding/OTrecod/issues
-LinkingTo: 
-    Rcpp
