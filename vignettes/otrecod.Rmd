@@ -24,128 +24,94 @@ An application of the functions of the package on a real dataset      (07/2019)
 library(OTrecod)
 ```
 
-## EXAMPLE: From the "samp.A" database of the StatMatch package. 
+## Example : The "samp.A" database of the StatMatch package. 
 
-## Description (see ?samp.A for more details)
+### Description 
+
+(see `?samp.A` for more details)
 
 This data set provides a limited number of variables observed at persons levels among those usually collected in the European Union Statistics on Income and Living Conditions Survey (EU–SILC). 
 
 It has been artificially generated as follows to show an application of the OTrecod package.
 
--2 databases: data3 and data4
-- c.neti (only in data3) and c.neti.bis (only in data4) coded voluntarily in 2 distinct encodings but represent the same information
-- c.neti is a factor variable corresponding to the person's net income initially categorized in 7 classes of thousand of Euros
-- data3 and data4 are composed of Subsets of specific and common covariates of different types, with incomplete information
+- 2 databases: `data` and `data`
+- `c.net` (only in `data3`) and `c.neti.bis` (only in `data4`) coded voluntarily in 2 distinct encodings but represent the same information
+- `c.neti` is a factor variable corresponding to the person's net income initially categorized in 7 classes of thousand of Euros
+- `data3` and `data4` are composed of Subsets of specific and common covariates of different types, with incomplete information
 
 
 
-<!-- # I. Preparing the dataset -->
-<!-- #-------------------------- -->
+# I. Preparing the dataset 
 
-<!-- library(StatMatch) -->
+```{r}
+library(StatMatch);
 
-<!-- data(samp.A) -->
-<!-- samp.A = samp.A[,c(1:11,13,12)] -->
-<!-- dim(samp.A); names(samp.A) -->
-<!-- # [1] 3009   14 -->
-<!-- # [1] "HH.P.id"    "area5"      "urb"        "hsize"      "hsize5"     "age"        "c.age"      "sex"        "marital"    -->
-<!-- # [10] "edu7"       "n.income"   "ww"         "c.neti"     "c.neti.bis" -->
+data(samp.A)
+samp.A = samp.A[,c(1:11,13,12)]
+dim(samp.A); names(samp.A)
+```
 
+```{r}
+c.neti            = as.numeric(samp.A$c.neti)
+samp.A$c.neti.bis = as.factor(ifelse(c.neti %in% c(1,2),1, 
+                              ifelse(c.neti %in% c(3,4),2, 
+                              ifelse(c.neti %in% c(5,6),3,4)))) 
+data1 = samp.A[1:600,c(2:9,13)]
+data2 = samp.A[601:1000,c(5:11,12,14)] #600 rows for data1 and 400 rows for data2
+```
 
-<!-- c.neti            = as.numeric(samp.A$c.neti) -->
+Insert the common covariate "marital" in 2 different types int the 2 database.
 
-<!-- samp.A$c.neti.bis = as.factor(ifelse(c.neti %in% c(1,2),1, -->
-<!--                                     ifelse(c.neti %in% c(3,4),2, -->
-<!--                                            ifelse(c.neti %in% c(5,6),3,4)))) -->
-<!-- data1 = samp.A[1:600,c(2:9,13)] -->
-<!-- data2 = samp.A[601:1000,c(5:11,12,14)] -->
-<!-- #--> 600 rows for data1 and 400 rows for data2 -->
+```{r}
+data1$marital = as.numeric(data1$marital)
+```
 
+```{r}
+# Insert eventually different levels in a common factor variable called "c.age"
+# data2$c.age = as.character(data2$c.age)
+# data2$c.age[data2$c.age %in% c("[16,34]","(34,44]")] = "[16,44]"
+# data2$c.age = as.factor(data2$c.age)
 
-<!-- # Insert the common covariate "marital" in 2 different types int the 2 database -->
-<!-- data1$marital = as.numeric(data1$marital) -->
+# Add random NA in covariates (10% by covariates):
+add_NA = function(DB,tx){
+  DB_NA = DB
+  for (j in 1:ncol(DB)){
+     NA_indic = sample(1:nrow(DB),round(nrow(DB)*tx/100),replace=FALSE)
+     DB_NA[NA_indic,j] = rep(NA,length(NA_indic))
+  }
+return(DB_NA)
+}
 
-<!-- # Insert eventually different levels in a common factor variable called "c.age" -->
-<!-- # data2$c.age = as.character(data2$c.age) -->
-<!-- # data2$c.age[data2$c.age %in% c("[16,34]","(34,44]")] = "[16,44]" -->
-<!-- # data2$c.age = as.factor(data2$c.age) -->
+set.seed(4036); data3 = add_NA(data1,10); data4 = add_NA(data2,10)
 
-<!-- # Add random NA in covariates (10% by covariates): -->
-<!-- add_NA = function(DB,tx){ -->
-<!--   DB_NA = DB -->
-<!--   for (j in 1:ncol(DB)){ -->
-<!--      NA_indic = sample(1:nrow(DB),round(nrow(DB)*tx/100),replace=FALSE) -->
-<!--      DB_NA[NA_indic,j] = rep(NA,length(NA_indic)) -->
-<!--   } -->
-<!-- return(DB_NA) -->
-<!-- } -->
+table(data3$c.neti) #----- OUTCOME: c.neti in 7 modalities in data3
+```
 
-<!-- set.seed(4036); data3 = add_NA(data1,10); data4 = add_NA(data2,10) -->
+```{r}
+table(data4$c.neti.bis) #----- OUTCOME: c.neti.bis in 4 modalities in data4
+```
 
-<!-- #----- OUTCOME: c.neti in 7 modalities in data3 -->
-<!-- table(data3$c.neti) -->
-<!-- # (-Inf,0]    (0,10]   (10,15]   (15,20]   (20,25]   (25,35] (35, Inf]  -->
-<!-- #       93       106       101       112        58        45        25  -->
+```{r}
+summary(data3)
+```
 
-<!-- #----- OUTCOME: c.neti.bis in 4 modalities in data4 -->
-<!-- table(data4$c.neti.bis) -->
-<!-- #   1   2   3   4  -->
-<!-- # 149 119  75  17  -->
+```{r}
+summary(data4)
+```
 
+# II. Detect possible problems between covariates in each databases
 
-<!-- summary(data3) -->
-<!-- # area5       urb          hsize        hsize5         age             c.age       sex         marital           c.neti    -->
-<!-- # NE  :124   1   :180   Min.   :1.000   1   : 86   Min.   :17.00   [16,34] :107   1   :274   Min.   :1.000   (15,20] :112   -->
-<!-- # NO  :114   2   :230   1st Qu.:2.000   2   :234   1st Qu.:37.75   (34,44] : 92   2   :266   1st Qu.:1.000   (0,10]  :106   -->
-<!-- # C   :127   3   :130   Median :2.000   3   :127   Median :52.00   (44,54] :108   NA's: 60   Median :2.000   (10,15] :101   -->
-<!-- # S   :117   NA's: 60   Mean   :2.522   4   : 73   Mean   :51.96   (54,64] : 84              Mean   :1.874   (-Inf,0]: 93   -->
-<!-- # I   : 58              3rd Qu.:3.000   >=5 : 20   3rd Qu.:67.00   (64,104]:149              3rd Qu.:2.000   (20,25] : 58   -->
-<!-- # NA's: 60              Max.   :9.000   NA's: 60   Max.   :89.00   NA's    : 60              Max.   :3.000   (Other) : 70   -->
-<!-- #                       NA's   :60                 NA's   :60                                NA's   :60      NA's    : 60    -->
+## Ability to detect risks of colinearity between variables
 
+```{r}
+library(car)
+library(nnet)
+library(ordinal)
+sel_cov3 = select_var(data3,Y = "c.neti",type_Y = "ORD",threshX = 0.90,threshY = 0.90,thresh_vif = 10)
+sel_cov3
+```
 
-<!-- summary(data4) -->
-<!-- #   hsize5         age             c.age      sex      marital         edu7        n.income           ww         c.neti.bis -->
-<!-- # 1   : 45   Min.   :17.00   [16,34] :87   1   :156   1   :109   2      :123   Min.   :-9000   Min.   : 147.1   1   :149   -->
-<!-- # 2   :159   1st Qu.:34.75   (34,44] :67   2   :204   2   :211   3      :122   1st Qu.: 2413   1st Qu.: 700.2   2   :119   -->
-<!-- # 3   : 85   Median :46.00   (44,54] :70   NA's: 40   3   : 40   1      : 60   Median :11575   Median :1379.2   3   : 75   -->
-<!-- # 4   : 53   Mean   :48.68   (54,64] :48              NA's: 40   5      : 37   Mean   :13258   Mean   :1685.3   4   : 17   -->
-<!-- # >=5 : 18   3rd Qu.:63.00   (64,104]:88                         4      :  9   3rd Qu.:20168   3rd Qu.:2360.4   NA's: 40   -->
-<!-- # NA's: 40   Max.   :96.00   NA's    :40                         (Other):  9   Max.   :80000   Max.   :6789.7              -->
-<!-- #            NA's   :40                                          NA's   : 40   NA's   :40      NA's   :40                -->
-
-
-
-<!-- # II. Detect possible problems between covariates in each databases -->
-<!-- #------------------------------------------------------------------- -->
-
-<!-- # Ability to detect risks of colinearity between variables -->
-<!-- library(car) -->
-<!-- library(nnet) -->
-<!-- library(ordinal) -->
-<!-- sel_cov3 = select_var(data3,Y = "c.neti",type_Y = "ORD",threshX = 0.90,threshY = 0.90,thresh_vif = 10); sel_cov3 -->
-<!-- # $Y -->
-<!-- #[1] "c.neti" -->
-<!-- # -->
-<!-- # $cor_Y -->
-<!-- # named numeric(0) -->
-<!-- # -->
-<!-- # $VIF_PB -->
-<!-- #   hsize5    hsize      age    c.age  -->
-<!-- # 45.14604 44.76794 15.99125 15.34881  -->
-<!-- # -->
-<!-- # $KEEP_COV -->
-<!-- # [1] "sex"   "c.age" "hsize" -->
-<!-- #  -->
-<!-- # $DEL_COV -->
-<!-- # [1] "hsize5" "age"    -->
-<!-- # -->
-<!-- # $PVAL_Y -->
-<!-- #    NAME         pval       CORREC -->
-<!-- # 7   sex 1.067533e-17 8.540261e-17 -->
-<!-- # 6 c.age 8.584784e-09 6.867827e-08 -->
-<!-- # 3 hsize 5.452895e-05 4.362316e-04 -->
-
+```{r}
 <!-- sel_cov4 = select_var(data4,Y = "c.neti.bis",type_Y = "ORD",threshX = 0.90,threshY = 0.90,thresh_vif = 10); sel_cov4 -->
 <!-- # select_var function in progress. Please wait ...  -->
 <!-- # $Y -->
@@ -176,7 +142,7 @@ It has been artificially generated as follows to show an application of the OTre
 <!-- #    The function suggests to keep first the variables "c.age" and "sex" for the data fusion. -->
 <!-- #--> In data4, the variable n.income seems too close to the outcome of interest. The question about its maintenance for the rest of the study should be worth asked. -->
 <!-- #--> We notice that the covariates "c.age" and "sex" explain the outcomes similarly in the two databases. -->
-
+```
 
 <!-- # Based on the previous results, we decide  to remove the covariate "age" from data3: -->
 <!-- data3 = data3[,setdiff(colnames(data3),"age")]; names(data3) -->
