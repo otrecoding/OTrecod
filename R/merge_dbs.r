@@ -35,6 +35,7 @@
 #'
 #' @examples
 #' # Require samp.A database from the StatMatch package. c.neti and c.neti.bis coded voluntarily in 2 distinct encodings.
+#' library(StatMatch)
 #' data(samp.A)
 #' samp.A = samp.A[,c(1:11,13,12)]
 #' c.neti            = as.numeric(samp.A$c.neti)
@@ -233,11 +234,11 @@ merge_dbs = function(DB1,DB2,NAME_Y1,NAME_Y2, order_levels_Y1 = levels(DB1[,NAME
 
   # Removed covariate(s) because of their different types from DB1 to DB2
 
-  list1   = as.list(sapply(DB1_4FUS,class))
+  list1   = as.list(lapply(DB1_4FUS,class))
   list1   = lapply(list1,paste,collapse=" ")
   l1      = unlist(list1)
 
-  list2   = as.list(sapply(DB2_4FUS,class))
+  list2   = as.list(lapply(DB2_4FUS,class))
   list2   = lapply(list2,paste,collapse=" ")
   l2      = unlist(list2)
 
@@ -328,91 +329,6 @@ merge_dbs = function(DB1,DB2,NAME_Y1,NAME_Y2, order_levels_Y1 = levels(DB1[,NAME
 
 }
 
-
-
-
-
-
-### examples
-###----------
-
-
-data(samp.A)
-samp.A = samp.A[,c(1:11,13,12)]
-
-c.neti            = as.numeric(samp.A$c.neti)
-samp.A$c.neti.bis = as.factor(ifelse(c.neti %in% c(1,2),1,
-                                     ifelse(c.neti %in% c(3,4),2,
-                                            ifelse(c.neti %in% c(5,6),3,4))))
-
-
-data1 = samp.A[1:1000,c(2:9,13)]
-data2 =samp.A[1001:nrow(samp.A),c(5:11,12,14)]
-
-
-# Insert the variable marital in 2 different types
-
-data1$marital = as.numeric(data1$marital)
-
-# Insert different levels in a factor variable
-
-data2$c.age = as.character(data2$c.age)
-data2$c.age[data2$c.age %in% c("[16,34]","(34,44]")] = "[16,44]"
-data2$c.age = as.factor(data2$c.age)
-
-
-# Add NA in covariates
-
-add_NA = function(DB,tx){
-  DB_NA = DB
-  for (j in 1:ncol(DB)){
-    NA_indic = sample(1:nrow(DB),round(nrow(DB)*tx/100),replace=F)
-    DB_NA[NA_indic,j] = rep(NA,length(NA_indic))
-  }
-  return(DB_NA)
-}
-
-set.seed(4036); data3 = add_NA(data1,10); data4 = add_NA(data2,10)
-
-
-
-soluc1  = merge_dbs(data3,data4,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "MICE",R_MICE = 3, seed_func = 4036)
-soluc1b = merge_dbs(data3,data4,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "MICE",R_MICE = 3)
-
-soluc2 = merge_dbs(data3,data4,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "NO")
-soluc3 = merge_dbs(data3,data4,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "CC")
-
-
-
-soluc4 = merge_dbs(data3,data4,"c.neti","c.neti.bis", order_levels_Y1 = NULL, order_levels_Y2 = NULL,
-                   ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "MDA", NCP_MDA = 3)
-
-
-soluc5 = merge_dbs(data1,data2,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "NO")
-soluc6 = merge_dbs(data1,data2,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "MICE")
-
-soluc7 = merge_dbs(data3,data4,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",order_levels_Y2 = c("4","1","3","2"),ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "NO")
-
-
-
-
-
-DB1 = data3
-DB2 = data4
-NAME_Y1= "c.neti"
-NAME_Y2= "c.neti.bis"
-order_levels_Y1 = NULL
-order_levels_Y2 = NULL
-ordinal_DB1 = c(2,4,6,9)
-ordinal_DB2 = c(1,3,9)
-impute = "MDA"
-NCP_MDA = 3
-seed_func = 3027
-
-
-impute = "MICE"
-R_MICE = 2
-seed_func = 3027
 
 
 

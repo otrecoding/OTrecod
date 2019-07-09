@@ -1,229 +1,225 @@
 
-# OTjoint avec la partie optimisation ? ajouter tout le reste de la fonction R ok
+#' imput_cov()
+#'
+#' A function which performs imputations on variables using MICE (Van Buuren's Multiple Imputation) or missMDA (Simple Imputation wiht Multivariate data analysis)
+#' (missMDA and mice packages required)
+#'
+#' @param dat1 A data.frame. containing the variables to be imputed and the one participating in the imputations
+#' @param indcol A vector of integers. The corresponding column numbers corresponding to the variables to be imputed and those which participate in the imputations.
+#' @param R_mice An integer. The number of imputed database to generate with MICE method (5 by default).
+#' @param meth A vector of characters which specify the imputation method to be used for each column in dat1.
+#'             "pmm" for a continuous covariate, "logreg" for a binary covariate, "polr" for an ordinal covariate, "polyreg" for an ordinal covariates.
+#' @param missMDA A boolean. If TRUE, missing values are imputed using the factoral analysis for mixed data (FAMD) from the missMDA package (Simple imputation)
+#' @param NB_COMP An integer corresponding to the number of components used to predict the missing entries (3 by default)
+#' @param seed_choice An integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default)
+#'
+#' @return A list of 3 objects:
+#'         RAW A data.frame corresponding to the raw database
+#'         IMPUTE A character corresponding to the type of imputation selected
+#'         DATA_IMPUTE A dta.frame The imputed (consensus if multiple imputations) database
+#'         MICE_IMPS
+#'
+#' @export
+#'
+#' @examples
+#' # Require samp.A database from the StatMatch package. c.neti and c.neti.bis coded voluntarily in 2 distinct encodings.
+#' library(StatMatch)
+#' library(mice)
+#' library(missMDA)
+#' data(samp.A)
+#' samp.A = samp.A[,c(1:11,13,12)]
+#' c.neti            = as.numeric(samp.A$c.neti)
+#'
+#' samp.A$c.neti.bis = as.factor(ifelse(c.neti %in% c(1,2),1,
+#'                                     ifelse(c.neti %in% c(3,4),2,
+#'                                            ifelse(c.neti %in% c(5,6),3,4))))
+#' data1 = samp.A[1:1000,c(2:9,13)]
+#' data2 =samp.A[1001:nrow(samp.A),c(5:11,12,14)]
+#'
+#' # Insert the variable marital in 2 different types:
+#' data1$marital = as.numeric(data1$marital)
+#'
+#' # Insert different levels in a factor variable:
+#' data2$c.age = as.character(data2$c.age)
+#' data2$c.age[data2$c.age %in% c("[16,34]","(34,44]")] = "[16,44]"
+#' data2$c.age = as.factor(data2$c.age)
+#'
+#' # Add NA in covariates:
+#' add_NA = function(DB,tx){
+#' DB_NA = DB
+#' for (j in 1:ncol(DB)){
+#'    NA_indic = sample(1:nrow(DB),round(nrow(DB)*tx/100),replace=FALSE)
+#'    DB_NA[NA_indic,j] = rep(NA,length(NA_indic))
+#'  }
+#'  return(DB_NA)
+#'}
+#'
+#' set.seed(4036); data3 = add_NA(data1,10); data4 = add_NA(data2,10)
+#' soluc2  = merge_dbs(data3,data4,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "NO")
+#'
+#' imput_mice = imput_cov(soluc2$DB_READY,indcol = 4:6,R_mice = 3,meth = c("pmm","polr","logreg"))
+#' summary(imput_mice)
+#' imput_famd = imput_cov(soluc2$DB_READY,indcol = 4:6,meth = c("pmm","polr","logreg"),missMDA = TRUE)
+#' summary(imput_famd)
+#'
+imput_cov = function(dat1,indcol = 1:ncol(dat1),R_mice = 5,meth = rep("pmm",ncol(dat1)), missMDA = FALSE,NB_COMP = 3,
+                     seed_choice = sample(1:1000000,1)){
 
-# require(rdist)
+
+  if (is.data.frame(dat1) == FALSE){
+
+    stop ("Your objet must be a data.frame")
+
+  } else {}
 
 
-#############################################################################################################################################################
-# Model where we directly compute the distribution of the outcomes for each
-# individual or for sets of indviduals that similar values of covariates
-# aggregate_tol: quantify how much individuals' covariates must be close for aggregation
-# reg_norm: norm1, norm2 or entropy dep}ing on the type of regularization
-# percent_closest: percent of closest neighbors taken into consideration in regularization
-# lambda_reg: coefficient measuing the importance of the regularization term
-# full_disp: if true, write the transported value of each individual; otherwise, juste write the number of missed transports
-# solver_disp: if false, do not display the outputs of the solver
-#############################################################################################################################################################
+  if (length(indcol)>ncol(dat1)){
 
-OT_joint=function(inst, maxrelax=0.0, lambda_reg:=0.0, percent_closest=0.2, norme=0, aggregate_tol=0.5, full_disp=false, solver_disp=false){
+    stop ("The length of indcol can not be greater than the number of columns of the declared data.frame")
 
-    # println("#################################################################")
-    # println("AGGREGATE INDIVIDUALS WRT COVARIATES")
-    # println("Reg. weight =  ", lambda_reg)
-    # println("Percent closest = ", 100.0*percent_closest, "\%")
-    # println("Aggregation tolerance = ", aggregate_tol,"\n")
-    # println("#################################################################\n")
+  } else {}
 
 
-    tstart = time()
+  if (length(meth)>length(indcol)){
 
-    # Local redefinitions of parameters of  the instance
-    nA      = inst$nA;
-    nB      = inst$nB;
-    A       = 1:nA;
-    B       = 1:nB;
-    Y       = inst$Y;
-    Z       = inst$Z;
-    indY    = inst$indY;
-    indZ    = inst$indZ;
-    Xobserv = inst$Xobserv;
-    Yobserv = inst$Yobserv;
-    Zobserv = inst$Zobserv;
+    stop ("The length of meth must be equal to the length of indcol")
 
-    # Create a model for the optimal transport of individuals
-    # modelA = Model(with_optimizer(Gurobi.Optimizer,LogToConsole=0,Method=2,Crossover=0));#ClpSolver(LogLevel=0)); 
-    # modelB = Model(with_optimizer(Gurobi.Optimizer,LogToConsole=0,Method=2,Crossover=0));#Model(with_optimizer(Clp.Optimizer,LogLevel=0));
+  } else {}
 
 
-    ###########################################################################
-    # Compute data for aggregation of the individuals
-    ###########################################################################
-    # println("... aggregating individuals")
-    indXA = inst$indXA; indXB = inst$indXB;
-    nbX = length(indXA);
+  datcov = dat1[,indcol]
 
-    # compute the neighbors of the covariates for regularization
-    Xvalues = unique(Xobserv)
-    # norme = 1
-    
-    if (norme == 0){
-        dist_X = cdist(Xvalues),Xvalues,"hamming")}
-    else if (norme == 1){
-        dist_X = cdist(Xvalues,Xvalues,"manhattan")
+  typ_fact   = c("polr","polyreg","logreg")
+
+  # Numbers of columns corresponding to missing covariates:
+
+  indic_NA   = (1:ncol(datcov))[apply(datcov,2,function(x){sum(is.na(x))!=0}) == TRUE]
+  datcov_IMP = datcov
+
+
+  # Converting categorical variables to factor before imputation
+
+  if (TRUE %in% is.element(typ_fact,meth)){
+
+    indic_typ = (1:(length(meth)))[meth %in% typ_fact]
+
+    for (j in 1:length(indic_typ)){
+
+      datcov[,indic_typ[j]] = as.factor(datcov[,indic_typ[j]])
+
     }
-    voisins_X = dist_X <= 1
 
-    # println("... computing costs")
-    C = average_distance_to_closest(inst, percent_closest)[1];
+  }
 
-    ###########################################################################
-    # Compute the estimators that appear in the model
-    ###########################################################################
 
-    estim_XA = estim_XB = estim_XA_YA =  estim_XB_ZB = list()
-    
-    for (x in 1:nbX){
-    
-      estim_XA[[x]] = length(indXA[[x]])/nA
-      estim_XB[[x]] = length(indXB[[x]])/nB
-      
-    }
-    
-    for (x in 1:nbX){
-      
-      for (y in Y){  
-        estim_XA_YA[[x]][y] = length(indXA[[x]][Yobserv[indXA[[x]]] == y])/nA 
+  if (missMDA == FALSE){
+
+
+    # MICE imputation
+
+    stoc_mice = mice::mice(as.data.frame(datcov),method = meth, m = R_mice,print=FALSE,remove.collinear=FALSE,seed = seed_choice)
+    list_mice = mice::complete(stoc_mice, "all")
+
+    # Storage of the multiple imputations of the covariate in a data.frame
+
+    for (k in 1:length(indic_NA)){
+
+      base_mice_IMP = as.data.frame(datcov[,indic_NA[k]])
+
+
+      for (u in 1:R_mice){
+
+        base_mice_IMP = data.frame(base_mice_IMP,mice::complete(stoc_mice,u)[,indic_NA[k]])
+
       }
-      
-      for (z in Z){
-        estim_XB_ZB[[x]][y] = length(indXB[[x]][Zobserv[indXB[[x]] + nA] == z])/nB
+
+
+      # Imputation de la catégorie la plus fréquente (dans le cas de données
+      # catégorielles)
+
+      if (meth[indic_NA[k]]!="pmm"){
+
+        col_imp = as.factor(apply(base_mice_IMP[,2:ncol(base_mice_IMP)],1,
+                                                    function(x){as.character(names(table(x))[which.max(table(x))])}))
+
+        datcov_IMP[, indic_NA[k]] = ordered(col_imp,levels = levels(datcov[,indic_NA[k]]))
+
+
+
+
+        # Imputation de la moyenne (dans le cas de données continues)
+
+      } else {
+
+        datcov_IMP[, indic_NA[k]] = apply(base_mice_IMP[,2:ncol(base_mice_IMP)],1,mean)
+
       }
-      
+
     }
-      
-
-    result <-  MIPModel() %>%
-      add_variable(gammaA[x,y,z],x = 1:nbX, y=Y,z= Z,type = "continuous") %>%
-      add_variable(errorA_XY[x,y],x=1:nbX, y = Y, type = "continuous") %>%
-      add_variable(abserrorA_XY[x,y],x=1:nbX, y = Y, type = "continuous") %>%
-      add_variable(errorA_XZ[x,z],x=1:nbX, z = Z, type = "continuous") %>%
-      add_variable(abserrorA_XZ[x,z],x=1:nbX, z = Z, type = "continuous") %>%
-      add_variable(reg_absA[x1, x2,y,z],x1=1:nbX, x2= voisins_X[x1,],y=Y,z= Z, type = "continuous") %>%
-      set_objective(sum_expr(C[y,z] * gammaA[x,y,z],y = Y,z=Z, x = 1:nbX) + lambda_reg * sum_expr(1/length(voisins_X[x1,]) *reg_absA[x1,x2,y,z]) , "min") %>%
-      add_constraint(sum_expr(gammaA[x,y,z], z = Z) == estim_XA_YA[x,y] + errorA_XY[x,y], x = 1:nbX,y =Y) %>%
-      add_constraint(estim_XB[x]*sum_expr(gammaA[x,y,z],y = Y) == estim_XB_ZB[x,z] * estim_XA[x] + estim_XB[x]*errorA_XZ[x,z], x = 1:nbX, z = Z) %>%
-      add_constraint(errorA_XY[x,y] <= abserrorA_XY[x,y], x = 1:nbX,y =Y) %>%
-      add_constraint(-errorA_XY[x,y] <= abserrorA_XY[x,y], x = 1:nbX,y =Y) %>%
-      add_constraint(sum_expr(abserrorA_XY[x,y], x = 1:nbX,y = Y)<= maxrelax/2.0) %>%
-      add_constraint(sum_expr(errorA_XY[x,y], x = 1:nbX,y = Y)== 0.0) %>%
-      
-      add_constraint(errorA_XZ[x,z] <= abserrorA_XZ[x,z], x = 1:nbX,z =Z) %>%
-      add_constraint -errorA_XZ[x,z] <= abserrorA_XZ[x,z], x = 1:nbX,z =Z) %>%
-  add_constraint(sum_expr(abserrorA_XZ[x,z], x = 1:nbX,z = Z)<= maxrelax/2.0) %>%
-  add_constraint(sum_expr(errorA_XZ[x,z], x = 1:nbX,z = Z)<= maxrelax/2.0) %>%
-  solve_model(with_ROI(solver = "glpk"))
-
-solution <- get_solution(result, gammaA[x,y,z]) 
 
 
-result <-  MIPModel() %>%
-  add_variable(gammaB[x,y,z],x = 1:nbX, y=Y,z= Z,type = "continuous") %>%
-  add_variable(errorB_XY[x,y],x=1:nbX, y = Y, type = "continuous") %>%
-  add_variable(abserrorB_XY[x,y],x=1:nbX, y = Y, type = "continuous") %>%
-  add_variable(errorB_XZ[x,z],x=1:nbX, z = Z, type = "continuous") %>%
-  add_variable(abserrorB_XZ[x,z],x=1:nbX, z = Z, type = "continuous") %>%
-  add_variable(reg_absB[x1, x2,y,z],x1=1:nbX, x2= voisins_X[x1,],y=Y,z= Z, type = "continuous") %>%
-  set_objective(sum_expr(C[y,z] * gammaB[x,y,z],y = Y,z=Z, x = 1:nbX) + lambda_reg *  sum(1/length(voisins_X[x1,]) *reg_absB[x1,x2,y,z] ) , "min") %>%
-  add_constraint(sum_expr(gammaB[x,y,z], y = Y) == estim_XB_ZB[x,z] + errorB_XZ[x,z], x = 1:nbX,z =Z) %>%
-  add_constraint(estim_XA[x]*sum_expr(gammaB[x,y,z] ,z = Z) == estim_XA_YA[x,y] * estim_XB[x] + estim_XA[x] * errorB_XY[x,y], x = 1:nbX, y = Y) %>%
-  add_constraint(errorB_XY[x,y] <= abserrorB_XY[x,y], x = 1:nbX,y =Y) %>%
-  add_constraint(-errorB_XY[x,y] <= abserrorB_XY[x,y], x = 1:nbX,y =Y) %>%
-  add_constraint(sum_expr( abserrorB_XY[x,y], x = 1:nbX,y = Y)<= maxrelax/2.0) %>%
-  add_constraint(sum_expr(errorB_XY[x,y], x = 1:nbX,y = Y)== 0.0) %>%
-  
-  add_constraint(errorB_XZ[x,z] <= abserrorB_XZ[x,z], x = 1:nbX,z =Z) %>%
-  add_constraint -errorB_XZ[x,z] <= abserrorB_XZ[x,z], x = 1:nbX,z =Z) %>%
-  add_constraint(sum_expr(abserrorB_XZ[x,z], x = 1:nbX,z = Z)<= maxrelax/2.0) %>%
-  add_constraint(sum_expr(errorB_XZ[x,z], x = 1:nbX,z = Z)<= maxrelax/2.0) %>%
-  solve_model(with_ROI(solver = "glpk"))
+  } else if (missMDA == TRUE){
 
-solution <- get_solution(result, gammaB[x,y,z]) 
-   # Solve the problem
-   # optimize!(modelA);
-   # optimize!(modelB);
+    FAMD_imp = missMDA::imputeFAMD(datcov,ncp = NB_COMP,seed = seed_choice)$completeObs
 
-   # Extract the values of the solution
-   # gammaA_val = [value(gammaA[x,y,z]) for x in 1:nbX, y in Y, z in Z];
-   # gammaB_val = [value(gammaB[x,y,z]) for x in 1:nbX, y in Y, z in Z];
+    fact_var = sapply(datcov,is.factor)
+    typ_var  = sapply(datcov,is.integer)
 
-   
-   # compute the resulting estimators for the distributions of Z conditional to X and Y in base A and of Y conditional to X and Z in base B
-   estimatorZA = 1/length(Z) * array(rep(1,nbX*length(Y)*length(Z)),dim = c(nbX,length(Y),length(Z)))
-   
-   for (x = 1:nbX){
-   
-       for (y in Y){
-           
-          proba_c_mA = apply(gammaA_val,c(1,2),sum)[x,y]
-          
-          if (proba_c_mA > 1.0e-6){
-          
-                estimatorZA[x,y,] = 1/proba_c_mA * gammaA_val[x,y,];
-          
-          } else {}
-       }
-   }
-   
-   estimatorYB = 1/length(Y) * array(rep(1,nbX*length(Y)*length(Z)),dim = c(nbX,length(Y),length(Z)))
-   
-   for (x = 1:nbX){
-   
-       for (z in Z){
-       
-           proba_c_mB = apply(gammaB_val,c(1,3),sum)[x,z]
-           
-           if (proba_c_mB > 1.0e-6){
-           
-                estimatorYB[x,,z] = 1/proba_c_mB * gammaB_val[x,,z];
-            
-            } else {}
-       }
-   }
+    for (k in 1:length(typ_var)){
 
-   #deduce the individual distributions of probability for each individual
-   probaZindivA = matrix(0,nA,length(Z))
-   probaYindivB = matrix(0,nB,length(Y))
-   
-   for (x in 1:nbX){
-       for (i in indXA[[x]]){
-           probaZindivA[i,] = estimatorZA[x,Yobserv[i],]
-       }
-       for (i in indXB[[x]]){
-           probaYindivB[i,] = estimatorYB[x,,Zobserv[i+nA]]
-       }
-   }
+
+      # dat1[,typvar] = apply(dat1[,typvar],2,function(x){sort(levels(x))})
+      #datcov_IMP[,k] = ifelse(typ_var[k]==TRUE,as.integer(FAMD_imp[,k]),FAMD_imp[,k])
+      #datcov_IMP[,k] = ifelse(fact_var[k]==TRUE,mapvalues(FAMD_imp[,k],from = levels(FAMD_imp[,k]),to = levels(dat1[,k])),FAMD_imp[,k])
 
 
 
-   # Transport the Ylity that maximizes frequency
-   
-   predZA = numeric(0)
-   for (i in A){
-   
-     for (z in Z){
-     
-        predZA = c(predZA,which.max(probaZindivA[i,z])
-        
-     }
-   }
-   
-   predYB = numeric(0)
-   for (j in B){
-   
-     for (y in Y){
-   
-        predYB = c(predYB,which.max([probaYindivB[j,y])
-        
-     }
-     
-   }
+      if (fact_var[k]==TRUE){
 
-   # Display the solution
-   # println("Solution of the joint probability transport");
-   # println("Distance cost = ", sum(C[y,z] * (gammaA_val[x,y,z]+gammaB_val[x,y,z]) for y in Y, z in Z, x in 1:nbX));
-   # println("Regularization cost = ", lambda_reg * value(regterm));
+        datcov_IMP[,k]   = plyr::mapvalues(FAMD_imp[,k],from = levels(FAMD_imp[,k]),to = sort(levels(dat1[,indcol[k]])))
+        # datcov_IMP[,k] = mapvalues(FAMD_imp[,k],from = levels(FAMD_imp[,k]),to = sort(levels(datcov[,k])))
+        datcov_IMP[,k]   = ordered(datcov_IMP[,k],levels = levels(dat1[,indcol[k]]))
 
-   tend = Sys.time()
+      } else {
 
-   return list(difftime(tend,tstart),apply(gammaA_val,c(2,3),sum),apply(gammaB_val,c(2,3),sum), estZA = estimatorZA, estYB = estimatorYB))
+        datcov_IMP[,k] = FAMD_imp[,k]
+
+      }
+
+
+      if (typ_var[k]==TRUE){
+
+        datcov_IMP[,k] = as.integer(FAMD_imp[,k])
+
+      } else {
+
+        datcov_IMP[,k] = datcov_IMP[,k]
+
+      }
+
+    }
+
+  }
+
+
+  # Return the imputed database
+
+  if (missMDA == FALSE){
+
+    return(list(RAW = dat1,IMPUTE = "MICE", DATA_IMPUTE = datcov_IMP,MICE_IMPS = list_mice))
+
+  } else {
+
+    return(list(RAW = dat1,IMPUTE = "MDA", DATA_IMPUTE = datcov_IMP))
+
+    }
+
 }
+
+
+
+
+
+
+
+
