@@ -27,7 +27,9 @@ Imports:
     gplots,
     mvtnorm,
     FactoMineR,
-    Rcpp
+    missMDA,
+    stats,
+    plyr
 Suggests: 
     testthat,
     knitr,
