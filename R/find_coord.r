@@ -7,7 +7,7 @@
 #' @param all_list A list of sublists of subsets of a power set (from family_part() by example) composed of 1,2,...,n elements
 #' @param all_coord A matrix of integers which lines gives the coordinates of a list from family_part()
 #'
-#' @return
+#' @return indices of a list from family_part()
 #' @export
 #'
 #' @examples

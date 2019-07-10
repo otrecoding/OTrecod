@@ -1,10 +1,10 @@
 #' try_group()
 #'
-#' @param Y1
-#' @param Y2
-#' @param ordin
+#' @param Y1 outcomes first database
+#' @param Y2 outcomes second database
+#' @param ordin family_part option
 #'
-#' @return
+#' @return list
 #' @export
 #'
 #' @examples
