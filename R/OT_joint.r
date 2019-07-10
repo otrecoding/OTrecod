@@ -1,5 +1,12 @@
 
-#' Title
+#' OT_joint(datab, 
+#' maxrelax=0.0, 
+#' lambda_reg = 0.0, 
+#' percent_clos = 0.2, 
+#' norm = 1, 
+#' aggregate_tol=0.5, 
+#' full_disp = FALSE, 
+#' solver_disp = FALSE)
 #'
 #' @param datab 
 #' @param maxrelax 

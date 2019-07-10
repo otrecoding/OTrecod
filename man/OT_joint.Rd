@@ -2,7 +2,14 @@
 % Please edit documentation in R/OT_joint.r
 \name{OT_joint}
 \alias{OT_joint}
-\title{Title}
+\title{OT_joint(datab, 
+maxrelax=0.0, 
+lambda_reg = 0.0, 
+percent_clos = 0.2, 
+norm = 1, 
+aggregate_tol=0.5, 
+full_disp = FALSE, 
+solver_disp = FALSE)}
 \usage{
 OT_joint(datab, maxrelax = 0, lambda_reg = 0, percent_clos = 0.2,
   norm = 1, aggregate_tol = 0.5, full_disp = FALSE,
@@ -29,5 +36,12 @@ OT_joint(datab, maxrelax = 0, lambda_reg = 0, percent_clos = 0.2,
 List with time and solution
 }
 \description{
-Title
+OT_joint(datab, 
+maxrelax=0.0, 
+lambda_reg = 0.0, 
+percent_clos = 0.2, 
+norm = 1, 
+aggregate_tol=0.5, 
+full_disp = FALSE, 
+solver_disp = FALSE)
 }

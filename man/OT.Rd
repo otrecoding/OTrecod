@@ -2,7 +2,7 @@
 % Please edit documentation in R/OT.r
 \name{OT}
 \alias{OT}
-\title{Title}
+\title{OT(datab)}
 \usage{
 OT(datab, percent_c = 1, maxrelax = 0, norm = 1, indiv_method,
   full_disp = FALSE, solver_disp = FALSE)
@@ -26,5 +26,5 @@ OT(datab, percent_c = 1, maxrelax = 0, norm = 1, indiv_method,
 list with time and solution
 }
 \description{
-Title
+OT(datab)
 }

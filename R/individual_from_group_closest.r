@@ -1,4 +1,15 @@
 
+#' Title
+#'
+#' @param inst 
+#' @param jointprobaA 
+#' @param jointprobaB 
+#' @param percent_closest 
+#'
+#' @return list
+#' @export
+#'
+# @examples
 individual_from_group_closest=function(inst, jointprobaA, jointprobaB, percent_closest=1.0){
   
   # Redefine A and B for the model

@@ -1,4 +1,15 @@
 
+#' individual_from_group_optimal(inst, jointprobaA, jointprobaB, percent_closest=1.0)
+#'
+#' @param inst 
+#' @param jointprobaA 
+#' @param jointprobaB 
+#' @param percent_closest 
+#'
+#' @return list
+#' @export
+#'
+# @examples
 individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_closest=1.0){
   
   

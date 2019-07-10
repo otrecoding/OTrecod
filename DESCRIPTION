@@ -28,7 +28,15 @@ Imports:
     FactoMineR,
     missMDA,
     stats,
-    plyr
+    plyr,
+    rdist,
+    ROI,
+    ROI.plugin.glpk,
+    car,
+    dplyr,
+    ompr,
+    ompr.roi,
+    ordinal
 Suggests: 
     testthat,
     knitr,
