@@ -19,7 +19,6 @@
 #' @export
 #'
 #' @examples
-#' require(Statmatch)
 #' data(samp.A)   # Require Statmatch package
 #' dat1 = samp.A[,-1]
 #' sel_cov = select_var(dat1,Y = "c.neti")
@@ -34,6 +33,7 @@ select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thre
   stopifnot(threshY <=1); stopifnot(threshY >0)
   stopifnot(thresh_vif >0)
   
+  dat1 = databa
   cat("select_var function in progress. Please wait ...","\n")
   
   for (j in 1:ncol(databa)){
@@ -47,12 +47,12 @@ select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thre
   datababis = databa[,-indY]
   model1  = lm(databa[,Y] ~.,data = datababis)
   vifmod  = sort(vif(model1),decreasing = TRUE)
-  vif_pb  = vifmod[vifmod > 10]
+  vif_pb  = vifmod[vifmod > thresh_vif]
   
   
-  cor_mat = cor(databa,method = "spearman")
+  cor_mat = cor(na.omit(databa),method = "spearman")
   diag(cor_mat) = 0
-  Y        = "c.neti"
+  # Y        = "c.neti"
   cor_Y    = sort(round(cor_mat[,Y],3),decreasing = TRUE)
   cor_Y    = cor_Y[abs(cor_Y)>threshY]
   
@@ -70,12 +70,15 @@ select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thre
   
   
   indouble        = which(sapply(dat1,is.double))
+  indfactor        = which(sapply(dat1,is.factor))
   dat3            = dat1
   dat3[,indouble] = apply(dat3[,indouble],2,scale)
+  dat3[,indfactor]= apply(dat3[,indfactor],2,as.character)
+  dat3            = na.omit(dat3)
+  dat1            = na.omit(dat1)
   
-  
-  ind_new   = (1:ncol(dat3))[colnames(dat3) %in% setdiff(names(dat3),Y)] 
-  names_new = names(dat3)[colnames(dat3) %in% setdiff(names(dat3),Y)] 
+  ind_new   = (1:ncol(dat3))[colnames(dat3) %in% setdiff(names(dat3),c(names(cor_Y),Y))] 
+  names_new = names(dat3)[colnames(dat3) %in% setdiff(names(dat3),c(names(cor_Y),Y))] 
   
   pval = vector(length = length(ind_new))
   
@@ -131,18 +134,29 @@ select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thre
   keep_cov  = NA
   suppr_cov = NA
   
+  if (nrow(cor_X)!=0){
   
   for (k in 1:nrow(cor_X)){
     
     names_corX =c(as.character(cor_X[k,1]),as.character(cor_X[k,2]))
-    ind_names  = which(name_cov %in% names_corX)
-    keep_cv  = name_cov[min(ind_names)]
-    suppr_cv = setdiff(names_corX,keep_cv)
+    
+    if (length(intersect(name_cov,names_corX))!=0){
+      
+      ind_names  = which(name_cov %in% names_corX)
+      keep_cv  = name_cov[min(ind_names)]
+      suppr_cv = setdiff(names_corX,keep_cv)
+    
+    } else {
+      
+      keep_cv = suppr_cv = NULL
+      
+    }  
     
     keep_cov  = c(keep_cov,keep_cv)
     suppr_cov = c(suppr_cov,suppr_cv)
     
   }
+  } else {suppr_cov = NULL}
   
   keep_cov_fin = setdiff(name_cov,unique(c(names(cor_Y),suppr_cov[-1])))
   del_cov_fin  = unique(c(names(cor_Y),suppr_cov[-1]))
