@@ -282,7 +282,7 @@ give an assessment of the proximity between the two encodings
 Demo on database A only: 
 
 ```{r}
-cc= error_group(Ypred,try4$DATA1_OT$Y1,ord=TRUE) 
+#cc= error_group(Ypred,try4$DATA1_OT$Y1,ord=TRUE) 
 ```
 
 On database A, by grouping the modalities of the c.neti variable (7 levels) like 1 (best grouping) in 4 modalities (number of modalities of c.neti.bis) 
