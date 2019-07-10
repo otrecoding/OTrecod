@@ -1,4 +1,3 @@
-
 ---
 title: "OTrecod"
 author: "Gregory Guernec"
@@ -9,8 +8,6 @@ output: html_document
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{OTrecod}
 -->
-
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)

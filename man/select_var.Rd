@@ -32,7 +32,6 @@ A list of 6 elements:
 This function preselect variables according to their associations with each other and according to their associations with a target variable
 }
 \examples{
-require(Statmatch)
 data(samp.A)   # Require Statmatch package
 dat1 = samp.A[,-1]
 sel_cov = select_var(dat1,Y = "c.neti")
