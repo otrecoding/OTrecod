@@ -25,6 +25,9 @@ OT_joint(datab, maxrelax = 0, lambda_reg = 0, percent_clos = 0.2,
 
 \item{solver_disp}{}
 }
+\value{
+List with time and solution
+}
 \description{
 Title
 }
