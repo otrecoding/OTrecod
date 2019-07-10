@@ -19,11 +19,16 @@
 #' @export
 #'
 #' @examples
+#' library(StatMatch)
 #' data(samp.A)   # Require Statmatch package
 #' dat1 = samp.A[,-1]
 #' sel_cov = select_var(dat1,Y = "c.neti")
-
-select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thresh_vif = 10){
+select_var = function(databa,
+                      Y,
+                      type_Y = "ORD",
+                      threshX = 0.90,
+                      threshY = 0.95,
+                      thresh_vif = 10){
 
     
   stopifnot(is.data.frame(databa))
@@ -46,7 +51,7 @@ select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thre
   
   datababis = databa[,-indY]
   model1  = lm(databa[,Y] ~.,data = datababis)
-  vifmod  = sort(vif(model1),decreasing = TRUE)
+  vifmod  = sort(car::vif(model1),decreasing = TRUE)
   vif_pb  = vifmod[vifmod > thresh_vif]
   
   
@@ -89,9 +94,9 @@ select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thre
       
       # print(j)
       
-      ordi_mod  = clm(as.ordered(dat1[,Y]) ~ dat3[,ind_new[j]],data=dat3,link="logit")
-      ordi_NULL = clm(as.ordered(dat1[,Y]) ~ 1,data=dat3,link="logit")
-      pval[j]   = anova(ordi_mod,ordi_NULL)[[6]][2]
+      ordi_mod  = ordinal::clm(as.ordered(dat1[,Y]) ~ dat3[,ind_new[j]],data=dat3,link="logit")
+      ordi_NULL = ordinal::clm(as.ordered(dat1[,Y]) ~ 1,data=dat3,link="logit")
+      pval[j]   = stats::anova(ordi_mod,ordi_NULL)[[6]][2]
       
     }
     
@@ -99,9 +104,9 @@ select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thre
     
     for (j in 1:length(ind_new)){
       
-      nomi_mod  = multinom(dat1[,Y] ~ dat3[,ind_new[j]],data=dat3,trace=F)
-      nomi_NULL = multinom(dat1[,Y] ~ 1,data=dat3,trace=F)
-      pval[j]   = anova(nomi_mod,nomi_NULL)[[7]][2] 
+      nomi_mod  = nnet::multinom(dat1[,Y] ~ dat3[,ind_new[j]],data=dat3,trace=F)
+      nomi_NULL = nnet::multinom(dat1[,Y] ~ 1,data=dat3,trace=F)
+      pval[j]   = stats::anova(nomi_mod,nomi_NULL)[[7]][2] 
       
     }
     
