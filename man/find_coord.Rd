@@ -13,6 +13,9 @@ find_coord(all_ind, all_list, all_coord)
 
 \item{all_coord}{A matrix of integers which lines gives the coordinates of a list from family_part()}
 }
+\value{
+indices of a list from family_part()
+}
 \description{
 A function that returns the indices of a list from family_part() to compose the partition of a set
 }
