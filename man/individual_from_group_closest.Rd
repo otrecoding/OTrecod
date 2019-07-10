@@ -16,6 +16,9 @@ individual_from_group_closest(inst, jointprobaA, jointprobaB,
 
 \item{percent_closest}{}
 }
+\value{
+list
+}
 \description{
 Title
 }

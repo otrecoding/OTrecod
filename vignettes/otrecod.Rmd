@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 An application of the functions of the package on a real dataset      (07/2019)
 
 ```{r}
-library(OTrecod)
+require(OTrecod)
 ```
 
 ## Example : The "samp.A" database of the StatMatch package. 
@@ -162,9 +162,8 @@ summary(db_test$DB_READY)
 ```
 
 # IV. OT application on the remaining dataset 
-#-------------------------------------------- 
 
-# The OT function requires the prior execution of: "inst","average_from_group_closest" 
+The OT function requires the prior execution of: "inst","average_from_group_closest" 
 
 ```{r}
 library(rdist)  
