@@ -191,14 +191,10 @@ This function require the functions:
 # ARGUMENTS: 
 
 - percent_c   : Percent of closest neighbors taken in the computation of the costs 
-- maxrelax    : Maximum percentage of deviation from expected probability masses (0 for the OUTCOME model, different for 0 for the R-OUTCOME model.  
--               Please consult the corresponding article) for more details. 
-- norm        : Distance chosen for calculate the distances between categorical covariates.Equal to O (by default) for the Manhattan distance, 
--               equal to 1 for the Euclidean distance or equal to 2 for the Hammind distance. 
-- indiv_method: Specifies the method used to get individual transport from group joint probabilities ("sequential" or "optimal"). Please consult the 
--               corresponding article for more details  
-- full_disp   : If true, write the transported value of each individual; 
--               otherwise, juste write the number of missed transports 
+- maxrelax    : Maximum percentage of deviation from expected probability masses (0 for the OUTCOME model, different for 0 for the R-OUTCOME model. Please consult the corresponding article) for more details. 
+- norm        : Distance chosen for calculate the distances between categorical covariates.Equal to O (by default) for the Manhattan distance, equal to 1 for the Euclidean distance or equal to 2 for the Hammind distance. 
+- indiv_method: Specifies the method used to get individual transport from group joint probabilities ("sequential" or "optimal"). Please consult the corresponding article for more details  
+- full_disp   : If true, write the transported value of each individual; otherwise, juste write the number of missed transports 
 - solver_disp : If false, do not display the outputs of the solver 
 
 
