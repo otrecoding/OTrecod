@@ -1,5 +1,5 @@
 
-#' Title
+#' OT(datab)
 #'
 #' @param datab 
 #' @param percent_c 
@@ -208,10 +208,10 @@ OT = function(datab, percent_c = 1.0, maxrelax=0, norm = 1, indiv_method, full_d
   
   
   DATA1_OT         = datab[datab[,1] == 1,]
-  DATA1_OT$OTpred  = mapvalues(YBpred,from = 1:max(dataB[,3],na.rm = TRUE), to = levels(datab[,3]))
+  DATA1_OT$OTpred  = plyr::mapvalues(YBpred,from = 1:max(dataB[,3],na.rm = TRUE), to = levels(datab[,3]))
   
   DATA2_OT         = datab[datab[,1] == 2,]
-  DATA2_OT$OTpred  = mapvalues(YApred,from = 1:max(dataB[,2],na.rm = TRUE), to = levels(datab[,2]))
+  DATA2_OT$OTpred  = plyr::mapvalues(YApred,from = 1:max(dataB[,2],na.rm = TRUE), to = levels(datab[,2]))
   
   
   tend = Sys.time()

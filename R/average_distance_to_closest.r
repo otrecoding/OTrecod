@@ -1,4 +1,13 @@
 
+#' average_distance_to_closest(inst, percent_closest)
+#'
+#' @param inst 
+#' @param percent_closest 
+#'
+#' @return list
+#' @export
+#'
+# @examples
 average_distance_to_closest=function(inst, percent_closest){
   
   # Redefine A and B for the model

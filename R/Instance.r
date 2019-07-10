@@ -1,3 +1,12 @@
+#' Instance(data_file,norme)
+#'
+#' @param data_file 
+#' @param norme 
+#'
+#' @return list
+#' @export
+#'
+# @examples
 Instance  = function(data_file,norme){
   
   dat    = data_file
