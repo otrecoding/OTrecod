@@ -4,6 +4,12 @@ language: R
 sudo: false
 cache: packages
 
+addons:
+  apt:
+    packages:
+      - glpk-utils
+      - libglpk-dev
+
 r_packages:
    - covr
    - devtools
