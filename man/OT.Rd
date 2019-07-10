@@ -22,6 +22,9 @@ OT(datab, percent_c = 1, maxrelax = 0, norm = 1, indiv_method,
 
 \item{solver_disp}{}
 }
+\value{
+list with time and solution
+}
 \description{
 Title
 }
