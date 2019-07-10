@@ -1,4 +1,18 @@
 
+#' Title
+#'
+#' @param datab 
+#' @param percent_c 
+#' @param maxrelax 
+#' @param norm 
+#' @param indiv_method 
+#' @param full_disp 
+#' @param solver_disp 
+#'
+#' @return list with time and solution
+#' @export
+#'
+# @examples
 OT = function(datab, percent_c = 1.0, maxrelax=0, norm = 1, indiv_method, full_disp = FALSE, solver_disp = FALSE){
   
   tstart = Sys.time()

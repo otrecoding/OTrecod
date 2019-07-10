@@ -7,7 +7,14 @@
 try_group(Y1, Y2, ordin = FALSE)
 }
 \arguments{
-\item{ordin}{}
+\item{Y1}{outcomes first database}
+
+\item{Y2}{outcomes second database}
+
+\item{ordin}{family_part option}
+}
+\value{
+list
 }
 \description{
 try_group()

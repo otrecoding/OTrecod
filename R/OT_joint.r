@@ -1,4 +1,19 @@
 
+#' Title
+#'
+#' @param datab 
+#' @param maxrelax 
+#' @param lambda_reg 
+#' @param percent_clos 
+#' @param norm 
+#' @param aggregate_tol 
+#' @param full_disp 
+#' @param solver_disp 
+#'
+#' @return List with time and solution
+#' @export
+#'
+# @examples
 OT_joint = function(datab, maxrelax=0.0, lambda_reg = 0.0, percent_clos = 0.2, norm = 1, aggregate_tol=0.5, full_disp = FALSE, solver_disp = FALSE){
   
   cat("---------------------------------------","\n")

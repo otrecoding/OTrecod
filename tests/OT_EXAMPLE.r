@@ -1,7 +1,7 @@
-library(OTrecod)
-#----------------------------- THE OTrecod PACKAGE --------------------------------------------------------------------------------
-# An application of the functions of the package on a real dataset      (07/2019)
-#----------------------------------------------------------------------------------------------------------------------------------
+
+#--------------------- THE OTrecod PACKAGE -------------------------------------
+# An application of the functions of the package on a real dataset     (07/2019)
+#-------------------------------------------------------------------------------
 
 
 
@@ -9,15 +9,20 @@ library(OTrecod)
 #--------------------------------------------------------------
 
 # Description (see ?samp.A for more details) ------------------
-# This data set provides a limited number of variables observed at persons levels among those usually collected in the European Union
+# This data set provides a limited number of variables observed at persons 
+# levels among those usually collected in the European Union
 # Statistics on Income and Living Conditions Survey (EU–SILC). 
 #
-# It has been artificially generated as follows to show an application of the OTrecod package.
+# It has been artificially generated as follows to show an application of the 
+# OTrecod package.
 #
 # --> 2 databases: data3 and data4
-# --> c.neti (only in data3) and c.neti.bis (only in data4) coded voluntarily in 2 distinct encodings but represent the same information
-# --> c.neti is a factor variable corresponding to the person's net income initially categorized in 7 classes of thousand of Euros
-# --> data3 and data4 are composed of Subsets of specific and common covariates of different types, with incomplete information
+# --> c.neti (only in data3) and c.neti.bis (only in data4) coded voluntarily in
+#     2 distinct encodings but represent the same information
+# --> c.neti is a factor variable corresponding to the person's net income 
+#     initially categorized in 7 classes of thousand of Euros
+# --> data3 and data4 are composed of Subsets of specific and common covariates
+#     of different types, with incomplete information
 
 
 
@@ -30,8 +35,9 @@ data(samp.A)
 samp.A = samp.A[,c(1:11,13,12)]
 dim(samp.A); names(samp.A)
 # [1] 3009   14
-# [1] "HH.P.id"    "area5"      "urb"        "hsize"      "hsize5"     "age"        "c.age"      "sex"        "marital"   
-# [10] "edu7"       "n.income"   "ww"         "c.neti"     "c.neti.bis"
+# "HH.P.id"    "area5"      "urb"        "hsize"      "hsize5"   "age"   "c.age"
+# "sex"        "marital"    "edu7"       "n.income"   "ww"       "c.neti"
+# "c.neti.bis"
 
 
 c.neti            = as.numeric(samp.A$c.neti)
@@ -76,27 +82,46 @@ table(data4$c.neti.bis)
 
 
 summary(data3)
-# area5       urb          hsize        hsize5         age             c.age       sex         marital           c.neti   
-# NE  :124   1   :180   Min.   :1.000   1   : 86   Min.   :17.00   [16,34] :107   1   :274   Min.   :1.000   (15,20] :112  
-# NO  :114   2   :230   1st Qu.:2.000   2   :234   1st Qu.:37.75   (34,44] : 92   2   :266   1st Qu.:1.000   (0,10]  :106  
-# C   :127   3   :130   Median :2.000   3   :127   Median :52.00   (44,54] :108   NA's: 60   Median :2.000   (10,15] :101  
-# S   :117   NA's: 60   Mean   :2.522   4   : 73   Mean   :51.96   (54,64] : 84              Mean   :1.874   (-Inf,0]: 93  
-# I   : 58              3rd Qu.:3.000   >=5 : 20   3rd Qu.:67.00   (64,104]:149              3rd Qu.:2.000   (20,25] : 58  
-# NA's: 60              Max.   :9.000   NA's: 60   Max.   :89.00   NA's    : 60              Max.   :3.000   (Other) : 70  
-#                       NA's   :60                 NA's   :60                                NA's   :60      NA's    : 60   
+# area5       urb          hsize        hsize5         age             c.age         
+# NE  :124   1   :180   Min.   :1.000   1   : 86   Min.   :17.00   [16,34] :107     
+# NO  :114   2   :230   1st Qu.:2.000   2   :234   1st Qu.:37.75   (34,44] : 92   
+# C   :127   3   :130   Median :2.000   3   :127   Median :52.00   (44,54] :108     
+# S   :117   NA's: 60   Mean   :2.522   4   : 73   Mean   :51.96   (54,64] : 84              
+# I   : 58              3rd Qu.:3.000   >=5 : 20   3rd Qu.:67.00   (64,104]:149               
+# NA's: 60              Max.   :9.000   NA's: 60   Max.   :89.00   NA's    : 60              
+#                       NA's   :60                 NA's   :60                                  
 
+# sex         marital           c.neti
+# 1   :274   Min.   :1.000   (15,20] :112
+# 2   :266   1st Qu.:1.000   (0,10]  :106
+# NA's: 60   Median :2.000   (10,15] :101
+#            Mean   :1.874   (-Inf,0]: 93 
+#            3rd Qu.:2.000   (20,25] : 58
+#            Max.   :3.000   (Other) : 70
+#           NA's   :60      NA's    : 60
+           
+           
 
 summary(data4)
-#   hsize5         age             c.age      sex      marital         edu7        n.income           ww         c.neti.bis
-# 1   : 45   Min.   :17.00   [16,34] :87   1   :156   1   :109   2      :123   Min.   :-9000   Min.   : 147.1   1   :149  
-# 2   :159   1st Qu.:34.75   (34,44] :67   2   :204   2   :211   3      :122   1st Qu.: 2413   1st Qu.: 700.2   2   :119  
-# 3   : 85   Median :46.00   (44,54] :70   NA's: 40   3   : 40   1      : 60   Median :11575   Median :1379.2   3   : 75  
-# 4   : 53   Mean   :48.68   (54,64] :48              NA's: 40   5      : 37   Mean   :13258   Mean   :1685.3   4   : 17  
-# >=5 : 18   3rd Qu.:63.00   (64,104]:88                         4      :  9   3rd Qu.:20168   3rd Qu.:2360.4   NA's: 40  
-# NA's: 40   Max.   :96.00   NA's    :40                         (Other):  9   Max.   :80000   Max.   :6789.7             
-#            NA's   :40                                          NA's   : 40   NA's   :40      NA's   :40               
+#   hsize5         age             c.age      sex      marital  
+# 1   : 45   Min.   :17.00   [16,34] :87   1   :156   1   :109   
+# 2   :159   1st Qu.:34.75   (34,44] :67   2   :204   2   :211   
+# 3   : 85   Median :46.00   (44,54] :70   NA's: 40   3   : 40     
+# 4   : 53   Mean   :48.68   (54,64] :48              NA's: 40   
+# >=5 : 18   3rd Qu.:63.00   (64,104]:88                         
+# NA's: 40   Max.   :96.00   NA's    :40                                    
+#            NA's   :40                                                         
 
+#     edu7        n.income           ww         c.neti.bis
+# 2      :123   Min.   :-9000   Min.   : 147.1   1   :149 
+# 3      :122   1st Qu.: 2413   1st Qu.: 700.2   2   :119 
+# 1      : 60   Median :11575   Median :1379.2   3   : 75 
+# 5      : 37   Mean   :13258   Mean   :1685.3   4   : 17
+# 4      :  9   3rd Qu.:20168   3rd Qu.:2360.4   NA's: 40
+# (Other):  9   Max.   :80000   Max.   :6789.7 
+#  NA's   : 40   NA's   :40      NA's   :40               
 
+              
 
 # II. Detect possible problems between covariates in each databases
 #-------------------------------------------------------------------
@@ -105,30 +130,34 @@ summary(data4)
 library(car)
 library(nnet)
 library(ordinal)
-sel_cov3 = select_var(data3,Y = "c.neti",type_Y = "ORD",threshX = 0.90,threshY = 0.90,thresh_vif = 10); sel_cov3
-# $Y
+sel_cov3 = select_var(data3,Y = "c.neti",type_Y = "ORD",threshX = 0.90,
+                      threshY = 0.90,thresh_vif = 10); 
+sel_cov3
+#$Y
 #[1] "c.neti"
 #
-# $cor_Y
-# named numeric(0)
+#$cor_Y
+#named numeric(0)
 #
-# $VIF_PB
-#   hsize5    hsize      age    c.age 
-# 45.14604 44.76794 15.99125 15.34881 
+#$VIF_PB
+#  hsize5    hsize      age    c.age 
+#66.79886 65.83270 15.11747 14.59678 
 #
-# $KEEP_COV
-# [1] "sex"   "c.age" "hsize"
-# 
-# $DEL_COV
-# [1] "hsize5" "age"   
+#$KEEP_COV
+#[1] "sex"   "c.age"
 #
-# $PVAL_Y
-#    NAME         pval       CORREC
-# 7   sex 1.067533e-17 8.540261e-17
-# 6 c.age 8.584784e-09 6.867827e-08
-# 3 hsize 5.452895e-05 4.362316e-04
+#$DEL_COV
+#[1] "age"
+#
+#$PVAL_Y
+#   NAME         pval       CORREC
+#7   sex 1.128332e-09 9.026654e-09
+#6 c.age 1.071949e-04 8.575591e-04
 
-sel_cov4 = select_var(data4,Y = "c.neti.bis",type_Y = "ORD",threshX = 0.90,threshY = 0.90,thresh_vif = 10); sel_cov4
+
+sel_cov4 = select_var(data4,Y = "c.neti.bis",type_Y = "ORD",threshX = 0.90,
+                      threshY = 0.90,thresh_vif = 10)
+sel_cov4
 # select_var function in progress. Please wait ... 
 # $Y
 # [1] "c.neti.bis"
@@ -151,36 +180,46 @@ sel_cov4 = select_var(data4,Y = "c.neti.bis",type_Y = "ORD",threshX = 0.90,thres
 # 4   sex 0.001008028 0.007056193
 # 3 c.age 0.001901266 0.013308862
 
-#--> The ouputs of the select_var() function for data3 and data4 suggests that the variables "sex" and "c.age" are good candidates
-#    for the data fusion
-#--> In data4, the variable "n.income" should be exclude of the analysis because of its too strong association with the outcome.
-#--> In data3, there is a risk of multicolinearity between the covariates "hsize5" and "hsize" and between "age" and "c.age".
-#    The function suggests to keep first the variables "c.age" and "sex" for the data fusion.
-#--> In data4, the variable n.income seems too close to the outcome of interest. The question about its maintenance for the rest of the study should be worth asked.
-#--> We notice that the covariates "c.age" and "sex" explain the outcomes similarly in the two databases.
+#--> The ouputs of the select_var() function for data3 and data4 suggests that 
+#    the variables "sex" and "c.age" are good candidates for the data fusion
+#--> In data4, the variable "n.income" should be exclude of the analysis because 
+#    of its too strong association with the outcome.
+#--> In data3, there is a risk of multicolinearity between the covariates 
+#    "hsize5" and "hsize" and between "age" and "c.age".
+#    The function suggests to keep first the variables "c.age" and "sex" for the
+#    data fusion.
+#--> In data4, the variable n.income seems too close to the outcome of interest. 
+#    The question about its maintenance for the rest of the study should be 
+#    worth asked.
+#--> We notice that the covariates "c.age" and "sex" explain the outcomes 
+#    similarly in the two databases.
 
 
-# Based on the previous results, we decide  to remove the covariate "age" from data3:
+# Based on the previous results, we decide  to remove the covariate "age" from 
+# data3:
 data3 = data3[,setdiff(colnames(data3),"age")]; names(data3)
-#[1] "area5"   "urb"     "hsize"   "hsize5"  "c.age"   "sex"     "marital" "c.neti" 
+# "area5"   "urb"     "hsize"   "hsize5"  "c.age"   "sex"     "marital" "c.neti" 
 
 
 # ... We also remove the covariate "n.income" and "age" from data4:
 data4 = data4[,setdiff(colnames(data4),c("n.income","age"))]; names(data4)
-#[1] "hsize5"     "c.age"      "sex"        "marital"    "edu7"       "ww"         "c.neti.bis"
+#"hsize5"    "c.age"    "sex"     "marital"  "edu7"    "ww"         "c.neti.bis"
 
 
 
 # III. Prepare database for OT algorithm with the remaining covariates
 #---------------------------------------------------------------------
 
-# Using the mergedbs() function (requires the function "compare_lists","transfo_targets",and "imput_cov")
+# Using the mergedbs() function (requires the function "compare_lists",
+# "transfo_targets",and "imput_cov")
 # Handle missing data by multiple imputation (MICE)
 # Stores all the information in a single database
 
 library(mice); library(plyr); library(missMDA)
 
-db_test  = merge_dbs(data3,data4,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",ordinal_DB1 = c(2,4,5,8), ordinal_DB2 = c(1,2,7), impute = "MICE",R_MICE = 3, seed_func = 4036)
+db_test  = merge_dbs(data3,data4,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",
+                     ordinal_DB1 = c(2,4,5,8), ordinal_DB2 = c(1,2,7), 
+                     impute = "MICE",R_MICE = 3, seed_func = 4036)
 # DBS MERGING in progress. Please wait ... 
 # Y1 
 # Y2 
@@ -221,37 +260,46 @@ summary(db_test$DB_READY)
 # IV. OT application on the remaining dataset
 #--------------------------------------------
 
-# The OT function requires the prior execution of: "inst","average_from_group_closest"
-
 library(rdist) 
 library(dplyr); library(ROI); library(ROI.plugin.glpk)
 library(ompr); library(ompr.roi)
 
 
-#----------------------------------------------------------------------------------------------------------
-# The OT function: Implementation of the optimal transportation algorithm for data integration
-#                  with or without relaxation of the constraints on marginal (OUTCOME and R-OUTCOME models)
-#----------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+# The OT function: Implementation of the optimal transportation algorithm for 
+#                  data integration with or without relaxation of the 
+#                  constraints on marginal (OUTCOME and R-OUTCOME models)
+#-------------------------------------------------------------------------------
 
 # This function require the functions:
 # --> "instance", 
-# --> "average_distance_to_closest": Compute the cost between pairs of outcomes as the average distance between
-#     covariations of individuals with these outcomes, but considering only the percent closest neighbors.
-# --> "individual_from_group_closest" (indiv_method option = "sequential"): Sequentially assign the modality of the individuals
-#     to that of the closest neighbor in the other base until the joint probability values are met.
-# --> "individual_from_group_optimal" (indiv_method option = "optimal"): Solve an optimization problem to get the individual
-#     transport that minimizes total distance while satisfying the joint probability computed by the model by group.
+# --> "average_distance_to_closest": Compute the cost between pairs of outcomes
+#     as the average distance between
+#     covariations of individuals with these outcomes, but considering only the 
+#     percent closest neighbors.
+# --> "individual_from_group_closest" (indiv_method option = "sequential"): 
+#     Sequentially assign the modality of the individuals to that of the closest
+#     neighbor in the other base until the joint probability values are met.
+# --> "individual_from_group_optimal" (indiv_method option = "optimal"): 
+#     Solve an optimization problem to get the individual transport that 
+#     minimizes total distance while satisfying the joint probability computed
+#     by the model by group.
 
 
 # ARGUMENTS:
 
-# percent_c   : Percent of closest neighbors taken in the computation of the costs
-# maxrelax    : Maximum percentage of deviation from expected probability masses (0 for the OUTCOME model, different for 0 for the R-OUTCOME model. 
+# percent_c   : Percent of closest neighbors taken in the computation of the 
+#               costs
+# maxrelax    : Maximum percentage of deviation from expected probability masses
+#              (0 for the OUTCOME model, different for 0 for the R-OUTCOME model 
 #               Please consult the corresponding article) for more details.
-# norm        : Distance chosen for calculate the distances between categorical covariates.Equal to O (by default) for the Manhattan distance,
-#               equal to 1 for the Euclidean distance or equal to 2 for the Hammind distance.
-# indiv_method: Specifies the method used to get individual transport from group joint probabilities ("sequential" or "optimal"). Please consult the
-#               corresponding article for more details 
+# norm        : Distance chosen for calculate the distances between categorical
+#               covariates.Equal to O (by default) for the Manhattan distance,
+#               equal to 1 for the Euclidean distance or equal to 2 for the 
+#               Hamming distance.
+# indiv_method: Specifies the method used to get individual transport from group
+#               joint probabilities ("sequential" or "optimal"). 
+#               Please consult the corresponding article for more details". 
 # full_disp   : If true, write the transported value of each individual;
 #               otherwise, juste write the number of missed transports
 # solver_disp : If false, do not display the outputs of the solver
@@ -260,11 +308,16 @@ library(ompr); library(ompr.roi)
 # OUTPUTS:
 
 # TIME_EXE   : running time of the function
-# TRANSPORT_A: Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of (YA,ZA)
-# TRANSPORT_B: Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of (YB,ZB)
-# estimatorZA: Estimators for the distributions of Z conditional to X and Y in base A 
-# estimatorYB: Estimators for the distributions of Y conditional to X and Z in base B
-# DATA1_OT   : 1st database (A here) with individual OT prediction for "c.neti.bis"
+# TRANSPORT_A: Cost matrix corresponding to an estimation (i.e gamma) to the 
+#              joint distribution of (YA,ZA)
+# TRANSPORT_B: Cost matrix corresponding to an estimation (i.e gamma) to the 
+#              joint distribution of (YB,ZB)
+# estimatorZA: Estimators for the distributions of Z conditional to X and Y in 
+#              base A 
+# estimatorYB: Estimators for the distributions of Y conditional to X and Z in
+#              base B
+# DATA1_OT   : 1st database (A here) with individual OT prediction for 
+#              "c.neti.bis"
 # DATA2_OT   : 2nd database (B here) with individual OT prediction for "c.neti"
 #---------------
 
@@ -272,7 +325,9 @@ library(ompr); library(ompr.roi)
 # Demo of an OUTCOME model (standard OT algorithm)
 #-------------------------------------------------
 
-try4      = OT(db_test$DB_READY, percent_c = 1, maxrelax = 0, norm = 1, indiv_method="sequential", full_disp = FALSE, solver_disp = FALSE)
+try4      = OT(db_test$DB_READY, percent_c = 1, maxrelax = 0, norm = 1, 
+               indiv_method="sequential", full_disp = FALSE, 
+               solver_disp = FALSE)
 summary(try4)
 #          Length    Class      Mode   
 # TIME_EXE       1   difftime   numeric
@@ -295,7 +350,8 @@ colnames(TRANSPORT_A)  = levels(db_test$DB_READY[,3]); TRANSPORT_A
 # (25,35]   0.00000000 0.0000000 0.08240741 0.0009259259
 # (35, Inf] 0.00000000 0.0000000 0.00000000 0.0462962963
 
-# The prediction provided with OT corresponds to the "OTpred" variable of the two datasets DATA1_OT and DATA2_OT
+# The prediction provided with OT corresponds to the "OTpred" variable of the 
+# two datasets DATA1_OT and DATA2_OT
 
 head(try4$DATA1_OT)
 #       DB       Y1   Y2    c.age hsize5 sex OTpred
@@ -318,34 +374,49 @@ head(try4$DATA2_OT)
 
 
 
-#----------------------------------------------------------------------------------------------------------
-# The OT_joint function: Model where we directly compute the distribution of the outcomes for each individual or for sets of indviduals 
-# that similar values of covariates
-#----------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+# The OT_joint function: Model where we directly compute the distribution of the 
+# outcomes for each individual or for sets of indviduals that similar values of 
+# covariates
+#-------------------------------------------------------------------------------
 
 # ARGUMENTS
 
-# aggregate_tol : Quantify how much individuals'covariates must be close for aggregation
-# norm          : 1 or 2 for entropy depending on the type of regularization chosen (see article for more details)
-# percent_clos  : Percent of closest neighbors taken into consideration in regularization
-# lambda_reg    : Coefficient measuring the importance of the regularization term (corresponds toR-JOINT model for a value other than 0)
-# full_disp     : A boolean. If TRUE, write the transported value of each individual; otherwise, juste write the number of missed transports
+# aggregate_tol : Quantify how much individuals'covariates must be close for 
+#                 aggregation
+# norm          : 1 or 2 for entropy depending on the type of regularization 
+#                 chosen (see article for more details)
+# percent_clos  : Percent of closest neighbors taken into consideration in 
+#                 regularization
+# lambda_reg    : Coefficient measuring the importance of the regularization 
+#                 term (corresponds toR-JOINT model for a value other than 0)
+# full_disp     : A boolean. If TRUE, write the transported value of each 
+#                 individual; otherwise, juste write the number of missed 
+#                 transports
 # solver_disp   : A boolean. If FALSE, do not display the outputs of the solver
 
 
 # OUTPUTS
 
 # TIME_EXE      : Running time of the function
-# GAMMA_A       : Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of (YA,ZA) 
-# GAMMA_B       : Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of (YB,ZB)
-# estimatorZA   : Estimators for the distributions of Z conditional to X and Y in base A 
-# estimatorYB   : Estimators for the distributions of Y conditional to X and Z in base B
-# DATA1_OT      : 1st database (A here) with individual OT prediction for "c.neti.bis"
-# DATA2_OT      : 2nd database (B here) with individual OT prediction for "c.neti"
+# GAMMA_A       : Cost matrix corresponding to an estimation (i.e gamma) to the 
+#                 joint distribution of (YA,ZA) 
+# GAMMA_B       : Cost matrix corresponding to an estimation (i.e gamma) to the 
+#                 joint distribution of (YB,ZB)
+# estimatorZA   : Estimators for the distributions of Z conditional to X and Y 
+#                 in base A 
+# estimatorYB   : Estimators for the distributions of Y conditional to X and Z 
+#                 in base B
+# DATA1_OT      : 1st database (A here) with individual OT prediction for 
+#                 "c.neti.bis"
+# DATA2_OT      : 2nd database (B here) with individual OT prediction for 
+#                 "c.neti"
 #-----------
 
 # A demo
-try5 = OT_joint(db_test$DB_READY,maxrelax = 0.0, lambda_reg = 0.0, percent_clos = 0.2, norm = 1, aggregate_tol = 0.5, full_disp = FALSE, solver_disp = FALSE)
+try5 = OT_joint(db_test$DB_READY,maxrelax = 0.0, lambda_reg = 0.0, 
+                percent_clos = 0.2, norm = 1, aggregate_tol = 0.5, 
+                full_disp = FALSE, solver_disp = FALSE)
 #--------------------------------------- 
 #  AGGREGATE INDIVIDUALS WRT COVARIATES 
 #  Reg. weight           =   0 
@@ -366,14 +437,17 @@ try5 = OT_joint(db_test$DB_READY,maxrelax = 0.0, lambda_reg = 0.0, percent_clos 
 
 
 
-# V. ASSESS THE PROXIMITY BETWEEN c.neti and c.neti.bis (predicted) BY GROUPING THE MODALITIES OF c.neti 
-#-------------------------------------------------------------------------------------------------------
+# V. ASSESS THE PROXIMITY BETWEEN c.neti and c.neti.bis (predicted) BY GROUPING
+#    THE MODALITIES OF c.neti 
+#-------------------------------------------------------------------------------
 
-# The function error_group() requires the prior execution of the following functions: 
-# family_part(), count_pos(); find_coord(), and try_group()
+# The function error_group() requires the prior execution of the following  
+# functions: family_part(), count_pos(); find_coord(), and try_group()
 
-# Suppose that Y and Z are 2 categorical variables (ordered or not) where the number of levels of Y i bigger than the number of levels of Z
-# The error_group() function researches the optimal grouping of modalities of Y to approach at best the distribution of Z to
+# Suppose that Y and Z are 2 categorical variables (ordered or not) where the 
+# number of levels of Y i bigger than the number of levels of Z
+# The error_group() function researches the optimal grouping of modalities of Y 
+# to approach at best the distribution of Z to
 # give an assessment of the proximity between the two encodings
 
 # Demo on database A only:
@@ -401,7 +475,8 @@ cc= error_group(Ypred,try4$DATA1_OT$Y1,ord=TRUE)
 # 19 (-Inf,0]/(0,10]/(10,15] (15,20]/(20,25] (25,35] (35, Inf]       77.0
 # 20 (-Inf,0]/(0,10]/(10,15]/(15,20] (20,25] (25,35] (35, Inf]       78.7
 
-#--> On database A, by grouping the modalities of the c.neti variable (7 levels) like 1 (best grouping) in 4 modalities (number of modalities of c.neti.bis)
+#--> On database A, by grouping the modalities of the c.neti variable (7 levels)
+#    like 1 (best grouping) in 4 modalities (number of modalities of c.neti.bis)
 #    the dissimilarity rate between the 2 variables is less than 8%.
 
 
