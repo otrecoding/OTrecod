@@ -177,35 +177,32 @@ library(ompr); library(ompr.roi)
 Implementation of the optimal transportation algorithm for data integration 
 with or without relaxation of the constraints on marginal (OUTCOME and R-OUTCOME models) 
 
-This function require the functions: 
-- "instance",  
-- "average_distance_to_closest": Compute the cost between pairs of outcomes as the average distance between 
-  covariations of individuals with these outcomes, but considering only the percent closest neighbors. 
-- "individual_from_group_closest" (indiv_method option = "sequential"): Sequentially assign the modality of the individuals 
-  to that of the closest neighbor in the other base until the joint probability values are met. 
-- "individual_from_group_optimal" (indiv_method option = "optimal"): Solve an optimization problem to get the individual 
-    transport that minimizes total distance while satisfying the joint probability computed by the model by group. 
+This function require the functions:
 
+- `instance`,  
+- `average_distance_to_closest`: Compute the cost between pairs of outcomes as the average distance between covariations of individuals with these outcomes, but considering only the percent closest neighbors. 
+- `individual_from_group_closest` (indiv_method option = "sequential"): Sequentially assign the modality of the individuals to that of the closest neighbor in the other base until the joint probability values are met. 
+- `individual_from_group_optimal` (indiv_method option = "optimal"): Solve an optimization problem to get the individual transport that minimizes total distance while satisfying the joint probability computed by the model by group. 
 
 # ARGUMENTS: 
 
-- percent_c   : Percent of closest neighbors taken in the computation of the costs 
-- maxrelax    : Maximum percentage of deviation from expected probability masses (0 for the OUTCOME model, different for 0 for the R-OUTCOME model. Please consult the corresponding article) for more details. 
-- norm        : Distance chosen for calculate the distances between categorical covariates.Equal to O (by default) for the Manhattan distance, equal to 1 for the Euclidean distance or equal to 2 for the Hammind distance. 
-- indiv_method: Specifies the method used to get individual transport from group joint probabilities ("sequential" or "optimal"). Please consult the corresponding article for more details  
-- full_disp   : If true, write the transported value of each individual; otherwise, juste write the number of missed transports 
-- solver_disp : If false, do not display the outputs of the solver 
+- `percent_c`   : Percent of closest neighbors taken in the computation of the costs 
+- `maxrelax`    : Maximum percentage of deviation from expected probability masses (0 for the OUTCOME model, different for 0 for the R-OUTCOME model. Please consult the corresponding article) for more details. 
+- `norm`        : Distance chosen for calculate the distances between categorical covariates.Equal to O (by default) for the Manhattan distance, equal to 1 for the Euclidean distance or equal to 2 for the Hammind distance. 
+- `indiv_method` : Specifies the method used to get individual transport from group joint probabilities ("sequential" or "optimal"). Please consult the corresponding article for more details  
+- `full_disp`   : If true, write the transported value of each individual; otherwise, juste write the number of missed transports 
+- `solver_disp` : If false, do not display the outputs of the solver 
 
 
 # OUTPUTS: 
 
-- TIME_EXE   : running time of the function 
-- TRANSPORT_A: Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of (YA,ZA) 
-- TRANSPORT_B: Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of (YB,ZB) 
-- estimatorZA: Estimators for the distributions of Z conditional to X and Y in base A  
-- estimatorYB: Estimators for the distributions of Y conditional to X and Z in base B 
-- DATA1_OT   : 1st database (A here) with individual OT prediction for "c.neti.bis" 
-- DATA2_OT   : 2nd database (B here) with individual OT prediction for "c.neti" 
+- `TIME_EXE`    : running time of the function 
+- `TRANSPORT_A` : Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of (YA,ZA) 
+- `TRANSPORT_B` : Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of (YB,ZB) 
+- `estimatorZA` : Estimators for the distributions of Z conditional to X and Y in base A  
+- `estimatorYB` : Estimators for the distributions of Y conditional to X and Z in base B 
+- `DATA1_OT`    : 1st database (A here) with individual OT prediction for "c.neti.bis" 
+- `DATA2_OT`    : 2nd database (B here) with individual OT prediction for "c.neti" 
 
 
 # Demo of an OUTCOME model (standard OT algorithm) 
@@ -238,23 +235,23 @@ that similar values of covariates
 
 ## ARGUMENTS 
 
-- aggregate_tol : Quantify how much individuals'covariates must be close for aggregation 
-- norm          : 1 or 2 for entropy depending on the type of regularization chosen (see article for more details) 
-- percent_clos  : Percent of closest neighbors taken into consideration in regularization 
-- lambda_reg    : Coefficient measuring the importance of the regularization term (corresponds toR-JOINT model for a value other than 0) 
-- full_disp     : A boolean. If TRUE, write the transported value of each individual; otherwise, juste write the number of missed transports 
-- solver_disp   : A boolean. If FALSE, do not display the outputs of the solver 
+- `aggregate_tol` : Quantify how much individuals'covariates must be close for aggregation 
+- `norm`          : 1 or 2 for entropy depending on the type of regularization chosen (see article for more details) 
+- `percent_clos`  : Percent of closest neighbors taken into consideration in regularization 
+- `lambda_reg`    : Coefficient measuring the importance of the regularization term (corresponds toR-JOINT model for a value other than 0) 
+- `full_disp`     : A boolean. If TRUE, write the transported value of each individual; otherwise, juste write the number of missed transports 
+- `solver_disp`   : A boolean. If FALSE, do not display the outputs of the solver 
 
 
 # OUTPUTS 
 
-- TIME_EXE      : Running time of the function 
-- GAMMA_A       : Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of (YA,ZA)  
-- GAMMA_B       : Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of (YB,ZB) 
-- estimatorZA   : Estimators for the distributions of Z conditional to X and Y in base A  
-- estimatorYB   : Estimators for the distributions of Y conditional to X and Z in base B 
-- DATA1_OT      : 1st database (A here) with individual OT prediction for "c.neti.bis" 
-- DATA2_OT      : 2nd database (B here) with individual OT prediction for "c.neti" 
+- `TIME_EXE`      : Running time of the function 
+- `GAMMA_A`       : Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of (YA,ZA)  
+- `GAMMA_B`       : Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of (YB,ZB) 
+- `estimatorZA`   : Estimators for the distributions of Z conditional to X and Y in base A  
+- `estimatorYB`   : Estimators for the distributions of Y conditional to X and Z in base B 
+- `DATA1_OT`      : 1st database (A here) with individual OT prediction for "c.neti.bis" 
+- `DATA2_OT`      : 2nd database (B here) with individual OT prediction for "c.neti" 
 
 # A demo 
 ```{r}
