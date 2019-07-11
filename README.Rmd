@@ -31,7 +31,7 @@ The goal of OTrecod is to recod data using optimal transport theory.
 
 ## Installation
 
-You can install the released version of OTrecod from [CRAN](https://CRAN.R-project.org) with:
+You can install OTrecod with:
 
 ```r
 # Install release version from CRAN
