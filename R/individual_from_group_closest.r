@@ -1,13 +1,12 @@
 
 #' Title
 #'
-#' @param inst 
-#' @param jointprobaA 
-#' @param jointprobaB 
-#' @param percent_closest 
+#' @param inst todo list
+#' @param jointprobaA todo list
+#' @param jointprobaB todo list
+#' @param percent_closest todo list
 #'
-#' @return list
-#' @export
+#' @return todo list
 #'
 # @examples
 individual_from_group_closest=function(inst, jointprobaA, jointprobaB, percent_closest=1.0){

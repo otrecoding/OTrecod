@@ -8,19 +8,19 @@ OT(datab, percent_c = 1, maxrelax = 0, norm = 1, indiv_method,
   full_disp = FALSE, solver_disp = FALSE)
 }
 \arguments{
-\item{datab}{}
+\item{datab}{todo list}
 
-\item{percent_c}{}
+\item{percent_c}{todo list}
 
-\item{maxrelax}{}
+\item{maxrelax}{todo list}
 
-\item{norm}{}
+\item{norm}{todo list}
 
-\item{indiv_method}{}
+\item{indiv_method}{todo list}
 
-\item{full_disp}{}
+\item{full_disp}{todo list}
 
-\item{solver_disp}{}
+\item{solver_disp}{todo list}
 }
 \value{
 list with time and solution

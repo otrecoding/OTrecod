@@ -1,9 +1,9 @@
 #' Instance(data_file,norme)
 #'
-#' @param data_file 
-#' @param norme 
+#' @param data_file todo list
+#' @param norme todo list
 #'
-#' @return list
+#' @return todo list
 #' @export
 #'
 # @examples
@@ -74,21 +74,21 @@ Instance  = function(data_file,norme){
     #  DA = pairwise(Cityblock(), a, a, dims=2)
     #  DB = pairwise(Cityblock(), b, b, dims=2)
     
-    D  = cdist(a,b,"manhattan")
-    DA = cdist(a,a,"manhattan")
-    DB = cdist(b,b,"manhattan")
+    D  = rdist::cdist(a,b,"manhattan")
+    DA = rdist::cdist(a,a,"manhattan")
+    DB = rdist::cdist(b,b,"manhattan")
     
   } else if (norme == 2){
     
-    D  = cdist(a,b,"euclidean")
-    DA = cdist(a,a,"euclidean")
-    DB = cdist(b,b,"euclidean")
+    D  = rdist::cdist(a,b,"euclidean")
+    DA = rdist::cdist(a,a,"euclidean")
+    DB = rdist::cdist(b,b,"euclidean")
     
   } else if (norme == 0){
     
-    D  = cdist(a,b,"hamming")
-    DA = cdist(a,a,"hamming")
-    DB = cdist(b,b,"hamming")
+    D  = rdist::cdist(a,b,"hamming")
+    DA = rdist::cdist(a,a,"hamming")
+    DB = rdist::cdist(b,b,"hamming")
     
   }
   
@@ -133,20 +133,20 @@ Instance  = function(data_file,norme){
       # distA = pairwise(Cityblock(), x, t(Xobserv[A,]), dims=2)
       # distB = pairwise(Cityblock(), x, t(Xobserv[B + nA,]), dims=2)
       
-      distA  = cdist(x,Xobserv[A,],"manhattan")
-      distB  = cdist(x,Xobserv[B + nA,],"manhattan")
+      distA  = rdist::cdist(x,Xobserv[A,],"manhattan")
+      distB  = rdist::cdist(x,Xobserv[B + nA,],"manhattan")
       
       
       
     } else if (norme == 2){
       
-      distA  = cdist(x,Xobserv[A,],"euclidean")
-      distB  = cdist(x,Xobserv[B + nA,],"euclidean")
+      distA  = rdist::cdist(x,Xobserv[A,],"euclidean")
+      distB  = rdist::cdist(x,Xobserv[B + nA,],"euclidean")
       
     } else if (norme == 0){
       
-      distA  = cdist(x,Xobserv[A,],"hamming")
-      distB  = cdist(x,Xobserv[B + nA,],"hamming")
+      distA  = rdist::cdist(x,Xobserv[A,],"hamming")
+      distB  = rdist::cdist(x,Xobserv[B + nA,],"hamming")
       
     }
     

@@ -3,8 +3,8 @@
 #'
 #' Function that gives the power set of a set
 #'
-#' @param n An integer. The cardinal of the set
-#' @param ordinal. A boolean. If TRUE the power set is only composed of subsets of consecutive elements, FALSE (by default) otherwise
+#' @param n integer. The cardinal of the set
+#' @param ordinal boolean. If TRUE the power set is only composed of subsets of consecutive elements, FALSE (by default) otherwise
 #'
 #' @return A list of (2^n -1) subsets (The empty set is exclude)
 #' @export
@@ -13,7 +13,7 @@
 #' fam  =  family_part(4)
 #' fam2 =  family_part(4,ordinal = TRUE)
 
-family_part = function(n,ordinal = FALSE){
+family_part = function(n, ordinal = FALSE){
 
   E        = 1:n
 

@@ -36,7 +36,9 @@ A function which performs imputations on variables using MICE (Van Buuren's Mult
 (missMDA and mice packages required)
 }
 \examples{
-# Require samp.A database from the StatMatch package. c.neti and c.neti.bis coded voluntarily in 2 distinct encodings.
+# Require samp.A database from the StatMatch package.
+# c.neti and c.neti.bis coded voluntarily in 2 distinct
+# encodings.
 library(StatMatch)
 library(mice)
 library(missMDA)
@@ -45,8 +47,8 @@ samp.A = samp.A[,c(1:11,13,12)]
 c.neti            = as.numeric(samp.A$c.neti)
 
 samp.A$c.neti.bis = as.factor(ifelse(c.neti \%in\% c(1,2),1,
-                                    ifelse(c.neti \%in\% c(3,4),2,
-                                           ifelse(c.neti \%in\% c(5,6),3,4))))
+                             ifelse(c.neti \%in\% c(3,4),2,
+                             ifelse(c.neti \%in\% c(5,6),3,4))))
 data1 = samp.A[1:1000,c(2:9,13)]
 data2 =samp.A[1001:nrow(samp.A),c(5:11,12,14)]
 
@@ -69,11 +71,16 @@ for (j in 1:ncol(DB)){
 }
 
 set.seed(4036); data3 = add_NA(data1,10); data4 = add_NA(data2,10)
-soluc2  = merge_dbs(data3,data4,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "NO")
+soluc2  = merge_dbs(data3,data4,
+NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",
+ordinal_DB1 = c(2,4,6,9),
+ordinal_DB2 = c(1,3,9), impute = "NO")
 
-imput_mice = imput_cov(soluc2$DB_READY,indcol = 4:6,R_mice = 3,meth = c("pmm","polr","logreg"))
+imput_mice = imput_cov(soluc2$DB_READY,indcol = 4:6,
+                        R_mice = 3,meth = c("pmm","polr","logreg"))
 summary(imput_mice)
-imput_famd = imput_cov(soluc2$DB_READY,indcol = 4:6,meth = c("pmm","polr","logreg"),missMDA = TRUE)
+imput_famd = imput_cov(soluc2$DB_READY,indcol = 4:6,
+                       meth = c("pmm","polr","logreg"),missMDA = TRUE)
 summary(imput_famd)
 
 }

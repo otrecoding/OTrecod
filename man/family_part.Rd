@@ -7,9 +7,9 @@
 family_part(n, ordinal = FALSE)
 }
 \arguments{
-\item{n}{An integer. The cardinal of the set}
+\item{n}{integer. The cardinal of the set}
 
-\item{ordinal.}{A boolean. If TRUE the power set is only composed of subsets of consecutive elements, FALSE (by default) otherwise}
+\item{ordinal}{boolean. If TRUE the power set is only composed of subsets of consecutive elements, FALSE (by default) otherwise}
 }
 \value{
 A list of (2^n -1) subsets (The empty set is exclude)

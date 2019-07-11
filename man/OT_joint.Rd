@@ -16,21 +16,21 @@ OT_joint(datab, maxrelax = 0, lambda_reg = 0, percent_clos = 0.2,
   solver_disp = FALSE)
 }
 \arguments{
-\item{datab}{}
+\item{datab}{todo list}
 
-\item{maxrelax}{}
+\item{maxrelax}{todo list}
 
-\item{lambda_reg}{}
+\item{lambda_reg}{todo list}
 
-\item{percent_clos}{}
+\item{percent_clos}{todo list}
 
-\item{norm}{}
+\item{norm}{todo list}
 
-\item{aggregate_tol}{}
+\item{aggregate_tol}{todo list}
 
-\item{full_disp}{}
+\item{full_disp}{todo list}
 
-\item{solver_disp}{}
+\item{solver_disp}{todo list}
 }
 \value{
 List with time and solution

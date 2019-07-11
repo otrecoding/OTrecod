@@ -36,32 +36,34 @@ merge_dbs(DB1, DB2, NAME_Y1, NAME_Y2, order_levels_Y1 = levels(DB1[,
 }
 \value{
 A list containing 10 elements (11 if impute = "MICE"):
-
-        DB_READY The database matched from the 2 initial BDDs with common covariates and imputed or not accordind to the impute option.
-        Y1_LEVELS Levels retained for the target variable in the DB1.
-        Y2_LEVELS Levels retained for the target variable in the DB2.
-        REMOVE1 Labels of deleted covariates because of their different types from DB1 to DB2
-        REMOVE2 Removed factor(s) because of their different levels from DB1 to DB2
-        REMAINING_VAR Labels of the covaraites remained for the fusion with OT algorithm
-        IMPUTE_TYPE Method chosen to handle missing data in covariates
-        MICE_DETAILS A list containing the details of the MICE imputation. Databases imputed for DB1 and DB2 according to the number of mutliple imputation selected (Only if impute = "MICE").
-        DB1_RAW A data.frame corresponding to the 1st raw database
-        DB2_RAW A data.frame corresponding to the 2nd raw database
-        SEED An integer used as argument by the set.seed() for offsetting the random number generator (random selection by default)
+\itemize{
+    \item DB_READY The database matched from the 2 initial BDDs with common covariates and imputed or not accordind to the impute option.
+    \item Y1_LEVELS Levels retained for the target variable in the DB1.
+    \item Y2_LEVELS Levels retained for the target variable in the DB2.
+    \item REMOVE1 Labels of deleted covariates because of their different types from DB1 to DB2
+    \item REMOVE2 Removed factor(s) because of their different levels from DB1 to DB2
+    \item REMAINING_VAR Labels of the covaraites remained for the fusion with OT algorithm
+    \item IMPUTE_TYPE Method chosen to handle missing data in covariates
+    \item MICE_DETAILS A list containing the details of the MICE imputation. Databases imputed for DB1 and DB2 according to the number of mutliple imputation selected (Only if impute = "MICE").
+    \item DB1_RAW A data.frame corresponding to the 1st raw database
+    \item DB2_RAW A data.frame corresponding to the 2nd raw database
+    \item SEED An integer used as argument by the set.seed() for offsetting the random number generator (random selection by default)
+}
 }
 \description{
 A function which merge vertically two databases by selecting the common covariates with a variable Y encoded
 }
 \examples{
-# Require samp.A database from the StatMatch package. c.neti and c.neti.bis coded voluntarily in 2 distinct encodings.
+# Require samp.A database from the StatMatch package.
+# c.neti and c.neti.bis coded voluntarily in 2 distinct encodings.
 library(StatMatch)
 data(samp.A)
 samp.A = samp.A[,c(1:11,13,12)]
 c.neti            = as.numeric(samp.A$c.neti)
 
 samp.A$c.neti.bis = as.factor(ifelse(c.neti \%in\% c(1,2),1,
-                                    ifelse(c.neti \%in\% c(3,4),2,
-                                           ifelse(c.neti \%in\% c(5,6),3,4))))
+                             ifelse(c.neti \%in\% c(3,4),2,
+                             ifelse(c.neti \%in\% c(5,6),3,4))))
 data1 = samp.A[1:1000,c(2:9,13)]
 data2 =samp.A[1001:nrow(samp.A),c(5:11,12,14)]
 
@@ -84,12 +86,32 @@ for (j in 1:ncol(DB)){
 }
 
 set.seed(4036); data3 = add_NA(data1,10); data4 = add_NA(data2,10)
-soluc1  = merge_dbs(data3,data4,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "MICE",R_MICE = 2, seed_func = 4036)
-soluc2  = merge_dbs(data3,data4,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "NO")
-soluc3  = merge_dbs(data3,data4,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "CC")
-soluc4  = merge_dbs(data3,data4,"c.neti","c.neti.bis", order_levels_Y1 = NULL, order_levels_Y2 = NULL, ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "MDA", NCP_MDA = 3)
-soluc5  = merge_dbs(data1,data2,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "MICE")
-soluc6  = merge_dbs(data3,data4,NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",order_levels_Y2 = c("4","1","3","2"),ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9), impute = "NO")
+soluc1  = merge_dbs(data3,data4,
+NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",
+ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9),
+impute = "MICE",R_MICE = 2, seed_func = 4036)
+soluc2  = merge_dbs(data3,data4,
+NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",
+ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9),
+impute = "NO")
+soluc3  = merge_dbs(data3,data4,
+NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",
+ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9),
+impute = "CC")
+soluc4  = merge_dbs(data3,data4,
+"c.neti","c.neti.bis",
+order_levels_Y1 = NULL, order_levels_Y2 = NULL,
+ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9),
+impute = "MDA", NCP_MDA = 3)
+soluc5  = merge_dbs(data1,data2,
+NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",
+ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9),
+impute = "MICE")
+soluc6  = merge_dbs(data3,data4,
+NAME_Y1 = "c.neti",NAME_Y2 = "c.neti.bis",
+order_levels_Y2 = c("4","1","3","2"),
+ordinal_DB1 = c(2,4,6,9), ordinal_DB2 = c(1,3,9),
+impute = "NO")
 
 
 }

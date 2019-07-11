@@ -1,15 +1,24 @@
 
+utils::suppressForeignCheck(c("transport",
+                              "deviationA",
+                              "absdevA",
+                              "deviationB",
+                              "absdevB"))
+
 #' OT(datab)
 #'
-#' @param datab 
-#' @param percent_c 
-#' @param maxrelax 
-#' @param norm 
-#' @param indiv_method 
-#' @param full_disp 
-#' @param solver_disp 
+#' @param datab todo list
+#' @param percent_c todo list
+#' @param maxrelax todo list
+#' @param norm todo list
+#' @param indiv_method todo list
+#' @param full_disp todo list
+#' @param solver_disp todo list
 #'
 #' @return list with time and solution
+#' 
+#' @importFrom ompr sum_expr
+#' @importFrom ompr.roi with_ROI
 #' @export
 #'
 # @examples
@@ -74,28 +83,28 @@ OT = function(datab, percent_c = 1.0, maxrelax=0, norm = 1, indiv_method, full_d
     Min = c(as.numeric(C),rep(0,2*length(Y)+2*length(Z)))
     
     
-    result = MIPModel() %>%
-      add_variable(transport[y,z],y = Y, z= Z,type = "continuous") %>%
-      add_variable(deviationA[y], y = Y, type = "continuous") %>%
-      add_variable(absdevA[y], y = Y, type = "continuous") %>%
-      add_variable(deviationB[z], z = Z, type = "continuous") %>%
-      add_variable(absdevB[z], z = Z, type = "continuous") %>%
-      set_objective(sum_expr(C[y,z]*transport[y,z],y = Y,z=Z) , "min") %>%
-      add_constraint(sum_expr(transport[y,z], z = Z) == freqY[y] + deviationA[y], y =Y) %>%
-      add_constraint(sum_expr(transport[y,z],y = Y) == freqZ[z] + deviationB[z], z = Z) %>%
-      add_constraint(sum_expr(deviationA[y],y = Y)== 0) %>%
-      add_constraint(sum_expr(deviationB[z],z = Z)== 0) %>%
-      add_constraint(deviationB[z]<= absdevB[z], z = Z) %>%
-      add_constraint(deviationB[z]>= -absdevB[z], z = Z) %>%
-      add_constraint(sum_expr(absdevB[z],z=Z)<= maxrelax/2.0) %>%
-      add_constraint(deviationA[y] <= absdevA[y],y =Y) %>%
-      add_constraint(deviationA[y] >= -absdevA[y],y =Y) %>%
-      add_constraint(sum_expr(absdevA[y],y = Y)<= maxrelax/2.0) %>%
-      solve_model(with_ROI(solver = "glpk"))
+    result = ompr::MIPModel() %>%
+      ompr::add_variable(transport[y,z],y = Y, z= Z,type = "continuous") %>%
+      ompr::add_variable(deviationA[y], y = Y, type = "continuous") %>%
+      ompr::add_variable(absdevA[y], y = Y, type = "continuous") %>%
+      ompr::add_variable(deviationB[z], z = Z, type = "continuous") %>%
+      ompr::add_variable(absdevB[z], z = Z, type = "continuous") %>%
+      ompr::set_objective(sum_expr(C[y,z]*transport[y,z],y = Y,z=Z) , "min") %>%
+      ompr::add_constraint(sum_expr(transport[y,z], z = Z) == freqY[y] + deviationA[y], y =Y) %>%
+      ompr::add_constraint(sum_expr(transport[y,z],y = Y) == freqZ[z] + deviationB[z], z = Z) %>%
+      ompr::add_constraint(sum_expr(deviationA[y],y = Y)== 0) %>%
+      ompr::add_constraint(sum_expr(deviationB[z],z = Z)== 0) %>%
+      ompr::add_constraint(deviationB[z]<= absdevB[z], z = Z) %>%
+      ompr::add_constraint(deviationB[z]>= -absdevB[z], z = Z) %>%
+      ompr::add_constraint(sum_expr(absdevB[z],z=Z)<= maxrelax/2.0) %>%
+      ompr::add_constraint(deviationA[y] <= absdevA[y],y =Y) %>%
+      ompr::add_constraint(deviationA[y] >= -absdevA[y],y =Y) %>%
+      ompr::add_constraint(sum_expr(absdevA[y],y = Y)<= maxrelax/2.0) %>%
+      ompr::solve_model(with_ROI(solver = "glpk"))
     
     # Solve the problem
     
-    solution       = get_solution(result, transport[y,z]) 
+    solution       = ompr::get_solution(result, transport[y,z]) 
     
     # Extract the values of the solution
     
@@ -116,19 +125,19 @@ OT = function(datab, percent_c = 1.0, maxrelax=0, norm = 1, indiv_method, full_d
       b2[z]= sum(stc_sum2)}
     
     result <-  MIPModel() %>%
-      add_variable(transportA[y,z],y = Y, z= Z,type = "continuous",lb=0) %>%
-      add_variable(deviationB[z], z = Z, type = "continuous") %>%
-      add_variable(absdevB[z], z = Z, type = "continuous",lb=0) %>%
-      set_objective(sum_expr(C[y,z]*transportA[y,z],y = Y,z=Z) , "min") %>%
-      add_constraint(sum_expr(transportA[y,z], z = Z) == freqY[y], y =Y) %>%
-      add_constraint(sum_expr(transportA[y,z],y = Y) - deviationB[z] == b2[z] , z = Z) %>%
-      add_constraint(sum_expr(deviationB[z],z = Z)== 0) %>%
-      add_constraint(deviationB[z]<= absdevB[z], z = Z) %>%
-      add_constraint(deviationB[z]>= -absdevB[z], z = Z) %>%
-      add_constraint(sum_expr(absdevB[z],z=Z)<= maxrelax/2.0) %>%
-      solve_model(with_ROI(solver = "glpk"))
+      ompr::add_variable(transportA[y,z],y = Y, z= Z,type = "continuous",lb=0) %>%
+      ompr::add_variable(deviationB[z], z = Z, type = "continuous") %>%
+      ompr::add_variable(absdevB[z], z = Z, type = "continuous",lb=0) %>%
+      ompr::set_objective(sum_expr(C[y,z]*transportA[y,z],y = Y,z=Z) , "min") %>%
+      ompr::add_constraint(sum_expr(transportA[y,z], z = Z) == freqY[y], y =Y) %>%
+      ompr::add_constraint(sum_expr(transportA[y,z],y = Y) - deviationB[z] == b2[z] , z = Z) %>%
+      ompr::add_constraint(sum_expr(deviationB[z],z = Z)== 0) %>%
+      ompr::add_constraint(deviationB[z]<= absdevB[z], z = Z) %>%
+      ompr::add_constraint(deviationB[z]>= -absdevB[z], z = Z) %>%
+      ompr::add_constraint(sum_expr(absdevB[z],z=Z)<= maxrelax/2.0) %>%
+      ompr::solve_model(with_ROI(solver = "glpk"))
     
-    solution <- get_solution(result, transportA[y,z]) 
+    solution <- ompr::get_solution(result, transportA[y,z]) 
     transportA_val = matrix(solution$value, length(Y),length(Z))
     
     b1 = numeric(length(Y))
@@ -142,19 +151,19 @@ OT = function(datab, percent_c = 1.0, maxrelax=0, norm = 1, indiv_method, full_d
       b1[y]= sum(stc_sum2)}
     
     result <-  MIPModel() %>%
-      add_variable(transportB[y,z],y = Y, z= Z,type = "continuous",lb=0) %>%
-      add_variable(deviationA[y], y = Y, type = "continuous") %>%
-      add_variable(absdevA[y], y = Y, type = "continuous",lb=0) %>%
-      set_objective(sum_expr(C[y,z]*transportB[y,z],y = Y,z=Z) , "min") %>%
-      add_constraint(sum_expr(transportB[y,z], z = Z) - deviationA[y] == b1[y], y =Y) %>%
-      add_constraint(sum_expr(transportB[y,z],y = Y) == freqZ[z], z = Z) %>%
-      add_constraint(sum_expr(deviationA[y],y = Y)== 0) %>%
-      add_constraint(deviationA[y] <= absdevA[y],y =Y) %>%
-      add_constraint(deviationA[y] >= -absdevA[y],y =Y) %>%
-      add_constraint(sum_expr(absdevA[y],y = Y)<= maxrelax/2.0) %>%
-      solve_model(with_ROI(solver = "glpk"))
+      ompr::add_variable(transportB[y,z],y = Y, z= Z,type = "continuous",lb=0) %>%
+      ompr::add_variable(deviationA[y], y = Y, type = "continuous") %>%
+      ompr::add_variable(absdevA[y], y = Y, type = "continuous",lb=0) %>%
+      ompr::set_objective(sum_expr(C[y,z]*transportB[y,z],y = Y,z=Z) , "min") %>%
+      ompr::add_constraint(sum_expr(transportB[y,z], z = Z) - deviationA[y] == b1[y], y =Y) %>%
+      ompr::add_constraint(sum_expr(transportB[y,z],y = Y) == freqZ[z], z = Z) %>%
+      ompr::add_constraint(sum_expr(deviationA[y],y = Y)== 0) %>%
+      ompr::add_constraint(deviationA[y] <= absdevA[y],y =Y) %>%
+      ompr::add_constraint(deviationA[y] >= -absdevA[y],y =Y) %>%
+      ompr::add_constraint(sum_expr(absdevA[y],y = Y)<= maxrelax/2.0) %>%
+      ompr::solve_model(with_ROI(solver = "glpk"))
     
-    solution <- get_solution(result, transportB[y,z]) 
+    solution <- ompr::get_solution(result, transportB[y,z]) 
     transportB_val = matrix(solution$value, length(Y),length(Z))
     
   }
