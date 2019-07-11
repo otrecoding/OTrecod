@@ -17,6 +17,8 @@
 #'         VIF_PB 
 #'         cor_X A table of variables which are considered too highly correlated (Spearson coefficient) with other covariates
 #' @export
+#' 
+#' @importFrom dplyr %>%
 #'
 #' @examples
 #' library(StatMatch)
@@ -50,12 +52,12 @@ select_var = function(databa,
   indY = (1:ncol(databa))[colnames(databa) == Y]
   
   datababis = databa[,-indY]
-  model1  = lm(databa[,Y] ~.,data = datababis)
+  model1  = stats::lm(databa[,Y] ~.,data = datababis)
   vifmod  = sort(car::vif(model1),decreasing = TRUE)
   vif_pb  = vifmod[vifmod > thresh_vif]
   
   
-  cor_mat = cor(na.omit(databa),method = "spearman")
+  cor_mat = stats::cor(stats::na.omit(databa),method = "spearman")
   diag(cor_mat) = 0
   # Y        = "c.neti"
   cor_Y    = sort(round(cor_mat[,Y],3),decreasing = TRUE)
@@ -79,8 +81,8 @@ select_var = function(databa,
   dat3            = dat1
   dat3[,indouble] = apply(dat3[,indouble],2,scale)
   dat3[,indfactor]= apply(dat3[,indfactor],2,as.character)
-  dat3            = na.omit(dat3)
-  dat1            = na.omit(dat1)
+  dat3            = stats::na.omit(dat3)
+  dat1            = stats::na.omit(dat1)
   
   ind_new   = (1:ncol(dat3))[colnames(dat3) %in% setdiff(names(dat3),c(names(cor_Y),Y))] 
   names_new = names(dat3)[colnames(dat3) %in% setdiff(names(dat3),c(names(cor_Y),Y))] 
@@ -121,8 +123,8 @@ select_var = function(databa,
     
     for (j in 1:length(ind_new)){
       
-      bin_mod   = glm(dat1[,Y] ~ dat3[,ind_new[j]],data=dat3,family = binomial(link="logit"))
-      pval[j]   = 1-pchisq(bin_mod$null.deviance-bin_mod$deviance, bin_mod$df.null-bin_mod$df.residual) 
+      bin_mod   = stats::glm(dat1[,Y] ~ dat3[,ind_new[j]],data=dat3,family = stats::binomial(link="logit"))
+      pval[j]   = 1-stats::pchisq(bin_mod$null.deviance-bin_mod$deviance, bin_mod$df.null-bin_mod$df.residual) 
       
     }
     
@@ -130,7 +132,7 @@ select_var = function(databa,
   
   select_X        = data.frame(NAME = names_new,pval)
   select_X        = select_X[sort.list(select_X$pval,decreasing = FALSE),]
-  select_X$CORREC = p.adjust(select_X$pval,method = "bonferroni")
+  select_X$CORREC = stats::p.adjust(select_X$pval,method = "bonferroni")
   
   select_X        = select_X [select_X$CORREC < 0.05,]
   

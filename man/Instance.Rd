@@ -7,12 +7,12 @@
 Instance(data_file, norme)
 }
 \arguments{
-\item{data_file}{}
+\item{data_file}{todo list}
 
-\item{norme}{}
+\item{norme}{todo list}
 }
 \value{
-list
+todo list
 }
 \description{
 Instance(data_file,norme)

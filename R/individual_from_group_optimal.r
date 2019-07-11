@@ -1,13 +1,15 @@
 
 #' individual_from_group_optimal(inst, jointprobaA, jointprobaB, percent_closest=1.0)
 #'
-#' @param inst 
-#' @param jointprobaA 
-#' @param jointprobaB 
-#' @param percent_closest 
+#' @param inst todo list
+#' @param jointprobaA todo list
+#' @param jointprobaB todo list
+#' @param percent_closest todo list
 #'
-#' @return list
-#' @export
+#' @return todo list
+#' 
+#' @importFrom ompr get_solution
+#' @importFrom ompr.roi with_ROI
 #'
 # @examples
 individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_closest=1.0){
@@ -70,19 +72,19 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
     CB[j,y]
   }
   
-  result <-  MIPModel() %>%
-    add_variable(assignA[i,z],  i = A, z = Z,type = "continuous",lb=0) %>%
-    add_variable(assignB[j,y],  j = B, y = Y,type = "continuous",lb=0) %>%
-    set_objective(sum_expr(CAf(i,z)*assignA[i,z], i = A,z=Z) + sum_expr(CBf(j,y)*assignB[j,y],j = B,y=Y), "min") %>%
-    add_constraint(sum_expr(assignA[i,z], i=indY[[y]])   == jointprobaA[y,z], z = Z, y = Y) %>%
-    add_constraint(sum_expr(assignB[j,y], j = indZ[[z]]) == jointprobaB[y,z], z = Z, y = Y) %>%
-    add_constraint(sum_expr(assignA[i,z], z = Z) == 1/(length(A)),i = A) %>%
-    add_constraint(sum_expr(assignB[j,y], y = Y) == 1/(length(B)),j = B) %>%
-    solve_model(with_ROI(solver = "glpk"))
+  result <-  ompr::MIPModel() %>%
+    ompr::add_variable(assignA[i,z],  i = A, z = Z,type = "continuous",lb=0) %>%
+    ompr::add_variable(assignB[j,y],  j = B, y = Y,type = "continuous",lb=0) %>%
+    ompr::set_objective(ompr::sum_expr(CAf(i,z)*assignA[i,z], i = A,z=Z) + ompr::sum_expr(CBf(j,y)*assignB[j,y],j = B,y=Y), "min") %>%
+    ompr::add_constraint(ompr::sum_expr(assignA[i,z], i=indY[[y]])   == jointprobaA[y,z], z = Z, y = Y) %>%
+    ompr::add_constraint(ompr::sum_expr(assignB[j,y], j = indZ[[z]]) == jointprobaB[y,z], z = Z, y = Y) %>%
+    ompr::add_constraint(ompr::sum_expr(assignA[i,z], z = Z) == 1/(length(A)),i = A) %>%
+    ompr::add_constraint(ompr::sum_expr(assignB[j,y], y = Y) == 1/(length(B)),j = B) %>%
+    ompr::solve_model(with_ROI(solver = "glpk"))
   
-  solution = get_solution(result, assignA[i,z]) 
+  solution = ompr::get_solution(result, assignA[i,z]) 
   assignA = matrix(solution$value, length(A),length(Z))
-  solution = get_solution(result, assignB[j,y])  
+  solution = ompr::get_solution(result, assignB[j,y])  
   assignB=  matrix(solution$value, length(B),length(Y))
   
   

@@ -7,12 +7,12 @@
 average_distance_to_closest(inst, percent_closest)
 }
 \arguments{
-\item{inst}{}
+\item{inst}{todo list}
 
-\item{percent_closest}{}
+\item{percent_closest}{todo list}
 }
 \value{
-list
+todo list
 }
 \description{
 average_distance_to_closest(inst, percent_closest)

@@ -1,11 +1,10 @@
 
 #' average_distance_to_closest(inst, percent_closest)
 #'
-#' @param inst 
-#' @param percent_closest 
+#' @param inst todo list
+#' @param percent_closest todo list
 #'
-#' @return list
-#' @export
+#' @return todo list
 #'
 # @examples
 average_distance_to_closest=function(inst, percent_closest){

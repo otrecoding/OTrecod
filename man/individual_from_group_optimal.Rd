@@ -8,16 +8,16 @@ individual_from_group_optimal(inst, jointprobaA, jointprobaB,
   percent_closest = 1)
 }
 \arguments{
-\item{inst}{}
+\item{inst}{todo list}
 
-\item{jointprobaA}{}
+\item{jointprobaA}{todo list}
 
-\item{jointprobaB}{}
+\item{jointprobaB}{todo list}
 
-\item{percent_closest}{}
+\item{percent_closest}{todo list}
 }
 \value{
-list
+todo list
 }
 \description{
 individual_from_group_optimal(inst, jointprobaA, jointprobaB, percent_closest=1.0)
