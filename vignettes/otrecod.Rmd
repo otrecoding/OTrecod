@@ -21,24 +21,22 @@ An application of the functions of the package on a real dataset      (07/2019)
 require(OTrecod)
 ```
 
-## Example : The "samp.A" database of the StatMatch package. 
 
-### Description 
+# I. Description of the database
 
-(see `?samp.A` for more details)
+We used the dataset called "samp.A" from the StatMatch package (see `?samp.A` for more details). This data set provides a limited number of variables observed at persons levels among those usually collected in the European Union Statistics on Income and Living Conditions Survey (EU–SILC). 
 
-This data set provides a limited number of variables observed at persons levels among those usually collected in the European Union Statistics on Income and Living Conditions Survey (EU–SILC). 
+We introduced a recoding problem in this dataset to illustrate our method. 
 
-It has been artificially generated as follows to show an application of the OTrecod package.
+`c.neti` is a factor variable corresponding to the person's net income initially categorized in 7 classes of thousand of Euros. 
+We first created 'c.neti` and `c.neti.bis`  coded voluntarily in 2 distinct encodings:
+- Y: first encoding into 6 categories (the original categories)
+- Z: second encoding into 4 categories (1:class 1 and 2, 2: class 3 and 4, 3: class 5 and 6)
 
-- 2 databases: `data` and `data`
-- `c.net` (only in `data3`) and `c.neti.bis` (only in `data4`) coded voluntarily in 2 distinct encodings but represent the same information
-- `c.neti` is a factor variable corresponding to the person's net income initially categorized in 7 classes of thousand of Euros
-- `data3` and `data4` are composed of Subsets of specific and common covariates of different types, with incomplete information
-
-
-
-# I. Preparing the dataset 
+ Then we separate into two databases`where we observ only  'c.neti` in database 1 and `c.neti.bis` in database 2.
+- Participants randomly divided in two databases: `data1` and `data2`
+- Unbalanced databases on covariates `data3` and `data4`
+We introduce missing data (describe how MAR, MNAR or MCAR). 
 
 ```{r}
 library(StatMatch);
@@ -57,7 +55,7 @@ data1 = samp.A[1:600,c(2:9,13)]
 data2 = samp.A[601:1000,c(5:11,12,14)] #600 rows for data1 and 400 rows for data2
 ```
 
-Insert the common covariate "marital" in 2 different types int the 2 database.
+
 
 ```{r}
 data1$marital = as.numeric(data1$marital)
@@ -96,9 +94,10 @@ summary(data3)
 summary(data4)
 ```
 
-# II. Detect possible problems between covariates in each databases
 
-## Ability to detect risks of colinearity between variables
+# II. Select covariates
+
+
 
 ```{r}
 library(car)
@@ -113,18 +112,15 @@ sel_cov4 = OTrecod::select_var(data4,Y = "c.neti.bis",type_Y = "ORD",threshX = 0
 sel_cov4
 ```
 
-The ouputs of the select_var() function for data3 and data4 suggests that the 
-variables "sex" and "c.age" are good candidates for the data fusion
+The ouputs of the select_var() function for data3 and data4 suggests that the variables "sex" and "c.age" are good candidates for the data fusion
 
-- In data4, the variable "n.income" should be exclude of the analysis because 
-of its too strong association with the outcome.
-- In data3, there is a risk of multicolinearity between the covariates "hsize5" 
-and "hsize" and between "age" and "c.age". The function suggests to keep first 
-the variables "c.age" and "sex" for the data fusion.
-- In data4, the variable n.income seems too close to the outcome of interest. 
-The question about its maintenance for the rest of the study should be worth asked.
+- In data4, the variable "n.income" should be exclude of the analysis because of its too strong association with the outcome.
 
-We notice that the covariates "c.age" and "sex" explain the outcomes similarly in the two databases.
+- In data3, there is a risk of multicolinearity between the covariates "hsize5" and "hsize" and between "age" and "c.age". The function suggests to keep first  the variables "c.age" and "sex" for the data fusion.
+
+OToutcome accepts mixed covariates but OTjoint need covariates are in categories.
+
+Even if we can't check the assumption that the distribution of the outcome Y or Z conditional to covariates are the same in the two databases, we notice that the covariates "c.age" and "sex" have both a positive association with the outcome in the two databases.
 
 Based on the previous results, we decide  to remove the covariate "age" from data3: 
 
@@ -141,11 +137,9 @@ names(data4)
 ```
 
 
-# III. Prepare database for OT algorithm with the remaining covariates 
+# III. Preparing the databases
 
-Using the mergedbs() function (requires the function "compare_lists","transfo_targets",and "imput_cov") 
-Handle missing data by multiple imputation (MICE) 
-Stores all the information in a single database 
+The mergedbs() function Handles missing data by multiple imputation (MICE)  and stores all the information in a single database 
 
 ```{r}
 library(mice); library(plyr); library(missMDA) 
@@ -163,7 +157,6 @@ summary(db_test$DB_READY)
 
 # IV. OT application on the remaining dataset 
 
-The OT function requires the prior execution of: "inst","average_from_group_closest" 
 
 ```{r}
 library(rdist)  
@@ -172,15 +165,14 @@ library(ompr); library(ompr.roi)
 ```
 
 
-# The OT function 
+# The OToutcome function 
 
-Implementation of the optimal transportation algorithm for data integration 
-with or without relaxation of the constraints on marginal (OUTCOME and R-OUTCOME models) 
+Implementation of the optimal transportation algorithm for data integration with or without relaxation of the constraints on marginal.
 
-This function require the functions:
+The function OToutcome requires the functions:
 
 - `instance`,  
-- `average_distance_to_closest`: Compute the cost between pairs of outcomes as the average distance between covariations of individuals with these outcomes, but considering only the percent closest neighbors. 
+- `average_distance_to_closest`: Compute the cost between pairs of outcomes as the average distance between covariates of individuals with these outcomes, but considering only the percent closest neighbors. 
 - `individual_from_group_closest` (indiv_method option = "sequential"): Sequentially assign the modality of the individuals to that of the closest neighbor in the other base until the joint probability values are met. 
 - `individual_from_group_optimal` (indiv_method option = "optimal"): Solve an optimization problem to get the individual transport that minimizes total distance while satisfying the joint probability computed by the model by group. 
 
@@ -197,15 +189,15 @@ This function require the functions:
 # OUTPUTS: 
 
 - `TIME_EXE`    : running time of the function 
-- `TRANSPORT_A` : Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of (YA,ZA) 
-- `TRANSPORT_B` : Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of (YB,ZB) 
+- `TRANSPORT_A` : Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of ($Y^A$,$Z^A$) 
+- `TRANSPORT_B` : Cost matrix corresponding to an estimation (i.e gamma) to the joint distribution of ($Y^B$,$Z^B$)
 - `estimatorZA` : Estimators for the distributions of Z conditional to X and Y in base A  
 - `estimatorYB` : Estimators for the distributions of Y conditional to X and Z in base B 
 - `DATA1_OT`    : 1st database (A here) with individual OT prediction for "c.neti.bis" 
 - `DATA2_OT`    : 2nd database (B here) with individual OT prediction for "c.neti" 
 
 
-# Demo of an OUTCOME model (standard OT algorithm) 
+
 
 ```{r}
 try4      = OT(db_test$DB_READY, percent_c = 1, maxrelax = 0, norm = 1, indiv_method="sequential", full_disp = FALSE, solver_disp = FALSE) 
@@ -262,14 +254,13 @@ try5 = OT_joint(db_test$DB_READY,maxrelax = 0.0, lambda_reg = 0.0, percent_clos 
   summary(try5) 
 ```
 
-# V. ASSESS THE PROXIMITY BETWEEN c.neti and c.neti.bis (predicted) BY GROUPING THE MODALITIES OF c.neti  
+# V. Evaluate the model
 
-The function error_group() requires the prior execution of the following functions:  
-family_part(), count_pos(); find_coord(), and try_group() 
 
-Suppose that Y and Z are 2 categorical variables (ordered or not) where the number of levels of Y i bigger than the number of levels of Z 
+
+Suppose that Y and Z are 2 categorical variables (ordered or not) where the number of levels of Y is bigger than the number of levels of Z. 
 The error_group() function researches the optimal grouping of modalities of Y to approach at best the distribution of Z to 
-give an assessment of the proximity between the two encodings 
+give an assessment of the proximity between the two encodings. 
 
 Demo on database A only: 
 
@@ -278,5 +269,4 @@ Ypred = as.factor(try4$DATA1_OT$OTpred)
 cc= error_group(Ypred,try4$DATA1_OT$Y1,ord=TRUE)
 ```
 
-On database A, by grouping the modalities of the c.neti variable (7 levels) like 1 (best grouping) in 4 modalities (number of modalities of c.neti.bis) 
-the dissimilarity rate between the 2 variables is less than 8%. 
+On database A, by grouping the modalities of the c.neti variable (7 levels) like 1 (best grouping) in 4 modalities (number of modalities of c.neti.bis) the dissimilarity rate between the 2 variables is less than 8%. 
