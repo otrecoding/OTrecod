@@ -278,5 +278,5 @@ cc= error_group(Ypred,try4$DATA1_OT$Y1,ord=TRUE)
 By grouping subsequent levels, there are 20 possibilities to turn an ordered factor of 7 levels into an ordered factor of 4 levels. 
 In the case of "c.neti", the possible groupings are detailed above in column 1 of the output of the error_group function (Each group separated by the "/" sign).
 For each possibility, the rate of missclassified subjects in data3, between the predicted "c.neti.bis" and the recoded "c.neti" (in 4 levels), is detailed in the "error.rate" column of the output in ascending order.
-The first grouping presents a dissimilarity rate between the 2 variables less than 8%, and corresponds to the grouping of levels initially performed to generate "c.neti.bis": This result reinforces the consistency of the prediction obtained by using the OT algorithm.
+The first grouping presents a dissimilarity rate between the 2 variables less than 8%, and corresponds to the grouping of levels initially performed to generate "c.neti.bis": This result reinforces the consistency of the prediction obtained by using the OT algorithm. 
 
