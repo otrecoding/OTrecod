@@ -2,7 +2,9 @@
 title: "OTrecod"
 author: "Gregory Guernec"
 date: "7/9/2019"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 <!--
 %\VignetteEngine{knitr::knitr}
@@ -12,7 +14,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
+ 
 
 
 # THE OTrecod PACKAGE 
