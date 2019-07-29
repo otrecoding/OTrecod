@@ -13,9 +13,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+
 # THE OTrecod PACKAGE 
 
-An application of the functions of the package on a real dataset      (07/2019)
+Here is an application of the functions of the package on a real dataset. 
 
 ```{r}
 require(OTrecod)
@@ -24,19 +26,23 @@ require(OTrecod)
 
 # I. Description of the database
 
-We used the dataset called "samp.A" from the StatMatch package (see `?samp.A` for more details). This data set provides a limited number of variables observed at persons levels among those usually collected in the European Union Statistics on Income and Living Conditions Survey (EU–SILC). 
+We used a subset of a dataset called "samp.A" from the StatMatch package. This dataset provides a limited number of variables observed at person’s levels among those usually collected in the European Union Statistics on Income and Living Conditions Survey (EU–SILC) (see `?samp.A` for more details).
+We firstly introduced a recoding problem in this dataset to illustrate our method.
+ 
 
-We introduced a recoding problem in this dataset to illustrate our method. 
+# Definition of the target variables
 
-`c.neti` is a factor variable corresponding to the person's net income initially categorized in 7 classes of thousand of Euros. 
-We first created 'c.neti` and `c.neti.bis`  coded voluntarily in 2 distinct encodings:
-- Y: first encoding into 6 categories (the original categories)
-- Z: second encoding into 4 categories (1:class 1 and 2, 2: class 3 and 4, 3: class 5 and 6)
+“c.neti” (Y) from samp.A is an ordered factor variable corresponding to the person's net income initially categorized in 7 classes of thousands of Euros: (-Inf,0] /(0,10] /(10,15]   (15,20] /(20,25] /(25,35] /(35, Inf]
+Started from “c.neti”, we generated “c.neti.bis” (Z), a new ordered factor variable encoded into 4 categories by grouping categories from “c.neti” (1: grouped the class 1 and 2 of “c.neti”, 2: the class 3 and 4, 3:  the class 5 and 6, 4: corresponds to the 7th class only).
+We finally separated the dataset in 2 independent subsets called data1 and data2 (no common subjects between these 2 datasets) and supposed that “c.neti” is only observed in data1, while “c.neti.bis” is only observed in data2. Thus, “c.neti” and “c.neti.bis” are not jointly observed but summarize a same target information encoded in 2 different scalings.
 
- Then we separate into two databases`where we observ only  'c.neti` in database 1 and `c.neti.bis` in database 2.
-- Participants randomly divided in two databases: `data1` and `data2`
-- Unbalanced databases on covariates `data3` and `data4`
-We introduce missing data (describe how MAR, MNAR or MCAR). 
+# Definition of the covariates
+
+Each dataset (data1 and data2) is composed of a set of common variables to both dataset and a set of variables specific to it. Some common covariates may have the same label but not the same type.
+
+
+It is also possible to add a part of missingness on variables before running the functions. We so introduce data3 and data4, 2 datasets corresponding to data1 and data2 with 10% of missing information randomly assigned to each variables (MCAR process, see the Rubin’s classification (1976) for more details).
+
 
 ```{r}
 library(StatMatch);
@@ -139,7 +145,7 @@ names(data4)
 
 # III. Preparing the databases
 
-The mergedbs() function Handles missing data by multiple imputation (MICE)  and stores all the information in a single database 
+The mergedbs() function handles missing data by multiple imputation (MICE)  and stores all the information in a single database 
 
 ```{r}
 library(mice); library(plyr); library(missMDA) 
@@ -254,7 +260,7 @@ try5 = OT_joint(db_test$DB_READY,maxrelax = 0.0, lambda_reg = 0.0, percent_clos 
   summary(try5) 
 ```
 
-# V. Evaluate the model
+# V. Evaluate the quality of the data merging
 
 
 
@@ -262,11 +268,15 @@ Suppose that Y and Z are 2 categorical variables (ordered or not) where the numb
 The error_group() function researches the optimal grouping of modalities of Y to approach at best the distribution of Z to 
 give an assessment of the proximity between the two encodings. 
 
-Demo on database A only: 
+Demonstration on data3  only: 
 
 ```{r}
 Ypred = as.factor(try4$DATA1_OT$OTpred)
 cc= error_group(Ypred,try4$DATA1_OT$Y1,ord=TRUE)
 ```
 
-On database A, by grouping the modalities of the c.neti variable (7 levels) like 1 (best grouping) in 4 modalities (number of modalities of c.neti.bis) the dissimilarity rate between the 2 variables is less than 8%. 
+By grouping subsequent levels, there are 20 possibilities to turn an ordered factor of 7 levels into an ordered factor of 4 levels. 
+In the case of "c.neti", the possible groupings are detailed above in column 1 of the output of the error_group function (Each group separated by the "/" sign).
+For each possibility, the rate of missclassified subjects in data3, between the predicted "c.neti.bis" and the recoded "c.neti" (in 4 levels), is detailed in the "error.rate" column of the output in ascending order.
+The first grouping presents a dissimilarity rate between the 2 variables less than 8%, and corresponds to the grouping of levels initially performed to generate "c.neti.bis": This result reinforces the consistency of the prediction obtained by using the OT algorithm.
+
