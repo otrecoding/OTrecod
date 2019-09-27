@@ -1,14 +1,20 @@
 
 #' transfo_target()
 #'
-#' A function which prepare the encoding of the target variable before OT algorithm
+#' This function prepares the encoding of the target variable before OT algorithm
 #'
-#' @param z            A vector
-#' @param levels_order A vector of levels. When the target is ordinal, the levels can be sorted by ascending order.
-#'                     By default, the initial order is retained.
-#' @return A list containing two elements:
-#'         NEW An object of class factor of the same length as z
-#'         LEVELS_NEW The levels (ordered or not) retained for z
+#' @param z            A factor variable (ordered or not). a variable of another type will be, by default, convert to a factor
+#' @param levels_order A vector corresponding to the values of the levels of z. When the target is ordinal, the levels can be sorted by ascending order.
+#'                     By default, the initial order is retained
+#' @return The list returned is:
+#' \item{NEW}{An object of class factor of the same length as z}
+#' \item{LEVELS_NEW}{The levels (ordered or not) retained for z}
+#'         
+#' @author Gregory Guernec 
+#' \email{gregory.guernec@@inserm.fr}
+#' 
+#' @seealso \code{\link{compare_lists}}
+#' 
 #' @export
 #'
 #' @examples

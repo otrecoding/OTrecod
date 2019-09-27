@@ -1,29 +1,27 @@
 
 #' compare_lists()
 #'
-#'    Function which compare the elements of two lists of same lengths
+#'    This function compares the elements of two lists of same lengths
 #'    The order of entry of the 2 lists have no importance
 #'
 #' @param listA A first list
 #' @param listB A second list
 #'
-#' @return A boolean vector (of same length as the two lists)
-#'         which ith answer is TRUE if the ith element is different
-#'         between the 2 lists, or FALSE otherwise
+#' @return A boolean vector of same length as the two lists,
+#' which ith element is \code{TRUE} if the ith element is different
+#' between the 2 lists, or \code{FALSE} otherwise
 #'
+#' @author Gregory Guernec
+#' \email{gregory.guernec@@inserm.fr}
 #' @export
 #'
 #' @examples
 #' data1 = data.frame(Gender = rep(c("m","f"),5),Age = rnorm(5,20,4))
 #' data2 = data.frame(Gender = rep(c("m","f"),5),Age = rnorm(5,21,5))
 #'
-#' data1 = data.frame(Gender = rep(c("m","f"),5),Age = stats::rnorm(5,20,4))
-#' data2 = data.frame(Gender = rep(c("m","f"),5),Age = stats::rnorm(5,21,5))
-#' 
 #' list1 = list(A = 1:4, B = as.factor(c("A","B","C")), C = matrix(1:6,ncol = 3))
 #' list2 = list(A = 1:4, B = as.factor(c("A","B")), C = matrix(1:6,ncol = 3))
-#' list3 = list(A = 1:4, B = as.factor(c("A","B","C")),
-#'              C = matrix(c(1:5,7),ncol = 3))
+#' list3 = list(A = 1:4, B = as.factor(c("A","B","C")),C = matrix(c(1:5,7),ncol = 3))
 #' list4 = list(A = 1:4, B = as.factor(c("A","B","C")), C = matrix(1:6,ncol = 2))
 #' list5 = list(A = 1:4, B = as.factor(c("A","B")), C = matrix(1:6,ncol = 2))
 #' list6 = list(A = 1:4, B = as.factor(c("A","B")), C = data1)

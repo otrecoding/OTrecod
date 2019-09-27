@@ -1,29 +1,42 @@
 
 #' select_var
 #' 
-#' This function preselect variables according to their associations with each other and according to their associations with a target variable
+#' This function preselects candidate covariates for data integration according
+#' to their associations with a target variable. It also detects problem of colinearities between covariates and suggests covariates to remove and interesting candidates to keep
+#' When applying Optimal Transportation theory for data interation is the objective of the study, we suggest to apply this function beforehand to the OT function, on each of the two databases to be merged
 #'
 #' @param databa A data.frame containing variable of any type
 #' @param Y A character string (with quotes) corresponding to the name of the target variable
 #' @param type_Y A character string (with quotes) corresponding to the type of the target variable. "ORD" (Default) for ordinal type, "MUL" for multinomial type,
 #'               and "BIN" for binary type  
-#' @param threshX A double that corresponds to a threshold taken between 0 and 1.Beyond this threshold two variables are considered too highly correlated
-#' @param threshY A double that corresponds to a threshold taken between 0 and 1.Beyond this threshold, a variable is considered too highly correlated with the target Y
+#' @param threshX A double (=0.90 by default) that corresponds to a threshold taken between 0 and 1. Beyond this threshold two variables are considered too highly correlated
+#' @param threshY A double (=0.95 by default) that corresponds to a threshold taken between 0 and 1. Beyond this threshold, a variable is considered too highly correlated with the target Y
 #' @param thresh_vif A double that corresponds to a threshold (10 by default) of the Variance Important Factor beyond which a multicolinearity situation is highlighted
 #'
-#' @return A list of 6 elements:
-#'         Y A simple reminder of the name of the selected target
-#'         cor_Y A table of variables which are considered too highly correlated (Spearson coefficient) with the target
-#'         VIF_PB 
-#'         cor_X A table of variables which are considered too highly correlated (Spearson coefficient) with other covariates
+#' @return A list of 6 elements is returned:
+#' \item{Y}{A simple reminder of the label of the target of interest}
+#' \item{cor_Y}{A list of covariates that are considered too highly correlated (Spearman coefficient) to the target variable}
+#' \item{VIF_PB}{A list of covariates which inclusion in regressions could lead to severity problem of multicollinearities} 
+#' \item{cor_X}{A list of covariates that are considered too highly correlated (Spearman coefficient) with other covariates}
 #' @export
 #'
+#' @author Gregory Guernec 
+#' \email{gregory.guernec@@inserm.fr}
+#' 
+#' @importFrom dplyr %>%
+#' @import stats nnet ordinal car
+#'
 #' @examples
+#' # library(StatMatch)
 #' data(samp.A)   # Require Statmatch package
 #' dat1 = samp.A[,-1]
 #' sel_cov = select_var(dat1,Y = "c.neti")
-
-select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thresh_vif = 10){
+select_var = function(databa,
+                      Y,
+                      type_Y = "ORD",
+                      threshX = 0.90,
+                      threshY = 0.95,
+                      thresh_vif = 10){
 
     
   stopifnot(is.data.frame(databa))
@@ -33,6 +46,7 @@ select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thre
   stopifnot(threshY <=1); stopifnot(threshY >0)
   stopifnot(thresh_vif >0)
   
+  dat1 = databa
   cat("select_var function in progress. Please wait ...","\n")
   
   for (j in 1:ncol(databa)){
@@ -44,37 +58,40 @@ select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thre
   indY = (1:ncol(databa))[colnames(databa) == Y]
   
   datababis = databa[,-indY]
-  model1  = lm(databa[,Y] ~.,data = datababis)
-  vifmod  = sort(vif(model1),decreasing = TRUE)
-  vif_pb  = vifmod[vifmod > 10]
+  model1    = stats::lm(databa[,Y] ~.,data = datababis)
+  vifmod    = sort(car::vif(model1),decreasing = TRUE)
+  vif_pb    = vifmod[vifmod > thresh_vif]
   
   
-  cor_mat = cor(databa,method = "spearman")
+  cor_mat = stats::cor(stats::na.omit(databa),method = "spearman")
   diag(cor_mat) = 0
-  Y        = "c.neti"
-  cor_Y    = sort(round(cor_mat[,Y],3),decreasing = TRUE)
-  cor_Y    = cor_Y[abs(cor_Y)>threshY]
+
+  cor_Y     = sort(round(cor_mat[,Y],3),decreasing = TRUE)
+  cor_Y     = cor_Y[abs(cor_Y)>threshY]
   
-  indi     =(1:ncol(cor_mat))[colnames(cor_mat) == Y]
-  cor_mat2 = cor_mat[-indi,-indi]
+  indi      = (1:ncol(cor_mat))[colnames(cor_mat) == Y]
+  cor_mat2  = cor_mat[-indi,-indi]
   
   
-  name1  = rep(row.names(cor_mat2),each = nrow(cor_mat2))
-  name2  = rep(row.names(cor_mat2),nrow(cor_mat2))
-  correl = round(as.numeric(cor_mat2),3)
+  name1     = rep(row.names(cor_mat2),each = nrow(cor_mat2))
+  name2     = rep(row.names(cor_mat2),nrow(cor_mat2))
+  correl    = round(as.numeric(cor_mat2),3)
   
-  tab_cor  = data.frame(name1,name2,correl)
-  tab_cor  = tab_cor[abs(tab_cor$correl)>threshX,]
-  cor_X    = tab_cor[duplicated(tab_cor$correl)==FALSE,]
+  tab_cor   = data.frame(name1,name2,correl)
+  tab_cor   = tab_cor[abs(tab_cor$correl)>threshX,]
+  cor_X     = tab_cor[duplicated(tab_cor$correl)==FALSE,]
   
   
   indouble        = which(sapply(dat1,is.double))
+  indfactor       = which(sapply(dat1,is.factor))
   dat3            = dat1
   dat3[,indouble] = apply(dat3[,indouble],2,scale)
+  dat3[,indfactor]= apply(dat3[,indfactor],2,as.character)
+  dat3            = stats::na.omit(dat3)
+  dat1            = stats::na.omit(dat1)
   
-  
-  ind_new   = (1:ncol(dat3))[colnames(dat3) %in% setdiff(names(dat3),Y)] 
-  names_new = names(dat3)[colnames(dat3) %in% setdiff(names(dat3),Y)] 
+  ind_new   = (1:ncol(dat3))[colnames(dat3) %in% setdiff(names(dat3),c(names(cor_Y),Y))] 
+  names_new = names(dat3)[colnames(dat3) %in% setdiff(names(dat3),c(names(cor_Y),Y))] 
   
   pval = vector(length = length(ind_new))
   
@@ -85,9 +102,9 @@ select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thre
       
       # print(j)
       
-      ordi_mod  = clm(as.ordered(dat1[,Y]) ~ dat3[,ind_new[j]],data=dat3,link="logit")
-      ordi_NULL = clm(as.ordered(dat1[,Y]) ~ 1,data=dat3,link="logit")
-      pval[j]   = anova(ordi_mod,ordi_NULL)[[6]][2]
+      ordi_mod  = ordinal::clm(as.ordered(dat1[,Y]) ~ dat3[,ind_new[j]],data=dat3,link="logit")
+      ordi_NULL = ordinal::clm(as.ordered(dat1[,Y]) ~ 1,data=dat3,link="logit")
+      pval[j]   = stats::anova(ordi_mod,ordi_NULL)[[6]][2]
       
     }
     
@@ -95,9 +112,9 @@ select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thre
     
     for (j in 1:length(ind_new)){
       
-      nomi_mod  = multinom(dat1[,Y] ~ dat3[,ind_new[j]],data=dat3,trace=F)
-      nomi_NULL = multinom(dat1[,Y] ~ 1,data=dat3,trace=F)
-      pval[j]   = anova(nomi_mod,nomi_NULL)[[7]][2] 
+      nomi_mod  = nnet::multinom(dat1[,Y] ~ dat3[,ind_new[j]],data=dat3,trace=F)
+      nomi_NULL = nnet::multinom(dat1[,Y] ~ 1,data=dat3,trace=F)
+      pval[j]   = stats::anova(nomi_mod,nomi_NULL)[[7]][2] 
       
     }
     
@@ -112,8 +129,8 @@ select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thre
     
     for (j in 1:length(ind_new)){
       
-      bin_mod   = glm(dat1[,Y] ~ dat3[,ind_new[j]],data=dat3,family = binomial(link="logit"))
-      pval[j]   = 1-pchisq(bin_mod$null.deviance-bin_mod$deviance, bin_mod$df.null-bin_mod$df.residual) 
+      bin_mod   = stats::glm(dat1[,Y] ~ dat3[,ind_new[j]],data=dat3,family = stats::binomial(link="logit"))
+      pval[j]   = 1-stats::pchisq(bin_mod$null.deviance-bin_mod$deviance, bin_mod$df.null-bin_mod$df.residual) 
       
     }
     
@@ -121,7 +138,7 @@ select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thre
   
   select_X        = data.frame(NAME = names_new,pval)
   select_X        = select_X[sort.list(select_X$pval,decreasing = FALSE),]
-  select_X$CORREC = p.adjust(select_X$pval,method = "bonferroni")
+  select_X$CORREC = stats::p.adjust(select_X$pval,method = "bonferroni")
   
   select_X        = select_X [select_X$CORREC < 0.05,]
   
@@ -130,18 +147,29 @@ select_var = function(databa,Y,type_Y = "ORD",threshX = 0.90,threshY = 0.95,thre
   keep_cov  = NA
   suppr_cov = NA
   
+  if (nrow(cor_X)!=0){
   
   for (k in 1:nrow(cor_X)){
     
     names_corX =c(as.character(cor_X[k,1]),as.character(cor_X[k,2]))
-    ind_names  = which(name_cov %in% names_corX)
-    keep_cv  = name_cov[min(ind_names)]
-    suppr_cv = setdiff(names_corX,keep_cv)
+    
+    if (length(intersect(name_cov,names_corX))!=0){
+      
+      ind_names  = which(name_cov %in% names_corX)
+      keep_cv    = name_cov[min(ind_names)]
+      suppr_cv   = setdiff(names_corX,keep_cv)
+    
+    } else {
+      
+      keep_cv = suppr_cv = NULL
+      
+    }  
     
     keep_cov  = c(keep_cov,keep_cv)
     suppr_cov = c(suppr_cov,suppr_cv)
     
   }
+  } else {suppr_cov = NULL}
   
   keep_cov_fin = setdiff(name_cov,unique(c(names(cor_Y),suppr_cov[-1])))
   del_cov_fin  = unique(c(names(cor_Y),suppr_cov[-1]))
