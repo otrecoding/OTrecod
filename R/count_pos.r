@@ -1,19 +1,31 @@
 
 #' count_pos()
 #'
-#' A function that counts the cardinals of possible subgroups from a set
+#' An intermediate function that counts the cardinals of possible subgroups from a set
 #'
 #' @param n An integer. The cardinal of a set
 #' @param n_grp An integer. The number of desired subsets to compose the initial set
 #'
 #' @return A list of possible cardinals to compose the initial sets with n_groups
 #' @export
+#' 
+#' @author Gregory Guernec
+#' \email{gregory.guernec@@inserm.fr}
+#' 
+#' @seealso \code{\link{family_part}}, \code{\link{find_coord}}, \code{\link{try_group}}, \code{\link{error_group}}
 #'
 #' @examples
 #' a1 = count_pos(5,2); a1
 #'
 count_pos = function(n,n_grp){
-
+  
+  if ((round(n) != n)|(round(n_grp) != n_grp)){
+    
+    stop("No decimal values allowed for n and n_grp")
+    
+  } else {}
+  
+  
   max_grp = n - (n_grp - 1)
 
   BDD2 = rep(rep(1:max_grp,each = max_grp^(n_grp-1)),max_grp^0)
@@ -45,8 +57,3 @@ count_pos = function(n,n_grp){
   return(recup3)
 
 }
-
-#--------------------------
-# Example
-a1 = count_pos(5,2); a1
-#--------------------------

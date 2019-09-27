@@ -1,13 +1,15 @@
-
 #' transfo_quali()
 #'
-#' A function which transform a factor of n(>1) levels in (n-1) binary variable
+#' A function that transforms a factor of n(>1) levels in (n-1) binary variable
 #'
 #' @param x A factor
 #' @param labx A new label for the binary variables generated (By default the name of the factor is conserved)
 #'
 #' @return A matrix of (n-1) binary variables
 #' @export
+#' 
+#' @author Gregory Guernec 
+#' \email{gregory.guernec@@inserm.fr}
 #'
 #' @examples
 #'
@@ -16,53 +18,47 @@
 #'
 #'
 transfo_quali = function(x,labx = NULL){
-
+  
   if (is.factor(x)==FALSE){
-    stop("Convertissez votre variable en facteur svp !!!")
+    stop("Your variable needs to be convert in factor !")
   }
-
+  
   lev_x = levels(x)
-
-
-
+  
+  
+  
   if (length(lev_x) == 1){
-
+    
     if (lev_x == "0"){
-
+      
       x_bin = as.matrix(as.numeric(x)-1)
       colnames(x_bin)[1] = labx
-
+      
     } else if (lev_x != "0"){
-
+      
       x_bin = as.matrix(rep(1,length(x)))
       colnames(x_bin)[1] = labx
-
-
+      
+      
     }
-
+    
   } else {
-
+    
     x_bin = matrix(nrow = length(x), ncol = length(lev_x) - 1)
-
+    
     for (j in 1:(length(lev_x)-1)){
-
+      
       x_bin[,j] = ifelse(x == lev_x[j+1],1,0)
-
+      
     }
-
-
+    
+    
     # Names of the binary variables
-
+    
     colnames(x_bin) = paste(labx,2:(length(lev_x)),sep="_")
-
+    
   }
-
+  
   return(x_bin)
-
+  
 }
-
-
-
-
-
-
