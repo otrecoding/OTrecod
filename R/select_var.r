@@ -19,6 +19,8 @@
 #' \item{VIF_PB}{A list of covariates which inclusion in regressions could lead to severity problem of multicollinearities} 
 #' \item{cor_X}{A list of covariates that are considered too highly correlated (Spearman coefficient) with other covariates}
 #' @export
+#' 
+#' @importFrom dplyr %>%
 #'
 #' @author Gregory Guernec 
 #' \email{gregory.guernec@@inserm.fr}
@@ -27,7 +29,11 @@
 #' @import stats nnet ordinal car
 #'
 #' @examples
+<<<<<<< HEAD
 #' # library(StatMatch)
+=======
+#' library(StatMatch)
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
 #' data(samp.A)   # Require Statmatch package
 #' dat1 = samp.A[,-1]
 #' sel_cov = select_var(dat1,Y = "c.neti")
@@ -58,16 +64,28 @@ select_var = function(databa,
   indY = (1:ncol(databa))[colnames(databa) == Y]
   
   datababis = databa[,-indY]
+<<<<<<< HEAD
   model1    = stats::lm(databa[,Y] ~.,data = datababis)
   vifmod    = sort(car::vif(model1),decreasing = TRUE)
   vif_pb    = vifmod[vifmod > thresh_vif]
+=======
+  model1  = stats::lm(databa[,Y] ~.,data = datababis)
+  vifmod  = sort(car::vif(model1),decreasing = TRUE)
+  vif_pb  = vifmod[vifmod > thresh_vif]
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   
   
   cor_mat = stats::cor(stats::na.omit(databa),method = "spearman")
   diag(cor_mat) = 0
+<<<<<<< HEAD
 
   cor_Y     = sort(round(cor_mat[,Y],3),decreasing = TRUE)
   cor_Y     = cor_Y[abs(cor_Y)>threshY]
+=======
+  # Y        = "c.neti"
+  cor_Y    = sort(round(cor_mat[,Y],3),decreasing = TRUE)
+  cor_Y    = cor_Y[abs(cor_Y)>threshY]
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   
   indi      = (1:ncol(cor_mat))[colnames(cor_mat) == Y]
   cor_mat2  = cor_mat[-indi,-indi]
@@ -83,7 +101,11 @@ select_var = function(databa,
   
   
   indouble        = which(sapply(dat1,is.double))
+<<<<<<< HEAD
   indfactor       = which(sapply(dat1,is.factor))
+=======
+  indfactor        = which(sapply(dat1,is.factor))
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   dat3            = dat1
   dat3[,indouble] = apply(dat3[,indouble],2,scale)
   dat3[,indfactor]= apply(dat3[,indfactor],2,as.character)
@@ -156,8 +178,13 @@ select_var = function(databa,
     if (length(intersect(name_cov,names_corX))!=0){
       
       ind_names  = which(name_cov %in% names_corX)
+<<<<<<< HEAD
       keep_cv    = name_cov[min(ind_names)]
       suppr_cv   = setdiff(names_corX,keep_cv)
+=======
+      keep_cv  = name_cov[min(ind_names)]
+      suppr_cv = setdiff(names_corX,keep_cv)
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
     
     } else {
       

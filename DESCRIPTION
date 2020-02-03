@@ -1,32 +1,43 @@
 Package: OTrecod
 Type: Package
-Title: Optimal transport to recode data
+Title: Optimal Transport to Recode Data
 Version: 0.1.0
 Authors@R: as.person(c(
     "Gregory Guernec <gregory.guernec@inserm.fr> [aut, cre]", 
     "Valerie Gares <valerie.gares@insa-rennes.fr> [aut]",
     "Pierre Navaro <navaro@math.cnrs.fr> [ctb]"
   ))
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Optimal transport theory to impute and merge databases.
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 3.5.0)
 Imports: 
-    MASS, 
-    StatMatch, 
-    KernSmooth, 
-    boot, 
-    nlme, 
-    nnet, 
-    mice, 
-    gdata, 
-    FNN, 
-    linprog, 
+    MASS,
+    StatMatch,
+    KernSmooth,
+    boot,
+    nlme,
+    nnet,
+    mice,
+    gdata,
+    FNN,
+    linprog,
     RColorBrewer,
-    gplots, 
-    mvtnorm, 
-    FactoMineR
+    gplots,
+    mvtnorm,
+    FactoMineR,
+    missMDA,
+    stats,
+    plyr,
+    rdist,
+    ROI,
+    ROI.plugin.glpk,
+    car,
+    dplyr,
+    ompr,
+    ompr.roi,
+    ordinal
 Suggests: 
     testthat,
     knitr,

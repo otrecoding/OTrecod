@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 #' individual_from_group_closest()
 #' 
 #' Assuming that Y and Z summarize a same information encoded in two distinct forms stored in two distinct databases A and B.
@@ -90,6 +91,21 @@ individual_from_group_closest=function(inst, jointprobaA, jointprobaB, percent_c
   
   
     # Redefine A and B for the model
+=======
+#' Title
+#'
+#' @param inst todo list
+#' @param jointprobaA todo list
+#' @param jointprobaB todo list
+#' @param percent_closest todo list
+#'
+#' @return todo list
+#'
+# @examples
+individual_from_group_closest=function(inst, jointprobaA, jointprobaB, percent_closest=1.0){
+  
+  # Redefine A and B for the model
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   A = 1:inst$nA
   B = 1:inst$nB
   Y = inst$Y
@@ -120,8 +136,13 @@ individual_from_group_closest=function(inst, jointprobaA, jointprobaB, percent_c
   Davg=average_distance$Davg
   DindivA= average_distance$DindivA
   DindivB = average_distance$DindivB
+<<<<<<< HEAD
   
 
+=======
+  # DA = [(z,[sum(inst$D[i,j] for j in indZ[z])/nbindZ[z] for i in A]) for z in Z]
+  # DB = [(y,[sum(inst$D[i,j] for i in indY[y])/nbindY[y] for j in B]) for y in Y]
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   DA = DB =  list()
   
   for (z in Z){
@@ -208,6 +229,10 @@ individual_from_group_closest=function(inst, jointprobaA, jointprobaB, percent_c
     }
   }
   
+<<<<<<< HEAD
   return(list(YAtrans = YAtrans, ZBtrans = YBtrans))
+=======
+  return(list(YAtrans = YAtrans, YBtrans = YBtrans))
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
 }    
 

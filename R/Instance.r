@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #' Instance()
 #' 
 #' This function computes the distances between pairs of individuals in 2 distinct databases using the information contained in the common variables
@@ -84,6 +85,20 @@ Instance  = function(data_file,norme = 1){
   
   dat    = data_file
   
+=======
+#' Instance(data_file,norme)
+#'
+#' @param data_file todo list
+#' @param norme todo list
+#'
+#' @return todo list
+#' @export
+#'
+# @examples
+Instance  = function(data_file,norme){
+  
+  dat    = data_file
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   # number of covariables
   nbcvar = dim(dat)[2] - 3
   
@@ -100,6 +115,10 @@ Instance  = function(data_file,norme = 1){
   Zobserv = dat[1:nrow(dat),3]
   
   # modify order so that base A comes first and then base B
+<<<<<<< HEAD
+=======
+  # Xobserv = cbind(Xobserv[indA,],Xobserv[indB,])
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   Xobserv = rbind(Xobserv[indA,],Xobserv[indB,])
   Yobserv = c(Yobserv[indA],Yobserv[indB])
   Zobserv = c(Zobserv[indA],Zobserv[indB])
@@ -132,15 +151,26 @@ Instance  = function(data_file,norme = 1){
   for (m in Y){indY[[m]] = which(Yobserv[1:nA] == m)}
   for (m in Z){indZ[[m]] = which(Zobserv[(nA+1):(nA+nB)] == m)}
   
+<<<<<<< HEAD
   # Compute the distance between pairs of individuals in different bases
   a = Xobserv[indA,]
   b = Xobserv[indB,]
   
   # stopifnot(norme %in% c(0,1,2))
+=======
+  # compute the distance between pairs of individuals in different bases
+  # devectorize all the computations to go about twice faster
+  # only compute norm 1 here
+  a = Xobserv[indA,]
+  b = Xobserv[indB,]
+  
+  stopifnot(norme %in% c(0,1,2))
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   
   
   if (norme == 1){
     
+<<<<<<< HEAD
     D  = dist(a,b, method = "manhattan")
     DA = dist(a,a, method = "manhattan")
     DB = dist(b,b, method = "manhattan")
@@ -159,6 +189,24 @@ Instance  = function(data_file,norme = 1){
       
     }
     
+=======
+    #   D = pairwise(Cityblock(), a, b, dims=2)
+    #  DA = pairwise(Cityblock(), a, a, dims=2)
+    #  DB = pairwise(Cityblock(), b, b, dims=2)
+    
+    D  = rdist::cdist(a,b,"manhattan")
+    DA = rdist::cdist(a,a,"manhattan")
+    DB = rdist::cdist(b,b,"manhattan")
+    
+  } else if (norme == 2){
+    
+    D  = rdist::cdist(a,b,"euclidean")
+    DA = rdist::cdist(a,a,"euclidean")
+    DB = rdist::cdist(b,b,"euclidean")
+    
+  } else if (norme == 0){
+    
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
     D  = rdist::cdist(a,b,"hamming")
     DA = rdist::cdist(a,a,"hamming")
     DB = rdist::cdist(b,b,"hamming")
@@ -169,15 +217,26 @@ Instance  = function(data_file,norme = 1){
   A     = 1:nA;
   B     = 1:nB;
   nbX   = 0;
+<<<<<<< HEAD
   
+=======
+  # indXA = numeric(dim(Xval)[1]);
+  # indXB = numeric(dim(Xval)[1]));
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   
   Xval  = unique(Xobserv)
   indXA = indXB = rep(0,nrow(Xval))
   
   
+<<<<<<< HEAD
   # X1val = sort(unique(Xobserv[,1]));
   # X2val = sort(unique(Xobserv[,2]));
   # X3val = sort(unique(Xobserv[,3]));
+=======
+  X1val = sort(unique(Xobserv[,1]));
+  X2val = sort(unique(Xobserv[,2]));
+  X3val = sort(unique(Xobserv[,3]));
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   
   
   
@@ -187,12 +246,27 @@ Instance  = function(data_file,norme = 1){
   
   for (i in  (1:nrow(Xval))){
     
+<<<<<<< HEAD
     nbX = nbX + 1;
     x   = Xval[i,]
+=======
+    # if (i %in% seq(0,nrow(Xval),50)){print(i)} else {}
+    # print(i)
+    
+    nbX = nbX + 1;
+    # x = matrix(0,dim(Xval[2]),1);
+    # plut?t: x = rep(0,ncol(Xval)) mais inutile
+    
+    # x[,1] = Xval[i,(1:dim(Xval)[2])];
+    #x[:,1] = [Xval[i,j] for j in 1:size(Xval,2)];
+    
+    x = Xval[i,]
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
     
     
     if (norme == 1){
       
+<<<<<<< HEAD
       distA  = dist(x,Xobserv[A,]     , method =  "manhattan")
       distB  = dist(x,Xobserv[B + nA,], method =  "manhattan")
       
@@ -200,6 +274,20 @@ Instance  = function(data_file,norme = 1){
       
       distA  = dist(x,Xobserv[A,]     , method = "euclidean")
       distB  = dist(x,Xobserv[B + nA,], method = "euclidean")
+=======
+      # distA = pairwise(Cityblock(), x, t(Xobserv[A,]), dims=2)
+      # distB = pairwise(Cityblock(), x, t(Xobserv[B + nA,]), dims=2)
+      
+      distA  = rdist::cdist(x,Xobserv[A,],"manhattan")
+      distB  = rdist::cdist(x,Xobserv[B + nA,],"manhattan")
+      
+      
+      
+    } else if (norme == 2){
+      
+      distA  = rdist::cdist(x,Xobserv[A,],"euclidean")
+      distB  = rdist::cdist(x,Xobserv[B + nA,],"euclidean")
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
       
     } else if (norme == 0){
       
@@ -208,6 +296,12 @@ Instance  = function(data_file,norme = 1){
       
     }
     
+<<<<<<< HEAD
+=======
+    # indXA[nbX] = (distA[1,] < 0.1)
+    # indXB[nbX] = (distB[1,] < 0.1)
+    
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
     indXA[[nbX]] = which(distA < 0.1)
     indXB[[nbX]] = which(distB < 0.1)
     
@@ -220,5 +314,8 @@ Instance  = function(data_file,norme = 1){
               Yobserv=Yobserv, Zobserv=Zobserv, D=D, Y=Y, Z=Z,
               indY=indY, indZ=indZ, indXA=indXA, indXB=indXB, DA=DA, DB=DB))
 }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae

@@ -8,7 +8,11 @@
 #' @param all_list A list of sublists of subsets of a power set (from family_part() by example) composed of 1,2,...,n elements
 #' @param all_coord A matrix of integers which lines gives the coordinates of a list from family_part()
 #'
+<<<<<<< HEAD
 #' @return A matrix of indexes of an output list from family_part(), which indexes of each row corresponds to subsets of a \code{family_part} output to give a partition of the starting set
+=======
+#' @return indices of a list from family_part()
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
 #' @export
 #' 
 #' @author Gregory Guernec 
@@ -43,6 +47,7 @@
 #' ## The 2nd row corresponds to the partition of E made of 3 subsets given by: (1),(2,4),(3) ... And so on ...
 #'
 find_coord = function(all_ind, all_list, all_coord) {
+<<<<<<< HEAD
   
   
   if ((!(is.list(all_list)))|(!(is.list(all_coord)))){
@@ -53,6 +58,8 @@ find_coord = function(all_ind, all_list, all_coord) {
   
   
   
+=======
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   list_glob = list_glob2 = list()
   
   eff1 = 1

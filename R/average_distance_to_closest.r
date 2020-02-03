@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 #' average_distance_to_closest()
 #' 
 #' This intermediate function of the OT algorithm computes the cost matrix where each cell symbolize the difficulty of moving from a given modality of the target variable in the 1st database (A) to another given modality of the target variable in the 2nd database (B)
@@ -46,6 +47,17 @@ average_distance_to_closest=function(inst, percent_closest = 1){
     
   } else {}
   
+=======
+#' average_distance_to_closest(inst, percent_closest)
+#'
+#' @param inst todo list
+#' @param percent_closest todo list
+#'
+#' @return todo list
+#'
+# @examples
+average_distance_to_closest=function(inst, percent_closest){
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   
   # Redefine A and B for the model
   A = (1:inst$nA)
@@ -55,11 +67,18 @@ average_distance_to_closest=function(inst, percent_closest = 1){
   indY = inst$indY
   indZ = inst$indZ
   
+<<<<<<< HEAD
   # Compute average distances
   Davg     = matrix(0,length(Y),length(Z));
   DindivA  = matrix(0,inst$nA,length(Z));
   DindivB  = matrix(0,inst$nB,length(Y));
   
+=======
+  # Compute average distances as described in the above
+  Davg = matrix(0,length(Y),length(Z));
+  DindivA  = matrix(0,inst$nA,length(Z));
+  DindivB  = matrix(0,inst$nB,length(Y));
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   for (y in Y){
     for (i in indY[[y]]){
       for (z in Z){
@@ -85,6 +104,9 @@ average_distance_to_closest=function(inst, percent_closest = 1){
   
   return(list(Davg=Davg, DindivA=DindivA, DindivB=DindivB))
 }
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae

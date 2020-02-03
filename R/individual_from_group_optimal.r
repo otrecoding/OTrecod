@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 #' individual_from_group_optimal()
 #' 
 #' Assuming that Y and Z summarize a same information encoded in two distinct forms stored in two distinct databases A and B.
@@ -85,6 +86,24 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
     
   } else {}
   
+=======
+#' individual_from_group_optimal(inst, jointprobaA, jointprobaB, percent_closest=1.0)
+#'
+#' @param inst todo list
+#' @param jointprobaA todo list
+#' @param jointprobaB todo list
+#' @param percent_closest todo list
+#'
+#' @return todo list
+#' 
+#' @importFrom ompr get_solution
+#' @importFrom ompr.roi with_ROI
+#'
+# @examples
+individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_closest=1.0){
+  
+  
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   # Redefine A and B for the model
   A = 1:inst$nA
   B = 1:inst$nB
@@ -115,7 +134,10 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
   # the other base
   CA = matrix(rep(0,inst$nA * length(Z)), nrow = inst$nA,ncol = length(Z))
   CB = matrix(rep(0,inst$nB * length(Y)), nrow = inst$nB,ncol = length(Y))
+<<<<<<< HEAD
   
+=======
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   for (i in A){
     for (z in Z){
       nbclose      = round(percent_closest*nbindZ[z])
@@ -123,7 +145,10 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
       CA[i,z]      = sum(distance[1:nbclose])/nbclose
     }
   }
+<<<<<<< HEAD
   
+=======
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   for (j in B){
     for (y in Y){
       nbclose      = round(percent_closest*nbindY[y])
@@ -144,6 +169,7 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
     CB[j,y]
   }
   
+<<<<<<< HEAD
   result <-  MIPModel() %>%
     add_variable(assignA[i,z],  i = A, z = Z,type = "continuous",lb=0) %>%
     add_variable(assignB[j,y],  j = B, y = Y,type = "continuous",lb=0) %>%
@@ -157,6 +183,21 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
   solution = get_solution(result, assignA[i,z]) 
   assignA = matrix(solution$value, length(A),length(Z))
   solution = get_solution(result, assignB[j,y])  
+=======
+  result <-  ompr::MIPModel() %>%
+    ompr::add_variable(assignA[i,z],  i = A, z = Z,type = "continuous",lb=0) %>%
+    ompr::add_variable(assignB[j,y],  j = B, y = Y,type = "continuous",lb=0) %>%
+    ompr::set_objective(ompr::sum_expr(CAf(i,z)*assignA[i,z], i = A,z=Z) + ompr::sum_expr(CBf(j,y)*assignB[j,y],j = B,y=Y), "min") %>%
+    ompr::add_constraint(ompr::sum_expr(assignA[i,z], i=indY[[y]])   == jointprobaA[y,z], z = Z, y = Y) %>%
+    ompr::add_constraint(ompr::sum_expr(assignB[j,y], j = indZ[[z]]) == jointprobaB[y,z], z = Z, y = Y) %>%
+    ompr::add_constraint(ompr::sum_expr(assignA[i,z], z = Z) == 1/(length(A)),i = A) %>%
+    ompr::add_constraint(ompr::sum_expr(assignB[j,y], y = Y) == 1/(length(B)),j = B) %>%
+    ompr::solve_model(with_ROI(solver = "glpk"))
+  
+  solution = ompr::get_solution(result, assignA[i,z]) 
+  assignA = matrix(solution$value, length(A),length(Z))
+  solution = ompr::get_solution(result, assignB[j,y])  
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   assignB=  matrix(solution$value, length(B),length(Y))
   
   
@@ -172,5 +213,9 @@ individual_from_group_optimal=function(inst, jointprobaA, jointprobaB, percent_c
   YBtrans = apply(assignA,1,which.max)
   YAtrans = apply(assignB,1,which.max)
   
+<<<<<<< HEAD
   return(list(YAtrans = YAtrans, ZBtrans = YBtrans))
+=======
+  return(list(YAtrans = YAtrans, YBtrans = YBtrans))
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
 }
