@@ -1,50 +1,31 @@
 Package: OTrecod
-Type: Package
-Title: Optimal Transport to Recode Data
+Title: Data integration using Optimal Transportation Theory
 Version: 0.1.0
 Authors@R: as.person(c(
     "Gregory Guernec <gregory.guernec@inserm.fr> [aut, cre]", 
     "Valerie Gares <valerie.gares@insa-rennes.fr> [aut]",
     "Pierre Navaro <navaro@math.cnrs.fr> [ctb]"
   ))
-Description: Optimal transport theory to impute and merge databases.
-License: file LICENSE
+Description: When two databases are constructed from heterogeneous sources, it is not unusual that different encodings are used for the same outcome.In such case, aggregate information contained in two databases could be nevertheless of prime interest and it is so necessary to recode the target variable before merging.
+Depends: R (>= 3.4.4)
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 3.5.0)
+RoxygenNote: 6.1.1
 Imports: 
-    MASS,
-    StatMatch,
-    KernSmooth,
-    boot,
-    nlme,
-    nnet,
-    mice,
-    gdata,
-    FNN,
-    linprog,
-    RColorBrewer,
-    gplots,
-    mvtnorm,
-    FactoMineR,
-    missMDA,
     stats,
+    nnet,
+    ordinal,
+    car,
+    dplyr,
+    mice,
+    missMDA,
     plyr,
+    FactoMineR,
+    StatMatch,
+    proxy,
     rdist,
     ROI,
     ROI.plugin.glpk,
-    car,
-    dplyr,
     ompr,
-    ompr.roi,
-    ordinal
-Suggests: 
-    testthat,
-    knitr,
-    rmarkdown,
-    pkgdown,
-    qpdf
-RoxygenNote: 6.1.1
-VignetteBuilder: knitr
-URL: https://github.com/otrecoding/OTrecod
-BugReports: https://github.com/otrecoding/OTrecod/issues
+    ompr.roi

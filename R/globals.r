@@ -18,4 +18,5 @@ utils::globalVariables(c(
 "errorB_XZ",
 "abserrorB_XZ",
 "reg_absB",
-"x2"))
+"x2"
+))

@@ -1,7 +1,7 @@
 
 #' compare_lists()
 #'
-#'    This function compares the elements of two lists of same lengths
+#'    This function compares the elements of two lists of same length
 #'    The order of entry of the 2 lists have no importance
 #'
 #' @param listA A first list
@@ -14,6 +14,8 @@
 #' @author Gregory Guernec
 #' \email{gregory.guernec@@inserm.fr}
 #' @export
+#'
+#' @aliases compare_lists
 #'
 #' @examples
 #' data1 = data.frame(Gender = rep(c("m","f"),5),Age = rnorm(5,20,4))
