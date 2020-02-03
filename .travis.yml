@@ -4,6 +4,9 @@ language: R
 sudo: false
 cache: packages
 
+notifications:
+  email: true
+
 addons:
   apt:
     packages:
