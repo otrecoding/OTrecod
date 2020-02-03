@@ -4,8 +4,15 @@
 \alias{select_var}
 \title{select_var()}
 \usage{
-select_var(databa, Y, type_Y = "ORD", threshX = 0.9, threshY = 0.95,
-  thresh_vif = 10, index_var = 2:ncol(databa))
+select_var(
+  databa,
+  Y,
+  type_Y = "ORD",
+  threshX = 0.9,
+  threshY = 0.95,
+  thresh_vif = 10,
+  index_var = 2:ncol(databa)
+)
 }
 \arguments{
 \item{databa}{A data.frame containing variable of any type}

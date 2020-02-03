@@ -13,6 +13,7 @@ addons:
       - glpk-utils
       - libglpk-dev
       - libgit2-dev
+      - texlive-full
 
 r_packages:
    - covr

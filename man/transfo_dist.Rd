@@ -4,8 +4,16 @@
 \alias{transfo_dist}
 \title{transfo_dist()}
 \usage{
-transfo_dist(DB, index_DB_Y_Z = 1:3, quanti = NULL, nominal = NULL,
-  ordinal = NULL, logic = NULL, prep_choice = "E", info = 80)
+transfo_dist(
+  DB,
+  index_DB_Y_Z = 1:3,
+  quanti = NULL,
+  nominal = NULL,
+  ordinal = NULL,
+  logic = NULL,
+  prep_choice = "E",
+  info = 80
+)
 }
 \arguments{
 \item{DB}{A data.frame composed of exactly 2 superimposed databases with a column of database identification, 2 columns corresponding to a same information
