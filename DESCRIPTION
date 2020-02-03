@@ -7,7 +7,7 @@ Authors@R: as.person(c(
     "Pierre Navaro <navaro@math.cnrs.fr> [ctb]"
   ))
 Description: When two databases are constructed from heterogeneous sources, it is not unusual that different encodings are used for the same outcome.In such case, aggregate information contained in two databases could be nevertheless of prime interest and it is so necessary to recode the target variable before merging.
-Depends: R (>= 3.4.4)
+Depends: R (>= 3.4.0)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
