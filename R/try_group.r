@@ -4,6 +4,7 @@
 #' this function provides all the possible groupings of Y2's levels to obtain a number of levels equals to n1.
 #' 
 #'
+<<<<<<< HEAD
 #' @param Y1 A factor ordered or not with any number of levels (>1)
 #' @param Y2 A factor ordered or not with a number of levels strictly higher than the number of levels of Y1
 #' @param ordin A boolean that confirms (TRUE) or disprove (FALSE) that Y1 and Y2 are ordered.
@@ -18,6 +19,13 @@
 #'
 #' @seealso \code{\link{count_pos}}, \code{\link{find_coord}}, \code{\link{family_part}}, \code{\link{error_group}}
 #'   
+=======
+#' @param Y1 outcomes first database
+#' @param Y2 outcomes second database
+#' @param ordin family_part option
+#'
+#' @return list
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
 #' @export
 #'
 #' @examples

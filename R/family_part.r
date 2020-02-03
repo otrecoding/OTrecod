@@ -3,9 +3,14 @@
 #'
 #' Function that gives the set of parts of a set
 #'
+<<<<<<< HEAD
 #' @param n An integer. The cardinal of the set
 #' @param ordinal A boolean. If TRUE the power set is only composed of subsets of consecutive elements, if FALSE (by default) all the subsets are considered with the
 #' exception of the empty set
+=======
+#' @param n integer. The cardinal of the set
+#' @param ordinal boolean. If TRUE the power set is only composed of subsets of consecutive elements, FALSE (by default) otherwise
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
 #'
 #' @return A list of (2^n -1) subsets (The empty set is exclude)
 #' @export
@@ -20,6 +25,7 @@
 #' fam2 =  family_part(4,ordinal = TRUE)
 
 family_part = function(n, ordinal = FALSE){
+<<<<<<< HEAD
   
   
   if (round(n) != n){
@@ -37,6 +43,9 @@ family_part = function(n, ordinal = FALSE){
     
   } else {}
   
+=======
+
+>>>>>>> 6f4cbad61224e0f392a0d80f4240360f0a0367ae
   E        = 1:n
 
   BDD = rep(rep(1:n,each=n^(n-1)),n^0)

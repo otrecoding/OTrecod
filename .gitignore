@@ -28,3 +28,4 @@ vignettes/*.pdf
 rsconnect/
 docs/*
 .Rproj.user
+*.swp
