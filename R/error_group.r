@@ -1,66 +1,82 @@
-
 #' error_group()
-#' 
-#' By supposing that REF and Z are two factors (ordered of not) with a different number of levels (n_REF and n_Z respectiveley) such as n_Z > n_REF,
-#' This function studies similarities between REF and Z when the levels of Z are grouped to obtain a number of levels equals to the number of levels of Z.
-#' 
-#' Applying this function to the results of the data integration
 #'
-#' @param REF A factor with a reference number of levels
-#' @param Z A factor with a number of levels higher than the number of levels of the reference number
-#' @param ord A boolean. If TRUE, only the subsequent levels of Z can be grouped together
+#' # This function gives an assesment of the proximity of two multinomial distributions
+#' # with different number of classes.
 #'
-#' @return A data.frame ot 2 columns:
-#' \item{grouping_levels}{Enumerates all possible groups of levels of Z to obtain the same number of levels as the reference}
-#' \item{error_rate}{Gives the corresponding rate error after specific groupings of Z levels in n_REF levels}    
-#' 
-#' @export
-#' 
+#' # By supposing that Y and Z are 2 categorical variables (ordered or not) where the
+#' # number of levels of Y i bigger than the number of levels of Z.
+#' # The error_group() function researches the optimal grouping of modalities of Y
+#' # to approach at best the distribution of Z to give an assessment of the proximity
+#' # between the two  distinct encodings.
+#'
+#' @param REF A factor with a reference number of levels.
+#' @param Z A factor with a number of levels greater than the number of levels of the reference.
+#' @param ord A boolean. If TRUE, only the subsequent levels of Z can be grouped together.
+#'
+#' @return A data.frame with 2 columns:
+#'         \item{combi}{The first column enumerates all possible groups of modalities of Z to obtain the same number of levels as the reference.}
+#'         \item{error_rate}{The second columns gives the corresponding rate error of reclassification.}
+#'
 #' @author Gregory Guernec
 #' \email{gregory.guernec@@inserm.fr}
-#' 
-#' @seealso \code{\link{count_pos}}, \code{\link{find_coord}}, \code{\link{family_part}}, \code{\link{try_group}}
+#'
+#' @aliases error_group
+#'
+#' @export
 #'
 #' @examples
+#'
+#' ### using a sample of the tab_test object (3 complete covariates)
+#' ### Y1 and Y2 are a same variable encoded in 2 different forms in DB 1 and 2:
+#' ### (4 levels for Y1 and 3 levels for Y2)
+#'
+#' data(tab_test)
+#' # Example with n1 = n2 = 70 and only X1 and X2 as covariates
+#' tab_test2 = tab_test[c(1:75,5001:5075),1:5]
+#'
+#' ### An example of JOINT model (Manhattan distance)
+#' # Suppose we want to impute the missing parts of Y1 in DB2 only ...
+#' try1J = OT_joint(tab_test2, nominal = c(1,4:5), ordinal = c(2,3),
+#'                  prep_choice = "M", norm = 1,which.DB = 2)
+#'
+#' # Error rates between Y2 and the predictions of Y1 in the DB 2
+#' # by grouping the levels of Y1:
+#' error_group(try1J$DATA2_OT$Z,try1J$DATA2_OT$OTpred)
+#' table(try1J$DATA2_OT$Z,try1J$DATA2_OT$OTpred)
+#'
+#' \dontrun{
+#' # Error rates between Y1 and the predictions of Y2 in the DB 1
+#' error_group(try1J$DATA1_OT$OTpred,try1J$DATA1_OT$Y)
+#' table(try1J$DATA1_OT$OTpred,try1J$DATA1_OT$Y)
+#'
+#' # Basic examples:
 #' Z1 = as.factor(sample(1:3,50,replace = TRUE)); length(Z1)
-#' Z2 = as.factor(sample(c("A","B","C","D"),50, replace = TRUE)); length(Z2)
 #' Z3 = as.factor(sample(1:2,50,replace = TRUE)); length(Z3)
+#' Z2 = as.factor(sample(c("A","B","C","D"),50, replace = TRUE)); length(Z2)
 #' Z4 = as.factor(sample(c("A","B","C","D","E"),50, replace = TRUE)); length(Z4)
+#'
+#'  # By only grouping consecutive levels of Z1:
 #' error_group(Z1,Z4)
+#' # By only all possible levels of Z1, consecutive or not:
 #' error_group(Z3,Z1,FALSE)
-#' 
-#' ## Using the "try1" object from the OT function example 
-#' ## For database A, we have:
-#' head(try1$DATA1_OT)
-#' ##  ... where the Y variable summarizes an information in 7 levels and Z summarizes the same information in 4 unknown levels 
-#' ## predictions using Optimal Transportation Theory are stored in the "OTpred" variable in a database A. So by doing:
-#' 
-#' Ypred = as.factor(try1$DATA1_OT$OTpred)
-#' groups_similarities = error_group(Ypred,try1$DATA1_OT$Y, ord = TRUE)
-#' 
-#' 
-
+#' }
+#'
 error_group = function(REF,Z,ord = TRUE){
-  
-  # REF = as.factor(REF)
-  # Z   = as.factor(Z)
-  
-  if ((!(is.factor(REF)))|(!(is.factor(Z)))){
-    
-    stop("REF and Z must be factors")
-    
-  } else {}
-  
-  if (!(is.logical(ord))){
-    
-    stop("The ord option is boolean: TRUE or FALSE expected")
-    
-    
-  } else {}
-  
 
-  # cc = try_group(Z,REF,ordin = ord)
-  cc = try_group(REF,Z,ordin = ord)
+  if ((is.null(levels(REF)))|(is.null(levels(Z)))){
+
+    stop("REF and Z must be factors")
+
+  } else {}
+
+
+  if (length(levels(REF))>length(levels(Z))){
+
+    stop("The number of levels for Z must be greater than the number of levels of REF")
+
+  } else {}
+
+  cc = try_group(Z,REF,ordin = ord)
 
   error_g = vector(length = nrow(cc[[1]]))
 
@@ -77,7 +93,7 @@ error_group = function(REF,Z,ord = TRUE){
     Zbis = as.factor(Zbis)
 
     error_g[k] = 100 - round(sum(diag(table(REF,Zbis)))*100/sum(table(REF,Zbis)),1)
-    error_combi    = data.frame(grouping_levels = row.names(cc[[1]]),error_rate= error_g)
+    error_combi    = data.frame(combi = row.names(cc[[1]]),error_rate= error_g)
     error_combi    = error_combi[sort.list(error_combi[,2]),]
 
   }
@@ -85,4 +101,3 @@ error_group = function(REF,Z,ord = TRUE){
   return(error_combi)
 
 }
-

@@ -1,5 +1,4 @@
-^README\.Rmd$
-^\.travis\.yml$
-^.*\.Rproj$
+^OTrecod\.Rproj$
 ^\.Rproj\.user$
-_pkgdown.yaml
+^LICENSE\.md$
+^devtools_history\.r$

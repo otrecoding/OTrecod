@@ -9,12 +9,14 @@
 #' @return The list returned is:
 #' \item{NEW}{An object of class factor of the same length as z}
 #' \item{LEVELS_NEW}{The levels (ordered or not) retained for z}
-#'         
-#' @author Gregory Guernec 
+#'
+#' @author Gregory Guernec
 #' \email{gregory.guernec@@inserm.fr}
-#' 
+#'
 #' @seealso \code{\link{compare_lists}}
-#' 
+#'
+#' @aliases transfo_target
+#'
 #' @export
 #'
 #' @examples
@@ -68,14 +70,15 @@ transfo_target = function(z,levels_order=NULL){
 
   if ((is.numeric(z))&(nlev == 0)){
 
-    cat("Your target was numeric ... By default, it has been converted in factor of integers","\n")
+    # cat("Your target was numeric ... By default, it has been converted in factor of integers","\n")
+    cat(paste("Your target",deparse(substitute(z)),"was numeric ... By default, it has been converted in factor of integers",sep=" "),"\n")
     z = as.factor(as.integer(z))
-    cat(paste(length(levels(z)),"remaining levels. See details in output",sep=" "),"\n")
+    cat(paste(length(levels(z)),"remaining levels",sep=" "),"\n")
 
 
   } else if ((is.numeric(z))&(nlev!=0)){
 
-    cat("Your target was numeric ... By default, it has been converted in factor of integers","\n")
+    cat(paste("Your target",deparse(substitute(z)),"was numeric ... By default, it has been converted in factor of integers",sep=" "),"\n")
     z = as.factor(as.integer(z))
 
     if (length(union(levels(z),levels_order)) == nlev){

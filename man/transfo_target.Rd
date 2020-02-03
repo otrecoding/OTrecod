@@ -7,18 +7,18 @@
 transfo_target(z, levels_order = NULL)
 }
 \arguments{
-\item{z}{A vector}
+\item{z}{A factor variable (ordered or not). a variable of another type will be, by default, convert to a factor}
 
-\item{levels_order}{A vector of levels. When the target is ordinal, the levels can be sorted by ascending order.
-By default, the initial order is retained.}
+\item{levels_order}{A vector corresponding to the values of the levels of z. When the target is ordinal, the levels can be sorted by ascending order.
+By default, the initial order is retained}
 }
 \value{
-A list containing two elements:
-        NEW An object of class factor of the same length as z
-        LEVELS_NEW The levels (ordered or not) retained for z
+The list returned is:
+\item{NEW}{An object of class factor of the same length as z}
+\item{LEVELS_NEW}{The levels (ordered or not) retained for z}
 }
 \description{
-A function which prepare the encoding of the target variable before OT algorithm
+This function prepares the encoding of the target variable before OT algorithm
 }
 \examples{
 y      = rnorm(100,30,10)
@@ -37,4 +37,11 @@ ff      = transfo_target(outco)
 outco2  = c(rep("A",25),NA,rep("B",50),rep("C",25),NA,NA)
 gg      = transfo_target(outco2)
 hh      = transfo_target(outco2,levels_order = c("B","C","A"))
+}
+\seealso{
+\code{\link{compare_lists}}
+}
+\author{
+Gregory Guernec
+\email{gregory.guernec@inserm.fr}
 }
