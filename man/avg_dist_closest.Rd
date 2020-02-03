@@ -29,6 +29,7 @@ DindivB[k,P] refers to the average distance of the k^th individual of the 1st da
 Nevertheless, this function can not be used without the \code{\link{proxim_dist}} function because it uses the objects from the latter.
 So do not use this function directly on your data, and, if needed, do not hesitate to consult the example provided for a better understanding.
 
+
 Definition of the cost matrix
 ------------------------------
 
