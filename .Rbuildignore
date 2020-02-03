@@ -1,4 +1,10 @@
+^README\.Rmd$
+^\.travis\.yml$
+^.*\.Rproj$
+^\.Rproj\.user$
+_pkgdown.yaml
 ^OTrecod\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^devtools_history\.r$
+
