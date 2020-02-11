@@ -1,8 +1,8 @@
 
 #' compare_lists()
 #'
-#'    This function compares the elements of two lists of same length
-#'    The order of entry of the 2 lists have no importance
+#'    This function compares the elements of two lists of same length.
+#'    The order of inputs of the 2 lists have no importance.
 #'
 #' @param listA A first list
 #' @param listB A second list

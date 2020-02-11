@@ -1,12 +1,14 @@
 Package: OTrecod
 Title: Data integration using Optimal Transportation Theory
 Version: 0.1.0
-Authors@R: as.person(c(
-    "Gregory Guernec <gregory.guernec@inserm.fr> [aut, cre]", 
-    "Valerie Gares <valerie.gares@insa-rennes.fr> [aut]",
-    "Pierre Navaro <navaro@math.cnrs.fr> [ctb]"
-  ))
-Description: When two databases are constructed from heterogeneous sources, it is not unusual that different encodings are used for the same outcome.In such case, aggregate information contained in two databases could be nevertheless of prime interest and it is so necessary to recode the target variable before merging.
+Authors@R: c(
+  person(given = "Gregory" , family = "Guernec"     , role = c("aut","cre"), email = "gregory.guernec@inserm.fr"),
+  person(given = "Valerie" , family = "Gares"       , role = "aut", email = "valerie.gares@insa-rennes.fr"),
+  person(given = "Pierre"  , family = "Navaro"      , role = "ctb"),
+  person(given = "Jeremy"  , family = "Omer"        , role = "ctb"),
+  person(given = "Philippe", family = "Saint-Pierre", role = "ctb"),
+  person(given = "Nicolas" , family = "Savy"        , role = "ctb"))
+Description: A set of original functions for the integration of two heterogeneous data sources using a subset of common variables (whatever their types and number) using the optimal transportation theory (G. Monge,1781). Started from two databases,some especially functions assist users to select their common variables and deal with the related missing data to optimize their data fusions.
 Depends: R (>= 3.4.0)
 License: GPL-3
 Encoding: UTF-8
