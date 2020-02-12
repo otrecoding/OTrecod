@@ -29,3 +29,4 @@ rsconnect/
 docs/*
 .Rproj.user
 *.swp
+.Rhistory
