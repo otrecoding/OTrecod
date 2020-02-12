@@ -1,6 +1,7 @@
 
 #' avg_dist_closest()
 #'
+#'
 #' Assuming that A and B are 2 databases with a common subset of variables and a same target factor (called Y in A and Z in B, such that Y is unknown in B and Z is unknown in A) whose encoding depends on the database (nA levels in A and nB levels in B). \code{avg_dist_closest} is an intermediate function of the Optimal Transportation algorithm (OT) that especially computes average distances between each row of one of the two databases and subsets of rows having a same level of target factor in the other database.
 #'
 #' \code{avg_dist_closest} is directly implemented in the \code{OT} and \code{OT_JOINT} functions but can also be used separately.
@@ -44,7 +45,9 @@
 #'
 #' @aliases avg_dist_closest
 #'
-#' @example
+#' @export
+#'
+#' @examples
 #' data(simu_data)
 #' ### The covariates of the data are prepared according to the distance chosen
 #' ### using the transfo_dist function

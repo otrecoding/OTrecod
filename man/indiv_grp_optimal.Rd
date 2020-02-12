@@ -33,6 +33,76 @@ See section 5.3 (p24) of the reference article 2 for more details about this met
 \details{
 As for \code{\link{indiv_grp_closest}}, the \code{indiv_grp_optimal} function is directly implemented in the \code{OT} and requires the prior use of code{\link{proxim_dist}} and \code{\link{avg_dist_closest}} for running.
 }
+\examples{
+
+### Example using The Euclidean distance on a complete database
+# For this example we keep only 200 rows:
+
+data(tab_test)
+tab_test2 = tab_test[c(1:100,5001:5100),]; dim(tab_test2)
+
+# Adding NAs in Y1 and Y2
+tab_test2[tab_test2$ident == 2,2] = NA
+tab_test2[tab_test2$ident == 1,3] = NA
+
+# Because all covariates are ordered in numeric form,
+# the transfo_dist function is not required here
+
+res3      = proxim_dist(tab_test2,norme = 2)
+
+#' ### Y1 and Y2 are a same variable encoded in 2 different forms:
+### 4 levels for Y1 and 3 levels for Y2
+### ... Stored in two distinct databases, A and B, respectively
+### The marginal distribution of Y1 in B is unknown,
+### as the marginal distribution of Z2 in A ...
+
+# By supposing that the following matrix called transport symbolizes
+# an estimation of the joint distribution L(Y,Z) ...
+# Note that, in reality this distribution is UNKNOWN and is
+# estimated in the OT function by resolving an optimisation problem.
+
+# By supposing:
+
+val_trans  = c(0.275,0.115,0,0,0,0.085,0.165,0,0,0,0.095,0.265)
+transport2 = matrix(val_trans,ncol = 3,byrow = FALSE)
+
+res4      = indiv_grp_optimal(res3,jointprobaA = transport2,
+            jointprobaB = transport2, percent_closest= 0.90)
+
+\dontrun{
+### Example 2 using The Manhattan distance with incomplete covariates
+data(simu_data)
+
+try1 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
+                    ordinal = c(2,6), logic = NULL, prep_choice = "M")
+res1 = proxim_dist(try1,norme = 1)
+
+
+### Y and Z are a same variable encoded in 2 different forms:
+### (3 levels for Y and 5 levels for Z)
+### ... Stored in two distinct databases, A and B, respectively
+### The marginal distribution of Y in B is unknown,
+### as the marginal distribution of Z in A ...
+
+# By supposing that the following matrix called transport symbolizes
+# an estimation of the joint distribution L(Y,Z) ...
+# Note that, in reality this distribution is UNKNOWN and is
+# estimated in the OT function by resolving an optimisation problem.
+
+transport1 = matrix(c(0,0.35285714,0,0.09142857,0,0.03571429,
+                      0,0,0.08285714,0,0.07857143,0.03142857,
+                      0.32714286,0,0),ncol = 5,byrow = FALSE)
+
+
+# The affectation of the predicted values of Y in database B and Z in database A
+# are stored in the following object:
+
+res2      = indiv_grp_optimal(res1,jointprobaA = transport1,
+                              jointprobaB = transport1, percent_closest= 0.90)
+summary(res2)
+}
+
+}
 \references{
 # Article 1:
 Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.

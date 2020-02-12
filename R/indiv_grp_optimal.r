@@ -40,7 +40,9 @@
 #'
 #' @aliases indiv_grp_optimal
 #'
-#' @example
+#' @export
+#'
+#' @examples
 #'
 #' ### Example using The Euclidean distance on a complete database
 #' # For this example we keep only 200 rows:
