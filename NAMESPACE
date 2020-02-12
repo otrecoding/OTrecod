@@ -2,10 +2,13 @@
 
 export(OT)
 export(OT_joint)
+export(avg_dist_closest)
 export(compare_lists)
 export(error_group)
 export(ham)
 export(imput_cov)
+export(indiv_grp_closest)
+export(indiv_grp_optimal)
 export(merge_dbs)
 export(power_set)
 export(proxim_dist)

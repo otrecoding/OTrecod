@@ -32,6 +32,47 @@ Please, consult the reference article 2 for more details about this implemented 
 
 \code{indiv_grp_closest} is directly implemented in the \code{OT} and requires the prior use of code{\link{proxim_dist}} and \code{\link{avg_dist_closest}} for running.
 }
+\examples{
+data(simu_data)
+
+### Example with The Manhattan distance
+
+try1 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
+                    ordinal = c(2,6), logic = NULL, prep_choice = "M")
+res1 = proxim_dist(try1,norme = 1)
+
+### Y and Z are a same variable encoded in 2 different forms:
+### (3 levels for Y and 5 levels for Z)
+### ... Stored in two distinct databases, A and B, respectively
+### The marginal distribution of Y in B is unknown,
+### as the marginal distribution of Z in A ...
+
+# Empirical distribution of Y in database A:
+freqY = prop.table(table(try1$Y)); freqY
+
+# Empirical distribution of Z in database B
+freqZ = prop.table(table(try1$Z)); freqZ
+
+# By supposing that the following matrix called transport symbolizes
+# an estimation of the joint distribution L(Y,Z) ...
+# Note that, in reality this distribution is UNKNOWN and is
+# estimated in the OT function by resolving an optimisation problem.
+
+transport1 = matrix(c(0,0.35285714,0,0.09142857,0,0.03571429,
+                      0,0,0.08285714,0,0.07857143,0.03142857,
+                      0.32714286,0,0),ncol = 5,byrow = FALSE)
+
+# ... So that the marginal distributions of this object corresponds to freqY and freqZ:
+apply(transport1,1,sum)  # = freqY
+apply(transport1,2,sum)  # = freqZ
+
+# The affectation of the predicted values of Y in database B and Z in database A
+# are stored in the following object:
+
+res2      = indiv_grp_closest(res1,jointprobaA = transport1, jointprobaB = transport1,
+                              percent_closest= 0.90)
+summary(res2)
+}
 \references{
 # Article 1:
 Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.

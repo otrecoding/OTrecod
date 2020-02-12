@@ -33,7 +33,9 @@
 #' # Article 2:
 #' Gares V, Omer J. Regularized optimal transport of covariates and outcomes in datarecoding(2019).hal-02123109 \url{https://hal.archives-ouvertes.fr/hal-02123109/document}
 #'
-#' @example
+#' @export
+#'
+#' @examples
 #' data(simu_data)
 #'
 #' ### Example with The Manhattan distance
