@@ -11,7 +11,7 @@ status](https://www.r-pkg.org/badges/version/OTrecod)](https://cran.r-project.or
 [![codecov](https://codecov.io/gh/otrecoding/OTrecod/branch/master/graph/badge.svg)](https://codecov.io/gh/otrecoding/OTrecod)
 [![Launch
 binder](http://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/otrecoding/OTrecod/master)
-![Website](https://img.shields.io/website?url=https%3A%2F%2Fotrecoding.github.io%2FOTrecod%2F)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fotrecoding.github.io%2FOTrecod%2F)](https://otrecoding.github.io/OTrecod/)
 <!-- badges: end -->
 
 The goal of OTrecod is to recod data using optimal transport theory.
