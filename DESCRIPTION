@@ -9,7 +9,6 @@ Authors@R: c(
   person(given = "Philippe", family = "Saint-Pierre", role = "ctb"),
   person(given = "Nicolas" , family = "Savy"        , role = "ctb"))
 Description: A set of original functions for the integration of two heterogeneous data sources using a subset of common variables (whatever their types and number) using the optimal transportation theory (G. Monge,1781). Started from two databases,some especially functions assist users to select their common variables and deal with the related missing data to optimize their data fusions.
-Depends: R (>= 3.4.0)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -30,4 +29,6 @@ Imports:
     ROI,
     ROI.plugin.glpk,
     ompr,
-    ompr.roi
+    ompr.roi,
+    party,
+    vcd
