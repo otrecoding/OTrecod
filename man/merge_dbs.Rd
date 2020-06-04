@@ -4,20 +4,10 @@
 \alias{merge_dbs}
 \title{merge_dbs()}
 \usage{
-merge_dbs(
-  DB1,
-  DB2,
-  NAME_Y,
-  NAME_Z,
-  order_levels_Y = levels(DB1[, NAME_Y]),
-  order_levels_Z = levels(DB2[, NAME_Z]),
-  ordinal_DB1 = NULL,
-  ordinal_DB2 = NULL,
-  impute = "NO",
-  R_MICE = 5,
-  NCP_FAMD = 3,
-  seed_func = sample(1:1e+06, 1)
-)
+merge_dbs(DB1, DB2, NAME_Y, NAME_Z, order_levels_Y = levels(DB1[,
+  NAME_Y]), order_levels_Z = levels(DB2[, NAME_Z]), ordinal_DB1 = NULL,
+  ordinal_DB2 = NULL, impute = "NO", R_MICE = 5, NCP_FAMD = 3,
+  seed_func = sample(1:1e+06, 1))
 }
 \arguments{
 \item{DB1}{A data.frame corresponding to the 1st DB to match}
