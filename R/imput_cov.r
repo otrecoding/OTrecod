@@ -1,22 +1,29 @@
 
 #' imput_cov()
 #'
-#' A function that performs imputations on incomplete covariates, whatever their types, using functions from the \pkg{MICE} package (Van Buuren's Multiple Imputation) or functions from the \pkg{missMDA} package (Simple Imputation wiht Multivariate data analysis)
+#' This function performs imputations on incomplete covariates, whatever their types, using functions from the \pkg{MICE} package (Van Buuren's Multiple Imputation) or functions from the \pkg{missMDA} package (Simple Imputation with Multivariate data analysis)
 #'
-#' When multiple imputations are required (for MICE only), each missing information is imputed by a consensus value.
+#' By default, the function \code{impute_cov} handles missing information using multivariate imputation by chained equations (MICE, see Van Buuren, 2011 for more details about the method) by integrating in its syntax the function \code{\link[mice]{mice}}.
+#' All values of this last function are taken by default, excepted the number of multiple imputations required, which can be fixed by using the argument \code{R_mice}, and the imputation method chosen for each variable (\code{meth} argument),
+#' that corresponds to the argument \code{defaultMethod} of the function \code{\link[mice]{mice}}.
+#' When multiple imputations are required (for MICE only), each missing information is imputed by a consensus value:
 #' The average of the candidate values will be retained for numerical variables, while the most frequent class will be retained for categorical variables (ordinal or not).
 #' The \code{MICE_IMPS} output stored the imputed databases to allow users to buid other consensus values by themselves, and to assess the variabilities related to the imputed values, if necessary.
+#' For this method, a random number generator must be fixed or sampled using the argument \code{seed_choice}.
+#'
+#' When \code{missMDA} = TRUE, incomplete values are replaced (single imputation) using a method based on dimensionality reduction called factor analysis for mixed data (FAMD) using the the \code{\link[missMDA]{imputeFAMD}} function of the \pkg{missMDA} package.
+#' Using this approach, the function \code{imput_cov} keeps all the default values integrated in the function \code{imputeFAMD} excepted the number of dimensions used for FAMD which can be fixed by users (3 by default).
 #'
 #' @param dat1 A data.frame. containing the variables to be imputed and the one participating in the imputations
 #' @param indcol A vector of integers. The corresponding column numbers corresponding to the variables to be imputed and those which participate in the imputations.
 #' @param R_mice An integer. The number of imputed database to generate with MICE method (5 by default).
 #' @param meth A vector of characters which specify the imputation method to be used for each column in dat1.
 #' "pmm" for continuous covariates only, "logreg" for binary covariates, "polr" for ordinal covariates, "polyreg" for categorical covariates (no order),(cf \code{\link[mice]{mice}} for more details).
-#' @param missMDA A boolean. If \code{TRUE}, missing values are imputed using the factoral analysis for mixed data (\code{\link[missMDA]{missMDA-package}}) from the missMDA package (Simple imputation).
-#' @param NB_COMP An integer corresponding to the number of components used to predict the missing entries (3 by default) when the \code{missMDA} option is TRUE.
+#' @param missMDA A boolean. If \code{TRUE}, missing values are imputed using the factoral analysis for mixed data (\code{\link[missMDA]{imputeFAMD}}) from the \pkg{missMDA} package (Simple imputation).
+#' @param NB_COMP An integer corresponding to the number of components used in FAMD to predict the missing entries (3 by default) when the \code{missMDA} option is TRUE.
 #' @param seed_choice An integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default)
 #'
-#' @return A list of 3 or 4 objects (depending on the missMDA option. 3 objects if \code{missMDA} = TRUE, otherwise 4 objects are returned:
+#' @return A list of 3 or 4 objects (depending on the missMDA argument). The 1st three following objects if \code{missMDA} = TRUE, otherwise 4 objects are returned:
 #' \item{RAW}{A data.frame corresponding to the raw database}
 #' \item{IMPUTE}{A character corresponding to the type of imputation selected}
 #' \item{DATA_IMPUTE}{A data.frame corresponding to the completed (consensus if multiple imputations) database}
@@ -33,13 +40,15 @@
 #' @aliases imput_cov
 #'
 #' @references
+#' ### For missMDA:
 #' Audigier, V., Husson, F. & Josse, J. (2013). A principal components method to impute mixed data. Advances in Data Analysis and Classification, 10(1), 5-26.
 #'
+#' ### For MICE:
 #' van Buuren, S., Groothuis-Oudshoorn, K. (2011). mice: Multivariate Imputation by Chained Equations in R. Journal of Statistical Software, 45(3), 1–67.
 #'
 #'
 #' @examples
-#' # By example,we decide to impute all incomplete covariates in the simu_data table.
+#' # By example, we decide to impute all incomplete covariates in the simu_data table.
 #' data(simu_data)
 #'
 #' # Here We keep the complete \code{Gender} covariate in the imputation model.
