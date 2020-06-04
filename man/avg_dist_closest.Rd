@@ -29,9 +29,7 @@ Assuming that A and B are 2 databases with a common subset of variables and a sa
 Nevertheless, this function can not be used without the \code{\link{proxim_dist}} function because it uses the objects from the latter.
 So do not use this function directly on your data, and, if needed, do not hesitate to consult the example provided for a better understanding.
 
-
 DEFINITION OF THE COST MATRIX
-
 
 \code{avg_dist_closest} uses, in particular, the D distance matrix (that stores distances between rows of A and B) from \code{\link{proxim_dist}} to produce 3 distinct matrices stored in a list.
 This matrix is used to calculate average distances between rows of A (resp. B) and rows of B (resp. A) related to each level of Z (resp. Y) in B (resp. A). This information is stored in \code{DinvidA} and \code{DinvidB} respectively.

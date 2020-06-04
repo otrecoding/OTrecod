@@ -4,15 +4,9 @@
 \alias{imput_cov}
 \title{imput_cov()}
 \usage{
-imput_cov(
-  dat1,
-  indcol = 1:ncol(dat1),
-  R_mice = 5,
-  meth = rep("pmm", ncol(dat1)),
-  missMDA = FALSE,
-  NB_COMP = 3,
-  seed_choice = sample(1:1e+06, 1)
-)
+imput_cov(dat1, indcol = 1:ncol(dat1), R_mice = 5, meth = rep("pmm",
+  ncol(dat1)), missMDA = FALSE, NB_COMP = 3,
+  seed_choice = sample(1:1e+06, 1))
 }
 \arguments{
 \item{dat1}{A data.frame. containing the variables to be imputed and the one participating in the imputations}
@@ -49,7 +43,7 @@ The \code{MICE_IMPS} output stored the imputed databases to allow users to buid 
 # By example,we decide to impute all incomplete covariates in the simu_data table.
 data(simu_data)
 
-# Here We keep the complete \code{Gender} covariate in the imputation model.
+# Here We keep the complete \\code{Gender} covariate in the imputation model.
 # Using MICE (REP = 3):
 imput_mice = imput_cov(simu_data,indcol = 4:8,R_mice = 3,
                        meth = c("logreg","polyreg","polr","logreg","pmm"))
