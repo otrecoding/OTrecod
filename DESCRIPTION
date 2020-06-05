@@ -12,7 +12,9 @@ Description: A set of original functions for the integration of two heterogeneou
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 6.1.1
+Depends:
+     R (>= 2.10)
 Imports: 
     stats,
     car,
