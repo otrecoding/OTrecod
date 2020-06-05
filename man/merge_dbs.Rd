@@ -4,10 +4,20 @@
 \alias{merge_dbs}
 \title{merge_dbs()}
 \usage{
-merge_dbs(DB1, DB2, NAME_Y, NAME_Z, order_levels_Y = levels(DB1[,
-  NAME_Y]), order_levels_Z = levels(DB2[, NAME_Z]), ordinal_DB1 = NULL,
-  ordinal_DB2 = NULL, impute = "NO", R_MICE = 5, NCP_FAMD = 3,
-  seed_func = sample(1:1e+06, 1))
+merge_dbs(
+  DB1,
+  DB2,
+  NAME_Y,
+  NAME_Z,
+  order_levels_Y = levels(DB1[, NAME_Y]),
+  order_levels_Z = levels(DB2[, NAME_Z]),
+  ordinal_DB1 = NULL,
+  ordinal_DB2 = NULL,
+  impute = "NO",
+  R_MICE = 5,
+  NCP_FAMD = 3,
+  seed_func = sample(1:1e+06, 1)
+)
 }
 \arguments{
 \item{DB1}{A data.frame corresponding to the 1st database to merge (Top database)}
@@ -59,6 +69,7 @@ A rule decided for the overlay is that the first base declared (\code{DB1}) will
 This function proposes a helpul tool for any user who wants to prepare their databases to solve matching problems using Optimal Transportation theory.
 This function can so corresponds to the 2nd preliminary step for data fusion using Optimal Transportation theory, where the sets of best predictors, specific to each base, would be selected using the function \code{select_pred}.
 Neverhteless, it is not compulsory to have used the function \code{select_pred} beforehand, to use the function \code{merge_dbs}.
+
 
 A. The function \code{merge_dbs} handles incomplete information, by respecting the following rules:
 \itemize{

@@ -4,9 +4,18 @@
 \alias{transfo_dist}
 \title{transfo_dist()}
 \usage{
-transfo_dist(DB, index_DB_Y_Z = 1:3, quanti = NULL, nominal = NULL,
-  ordinal = NULL, logic = NULL, convert_num = NULL,
-  convert_clss = NULL, prep_choice = "E", info = 0.8)
+transfo_dist(
+  DB,
+  index_DB_Y_Z = 1:3,
+  quanti = NULL,
+  nominal = NULL,
+  ordinal = NULL,
+  logic = NULL,
+  convert_num = NULL,
+  convert_clss = NULL,
+  prep_choice = "E",
+  info = 0.8
+)
 }
 \arguments{
 \item{DB}{A data.frame composed of exactly 2 superimposed databases with a column of database identification, 2 columns corresponding to a same information
@@ -58,6 +67,7 @@ In this context, the information related to Y in the 2nd database must be missin
 All column indexes (including those related to identifier and target variables Y and Z) of the used database must be declare once (and only once), among the \code{quanti}, \code{nominal}, \code{ordinal}, or \code{logic} options.
 If the outcomes are of numeric types, they could be declared as quantitative, but they will be automatically convert in ordered factors.
 
+
 B. TRANSFORMATIONS OF CONTINUOUS COVARIATES
 
 Because some algorithms dedicated to solving recoding problems must run actually without continuous covariates (It is the case of the function \code{OT_joint} of this package), the function \code{transfo_dist} integrates in is syntax
@@ -66,7 +76,9 @@ transform in ordered factor while the second one specifies the corresponding num
 Only covariates can be transformed (not outcomes) and missing informations are not taken into account for the transformations.
 Finally, all the indexes informed in the argument \code{convert_num} must also be informed in the argument \code{quanti}.
 
+
 C. TRANSFORMATIONS ON THE DATABASE ACCORDING TO THE DISTANCE MEASURE CHOSEN
+
 
 These necessary transformations are related to the type of each of the covariates.
 It depends on the choice of the distance function chooses by user in the \code{prep_choice} option.

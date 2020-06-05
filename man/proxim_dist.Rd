@@ -63,6 +63,7 @@ In the particular case where only one covariate with NAs is used, we recommend w
 
 If the database counts many covariates and some of them have missing data, user can keep them or apply beforehand the \code{\link{imput_cov}} function on data.frame to deal with this problem.
 
+
 B. DISTANCE FUNCTIONS AND TYPES OF COVARIATES
 
 The choice of the distance function must be made according to the type of the covariates.
@@ -72,6 +73,7 @@ The Hamming distance (\code{norm} = "H") only requires binary variables. In this
 The \code{\link{transfo_quali}} function can help users in this task.
 Using the Hamming distance could be quite long, in presence NAs on covariates, so we suggerate users to be a little patient in this case.
 The Gower distance (\code{norm} = G") uses the (\code{\link[StatMatch]{gower.dist}}) function and so allows logical, factor, character and numeric variables as described in its documentation.
+
 
 C. PROFILES OF COVARIATES AND OUTPUT DETAILS
 

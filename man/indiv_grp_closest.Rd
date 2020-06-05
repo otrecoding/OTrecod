@@ -4,8 +4,13 @@
 \alias{indiv_grp_closest}
 \title{indiv_grp_closest()}
 \usage{
-indiv_grp_closest(proxim, jointprobaA = NULL, jointprobaB = NULL,
-  percent_closest = 1, which.DB = "BOTH")
+indiv_grp_closest(
+  proxim,
+  jointprobaA = NULL,
+  jointprobaB = NULL,
+  percent_closest = 1,
+  which.DB = "BOTH"
+)
 }
 \arguments{
 \item{proxim}{An object corresponding to the output of the \code{\link{proxim_dist}} function}

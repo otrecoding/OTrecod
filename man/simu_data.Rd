@@ -4,7 +4,8 @@
 \name{simu_data}
 \alias{simu_data}
 \title{A simulated dataset to test the functions of the OTrecod package.}
-\format{A data frame with 700 observations on the following 8 variables.
+\format{
+A data frame with 700 observations on the following 8 variables.
 \describe{
   \item{DB}{database identification, a character with 2 possible classes: A or B}
   \item{Yb1}{the target variable encoded in 3 ordered classes in DB A, missing in database B, stored as factor}
@@ -14,7 +15,8 @@
   \item{Dosage}{a 4 class covariate, stored as a factor, with 5\% of missing information}
   \item{Smoking}{a 2 class covariate stored as a character: NO for non smoker, YES otherwise. 10\% of missing information}
   \item{Age}{a double corresponding to the age of participants in years. The last covariate of the database counts 5\% of missing information}
-}}
+}
+}
 \source{
 randomly generated
 }
