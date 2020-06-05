@@ -4,8 +4,13 @@
 \alias{indiv_grp_optimal}
 \title{indiv_grp_optimal()}
 \usage{
-indiv_grp_optimal(proxim, jointprobaA, jointprobaB, percent_closest = 1,
-  which.DB = "BOTH")
+indiv_grp_optimal(
+  proxim,
+  jointprobaA,
+  jointprobaB,
+  percent_closest = 1,
+  which.DB = "BOTH"
+)
 }
 \arguments{
 \item{proxim}{An object corresponding to the output of the \code{\link{proxim_dist}} function}

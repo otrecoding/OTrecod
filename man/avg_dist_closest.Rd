@@ -32,6 +32,7 @@ The function \code{avg_dist_closest} uses, in particular, the D distance matrix 
 Therefore, the function required in input, this specific output of the function \code{\link{proxim_dist}} which is available in the package and so usable beforehand.
 In consequence, do not use this function directly on your database, and do not hesitate to consult the examples provided for a better understanding.
 
+
 DEFINITION OF THE COST MATRIX
 
 Assuming that A and B are 2 databases with a set of shared variables and a same latent target factor (called Y in A and Z in B, such that Y is unknown in B and Z is unknown in A) whose encoding depends on the database (nY levels in A and nZ levels in B).

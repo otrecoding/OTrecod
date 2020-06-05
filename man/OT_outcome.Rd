@@ -6,11 +6,24 @@
 \alias{OT}
 \title{OT_outcome()}
 \usage{
-OT_outcome(datab, index_DB_Y_Z = 1:3, quanti = NULL, nominal = NULL,
-  ordinal = NULL, logic = NULL, convert.num = NULL,
-  convert.clss = NULL, FAMD.coord = "NO", FAMD.perc = 0.8,
-  dist.choice = "E", percent.knn = 1, maxrelax = 0,
-  indiv.method = "sequential", prox.dist = 0.8, which.DB = "BOTH")
+OT_outcome(
+  datab,
+  index_DB_Y_Z = 1:3,
+  quanti = NULL,
+  nominal = NULL,
+  ordinal = NULL,
+  logic = NULL,
+  convert.num = NULL,
+  convert.clss = NULL,
+  FAMD.coord = "NO",
+  FAMD.perc = 0.8,
+  dist.choice = "E",
+  percent.knn = 1,
+  maxrelax = 0,
+  indiv.method = "sequential",
+  prox.dist = 0.8,
+  which.DB = "BOTH"
+)
 }
 \arguments{
 \item{datab}{A data.frame that must have at least 4 columns sorted in a non-specific order. One column must be a key column of 2 classes for the databases identification, where the names of the two databases
@@ -81,6 +94,7 @@ so that Y and Z are never jointly observed in A and B. Assuming also that A and 
 complete or not. Integrating these two databases often requires to solve the recoding problem observed between Y in Z by creating an unique database where
 the missing information of Y and Z is completed.
 
+
 B. INFORMATIONS ABOUT THE ALGORITHM
 
 The algorithm integrated in the function \code{OT_outcome} provides a solution to the recoding problem previously described by considering the recoding as an
@@ -107,6 +121,7 @@ the method).
 Estimations a posteriori of conditional probabilities \code{P[Y|X,Z]} and \code{P[Z|X,Y]} are available by profiles of covariates in output (See the objects \code{estimatorYB} and \code{estimatorZA}).
 Estimations of gamma are also available according to the direction of the distributions transport chosen (See \code{TRANSPORT_A} and \code{TRANSPORT_B}).
 
+
 C. TYPE OF INPUT DATABASE REQUIRED
 
 The input database is a data.frame that must be saved in a specific form by users:
@@ -127,6 +142,7 @@ Remarks about the outcomes:
 }
 The type of each variables (including ID, Y and Z) of the database must be rigorously specified once, in one of the 4 arguments \code{quanti},\code{nominal}, \code{ordinal} and \code{logic}.
 
+
 D. TRANSFORMATIONS OF CONTINUOUS COVARIATES
 
 The function \code{OT_outcome} integrates in is syntax a process dedicated to the discretization of continuous covariates. For this, it is necessary to rigorously filled in the arguments \code{convert.num} and \code{convert.clss}.
@@ -135,6 +151,7 @@ Therefore \code{convert.num} and \code{convert.clss} must be vectors of same len
 that corresponds to the value specified in the argument \code{convert.clss}.
 Please notice that only covariates can be transformed (not outcomes) and missing informations are not taken into account for the transformations.
 Moreover, all the indexes informed in the argument \code{convert.num} must also be informed in the argument \code{quanti}.
+
 
 E. INFORMATIONS ABOUT DISTANCE FUNCTIONS
 
@@ -153,7 +170,7 @@ As a decision rule, for a given profile of covariates \code{P_j}, an individual 
 }
 \examples{
 
-### Using a sample of the \\code{simu_data} object
+### Using a sample of the \code{simu_data} object
 ### Y and Z are a same variable encoded in 2 different forms:
 ### (3 levels for Y and 5 levels for Z)
 #--------
@@ -164,7 +181,7 @@ simu_dat  = simu_data[c(1:200,301:500),]
 #-----
 # - A nearest neighbor procedure for the estimation of individual predictions
 # - The Manhattan distance function
-# - 90\\\% of individuals from each modalities to calculate average distances
+# - 90\\% of individuals from each modalities to calculate average distances
 #   between individuals and modalities
 # Predictions are assessed for Y in B and Z in A
 #-----
@@ -183,13 +200,13 @@ try1$profile[1,]   # Details of P_1
 # So estimatorZA[1,1,1]= 0.2 corresponds to an estimation of:
 # P[Z = 1|Y=[20-40],Gender_2=0,Treatment_2=1,Treatment_3=0,Smoking_2=1,Dosage=3,Age=65.44]
 # Thus, we can conclude that all individuals with the P_1 profile of covariates have
-# 20\\\% of chance to be affected to the 1st level of Z in database A.
+# 20\\% of chance to be affected to the 1st level of Z in database A.
 # ... And so on, the reasoning is the same for the estimatorYB object.
 
 
 ### An example of OUTCOME model with same hypotheses as the previous example, excepted that;
 # - Only the individual predictions of Y in B are required
-# - The continuous covariates \\code{age} (related index = 8) will be converted in an ordinal factors
+# - The continuous covariates \code{age} (related index = 8) will be converted in an ordinal factors
 #   of 3 balanced classes (tertiles)
 # - The Gower distance is now used
 ###-----
@@ -203,7 +220,7 @@ try2 = OT_outcome(simu_dat, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2
 
 ### An example of OUTCOME model with same hypotheses as the first example, excepted that;
 # - Only the individual predictions of Z in A are required
-# - The continuous covariates \\code{age} (related index = 8) will be converted in an ordinal factors
+# - The continuous covariates \code{age} (related index = 8) will be converted in an ordinal factors
 #   of 3 balanced classes (tertiles)
 # - Here, the Hamming distance can be applied because, after conversion, all covariates are factors.
 #   Disjunctive tables of each covariates will be automatically used to work with a set of binary

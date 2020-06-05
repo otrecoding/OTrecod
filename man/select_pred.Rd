@@ -4,11 +4,25 @@
 \alias{select_pred}
 \title{select_pred()}
 \usage{
-select_pred(databa, Y, ID = 1, quanti = NULL, nominal = NULL,
-  ordinal = NULL, logic = NULL, convert_num = NULL,
-  convert_clss = NULL, thresh_cat = 0.3, thresh_num = 0.7,
-  thresh_Y = 0.2, RF = TRUE, RF_ntree = 500, RF_condi = FALSE,
-  RF_condi_thr = 0.2, RF_SEED = sample(1:1e+06, 1))
+select_pred(
+  databa,
+  Y,
+  ID = 1,
+  quanti = NULL,
+  nominal = NULL,
+  ordinal = NULL,
+  logic = NULL,
+  convert_num = NULL,
+  convert_clss = NULL,
+  thresh_cat = 0.3,
+  thresh_num = 0.7,
+  thresh_Y = 0.2,
+  RF = TRUE,
+  RF_ntree = 500,
+  RF_condi = FALSE,
+  RF_condi_thr = 0.2,
+  RF_SEED = sample(1:1e+06, 1)
+)
 }
 \arguments{
 \item{databa}{A data.frame with a column of identifiers, an outcome, and a set of predictors. The number of columns can exceed the number of rows.}
@@ -69,6 +83,7 @@ Selection of a subset of non collinear predictors having relevant relationships 
 The \code{select_pred} function provides several tools to identify, on the one hand, the relationships between predictors, by detecting especially potential problems of collinearity, and, on the other hand, proposes a parcimonious subset of relevant predictors using appropriate random forest procedures.
 Even if, in many contexts, this function can be seen as a preliminary step of regression, this function is particularly adapted to the context of data integration of two or more datasources by pre-selecting relevant subsets of shared predictors before fusion.
 
+
 A. STRUCTURE OF DATABASE REQUIRED
 
 The input expected database is a data.frame that especially requires a specific column of rows identifiers and a target variable (or outcome) having a finite number of values or classes (Therefore,in preference, of ordinal, nominal or discrete type). If the chosen outcome is in numeric form, it will be automatically converted in ordinal type.
@@ -79,6 +94,7 @@ In presence of numeric variables, it is therefore suggested to discretize them b
 continuous variables to convert and the \code{convert_clss} argument specify the related number of classes chosen for each discretization.
 So, these 2 arguments must be 2 vectors of indexes of same length. The only exception allowed, when \code{convert_clss} equals a scalar S, supposed that the continuous predictors selected for conversion  will be disretized with a same number of classes S.
 By example, if \code{convert_class} = 4, all the continuous variables selected with the \code{convert_num} argument will be discretized by quartiles. Finally, missing informations from a predictor to convert, are not discretized and stay unchanged during the transformation.
+
 
 B. PAIRWISE ASSOCIATIONS BETWEEN PREDICTORS
 
@@ -97,6 +113,7 @@ These 2 tests are highly sensitive and, by consequence, it suggested to consider
 }
 If the initial number of predictors is not too important, these informations can be sufficient to users for the visualization of the potential problems of collinearity and for the selection of a subset of predictors (\code{RF} = FALSE).
 It is nevertheless often necessary to complete this visualization by an automatical process of selection like the Random Forest approach (see Breiman 2001, for more details about RF).
+
 
 C. RANDOM FOREST PROCEDURE
 

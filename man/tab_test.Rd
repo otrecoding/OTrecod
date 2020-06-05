@@ -4,7 +4,8 @@
 \name{tab_test}
 \alias{tab_test}
 \title{A simulated dataset to test the library}
-\format{A data frame with 5000 rows and 6 variables:
+\format{
+A data frame with 5000 rows and 6 variables:
 \describe{
   \item{ident}{identificator, 1 or 2}
   \item{Y1}{outcome 1, observed for ident=1 and unobserved for ident=2}
@@ -12,7 +13,8 @@
   \item{X1}{covariable 1, integer}
   \item{X2}{covariable 2, integer}
   \item{X3}{covariable 3, integer}
-}}
+}
+}
 \source{
 randomly generated
 }
