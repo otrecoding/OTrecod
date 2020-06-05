@@ -15,8 +15,6 @@ LazyData: true
 RoxygenNote: 7.0.2
 Imports: 
     stats,
-    nnet,
-    ordinal,
     car,
     dplyr,
     mice,
