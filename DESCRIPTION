@@ -32,3 +32,5 @@ Imports:
     ompr.roi,
     party,
     vcd
+Suggests: 
+    testthat
