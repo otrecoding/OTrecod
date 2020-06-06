@@ -37,47 +37,9 @@
 
 compare_lists = function(listA,listB){
 
-  if ((!is.list(listA))|(!is.list(listB))){
+  stopifnot(is.list(listA), is.list(listB), length(listA) == length(listB))
 
-    stop("At least one of your two objects is not a list object!")} else {}
-
-
-  nA  = length(listA); nB = length(listB)
-  vec = vector(length = nA)
-
-  if (nA == nB){
-
-    for (i in 1:nA){
-
-      if (class(listA[[i]])!= class(listB[[i]])){
-
-        vec[i] = TRUE
-
-      } else if (class(listA[[i]]) %in% c("matrix","data.frame")){
-
-        if (any(dim(listA[[i]])!= dim(listB[[i]]))){
-
-          vec[i] = TRUE
-
-        } else if (all(dim(listA[[i]])== dim(listB[[i]]))){
-
-          vec[i] = ifelse(any(listA[[i]]!= listB[[i]]),TRUE,FALSE)
-
-        } else {}
-
-
-      } else if (!(class(listA[[i]]) %in% c("matrix","data.frame"))){
-
-        vec[i] = ifelse(length(listA[[i]])!= length(listB[[i]]),TRUE,
-                        ifelse(any(listA[[i]]!= listB[[i]]),TRUE,FALSE))
-
-      }  else {}
-
-    }
-
-  } else {stop("Your 2 lists have different lengths !!!")}
-
-  return(vec)
+  return(as.vector(!mapply(function(a, b) identical(as.matrix(a), as.matrix(b)), listA, listB)))
 
 }
 
