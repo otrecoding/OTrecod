@@ -8,3 +8,6 @@ _pkgdown.yaml
 ^LICENSE\.md$
 ^devtools_history\.r$
 
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
