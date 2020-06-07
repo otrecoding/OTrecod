@@ -3,7 +3,6 @@
 
 <!-- badges: start -->
 
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://juliavlasov.github.io/SemiLagrangian.jl/dev)
 [![Travis build
 status](https://travis-ci.org/otrecoding/OTrecod.svg?branch=master)](https://travis-ci.org/otrecoding/OTrecod)
 [![CRAN
