@@ -13,7 +13,8 @@
 #'
 #' A. The function \code{merge_dbs} handles incomplete information, by respecting the following rules:
 #' \itemize{
-#' \item If \code{Y} or \code{Z} have missing values in A or B, corresponding raws are excluded from the database before merging.
+#' \item If \code{Y} or \code{Z} have missing values in A or B, corresponding rows are excluded from the database before merging. Moreover, the data fusion leaves unchanged the order of the rows in the 2 databases, and in the case of incomplete outcomes,
+#' if A and B have row identifiers, the corresponding identifiers are removed and these latters are stored in the objects \code{DB1_ID} and \code{DB2_ID} of the output.
 #' \item Before overlay, the function deals with incomplete covariates according to the argument \code{impute}.
 #' Users can decide to work with complete case only ("CC"), to keep ("NO") or impute missing data ("MICE","FAMD").
 #' \item the function \code{imput_cov}, integrated in the syntax of \code{merge_dbs} deals with imputations. Two approaches are actually available:
@@ -37,6 +38,8 @@
 #' @param DB2 A data.frame corresponding to the 2nd database to merge (Bottom database)
 #' @param NAME_Y Name of the outcome (with quotes) in its specific scale/encoding gathered from the 1st database
 #' @param NAME_Z Name of the outcome (with quotes) in its specific scale/encoding gathered from the 2nd database
+#' @param row_ID1 The column index of the row identifier of DB1 if DB1 has one (No identifier by default)
+#' @param row_ID2 The column index of the row identifier of DB2 if DB2 has one (No identifier by default)
 #' @param order_levels_Y To complete only if Y is considered as an ordinal factor (scale). A vector of labels of levels (with quotes) sorted in ascending order in DB1
 #' @param order_levels_Z To complete only if Y is considered as an ordinal factor.A vector of labels of levels sorted in ascending order in DB2 with different scale from DB1
 #' @param ordinal_DB1 Vector of index of columns corresponding to ordinal variables in DB1 (No ordinal variable by default)
@@ -55,8 +58,8 @@
 #' \item{REMAINING_VAR}{Labels of the covariates remained for the data integration using OT algorithm}
 #' \item{IMPUTE_TYPE}{A character with quotes that specify the method eventually chosen to handle missing data in covariates}
 #' \item{MICE_DETAILS}{A list containing the details of the imputed datasets using \code{MICE} when this option is enabled. Databases imputed for DB1 and DB2 according to the number of mutliple imputation selected (Only if impute = "MICE")}
-#' \item{DB1_RAW}{A data.frame corresponding to the 1st raw database}
-#' \item{DB2_RAW}{A data.frame corresponding to the 2nd raw database}
+#' \item{DB1_ID}{A data.frame corresponding to the row identifier of DB1 after data fusion}
+#' \item{DB2_ID}{A data.frame corresponding to the row identifier of DB2 after data fusion}
 #' \item{SEED}{An integer used as argument by the \code{set.seed} function for offsetting the random number generator (random selection by default)}
 #'
 #' @export
@@ -84,7 +87,7 @@
 #'
 #' @examples
 #'
-#' ### Suppose that we have 2 distinct databases (from simu_data): data_A and data_B
+#' ### Assuming 2 distinct databases from simu_data: data_A and data_B
 #' data(simu_data)
 #' data_A = simu_data[simu_data$DB == "A",c(2,4:8)]; head(data_A)
 #' data_B = simu_data[simu_data$DB == "B",c(3,4:8)]; head(data_B)
@@ -106,29 +109,29 @@
 #'
 #' # Ex 1: We merged the 2 databases and impute covariates using MICE
 #' soluc1  = merge_dbs(data_A,data_B,
-#' NAME_Y = "Yb1",NAME_Z = "Yb2",
-#' ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
-#' impute = "MICE",R_MICE = 2, seed_func = 3011)
+#'                     NAME_Y = "Yb1",NAME_Z = "Yb2",
+#'                     ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
+#'                     impute = "MICE",R_MICE = 2, seed_func = 3011)
 #' summary(soluc1$DB_READY)
 #'
 #'
 #' # Ex 2: We merged the 2 databases and kept all missing data
 #' soluc2  = merge_dbs(data_A,data_B,
-#' NAME_Y = "Yb1",NAME_Z = "Yb2",
-#' ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
-#' impute = "NO",seed_func = 3011)
+#'                     NAME_Y = "Yb1",NAME_Z = "Yb2",
+#'                     ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
+#'                     impute = "NO",seed_func = 3011)
 #'
 #' # Ex 3: We merged the 2 databases by only keeping the complete cases
 #' soluc3  = merge_dbs(data_A,data_B,
-#' NAME_Y = "Yb1",NAME_Z = "Yb2",
-#' ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
-#' impute = "CC",seed_func = 3011)
+#'                     NAME_Y = "Yb1",NAME_Z = "Yb2",
+#'                     ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
+#'                     impute = "CC",seed_func = 3011)
 #'
 #' # Ex 4: We merged the 2 databases and impute covariates using FAMD
 #' soluc4  = merge_dbs(data_A,data_B,
-#' NAME_Y = "Yb1",NAME_Z = "Yb2",
-#' ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
-#' impute = "FAMD",NCP_FAMD = 4,seed_func = 2096)
+#'                     NAME_Y = "Yb1",NAME_Z = "Yb2",
+#'                     ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
+#'                     impute = "FAMD",NCP_FAMD = 4,seed_func = 2096)
 #'
 #' # Conclusion:
 #' # The data fusion is successful in each situation.
@@ -137,6 +140,8 @@
 #'
 merge_dbs = function(DB1,
                      DB2,
+                     row_ID1 = NULL,
+                     row_ID2 = NULL,
                      NAME_Y,
                      NAME_Z,
                      order_levels_Y = levels(DB1[, NAME_Y]),
@@ -149,8 +154,40 @@ merge_dbs = function(DB1,
                      seed_func = sample(1:1000000, 1)) {
   cat("DBS MERGING in progress. Please wait ...", "\n")
 
-  DB1_raw = DB1
-  DB2_raw = DB2
+  if ((length(row_ID1)>1)|(length(row_ID2)>1)){
+
+    stop("Improper argument for row_IDs")
+
+  } else {}
+
+  if ((is.character(row_ID1))|(is.character(row_ID2))){
+
+    stop("Improper argument for row_IDs")
+
+  } else {}
+
+  DB1_row     = DB1
+  DB2_row     = DB2
+  ID1         = NULL
+  ID2         = NULL
+
+  if (!is.null(row_ID1)){
+
+     ordinal_DB1 = setdiff(ordinal_DB1,row_ID1)
+     ordinal_DB1 = ordinal_DB1 - as.numeric(row_ID1 < ordinal_DB1)
+     DB1         = DB1[,-row_ID1]
+     ID1         = ID1[!is.na(DB1[, NAME_Y])]
+
+  } else {}
+
+  if (!is.null(row_ID2)){
+
+     ordinal_DB2 = setdiff(ordinal_DB2,row_ID2)
+     ordinal_DB2 = ordinal_DB2 - as.numeric(row_ID2 < ordinal_DB2)
+     DB2         = DB2[,-row_ID2]
+     ID2         = ID2[!is.na(DB2[, NAME_Z])]
+
+  } else {}
 
 
   # Constraints on the 2 databases
@@ -220,9 +257,9 @@ merge_dbs = function(DB1,
   DB1   = DB1[!is.na(DB1[, NAME_Y]), ]
   DB2   = DB2[!is.na(DB2[, NAME_Z]), ]
 
+
   NB1_2 = nrow(DB1)
   NB2_2 = nrow(DB2)
-
 
 
   REMOVE_SUBJECT1 = NB1_1 - NB1_2
@@ -427,7 +464,7 @@ merge_dbs = function(DB1,
   remain_var = setdiff(same_cov, remove_var)
 
   if (length(remain_var) == 0) {
-    stop("no common variable selected in the 2 DBS except the target !")
+    stop("no common variable selected in the 2 DBS")
 
   } else {
   }
@@ -456,18 +493,18 @@ merge_dbs = function(DB1,
   cat("\n")
   cat("SUMMARY OF DBS MERGING:", "\n")
   cat(
-    "Nb of removed subjects because of NA on Y:",
+    "Nb of removed subjects because of NA on targets:",
     REMOVE_SUBJECT1 + REMOVE_SUBJECT2,
     "(",
     round((REMOVE_SUBJECT1 + REMOVE_SUBJECT2) * 100 / (NB1_1 + NB2_1)),
     "%)",
     "\n"
   )
-  cat("Nb of removed covariates because of their different types:",
+  cat("Nb of covariates removed because of differences between the 2 bases:",
       length(remove_var),
       "\n")
-  cat("Nb of remained covariates:", ncol(DB_COV) - 3, "\n")
-  cat("More details in output ...", "\n")
+  cat("Nb of covariates remained:", ncol(DB_COV) - 3, "\n")
+  cat("Imputation on incomplete covariates:",impute,"\n")
 
   if (impute %in% c("NO", "CC", "FAMD")) {
     return(
@@ -479,8 +516,8 @@ merge_dbs = function(DB1,
         REMOVE2 = remove_var2,
         REMAINING_VAR = colnames(DB_COV)[4:ncol(DB_COV)],
         IMPUTE_TYPE = impute,
-        DB1_RAW = DB1_raw,
-        DB2_RAW = DB2_raw,
+        DB1_ID = DB1_row,
+        DB2_ID = DB2_row,
         SEED = seed_func
       )
     )
@@ -489,6 +526,7 @@ merge_dbs = function(DB1,
     return(
       list(
         DB_READY = DB_COV,
+        ID1 = ID1, ID2 = ID2,
         Y_LEVELS = levels(DB_COV$Y),
         Z_LEVELS = levels(DB_COV$Z),
         REMOVE1 = remove_var1,
@@ -499,8 +537,8 @@ merge_dbs = function(DB1,
           DB1 = list(RAW = DB1bis[[1]], LIST_IMPS = DB1bis[[4]]),
           DB2 = list(RAW = DB2bis[[1]], LIST_IMPS = DB2bis[[4]])
         ),
-        DB1_RAW = DB1_raw,
-        DB2_RAW = DB2_raw,
+        DB1_ID = DB1_row,
+        DB2_ID = DB2_row,
         SEED = seed_func
       )
     )
