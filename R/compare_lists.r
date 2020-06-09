@@ -13,7 +13,6 @@
 #'
 #' @author Gregory Guernec
 #' \email{gregory.guernec@@inserm.fr}
-#' @export
 #'
 #' @aliases compare_lists
 #'
