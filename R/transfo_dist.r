@@ -1,66 +1,93 @@
 #' transfo_dist()
 #'
-#' A function that prepares the database according to the distance function chosen to evaluate the proximities between rows of databases in the OT algorithm
+#' This function prepares the database for the resolution of a recoding problem according to the distance function chosen to evaluate the proximities between rows
 #'
-#' The database must have at least 4 columns (stored in a nonspecific order) : An identifier column (of 2 classes) to distinguish the 2 superimposed databases,
-#' a (nominal or ordinal) variable corresponding to the information to merge with its specific encoding in the 1st database (called Y by example),
-#' the corresponding target variable in the 2nd database (called Z by example), and at least a covariate common to both databases (that is to say with same encoding in the 2 bases).
 #'
-#' In this context, the information related to Y in the 2nd database is missing as the information related to Z in the 1st database.
-#' We remind users that the purpose of this package is to predict the missing informations in Y and Z.
+#' A. SPECIFIC STRUCTURE REQUIRED FOR THE DATABASE
 #'
-#' All column indexes (including those related to identifier and target variables Y and Z) of the used database must be declare once, among the \code{quanti}, \code{nominal}, \code{ordinal}, or \code{logic} options.
+#' In input of this function, the declared database must correspond to the fusion of two databases previously overlayed.
+#' This structure can be guaranteed using previously the function \code{\link{merge_dbs}}.
+#' Nevertheless, it is also posible to apply directly the function \code{transfo_dist} on a row database provided that a specific structure of database is respected in entry of the function.
+#' The database must count at least 4 columns (In an a unspecified order of appearance in the database):
+#' \itemize{
+#' \item A column of data base identifiers (2 classes: A and B, 1 and 2, ...)
+#' \item A categorical (nominal or ordinal factor) variable corresponding to the outcome of the 1st database (on top) with its specific encoding (called Y by example).
+#' \item A second categorical (nominal or ordinal) variable corresponding to the specific outcome in the 2nd database (called Z by example).
+#' \item At least one covariate shared in the two bases (same encoding in the 2 bases). Incomplete information is possible on shared covariates provided you have more than one covariate.
+#' }
+#' In this context, the information related to Y in the 2nd database must be missing as the information related to Z in the 2nd database.
+#' All column indexes (including those related to identifier and target variables Y and Z) of the used database must be declare once (and only once), among the \code{quanti}, \code{nominal}, \code{ordinal}, or \code{logic} options.
+#' If the outcomes are of numeric types, they could be declared as quantitative, but they will be automatically convert in ordered factors.
 #'
-#' TRANSFORMATIONS ON THE DATABASE ACCORDING TO THE CHOICE OF THE DISTANCE
-#' -----------------------------------------------------------------------
+#'
+#' B. TRANSFORMATIONS OF CONTINUOUS COVARIATES
+#'
+#' Because some algorithms dedicated to solving recoding problems must run actually without continuous covariates (It is the case of the function \code{OT_joint} of this package), the function \code{transfo_dist} integrates in is syntax
+#' a process dedicated to the discretization of this type of variables. For this, it is necessary to rigorously filled in the arguments \code{convert_num} and \code{convert_clss} as vectors of indexes. The first one informs about the indexes of continuous variables to
+#' transform in ordered factor while the second one specifies the corresponding number of levels desired.
+#' Only covariates can be transformed (not outcomes) and missing informations are not taken into account for the transformations.
+#' Finally, all the indexes informed in the argument \code{convert_num} must also be informed in the argument \code{quanti}.
+#'
+#'
+#' C. TRANSFORMATIONS ON THE DATABASE ACCORDING TO THE DISTANCE MEASURE CHOSEN
+#'
 #'
 #' These necessary transformations are related to the type of each of the covariates.
-#' Obviously it depends on the choice of the distance function chooses by user in the \code{prep_choice} option.
+#' It depends on the choice of the distance function chooses by user in the \code{prep_choice} option.
 #'
-#' 1. For the Euclidean (E) and Manhattan (M) distances:
-#' The numeric variables are unchanged and the potential transformations only concerned all other types of covariates (if there is any).
+#' 1. For the Euclidean ("E") and Manhattan ("M") distances:
+#' All the remaining continuous variables are standardized.
 #' The related recoding to a boolean variable is 1 for \code{TRUE} and 0 for \code{FALSE}.
-#' The recoding for a nominal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables))
+#' The recoding for a nominal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
 #' The ordinal variables are all converted to numeric variables (Please take care that the order of the classes of each of these variables is well specified at the beginning).
 #'
-#' 2. For the Hamming (H) distance:
-#' All the numeric variables must be categorize beforehand as described in the 4th example.
-#' The related recoding to a boolean variable is 1 for \code{TRUE} and 0 for \code{FALSE}
-#' The recoding for nominal or ordinal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables))
+#' 2. For the Hamming ("H") distance:
+#' All the numeric variables must be transformed beforehand in categorical forms using the internal process described in section B or via another external approach.
+#' The boolean variables are all converted in ordinal forms and then turned into binaries.
+#' The recoding for nominal or ordinal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
 #'
-#' 3. For the Gower (G) distance:
+#' 3. For the Gower ("G") distance:
 #' All covariates remain unchanged
 #'
 #' 4. Using the principal components from a factor analysis for mixed data (FAMD):
-#' A factor analysis for mixed data is done on the covariates of the database and a specific number of the related principal components is remained (depending on the variability part explained by the covariates that the user wishes to keep by varying the \code{info} option).
-#' After this step, all new covariates will be obviously in numeric forms.
+#' A factor analysis for mixed data is done on the covariates of the database and a specific number of the related principal components is remained (depending on the minimal part of variability explained by the covariates that the user wishes to keep by varying the \code{info} option).
+#' After this step, the covariates are replaced by the remaining principal components of the FAMD, and each value corresponds to coordinates linked to each components.
+#' Please notice that this method supposed complete covariates in input, nevertheless in presence of incomplete covariates, each corresponding rows will be dropped from the study, a warning appeared, and the number of remaining rows will be indicated.
 #'
 #' @param DB A data.frame composed of exactly 2 superimposed databases with a column of database identification, 2 columns corresponding to a same information
 #' differently encoded in the 2 databases and covariates. The order of the variables have no importance.
-#' @param index_DB_Y_Z A vector of exactly 3 integers. The 1st integer must correspond to the index of the database identifiaction column. The 2nd integer corresponds
+#' @param index_DB_Y_Z A vector of exactly 3 integers. The 1st integer must correspond to the index of the database identification column. The 2nd integer corresponds
 #' to the index of the target variable in the 1st database while the 3rd integer corresponds to the index of column related to the target varaible in the 2nd database.
 #' @param quanti A vector of integers that corresponds to the indexes of columns of all the quantitative variables (DB identification and target variables included)
 #' @param nominal A vector of integers that corresponds to the indexes of columns of all the nominal (not ordered) variables (DB identification and target variables included)
 #' @param ordinal A vector of integers that corresponds to the indexes of columns of all the ordinal variables (DB identification and target variables included)
 #' @param logic A vector of integers that corresponds to the indexes of columns of all the boolean variables.
+#' @param convert_num Indexes of the continuous (quantitative) variables to convert in ordered factors.All indexes declared in this argument must have been declared in the argument \code{quanti} (No conversion by default).
+#' @param convert_clss A vector indicating for each continuous variable to convert, the corresponding number of levels desired.If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} equals 1 (only one integer),
+#' each discretization will count the same number of levels.
 #' @param prep_choice A character (with quotes) corresponding to the distance function chosen between: The euclidean distance ("E", by default), The Manhattan distance ("M"),
 #' the Gower distance ("G"), the Hamming (also called binary) distance and the Euclidean or Manhattan distance, calculated from principal components of a factor analysis of mixed data ("FAMD").
-#' @param info A percent value (between 0 and 100) that corresponds to the part of variability taken into account by the principal components of the FAMD when this option is required.
+#' @param info A ratio indicating a percent value (between 0 and 1, 0.8 is the default value) that corresponds to the minimal part of variability that must be taken into account by the remaining principal components of the FAMD when this option is required.
+#' This ration will fix the number of components to keep in output.
 #'
-#' @return A data.frame which covariates have been transformed according to the distance function chosen. The columns of the data.frame could have been reordered so that the identifier, Y and Z correspond to the 1st three columns respectively.
+#' @return A data.frame which covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the identifier, Y and Z correspond to the 1st three columns respectively.
+#' Moreover the order of rows stay unchanged during the process.
+#'
 #' @export
 #'
-#' @importFrom stats na.omit
+#' @importFrom stats na.omit sd
 #' @importFrom FactoMineR FAMD
 #'
+#' @seealso \code{\link{transfo_quali}},\code{\link{merge_dbs}}
+#'
 #' @references
-#' # For Factor Analysis with mixed data:
+#' ### For Factor Analysis with mixed data:
 #' Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.
 #'
-#' # About the Gower distance:
+#' ### About the Gower distance:
 #' Gower, J. C. (1971), “A general coefficient of similarity and some of its properties”. Biometrics, 27, 623--637.
 #'
-#' # About the other distance measurements:
+#' ### About the other distance measurements:
 #' Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
 #'
 #' Borg, I. and Groenen, P. (1997) Modern Multidimensional Scaling. Theory and Applications. Springer.
@@ -73,8 +100,7 @@
 #'
 #' @examples
 #'
-#' ### Using the simu_data example, suppose that you want to prepare
-#' ### your data before applying the OT algorithm with:
+#' ### Using the simu_data example:
 #'
 #' data(simu_data)
 #'
@@ -104,21 +130,21 @@
 #' # 4. The Hamming distance:
 #' # Here the quanti option could only contain indexes related to targets.
 #' # Indexes columns related to potential binary covariates or covariates with
-#' # finite number of integer values must be include in the ordinal option.
-#' # So in simu_data, the Age covariate can not be directly use without prior
-#' # categorization.
+#' # finite number of values must be include in the ordinal option.
+#' # So in simu_data, the discretization of the variable age is required (index=8),
+#' # using the convert_num and convert_clss arguments (for tertiles = 3):
 #'
-#' simu_dat = simu_data[,-8]    # categorization
-#' simu_dat$AgeC = cut(simu_data$Age,breaks = c(34,50,54,66))
-#' try4 = transfo_dist(simu_dat,quanti = 3, nominal = c(1,4:5,7),ordinal = c(2,6,8),
-#' prep_choice = "H")
+#' try4 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),ordinal = c(2,6),
+#' convert_num = 8, convert_clss = 3, prep_choice = "H")
 #'
+#' \dontrun{
 #' # Other situation with a new numeric covariate with a finite number of values
 #' simu_dat = simu_data[,-8]
 #' simu_dat$new = sample(1:3,nrow(simu_data),replace = TRUE)
-#' try5 = transfo_dist(simu_dat,quanti = 3, nominal = c(1,4:5,7),ordinal = c(2,6,8),
+#' try5 = transfo_dist(simu_dat,quanti = c(3,8), nominal = c(1,4:5,7),ordinal = c(2,6),
 #' prep_choice = "H")
-#'
+#' # Return Error because a continuous variable remains
+#' }
 #'
 #' ### This function works whatever the order of your columns in your database:
 #' # Suppose that we re-order columns in simu_data:
@@ -129,13 +155,15 @@
 #' try5 = transfo_dist(simu_data2,index_DB_Y_Z = c(8,1,6),quanti = 6:7, nominal = c(2:3,5,8),
 #'                      ordinal = c(1,4), logic = NULL, prep_choice = "E")
 #'
-transfo_dist = function(DB,index_DB_Y_Z = 1:3,quanti = NULL,nominal = NULL,ordinal = NULL,logic = NULL,
-                        prep_choice = "E",info = 80){
+transfo_dist = function(DB,index_DB_Y_Z = 1:3,
+                        quanti = NULL, nominal = NULL, ordinal = NULL, logic = NULL,
+                        convert_num = NULL, convert_clss = NULL,
+                        prep_choice = "E", info = 0.8){
 
 
   if (ncol(DB) < 4){
 
-    stop("Invalid number of columns in your DB: At least 4")
+    stop("Invalid number of columns in DB: At least 4")
 
   } else {}
 
@@ -150,7 +178,7 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,quanti = NULL,nominal = NULL,ordin
 
   if (length(index_DB_Y_Z)!= 3){
 
-    stop("Invalid length for index_DB_Y_Z: This option must contain the column indexes
+    stop("Invalid length for index_DB_Y_Z: This argument must contain the column indexes
           related to the identifiation of DBs and of the 2 chosen targets")
 
   } else {}
@@ -158,7 +186,7 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,quanti = NULL,nominal = NULL,ordin
 
   if (max(index_DB_Y_Z)>ncol(DB)){
 
-    stop("Invalid index in the index_DB_Y_Z option")
+    stop("Invalid index in the index_DB_Y_Z argument")
 
   } else {}
 
@@ -222,7 +250,7 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,quanti = NULL,nominal = NULL,ordin
 
   } else {}
 
-  if ((length(setdiff(quanti,index_DB_Y_Z))!=0)&(prep_choice == "H")){
+  if (length(setdiff(quanti,c(index_DB_Y_Z,convert_num))!=0)&(prep_choice == "H")){
 
     stop("Incompatible type(s) of covariate(s) with distance chosen: No numeric variable with Hamming distance.
          If your variable is binary or has a finite number of values, please put its corresponding index of column
@@ -230,27 +258,62 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,quanti = NULL,nominal = NULL,ordin
 
   } else {}
 
+  if (all(convert_num %in% quanti) == FALSE){
 
-  if (length(logic) != 0){
-
-    for (j in logic){
-
-      DB[,j]   = as.numeric(DB[,j])
-      quanti   = unique(sort(c(quanti,logic)))
-      logic    = NULL
-
-    }
+    stop("Inconsistencies between convert_num and quanti arguments")
 
   } else {}
 
-  if (length(Reduce(intersect,list(quanti,nominal,ordinal))) != 0){
+  if (length(convert_clss)>length(convert_num)){
+
+    stop("Inconsistencies between convert_num and convert_clss")
+
+  } else {}
+
+  if ((length(convert_clss)>1)&(length(convert_clss)!=length(convert_num))){
+
+    stop("Inconsistencies between convert_num and convert_clss")
+
+  } else {}
+
+
+  if (length(convert_clss) == 1){
+
+    convert_clss = rep(convert_clss,length(convert_num))
+
+  } else {}
+
+  # Exclude systematically Y and Z from discretization
+
+  convert_clss = convert_clss[convert_num %in% setdiff(convert_num,index_DB_Y_Z)]
+  convert_num  = setdiff(convert_num,index_DB_Y_Z)
+
+
+  if (length(convert_num) != 0){
+
+    tt = 0
+    for (k in convert_num){
+      tt = tt + 1
+      DB[,k]  = cut(DB[,k],breaks = stats::quantile(DB[,k],
+                                                    probs = seq(0,1,by = 1/convert_clss[tt]),na.rm = TRUE),
+                    include.lowest = TRUE, ordered_result = TRUE)
+    }
+
+    ordinal     = sort(c(ordinal,convert_num))
+    quanti      = sort(setdiff(quanti,convert_num))
+    convert_num = NULL
+
+  } else {}
+
+
+  if (length(Reduce(intersect,list(quanti,nominal,ordinal,logic))) != 0){
 
     stop("Several types declared for at least one variable. Please consult help to complete the corresponding options")
 
   } else {}
 
 
-  typ_var = sort(unique(c(quanti,nominal,ordinal)))
+  typ_var = sort(unique(c(quanti,nominal,ordinal,logic)))
 
   if (length(typ_var) != ncol(DB)){
 
@@ -300,6 +363,19 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,quanti = NULL,nominal = NULL,ordin
   if (prep_choice %in% c("M","E","H")){
 
 
+    if (length(logic) != 0){
+
+      for (j in logic){
+
+        DB[,j]   = as.numeric(DB[,j])
+        ordinal2 = unique(sort(c(ordinal2,logic)))
+        logic    = NULL
+
+      }
+
+    } else {}
+
+
     if (length(union(ordinal2,quanti2))!=0){
 
       for (j in sort(unique(c(ordinal2,quanti2)))){
@@ -308,7 +384,20 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,quanti = NULL,nominal = NULL,ordin
 
       }
 
-   } else {}
+    } else {}
+
+
+    ### Standardization
+
+    if (length(quanti2)!=0){
+
+      for (j in quanti2){
+
+        DB[,j] = round((DB[,j] - mean(DB[,j], na.rm = TRUE))/stats::sd(DB[,j], na.rm = TRUE),4)
+
+      }
+
+    } else {}
 
 
     if (length(nominal2)!=0){
@@ -316,7 +405,7 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,quanti = NULL,nominal = NULL,ordin
       name_quali = colnames(DB)[nominal2]
 
 
-      # Transformation des variables qualis à k modalités en (k-1) binaires:
+      # Transformation des variables qualis a k modalites en (k-1) binaires:
       # The 1st level is taken as reference
 
       bin_quali     = transfo_quali(DB[,nominal2[1]])
@@ -335,7 +424,7 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,quanti = NULL,nominal = NULL,ordin
 
       }
 
-      # Generalization à T variables (T>1)
+      # Generalization to T variables (T>1)
 
       if (length(nominal2)>1){
 
@@ -383,6 +472,19 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,quanti = NULL,nominal = NULL,ordin
 
   } else if (prep_choice == "G"){
 
+    ### Standardization
+
+    # if (length(quanti2)!=0){
+
+    #  for (j in quanti2){
+
+    #    DB[,j] = as.numeric(DB[,j])
+    #    DB[,j] = round((DB[,j] - mean(DB[,j], na.rm = TRUE))/sd(DB[,j], na.rm = TRUE),4)
+
+    # }
+
+    #} else {}
+
     DB_NEW = DB
 
     for (j in ordinal2){
@@ -391,11 +493,12 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,quanti = NULL,nominal = NULL,ordin
 
     }
 
-    col_nameDB                       = colnames(DB_NEW)[sort(unique(c(nominal2,quanti2,ordinal2)))]
-    DB_NEW                           = data.frame(DB_NEW[,index_DB_Y_Z],DB_NEW[,sort(unique(c(nominal2,quanti2,ordinal2)))])
+    col_nameDB                       = colnames(DB_NEW)[sort(unique(c(nominal2,quanti2,ordinal2,logic)))]
+    DB_NEW                           = data.frame(DB_NEW[,index_DB_Y_Z],DB_NEW[,sort(unique(c(nominal2,quanti2,ordinal2,logic)))])
     colnames(DB_NEW)[4:ncol(DB_NEW)] = col_nameDB
 
-  } else if (prep_choice == "FAMD"){
+
+    } else if (prep_choice == "FAMD"){
 
 
     DB_NEW  = DB
@@ -415,7 +518,7 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,quanti = NULL,nominal = NULL,ordin
         "Only",
         nrow(DB_NEW),"rows",
         "(",
-        round(nrow(DB_NEW) * 100 / nrow(DB)),
+        round(nrow(DB_NEW) * 100 / nrow(DB),0),
         "%)","are kept here corresponding to complete cases",
         "\n"
       )
@@ -423,13 +526,10 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,quanti = NULL,nominal = NULL,ordin
     } else {}
 
 
-    res     = FactoMineR::FAMD(DB_NEW2, ncp = 9, graph = F)
+    res     = FactoMineR::FAMD(DB_NEW2, ncp = 11, graph = F)
 
-
-
-    nb_CP = min((1:nrow(res$eig))[res$eig[,3]> info])
-
-    DB_NEW     = data.frame(DB_NEW[,index_DB_Y_Z],res$ind$coord[,1:nb_CP])
+    nb_CP   = min((1:nrow(res$eig))[res$eig[,3] > info*100])
+    DB_NEW  = data.frame(DB_NEW[,index_DB_Y_Z],res$ind$coord[,1:nb_CP])
 
   } else {
 
@@ -443,7 +543,8 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,quanti = NULL,nominal = NULL,ordin
 
   if (unique(DB_NEW[,1])[1] != levels(DB_NEW[,1])[1]){
 
-    stop("Please change the name of your databases in the ID column so that the names of the 2 databases will be alphanumerically ranked in ascending order. You can use A for data1 and B for data2 or simply 1 and 2 by example.")
+    stop("Please change the name of your databases in the ID column so that the names of the 2 databases will be alphanumerically ranked in ascending order.
+          By example, usee A for data1 and B for data2 or simply 1 and 2.")
 
   } else {}
 

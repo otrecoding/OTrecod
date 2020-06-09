@@ -16,18 +16,28 @@ error_group(REF, Z, ord = TRUE)
 \value{
 A data.frame with 2 columns:
         \item{combi}{The first column enumerates all possible groups of modalities of Z to obtain the same number of levels as the reference.}
-        \item{error_rate}{The second columns gives the corresponding rate error of reclassification.}
+        \item{error_rate}{The second column gives the corresponding rate error from the confusion matrix (ratio of non-diagonal elements)}
+        \item{Kappa}{This column indicates the result of the Cohen's kappa coefficient related to each combination of Y}
+        \item{Vcramer}{This column indicates the result of the Cramer's V criterion related to each combination of Y}
+        \item{RankCor}{This column indicates the result of the Spearman's coefficient of correlation related to each combination of Y}
 }
 \description{
-# This function gives an assesment of the proximity of two multinomial distributions
-# with different number of classes.
+This function studies the proximity of two categorical distributions with unequal number of modalities
 }
 \details{
-# By supposing that Y and Z are 2 categorical variables (ordered or not) where the
-# number of levels of Y i bigger than the number of levels of Z.
-# The error_group() function researches the optimal grouping of modalities of Y
-# to approach at best the distribution of Z to give an assessment of the proximity
-# between the two  distinct encodings.
+Assuming that Y and Z are 2 categorical variables with a different number of modalities nY and nZ  respectively, so that nY > nZ, the idea consists in
+measuring the association between Z and all possible new variables Y', built by grouping modalities of Y so that nY = nZ.
+If Y and Z are 2 categorical variables with the same number of modalities, summarizing a same latent information, then it must exist an association between them,
+and the function \code{error_group} aims to highlight it by searching the optimal grouping of modalities of Y to approach at best the distribution of Z.
+
+All combinations of modalities of Y are here studied according to its type:
+\itemize{
+\item If Y and Z are ordinal (\code{ord = TRUE}), only consecutive modalities of Y can be grouped.
+\item If Y and Z are nominal (\code{ord = FALSE}), all combinations of modalities of Y (consecutive or not) are tested.
+}
+
+The association between 2 categorical variables are measured from confusion matrix but also using standard criterions: Cramer's V (1946), Cohen's kappa coefficient (See McHugh, 2012),
+and rank coefficient of correlation (SPearman). All the associations tested are listed in an output data.frame.
 }
 \examples{
 
@@ -42,7 +52,7 @@ tab_test2 = tab_test[c(1:75,5001:5075),1:5]
 ### An example of JOINT model (Manhattan distance)
 # Suppose we want to impute the missing parts of Y1 in DB2 only ...
 try1J = OT_joint(tab_test2, nominal = c(1,4:5), ordinal = c(2,3),
-                 prep_choice = "M", norm = 1,which.DB = 2)
+                 dist.choice = "M", which.DB = "B")
 
 # Error rates between Y2 and the predictions of Y1 in the DB 2
 # by grouping the levels of Y1:
@@ -66,6 +76,11 @@ error_group(Z1,Z4)
 error_group(Z3,Z1,FALSE)
 }
 
+}
+\references{
+Cramér, Harald (1946) Mathematical Methods of Statistics. Princeton: Princeton University Press.
+
+McHugh, Mary L (2012) Interrater reliability: The kappa statistic. Biochemia Medica. 22 (3): 276–282
 }
 \author{
 Gregory Guernec

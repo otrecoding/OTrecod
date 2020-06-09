@@ -4,7 +4,13 @@
 \alias{indiv_grp_optimal}
 \title{indiv_grp_optimal()}
 \usage{
-indiv_grp_optimal(proxim, jointprobaA, jointprobaB, percent_closest = 1)
+indiv_grp_optimal(
+  proxim,
+  jointprobaA,
+  jointprobaB,
+  percent_closest = 1,
+  which.DB = "BOTH"
+)
 }
 \arguments{
 \item{proxim}{An object corresponding to the output of the \code{\link{proxim_dist}} function}
@@ -15,23 +21,36 @@ The sum of cells of this matrix must be equal to 1}
 \item{jointprobaB}{A matrix which number of columns equals the number of modalities of the target variable Y in database A, and which number of rows equals the number of modalities of Z in database B. It gives an estimation of the joint probability (Y,Z) in DB B.
 The sum of cells of this matrix must be equal to 1}
 
-\item{percent_closest}{A value between 0 and 1 (by default) corresponding to the desired \code{percent closest} indivisuals taken in the computation of the distances}
+\item{percent_closest}{A value between 0 and 1 (by default) corresponding to the fixe \code{percent closest} of individuals taken in the computation of the average distances}
+
+\item{which.DB}{A character string (with quotes) that indicates which individual predictions compute: Only the individual predictions of Y in B ("B"), only those of Z in A ("A") or the both ("BOTH" by default)}
 }
 \value{
 A list of two vectors of numeric values:
 \describe{
-\item{YAtrans}{A vector corresponding to the predicted values of Y in database B using the Optimal Transportation theory}
-\item{YBtrans}{A vector corresponding to the predicted values of Z in database A using the Optimal Transportation theory}
+\item{YAtrans}{A vector corresponding to the predicted values of Y in database B (numeric form) using the Optimal Transportation theory}
+\item{ZBtrans}{A vector corresponding to the predicted values of Z in database A (numeric form) using the Optimal Transportation theory}
 }
 }
 \description{
-Assuming that Y and Z summarize a same information encoded in two distinct forms stored in two distinct databases A and B.
-This function is an alternative to the \code{\link{indiv_grp_closest}} approach for the individual predictions of Y en B and Z in A.
-It solves an optimization problem to get the individual transport that minimizes total distance while satisfying the joint probability computed by the model.
-See section 5.3 (p24) of the reference article 2 for more details about this method.
+This function assigns individual predictions related to recoding problems of data fusion by solving an adapted optimization problem
 }
 \details{
-As for \code{\link{indiv_grp_closest}}, the \code{indiv_grp_optimal} function is directly implemented in the \code{OT} and requires the prior use of code{\link{proxim_dist}} and \code{\link{avg_dist_closest}} for running.
+The function \code{indiv_grp_optimal} is an intermediate function used in the implementation of an original algorithm dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory (see the algorithms of the models called
+\code{OUTCOME},\code{R_OUTCOME},\code{JOINT} and \code{R_JOINT}, described in the two following references of Gares and Al.).
+\code{\link{indiv_grp_optimal}} is so directly implemented in the \code{OT_outcome} and \code{OT_JOINT} functions but can also be used separately.
+
+This function constitutes an alternative method to the nearest neighbor procedure implemented in the function \code{\link{indiv_grp_closest}} whose objective consists in getting individual transports from group joint probabilities.
+The function \code{indiv_grp_optimal} directly targets the solution of recoding problems without using a nearest neighbor approach which makes some arbitrary decisions.
+For this, it solves an optimization problem using the simplex algorithm to get the individual transport that minimizes total distance while satisfying the joint probability distribution provides by the arguments \code{jointprobaA} and \code{jointprobaB}.
+More details about the theory related to the solving of this optimization problem is described in the section 5.3 of [2].
+
+Like for \code{\link{indiv_grp_closest}}:
+\itemize{
+\item The function \code{indiv_grp_optimal} requires the use of code{\link{proxim_dist}} and \code{\link{avg_dist_closest}} for running.
+Nevertheless, if the second one is directly integrated in the function, the specific output of the first one stay required in input of this latter.
+\item The arguments \code{jointprobaA} and \code{jointprobaB} are cost matrices (sum of cells must be equal to 1) that correponds to estimations of the joint distributions of (Y;Z) in A and B respectively.
+}
 }
 \examples{
 
@@ -39,7 +58,7 @@ As for \code{\link{indiv_grp_closest}}, the \code{indiv_grp_optimal} function is
 # For this example we keep only 200 rows:
 
 data(tab_test)
-tab_test2 = tab_test[c(1:100,5001:5100),]; dim(tab_test2)
+tab_test2 = tab_test[c(1:80,5001:5080),]; dim(tab_test2)
 
 # Adding NAs in Y1 and Y2
 tab_test2[tab_test2$ident == 2,2] = NA
@@ -48,7 +67,7 @@ tab_test2[tab_test2$ident == 1,3] = NA
 # Because all covariates are ordered in numeric form,
 # the transfo_dist function is not required here
 
-res3      = proxim_dist(tab_test2,norme = 2)
+res3      = proxim_dist(tab_test2,norm = "M")
 
 #' ### Y1 and Y2 are a same variable encoded in 2 different forms:
 ### 4 levels for Y1 and 3 levels for Y2
@@ -66,8 +85,12 @@ res3      = proxim_dist(tab_test2,norme = 2)
 val_trans  = c(0.275,0.115,0,0,0,0.085,0.165,0,0,0,0.095,0.265)
 transport2 = matrix(val_trans,ncol = 3,byrow = FALSE)
 
+# Getting the individual predictions of Z in A (only)
+# by computing average distances on 90\% of the nearest neighbors of
+# each modality of Z in B
 res4      = indiv_grp_optimal(res3,jointprobaA = transport2,
-            jointprobaB = transport2, percent_closest= 0.90)
+            jointprobaB = transport2, percent_closest= 0.90,
+            which.DB = "A")
 
 \dontrun{
 ### Example 2 using The Manhattan distance with incomplete covariates
@@ -75,7 +98,7 @@ data(simu_data)
 
 try1 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
                     ordinal = c(2,6), logic = NULL, prep_choice = "M")
-res1 = proxim_dist(try1,norme = 1)
+res1 = proxim_dist(try1,norm = "M")
 
 
 ### Y and Z are a same variable encoded in 2 different forms:
@@ -94,22 +117,22 @@ transport1 = matrix(c(0,0.35285714,0,0.09142857,0,0.03571429,
                       0.32714286,0,0),ncol = 5,byrow = FALSE)
 
 
-# The affectation of the predicted values of Y in database B and Z in database A
-# are stored in the following object:
+# The affectation of the predicted values of Y in database B and Z in
+database A are stored in the following object:
 
-res2      = indiv_grp_optimal(res1,jointprobaA = transport1,
-                              jointprobaB = transport1, percent_closest= 0.90)
+res2 = indiv_grp_optimal(res1,jointprobaA = transport1,
+                         jointprobaB = transport1,
+                         percent_closest= 0.90)                               )
 summary(res2)
 }
 
 }
 \references{
-# Article 1:
-Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
-0, 20180106 (2019) | \url{https://doi.org/10.1515/ijb-2018-0106}
-
-# Article 2:
-Gares V, Omer J. Regularized optimal transport of covariates and outcomes in datarecoding(2019).hal-02123109 \url{https://hal.archives-ouvertes.fr/hal-02123109/document}
+\enumerate{
+\item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
+Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
+\item Gares V, Omer J. Regularized optimal transport of covariates and outcomes in datarecoding(2019).hal-02123109 \url{https://hal.archives-ouvertes.fr/hal-02123109/document}
+}
 }
 \seealso{
 \code{\link{proxim_dist}}, \code{\link{avg_dist_closest}}, \code{\link{indiv_grp_closest}}
