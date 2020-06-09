@@ -16,6 +16,7 @@
 #' @examples
 #' # Powerset of set of 4 elements
 #' fam  =  power_set(4)
+#'
 #' # Powerset of set of 4 elements by only keeping
 #' # subsets of consecutive elements
 #' fam2 =  power_set(4,ordinal = TRUE)
