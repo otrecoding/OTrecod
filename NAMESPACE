@@ -3,7 +3,6 @@
 export(OT_joint)
 export(OT_outcome)
 export(avg_dist_closest)
-export(compare_lists)
 export(error_group)
 export(ham)
 export(imput_cov)
