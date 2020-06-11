@@ -13,6 +13,7 @@
 #'
 #' @author Gregory Guernec
 #' \email{gregory.guernec@@inserm.fr}
+#' @export
 #'
 #' @aliases compare_lists
 #'
@@ -28,11 +29,11 @@
 #' list6 = list(A = 1:4, B = as.factor(c("A","B")), C = data1)
 #' list7 = list(A = 1:4, B = as.factor(c("A","B")), C = data2)
 #'
-#' compare_lists(list1,list2)
-#' compare_lists(list1,list3)
-#' compare_lists(list1,list4)
-#' compare_lists(list1,list5)
-#' compare_lists(list6,list7)
+#' OTrecod::compare_lists(list1,list2)
+#' OTrecod::compare_lists(list1,list3)
+#' OTrecod::compare_lists(list1,list4)
+#' OTrecod::compare_lists(list1,list5)
+#' OTrecod::compare_lists(list6,list7)
 
 compare_lists = function(listA,listB){
 
