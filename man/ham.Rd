@@ -71,5 +71,5 @@ ham(A_NA,B_NA)
 }
 \author{
 Gregory Guernec
-\email{gregory.guernec@inserm.fr}
+\email{otrecod.pkg@gmail.com}
 }

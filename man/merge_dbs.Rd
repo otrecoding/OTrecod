@@ -175,5 +175,5 @@ soluc4  = merge_dbs(data_A,data_B,
 }
 \author{
 Gregory Guernec
-\email{gregory.guernec@inserm.fr}
+\email{otrecod.pkg@gmail.com}
 }

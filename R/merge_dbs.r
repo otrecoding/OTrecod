@@ -69,7 +69,7 @@
 #' @aliases merge_dbs
 #'
 #' @author Gregory Guernec
-#' \email{gregory.guernec@@inserm.fr}
+#' \email{otrecod.pkg@@gmail.com}
 #'
 #' @references
 #' ### For the Optimal Transportation algorithm:

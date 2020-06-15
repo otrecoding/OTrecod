@@ -109,5 +109,5 @@ Gares V, Omer J. Regularized optimal transport of covariates and outcomes in dat
 }
 \author{
 Gregory Guernec, Valerie Gares, Jeremy Omer
-\email{gregory.guernec@inserm.fr}
+\email{otrecod.pkg@gmail.com}
 }

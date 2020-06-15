@@ -177,5 +177,5 @@ Borg, I. and Groenen, P. (1997) Modern Multidimensional Scaling. Theory and Appl
 }
 \author{
 Gregory Guernec
-\email{gregory.guernec@inserm.fr}
+\email{otrecod.pkg@gmail.com}
 }

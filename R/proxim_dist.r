@@ -79,7 +79,7 @@
 #'
 #'
 #' @author Gregory Guernec, Valerie Gares, Jeremy Omer
-#' \email{gregory.guernec@@inserm.fr}
+#' \email{otrecod.pkg@@gmail.com}
 #'
 #' @importFrom  rdist cdist
 #' @importFrom  proxy dist

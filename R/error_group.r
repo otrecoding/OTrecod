@@ -5,16 +5,16 @@
 #' Assuming that Y and Z are 2 categorical variables with a different number of modalities nY and nZ  respectively, so that nY > nZ, the idea consists in
 #' measuring the association between Z and all possible new variables Y', built by grouping modalities of Y so that nY = nZ.
 #' If Y and Z are 2 categorical variables with the same number of modalities, summarizing a same latent information, then it must exist an association between them,
-#' and the function \code{error_group} aims to highlight it by searching the optimal grouping of modalities of Y to approach at best the distribution of Z.
+#' and the function \code{error_group} aims to highlight it by searching the optimal grouping of modalities of Y that approaches at best the distribution of Z.
 #'
 #' All combinations of modalities of Y are here studied according to its type:
 #' \itemize{
-#' \item If Y and Z are ordinal (\code{ord = TRUE}), only consecutive modalities of Y can be grouped.
+#' \item If Y and Z are ordinal (\code{ord = TRUE}), only consecutive modalities of Y will be grouped and tested.
 #' \item If Y and Z are nominal (\code{ord = FALSE}), all combinations of modalities of Y (consecutive or not) are tested.
 #' }
 #'
 #' The association between 2 categorical variables are measured from confusion matrix but also using standard criterions: Cramer's V (1946), Cohen's kappa coefficient (See McHugh, 2012),
-#' and rank coefficient of correlation (SPearman). All the associations tested are listed in an output data.frame.
+#' and rank coefficient of correlation (Spearman). All the associations tested are listed in an output data.frame.
 #'
 #'
 #' @param REF A factor with a reference number of levels.
@@ -22,7 +22,7 @@
 #' @param ord A boolean. If TRUE, only the subsequent levels of Z can be grouped together.
 #'
 #' @return A data.frame with 2 columns:
-#'         \item{combi}{The first column enumerates all possible groups of modalities of Z to obtain the same number of levels as the reference.}
+#'         \item{combi}{The first column enumerates all possible groups of modalities of Y to obtain the same number of levels as the reference.}
 #'         \item{error_rate}{The second column gives the corresponding rate error from the confusion matrix (ratio of non-diagonal elements)}
 #'         \item{Kappa}{This column indicates the result of the Cohen's kappa coefficient related to each combination of Y}
 #'         \item{Vcramer}{This column indicates the result of the Cramer's V criterion related to each combination of Y}
@@ -30,7 +30,7 @@
 #'
 #'
 #' @author Gregory Guernec
-#' \email{gregory.guernec@@inserm.fr}
+#' \email{otrecod.pkg@@gmail.com}
 #'
 #' @aliases error_group
 #'

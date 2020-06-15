@@ -115,7 +115,7 @@
 #'
 #'
 #' @author Gregory Guernec
-#' \email{gregory.guernec@@inserm.fr}
+#' \email{otrecod.pkg@@gmail.com}
 #'
 #' @importFrom stats cor cor.test pnorm pchisq na.omit
 #' @importFrom StatMatch pw.assoc

@@ -27,5 +27,5 @@ fam2 =  power_set(4,ordinal = TRUE)
 }
 \author{
 Gregory Guernec
-\email{gregory.guernec@inserm.fr}
+\email{otrecod.pkg@gmail.com}
 }
