@@ -35,7 +35,7 @@
 #' }
 #'
 #' @author Gregory Guernec, Valerie Gares, Jeremy Omer
-#' \email{gregory.guernec@@inserm.fr}
+#' \email{otrecod.pkg@@gmail.com}
 #'
 #' @seealso \code{\link{proxim_dist}}, \code{\link{avg_dist_closest}}, \code{\link{indiv_grp_closest}}
 #'

@@ -79,5 +79,5 @@ van Buuren, S., Groothuis-Oudshoorn, K. (2011). mice: Multivariate Imputation by
 }
 \author{
 Gregory Guernec
-\email{gregory.guernec@inserm.fr}
+\email{otrecod.pkg@gmail.com}
 }

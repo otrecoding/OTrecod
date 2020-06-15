@@ -187,5 +187,5 @@ Strobl C, Boulesteix A-L, Kneib T, Augustin T, Zeileis A (2008). Conditional Var
 }
 \author{
 Gregory Guernec
-\email{gregory.guernec@inserm.fr}
+\email{otrecod.pkg@gmail.com}
 }
