@@ -6,8 +6,10 @@
 \usage{
 select_pred(
   databa,
-  Y,
+  Y = NULL,
+  Z = NULL,
   ID = 1,
+  OUT = "Y",
   quanti = NULL,
   nominal = NULL,
   ordinal = NULL,
@@ -27,9 +29,13 @@ select_pred(
 \arguments{
 \item{databa}{A data.frame with a column of identifiers, an outcome, and a set of predictors. The number of columns can exceed the number of rows.}
 
-\item{Y}{The label of the outcome with quotes}
+\item{Y}{The label of a 1st target variable with quotes}
 
-\item{ID}{The index of column of the row identifiers}
+\item{Z}{The label of a 2nd target variable with quotes when \code{databa} is a synthetic database made up of 2 overlayed databases.}
+
+\item{ID}{The index of column of the row identifiers (The 1st column by default)}
+
+\item{OUT}{A character that indicates the outcome to predict in the context of overlayed databases. By default, the outcome declared in the argument \code{Y} is predicted. The other possible value is "Z" to predict the outcome declared in the argument \code{Z}.}
 
 \item{quanti}{A vector of integers which corresponds to the indexes of columns of all the numeric predictors}
 
@@ -63,18 +69,19 @@ All quantitative predictors selected for discretisation will have the same numbe
 \value{
 A list of 13 (If \code{RF} = TRUE) or 10 objects (Only the 1st ten objects if \code{RF} = FALSE) is returned:
 \item{seed}{The random number generator fixed or selected}
+\item{outc}{The identity fo the outcome to predict}
 \item{thresh}{A summarize of the different thresholds fixed for the study}
 \item{convert_num}{The labels of the continuous predictors transformed in categorical form}
 \item{DB_USED}{The final database used after eventual transformations of predictors}
 \item{vcrm_Y_cat}{Table of pairwise associations between the outcome and the categorical predictors (Cramer's V)}
 \item{cor_Y_num}{Table of pairwise associations between the outcome and the continuous predictors (Rank correlation)}
-\item{v_crm_X_cat}{Table of pairwise associations between the categorical predictors (Cramer's V)}
+\item{vcrm_X_cat}{Table of pairwise associations between the categorical predictors (Cramer's V)}
 \item{cor_X_num}{Table of pairwise associations between the continuous predictors (Cramer's V)}
 \item{FG_test}{Results of the Farrar and Glauber tests, with and without approximation form}
-\item{colinear_PB}{Table of predictors with problem of collinearity}
+\item{colinear_PB}{Table of predictors with problem of collinearity according to the thresholds chosen}
 \item{drop_var}{Labels of predictors to drop after RF process (optional output: Only if \code{RF}=TRUE)}
 \item{RF_PRED_Y}{Table of variable importance measurements, conditional or not, according to the argument \code{condi_RF} (optional output: Only if \code{RF}=TRUE)}
-\item{best_pred}{Labels of the best predictors selected (optional output: Only if \code{RF}=TRUE)}
+\item{best_pred}{Labels of the best predictors selected (optional output: Only if \code{RF}=TRUE) according to the value of the argument \code{thresh_Y}}
 }
 \description{
 Selection of a subset of non collinear predictors having relevant relationships with a given target outcome.
@@ -141,35 +148,91 @@ The 3 scenarios finally provide a list of uncorrelated predictors of the outcome
 Finally, because all random forest results are subject to random variation, users can check whether the same importance ranking is achieved with a different random seed (\code{RF_SEED} argument) or otherwise by increasing the number of trees (\code{RF_ntree}).
 }
 \examples{
-# Using the simu_data table, firstly, we separate the 2 bases A and B
-# and remove the unknown outcome in each DB
-data(simu_data)
-simu_A = simu_data[simu_data$DB == "A",-3]    # Base A
-simu_B = simu_data[simu_data$DB == "B",-2]    # Base B
 
-# In the 1st DB(A), the target variable is Yb1.
-# The indexes of the column covariates goes from 3 to 7.
-# By keeping the other default parameters:
+### Example 1
+#-----
+# - From two overlayed databases: using the table simu_data
+# - Searching for the best predictors of "Yb1"
+# - Using raw database
+# - The RF approaches are not required
+#-----
+
+data(simu_data)
+test_DB1 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Y",
+                       quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
+                       thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+                       RF = FALSE)
+
+### Example 2
+#-----
+# - With same conditions as example 1
+# - Searching for the best predictors of "Yb2"
+#-----
+
+test_DB2 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
+                       quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
+                       thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+                       RF = FALSE)
 
 \dontrun{
-### Scenario 1: Discretization of age (7) in 3 classes (so no quantitative predictors),
-# RF process chosen, and conditional importance measures assessed, all other arguments
-# take their default values:
-sel_A2 = select_pred(simu_A,"Yb1", quanti = 7, nominal = c(3,4,6), ordinal = c(2,5),
-                     convert_num = 7,convert_clss = 3,
-                     RF = TRUE, RF_condi = TRUE)
+### Example 3
+#-----
+# - With same conditions as example 1
+# - Using a RF approach to estimate the standard variable importance measures
+#   and determine the best subset of predictors
+# - Here a seed
+#-----
 
+test_DB3 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Y",
+                       quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
+                       thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+                       RF = TRUE, RF_condi = FALSE, RF_SEED = 3023)
 
-### Scenario 2: Raw predictors, RF process chosen, and standard permutation
-# importance measures assessed (Default values for other arguments)
-sel_A3 = select_pred(simu_A,"Yb1", quanti = 7, nominal = c(3,4,6), ordinal = c(2,5),
-                     RF = TRUE)
+### Example 4
+#-----
+# - With same conditions as example 1
+# - Using a RF approach to estimate the conditional variable importance measures
+#   and determine the best subset of predictors
+# - This approach requires to convert the numeric variables: Only "Age" here
+#   categorized in 3 levels
+#-----
+
+test_DB4 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
+                       quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
+                       convert_num = 8, convert_clss = 3,
+                       thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+                       RF = TRUE, RF_condi = TRUE, RF_condi_thr = 0.60, RF_SEED = 3023)
+
+### Example 5
+#-----
+# - Starting with an unique database
+# - Same conditions as example 1
+#-----
+simu_A = simu_data[simu_data$DB == "A",-3]    # Base A
+
+test_DB5 = select_pred(simu_A, Y = "Yb1",
+                       quanti = 7, nominal = c(1,3:4,6), ordinal = c(2,5),
+                       thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+                       RF = FALSE)
+
+### Example 6
+#-----
+# - Starting with an unique database
+# - Using a RF approach to estimate the conditional variable importance measures
+#   and determine the best subset of predictors
+# - This approach requires to convert the numeric variables: Only "Age" here
+#   categorized in 3 levels
+#-----
+
+simu_B = simu_data[simu_data$DB == "B",-2]    # Base B
+
+test_DB6 = select_pred(simu_B, Y = "Yb2",
+                       quanti = 7, nominal = c(1,3:4,6), ordinal = c(2,5),
+                       convert_num = 7, convert_clss = 3,
+                       thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+                       RF = TRUE, RF_condi = TRUE, RF_condi_thr = 0.60, RF_SEED = 3023)
+
 }
-
-### Scenario 3: Discretization of age (7) in 3 classes and no random forest process:
-sel_A1 = select_pred(simu_A,"Yb1", quanti = 7, nominal = c(3,4,6), ordinal = c(2,5),
-                     convert_num = 7,convert_clss = 3,RF = FALSE)
-
 
 }
 \references{
@@ -187,5 +250,5 @@ Strobl C, Boulesteix A-L, Kneib T, Augustin T, Zeileis A (2008). Conditional Var
 }
 \author{
 Gregory Guernec
-\email{otrecod.pkg@gmail.com}
+\email{gregory.guernec@inserm.fr}
 }
