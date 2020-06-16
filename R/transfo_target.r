@@ -23,8 +23,8 @@
 #' y      = rnorm(100,30,10)
 #' aa     = transfo_target(y)
 #'
-#' newlev = unique(as.integer(y))
-#' bb     = transfo_target(y,levels_order = newlev)
+#' newlev  = unique(as.integer(y))
+#' bb      = transfo_target(y,levels_order = newlev)
 #' newlev2 = newlev[-1]
 #' cc      = transfo_target(y,levels_order = newlev2)
 #'
