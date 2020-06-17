@@ -29,23 +29,23 @@ This function computes average distances between levels of two categorical outco
 The function \code{avg_dist_closest} is an intermediate function used in the implementation of an original algorithm dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory (For more details, consult the corresponding algorithms called
 \code{OUTCOME},\code{R_OUTCOME},\code{JOINT} and \code{R_JOINT}, in the reference (2)). The function \code{avg_dist_closest} is so directly implemented in the \code{OT_outcome} and \code{OT_joint} functions but can also be used separately.
 The function \code{avg_dist_closest} uses, in particular, the D distance matrix (that stores distances between rows of A and B) from \code{\link{proxim_dist}} to produce three distinct matrices saved in a list object.
-Therefore, the function required in input, the specific output of the function \code{\link{proxim_dist}} which is available in the package and so usable beforehand.
+Therefore, the function requires in input, the specific output of the function \code{\link{proxim_dist}} which is available in the package and so must be used beforehand.
 In consequence, do not use this function directly on your database, and do not hesitate to consult the examples provided for a better understanding.
 
 
 DEFINITION OF THE COST MATRIX
 
-Assuming that A and B are two databases with a set of shared variables and a same latent information (stored as a variable Y in A and Z in B, such that Y is unknown in B and Z is unknown in A) whose encoding depends on the database (nY levels in A and nZ levels in B).
+Assuming that A and B are two databases with a set of shared variables and a same latent information (or at least a related information stored as a variable Y in A and Z in B, such that Y is unknown in B and Z is unknown in A) whose encoding depends on the database (nY levels in A and nZ levels in B).
 A distance between one level of Y and one level of Z is estimated by averaging the distances between  the subsets of individuals (rows) from the two databases that are related to the corresponding levels for Y and Z in A and B respectively.
 The distance between two individuals depends on the variations between the shared covariates, and so depends on the distance function chosen using the function \code{proxim_dist}.
 For the average computations, all the individuals concerned by these two classes can be taken into a count, or only parts of them, depending on the argument \code{percent_closest}.
 When \code{percent_closest} < 1, the average distance between an individual i and a given level of factor z only uses the corresponding part of individuals related to z that are the closest to i for the computation.
-This choice therefore also influences the estimations of average distances between levels of factors.
+Therefore, this choice influences the estimations of average distances between levels of factors.
 
 The average distance between each individual of Y (Z) and each levels of Z (Y) are returned in output, in the object \code{DindivA} (\code{DindivB} respectively).
 The average distance between each levels of Y and each levels of Z are returned in a matrix saved in output (the object \code{Davg}).
 \code{Davg} returns the computation of the cost matrix D, whose dimensions (nY*nZ) correspond to the number of levels of Y (rows) and Z (columns).
-This matrix can be seen as the ability for an individual (row) to move from a given level of the target variable (Y) in A to a given level of Z in the database B.
+This matrix can be seen as the ability for an individual (row) to move from a given level of the target variable (Y) in A to a given level of Z in the database B (or vice versa).
 }
 \examples{
 data(simu_data)

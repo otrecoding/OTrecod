@@ -1,7 +1,7 @@
 
 #' indiv_grp_optimal()
 #'
-#' This function assigns individual predictions related to recoding problems of data fusion by solving an adapted optimization problem
+#' This function assigns individual predictions related to recoding problems of data fusion by solving a linear optimization problem
 #'
 #'
 #' The function \code{indiv_grp_optimal} is an intermediate function used in the implementation of an original algorithm dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory (see the algorithms of the models called
@@ -13,17 +13,17 @@
 #' For this, it solves an optimization problem using the simplex algorithm to get the individual transport that minimizes total distance while satisfying the joint probability distribution provides by the arguments \code{jointprobaA} and \code{jointprobaB}.
 #' More details about the theory related to the solving of this optimization problem is described in the section 5.3 of [2].
 #'
-#' Like for \code{\link{indiv_grp_closest}}:
+#' As for \code{\link{indiv_grp_closest}}:
 #' \itemize{
 #' \item The function \code{indiv_grp_optimal} requires the use of code{\link{proxim_dist}} and \code{\link{avg_dist_closest}} for running.
 #' Nevertheless, if the second one is directly integrated in the function, the specific output of the first one stay required in input of this latter.
 #' \item The arguments \code{jointprobaA} and \code{jointprobaB} are cost matrices (sum of cells must be equal to 1) that correponds to estimations of the joint distributions of (Y;Z) in A and B respectively.
 #' }
 #'
-#' @param proxim An object corresponding to the output of the \code{\link{proxim_dist}} function
-#' @param jointprobaA A matrix which number of columns equals the number of modalities of the target variable Y in database A, and which number of rows equals the number of modalities of Z in database B. It gives an estimation of the joint probability (Y,Z) in DB A.
+#' @param proxim An object corresponding to the output of the function \code{\link{proxim_dist}}
+#' @param jointprobaA A matrix whose number of columns equals the number of modalities of the target variable Y in database A, and which number of rows equals the number of modalities of Z in database B. It gives an estimation of the joint probability (Y,Z) in DB A.
 #' The sum of cells of this matrix must be equal to 1
-#' @param jointprobaB A matrix which number of columns equals the number of modalities of the target variable Y in database A, and which number of rows equals the number of modalities of Z in database B. It gives an estimation of the joint probability (Y,Z) in DB B.
+#' @param jointprobaB A matrix whose number of columns equals the number of modalities of the target variable Y in database A, and which number of rows equals the number of modalities of Z in database B. It gives an estimation of the joint probability (Y,Z) in DB B.
 #' The sum of cells of this matrix must be equal to 1
 #' @param percent_closest A value between 0 and 1 (by default) corresponding to the fixe \code{percent closest} of individuals taken in the computation of the average distances
 #' @param which.DB A character string (with quotes) that indicates which individual predictions compute: Only the individual predictions of Y in B ("B"), only those of Z in A ("A") or the both ("BOTH" by default)

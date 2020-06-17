@@ -18,7 +18,7 @@ between the 2 lists, or \code{FALSE} otherwise
 }
 \description{
 This function compares the elements of two lists of same length.
-   The order of inputs of the 2 lists have no importance.
+   The order of inputs of the two lists have no importance.
 }
 \examples{
 data1 = data.frame(Gender = rep(c("m","f"),5),Age = rnorm(5,20,4))

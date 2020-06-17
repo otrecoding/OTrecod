@@ -25,8 +25,9 @@ A data.frame with 2 columns:
 This function studies the proximity of two categorical distributions with unequal number of modalities
 }
 \details{
-Assuming that Y and Z are 2 categorical variables with a different number of modalities nY and nZ  respectively, so that nY > nZ, the idea consists in
+Assuming that Y and Z are two categorical variables with a different number of modalities nY and nZ  respectively, so that nY > nZ, the idea consists in
 measuring the association between Z and all possible new variables Y', built by grouping modalities of Y so that nY = nZ.
+
 If Y and Z are 2 categorical variables with the same number of modalities, summarizing a same latent information, then it must exist an association between them,
 and the function \code{error_group} aims to highlight it by searching the optimal grouping of modalities of Y that approaches at best the distribution of Z.
 
@@ -36,7 +37,7 @@ All combinations of modalities of Y are here studied according to its type:
 \item If Y and Z are nominal (\code{ord = FALSE}), all combinations of modalities of Y (consecutive or not) are tested.
 }
 
-The association between 2 categorical variables are measured from confusion matrix but also using standard criterions: Cramer's V (1946), Cohen's kappa coefficient (See McHugh, 2012),
+In a second step, the association between Z and each new variable Y' generated is measured by studying the ratio of concordant pairs of the related confusion matrix but also using standard criterions: Cramer's V (1946), Cohen's kappa coefficient (See McHugh, 2012),
 and rank coefficient of correlation (Spearman). All the associations tested are listed in an output data.frame.
 }
 \examples{
