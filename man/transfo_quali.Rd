@@ -9,7 +9,7 @@ transfo_quali(x, labx = NULL)
 \arguments{
 \item{x}{A factor}
 
-\item{labx}{A new label for the binary variables generated (By default the name of the factor is conserved)}
+\item{labx}{A new label for the generated binary variables (By default the name of the factor is conserved)}
 }
 \value{
 A matrix of (n-1) binary variables
@@ -26,5 +26,5 @@ treat_bin = transfo_quali(treat,"trt")
 }
 \author{
 Gregory Guernec
-\email{gregory.guernec@inserm.fr}
+\email{otrecod.pkg@gmail.com}
 }

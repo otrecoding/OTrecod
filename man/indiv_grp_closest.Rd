@@ -13,17 +13,17 @@ indiv_grp_closest(
 )
 }
 \arguments{
-\item{proxim}{An object corresponding to the output of the \code{\link{proxim_dist}} function}
+\item{proxim}{An object corresponding to the output of the function \code{\link{proxim_dist}}}
 
-\item{jointprobaA}{A matrix which number of columns corresponds to the number of modalities of the target variable Y in database A, and which number of rows equals the number of modalities of Z in database B. It gives an estimation of the joint probability (Y,Z) in A.
+\item{jointprobaA}{A matrix whose number of columns corresponds to the number of modalities of the target variable Y in database A, and which number of rows corresponds to the number of modalities of Z in database B. It gives an estimation of the joint probability of (Y,Z) in A.
 The sum of cells of this matrix must be equal to 1}
 
-\item{jointprobaB}{A matrix which number of columns equals the number of modalities of the target variable Y in database A, and which number of rows equals the number of modalities of Z in database B. It gives an estimation of the joint probability (Y,Z) in B.
+\item{jointprobaB}{A matrix whose number of columns equals the number of modalities of the target variable Y in database A, and which number of rows corresponds to the number of modalities of Z in database B. It gives an estimation of the joint probability of (Y,Z) in B.
 The sum of cells of this matrix must be equal to 1}
 
-\item{percent_closest}{A value between 0 and 1 (by default) corresponding to the fixe \code{percent closest} of individuals taken in the computation of the average distances}
+\item{percent_closest}{A value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals taken in the computation of the average distances}
 
-\item{which.DB}{A character string (with quotes) that indicates which individual predictions compute: Only the individual predictions of Y in B ("B"), only those of Z in A ("A") or the both ("BOTH" by default)}
+\item{which.DB}{A character string (with quotes) that indicates which individual predictions need to be computed: Only the individual predictions of Y in B ("B"), only those of Z in A ("A") or the both ("BOTH" by default)}
 }
 \value{
 A list of two vectors of numeric values:
@@ -34,22 +34,34 @@ A list of two vectors of numeric values:
 This function sequentially assigns individual predictions using a nearest neighbor procedure to solve recoding problems of data fusion
 }
 \details{
+A. THE RECODING PROBLEM IN DATA FUSION
+
+When two databases are constructed from heterogeneous sources, it is not usual that two different encodings can be used for a same target outcome.
+Assuming that Y and Z are these 2 variables that summarize a same latent information in 2 separated (no overlapping rows) databases A and B respectively,
+so that Y and Z are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (but same encodings in A and B)
+complete or not. Integrating these two databases often requires to solve the recoding problem observed between Y in Z by creating an unique database where
+the missing information of Y and Z is completed.
+
+
+B. DESCRIPTION OF THE FUNCTION
+
 The function \code{indiv_grp_closest} is an intermediate function used in the implementation of an original algorithm dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory (see the theory of
-the model \code{OUTCOME} in Gares, 2019, for more details about the related algorithm). \code{indiv_grp_closest} is so directly implemented in the \code{OT_outcome} and \code{OT_JOINT} functions but can also be used separately.
-In this case, the function \code{indiv_grp_closest} requires the outputs of the function \code{\link{proxim_dist}} to run, which is available in the package and so usable beforehand.
-The function \code{indiv_grp_closest} integrates in its syntax the function \code{\link{avg_dist_closest}} and the related argument \code{percent_closest} is identical in the 2 functions.
-All individuals can participate to the computation of the average distances (\code{percent_closest}=1) or only a fixed part corresponding to the clearest neighbor of the modalities (\code{percent_closest}=1).
+the model \code{OUTCOME} from the reference (2)). \code{indiv_grp_closest} is so directly implemented in the \code{OT_outcome} and \code{OT_joint} functions but can also be used separately.
+In this case, the function \code{indiv_grp_closest} requires the outputs of the function \code{\link{proxim_dist}} to run. Please notice that this latter is available in the package and so directly usable beforehand.
 
 A recoding problem context of data fusion can be described as follows:
 Assuming that Y and Z summarize a latent information encoded in two distinct factors stored in two distinct databases A (nA rows) and B (nB rows) respectively so that Y is unknown in B and Z is unknown in A,
 the aim of the study consists in predicting the incomplete information of Y and Z.
-Using an estimation of the joint probability (Y,Z),this function sequentially assigns to each individual of A (resp. B) the modality of Z (Y) in B (A) that is closest.
+Using an estimation of the joint probability (Y,Z), this function sequentially assigns to each individual of A (resp. B) the modality of Z (Y) in B (A) that is closest.
 It corresponds to the execution of a nearest neighbor procedure for the individual predictions of Y en B and Z in A.
+The function \code{indiv_grp_closest} integrates in its syntax the function \code{\link{avg_dist_closest}} and the related argument \code{percent_closest} is identical in the two functions.
+All individuals can participate to the computation of the average distances (\code{percent_closest}=1) or only a fixed part p corresponding to the closest neighbors of each individual from each modalities of the outcomes (in this case \code{percent_closest} < p).
+
 
 The arguments \code{jointprobaA} and \code{jointprobaB} are cost matrices (sum of cells must be equal to 1) that correponds to estimations of the joint distributions of (Y;Z) in A and B respectively.
 By example, assuming that nY1 individuals are assigned to the 1st modality of Y in A and the objective consists in the individual predictions of Z in A. Then, if jointprobaA[1,2] = 0.10,
 the maximum number of individuals that can be assigned to the 2nd modality of Z in A, can not exceed 0.10*nA.
-If nY1 <= 0.10*nA then all individuals assigned to the 1st modality of Y will be assigned to the 2nd modality of Z.
+If nY1 < or = 0.10*nA then all individuals assigned to the 1st modality of Y will be assigned to the 2nd modality of Z.
 Else, if nY1 > 0.10*nA, each individual with still no affectation  will receive the same modality of Z as those of his nearest neighbor in B.
 }
 \examples{
@@ -61,7 +73,7 @@ try1 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
                     ordinal = c(2,6), logic = NULL, prep_choice = "M")
 res1 = proxim_dist(try1,norm = "M")
 
-### Y and Z are a same variable encoded in 2 different forms:
+### Y(Yb1) and Z(Yb2) are a same variable encoded in 2 different forms:
 ### (3 levels for Y and 5 levels for Z)
 ### ... Stored in two distinct databases, A and B, respectively
 ### The marginal distribution of Y in B is unknown,
@@ -99,15 +111,15 @@ percent_closest= 0.90,which.DB="A")
 
 }
 \references{
-Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
-Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
-
-Gares V, Omer J. Regularized optimal transport of covariates and outcomes in datarecoding(2019).hal-02123109 \url{https://hal.archives-ouvertes.fr/hal-02123109/document}
+\enumerate{
+\item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics. Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
+\item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
+}
 }
 \seealso{
 \code{\link{proxim_dist}},\code{\link{avg_dist_closest}}
 }
 \author{
 Gregory Guernec, Valerie Gares, Jeremy Omer
-\email{gregory.guernec@inserm.fr}
+\email{otrecod.pkg@gmail.com}
 }

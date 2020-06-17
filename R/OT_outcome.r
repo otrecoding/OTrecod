@@ -77,7 +77,7 @@
 #' according to the distance function chosen by user. Users can specify the distance measure chosen via the argument \code{dist.choice}. Actually 4 distance functions are implemented in {OT_outcome} to take into account the most frequently encountered situation (see Anderberg 1973):
 #' \itemize{
 #' \item The Manhattan distance ("M")
-#' \item The Euclidean distance ("G")
+#' \item The Euclidean distance ("E")
 #' \item The Gower distance for mixed data (See Gower(1971):"G")
 #' \item The Hamming distance for binary data ("H")
 #' }
@@ -116,11 +116,12 @@
 #' @param indiv.method A character string indicating the method chosen to get individual predictions from the joint probabilities assessed, "sequential" by default, or "optimal". Please consult the section \code{details} and the corresponding article 2 for more details.
 #' @param which.DB A character string (with quotes) that indicates which individual predictions compute: Only the individual predictions of Y in B ("B"), only those of Z in A ("A") or the both ("BOTH" by default).
 #'
-#' @return A list containing 7 elements:
+#' @return A list containing 9 elements:
 #' \item{time_exe}{Running time of the function}
 #' \item{gamma_A}{Cost matrix corresponding to an estimation (gamma, see reference for more details) of the joint distribution of (YA,ZA)}
 #' \item{gamma_B}{Cost matrix corresponding to an estimation of the joint distribution of (YB,ZB)}
 #' \item{profile}{A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results}
+#' \item{res_prox}{The outputs of the function \code{proxim_dist}}
 #' \item{estimatorZA}{Estimates of the probability distribution of Z conditional to X and Y in database A from predictions saved in an array. The number of rows of each table corresponds to the total number of the P profiles of covariates.
 #' The number of columns of each table corresponds to the number of levels of Y. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of Z}
 #' \item{estimatorYB}{Estimates of the probability distribution of Y conditional to X and Z in database B from predictions saved in an array. The number of rows of each table corresponds to the total number of profiles of covariates.
@@ -130,13 +131,13 @@
 #'
 #'
 #' @author Gregory Guernec, Valerie Gares, Jeremy Omer
-#' \email{gregory.guernec@@inserm.fr}
+#' \email{otrecod.pkg@@gmail.com}
 #'
 #' @references
 #' \enumerate{
 #' \item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
 #' Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
-#' \item Gares V, Omer J. Regularized optimal transport of covariates and outcomes in datarecoding(2019).hal-02123109 \url{https://hal.archives-ouvertes.fr/hal-02123109/document}
+#' \item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
 #' }
 #' # For the Gower distance:
 #' Gower J. C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637.
@@ -327,7 +328,7 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
   } else {}
 
 
-  inst = proxim_dist(dataB, norm = dist.choice, prox = 1)
+  inst = proxim_dist(dataB, norm = dist.choice, prox = prox.dist)
 
 
   # Redefine A and B for the model
@@ -630,6 +631,8 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
   tend = Sys.time()
 
   return(list(time_exe = difftime(tend,tstart), gamma_A = transportA_val,gamma_B = transportB_val,
-              profile = data.frame(ID = ID_prof,prof),estimatorZA= estimatorZA,estimatorYB = estimatorYB,DATA1_OT = DATA1_OT,DATA2_OT  = DATA2_OT))
+              profile = data.frame(ID = ID_prof,prof),res_prox = inst, estimatorZA= estimatorZA,estimatorYB = estimatorYB,DATA1_OT = DATA1_OT,DATA2_OT  = DATA2_OT))
 }
+
+
 

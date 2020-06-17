@@ -3,7 +3,7 @@
 #'
 #' This function prepares the encoding of the target variable before OT algorithm
 #'
-#' @param z            A factor variable (ordered or not). a variable of another type will be, by default, convert to a factor
+#' @param z            A factor variable (ordered or not). A variable of another type will be, by default, convert to a factor
 #' @param levels_order A vector corresponding to the values of the levels of z. When the target is ordinal, the levels can be sorted by ascending order.
 #'                     By default, the initial order is retained
 #' @return The list returned is:
@@ -11,7 +11,7 @@
 #' \item{LEVELS_NEW}{The levels (ordered or not) retained for z}
 #'
 #' @author Gregory Guernec
-#' \email{gregory.guernec@@inserm.fr}
+#' \email{otrecod.pkg@@gmail.com}
 #'
 #' @seealso \code{\link{compare_lists}}
 #'
@@ -23,8 +23,8 @@
 #' y      = rnorm(100,30,10)
 #' aa     = transfo_target(y)
 #'
-#' newlev = unique(as.integer(y))
-#' bb     = transfo_target(y,levels_order = newlev)
+#' newlev  = unique(as.integer(y))
+#' bb      = transfo_target(y,levels_order = newlev)
 #' newlev2 = newlev[-1]
 #' cc      = transfo_target(y,levels_order = newlev2)
 #'
