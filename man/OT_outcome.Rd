@@ -167,7 +167,7 @@ according to the distance function chosen by user. Users can specify the distanc
 Moreover, it is also possible to directly apply the first three distances mentioned on coordinates extracted from a multivariate analysis (Factor Analysis for Mixed Data, see Pages 2004) applied on row covariates using the arguments \code{FAMD.coord} and\code{FAMD.perc}.
 This method corresponds to that used in the first article referenced.
 
-As a decision rule, for a given profile of covariates \code{P_j}, an individual i will be considered as a neighbor of \code{P_j} if \eqn{dist(i,P_j) < \code{prox.dist} * max(dist(i,P_j))} where \code{prox.dist} will be fixed by user.
+As a decision rule, for a given profile of covariates \code{P_j}, an individual i will be considered as a neighbor of \code{P_j} if \eqn{dist(i,P_j) < \mbox{prox.dist} * max(dist(i,P_j))} where \code{prox.dist} will be fixed by user.
 }
 \examples{
 
