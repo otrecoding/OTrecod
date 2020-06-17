@@ -10,13 +10,14 @@
 #' Nevertheless, it is also posible to apply directly the function \code{transfo_dist} on a row database provided that a specific structure of database is respected in entry of the function.
 #' The database must count at least 4 columns (In an a unspecified order of appearance in the database):
 #' \itemize{
-#' \item A column of data base identifiers (2 classes: A and B, 1 and 2, ...)
+#' \item A column indicating the database identifiers (2 classes: A and B, 1 and 2, ...)
 #' \item A categorical (nominal or ordinal factor) variable corresponding to the outcome of the 1st database (on top) with its specific encoding (called Y by example).
 #' \item A second categorical (nominal or ordinal) variable corresponding to the specific outcome in the 2nd database (called Z by example).
 #' \item At least one covariate shared in the two bases (same encoding in the 2 bases). Incomplete information is possible on shared covariates provided you have more than one covariate.
 #' }
-#' In this context, the information related to Y in the 2nd database must be missing as the information related to Z in the 2nd database.
-#' All column indexes (including those related to identifier and target variables Y and Z) of the used database must be declare once (and only once), among the \code{quanti}, \code{nominal}, \code{ordinal}, or \code{logic} options.
+#' In this context, the information related to Y in the second database must be missing as the information related to Z in the first one.
+#' The indexes of columns related to the database identifier, Y and Z must be specified in this order in the argument \code{index_DB_Y_Z}.
+#' Moreover, all column indexes (including those related to identifier and target variables Y and Z) of the overlayed database (DB) must be declared once (and only once), among the arguments \code{quanti}, \code{nominal}, \code{ordinal}, and \code{logic}.
 #' If the outcomes are of numeric types, they could be declared as quantitative, but they will be automatically convert in ordered factors.
 #'
 #'
@@ -29,7 +30,7 @@
 #' Finally, all the indexes informed in the argument \code{convert_num} must also be informed in the argument \code{quanti}.
 #'
 #'
-#' C. TRANSFORMATIONS ON THE DATABASE ACCORDING TO THE DISTANCE MEASURE CHOSEN
+#' C. TRANSFORMATIONS ON THE DATABASE ACCORDING TO THE CHOSEN DISTANCE FUNCTION
 #'
 #'
 #' These necessary transformations are related to the type of each of the covariates.
@@ -51,27 +52,28 @@
 #'
 #' 4. Using the principal components from a factor analysis for mixed data (FAMD):
 #' A factor analysis for mixed data is done on the covariates of the database and a specific number of the related principal components is remained (depending on the minimal part of variability explained by the covariates that the user wishes to keep by varying the \code{info} option).
+#' The function integrates in its syntax the function \code{\link[FactoMineR]{FAMD}} of the package \pkg{FactoMiner} (Lê, 2008) using default parameters.
 #' After this step, the covariates are replaced by the remaining principal components of the FAMD, and each value corresponds to coordinates linked to each components.
-#' Please notice that this method supposed complete covariates in input, nevertheless in presence of incomplete covariates, each corresponding rows will be dropped from the study, a warning appeared, and the number of remaining rows will be indicated.
+#' Please notice that this method supposed complete covariates in input, nevertheless in presence of incomplete covariates, each corresponding rows will be dropped from the study, a warning will appear, and the number of remaining rows will be indicated.
 #'
-#' @param DB A data.frame composed of exactly 2 superimposed databases with a column of database identification, 2 columns corresponding to a same information
-#' differently encoded in the 2 databases and covariates. The order of the variables have no importance.
-#' @param index_DB_Y_Z A vector of exactly 3 integers. The 1st integer must correspond to the index of the database identification column. The 2nd integer corresponds
-#' to the index of the target variable in the 1st database while the 3rd integer corresponds to the index of column related to the target varaible in the 2nd database.
+#' @param DB A data.frame composed of exactly two overlayed databases with a column of database identification, two columns corresponding to a same information
+#' differently encoded in the two databases and covariates. The order of the variables have no importance.
+#' @param index_DB_Y_Z A vector of exactly three integers. The first integer must correspond to the column index of the database identifier. The second integer corresponds
+#' to the index of the target variable in the first database while the third integer corresponds to the index of column related to the target varaible in the second database.
 #' @param quanti A vector of integers that corresponds to the indexes of columns of all the quantitative variables (DB identification and target variables included)
 #' @param nominal A vector of integers that corresponds to the indexes of columns of all the nominal (not ordered) variables (DB identification and target variables included)
 #' @param ordinal A vector of integers that corresponds to the indexes of columns of all the ordinal variables (DB identification and target variables included)
 #' @param logic A vector of integers that corresponds to the indexes of columns of all the boolean variables.
-#' @param convert_num Indexes of the continuous (quantitative) variables to convert in ordered factors.All indexes declared in this argument must have been declared in the argument \code{quanti} (No conversion by default).
+#' @param convert_num Indexes of the continuous (quantitative) variables to convert in ordered factors. All indexes declared in this argument must have been declared in the argument \code{quanti} (No conversion by default).
 #' @param convert_clss A vector indicating for each continuous variable to convert, the corresponding number of levels desired.If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} equals 1 (only one integer),
 #' each discretization will count the same number of levels.
 #' @param prep_choice A character (with quotes) corresponding to the distance function chosen between: The euclidean distance ("E", by default), The Manhattan distance ("M"),
-#' the Gower distance ("G"), the Hamming (also called binary) distance and the Euclidean or Manhattan distance, calculated from principal components of a factor analysis of mixed data ("FAMD").
-#' @param info A ratio indicating a percent value (between 0 and 1, 0.8 is the default value) that corresponds to the minimal part of variability that must be taken into account by the remaining principal components of the FAMD when this option is required.
-#' This ration will fix the number of components to keep in output.
+#' the Gower distance ("G"), and the Hamming (also called binary) distance ("H"), calculated from principal components of a factor analysis of mixed data ("FAMD").
+#' @param info A percetn value (between 0 and 1, 0.8 is the default value) that corresponds to the minimal part of variability that must be taken into account by the remaining principal components of the FAMD when this option is required.
+#' This ratio will fix the number of components to keep with this approach.
 #'
-#' @return A data.frame which covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the identifier, Y and Z correspond to the 1st three columns respectively.
-#' Moreover the order of rows stay unchanged during the process.
+#' @return A data.frame which covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the identifier, Y and Z correspond to the first three columns respectively.
+#' Moreover the order of rows stays unchanged during the process.
 #'
 #' @export
 #'
@@ -82,15 +84,19 @@
 #'
 #' @references
 #' ### For Factor Analysis with mixed data:
-#' Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.
-#'
+#' \itemize{
+#' \item Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.
+#' \item Lê S, Josse J, Husson, F. (2008). FactoMineR: An R Package for Multivariate Analysis. Journal of Statistical Software. 25(1). pp. 1-18.
+#' }
 #' ### About the Gower distance:
-#' Gower, J. C. (1971), “A general coefficient of similarity and some of its properties”. Biometrics, 27, 623--637.
-#'
+#' \itemize{
+#' \item Gower, J. C. (1971), “A general coefficient of similarity and some of its properties”. Biometrics, 27, 623--637.
+#' }
 #' ### About the other distance measurements:
-#' Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
-#'
-#' Borg, I. and Groenen, P. (1997) Modern Multidimensional Scaling. Theory and Applications. Springer.
+#' \itemize{
+#' \item Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
+#' \item Borg, I. and Groenen, P. (1997) Modern Multidimensional Scaling. Theory and Applications. Springer.
+#' }
 #'
 #' @aliases transfo_dist
 #'
@@ -100,7 +106,7 @@
 #'
 #' @examples
 #'
-#' ### Using the simu_data example:
+#' ### Using the table simu_data:
 #'
 #' data(simu_data)
 #'
@@ -115,7 +121,7 @@
 #' try1 = transfo_dist(sim_data,quanti = 8, nominal = c(1,4:5,7),
 #'                     ordinal = c(2,3,6), logic = NULL, prep_choice = "E")
 #'
-#' # 2. The Euclidean distance on principal components generated
+#' # 2. The Euclidean distance generated on principal components
 #' #    by a factor analysis for mixed data (FAMD):
 #' try2 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
 #'                     ordinal = c(2,6), logic = NULL, prep_choice = "FAMD")
@@ -129,7 +135,7 @@
 #'
 #' # 4. The Hamming distance:
 #' # Here the quanti option could only contain indexes related to targets.
-#' # Indexes columns related to potential binary covariates or covariates with
+#' # Column indexes related to potential binary covariates or covariates with
 #' # finite number of values must be include in the ordinal option.
 #' # So in simu_data, the discretization of the variable age is required (index=8),
 #' # using the convert_num and convert_clss arguments (for tertiles = 3):

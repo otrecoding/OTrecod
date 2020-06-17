@@ -1,7 +1,7 @@
 #' A simulated dataset to test the functions of the OTrecod package.
 #'
 #' The first 300 rows belong to the database A, while the next 400 rows belong to the database B.
-#' The 5 covariates: \code{Gender},\code{Treatment},\code{Dosage},\code{Smoking} and \code{Age} are
+#' The 5 covariates: \code{Gender}, \code{Treatment}, \code{Dosage}, \code{Smoking} and \code{Age} are
 #' so common to both databases (same encodings).
 #' The variables \code{Yb1} and \code{Yb2} are the target variables
 #' that summarize a same information saved in 2 distinct encodings, that is why, \code{Yb1} is

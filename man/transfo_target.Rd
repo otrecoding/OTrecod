@@ -7,7 +7,7 @@
 transfo_target(z, levels_order = NULL)
 }
 \arguments{
-\item{z}{A factor variable (ordered or not). a variable of another type will be, by default, convert to a factor}
+\item{z}{A factor variable (ordered or not). A variable of another type will be, by default, convert to a factor}
 
 \item{levels_order}{A vector corresponding to the values of the levels of z. When the target is ordinal, the levels can be sorted by ascending order.
 By default, the initial order is retained}

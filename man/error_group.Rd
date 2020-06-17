@@ -38,7 +38,7 @@ All combinations of modalities of Y are here studied according to its type:
 }
 
 In a second step, the association between Z and each new variable Y' generated is measured by studying the ratio of concordant pairs of the related confusion matrix but also using standard criterions: Cramer's V (1946), Cohen's kappa coefficient (See McHugh, 2012),
-and rank coefficient of correlation (Spearman). All the associations tested are listed in an output data.frame.
+and rank coefficient of correlation (Spearman). All the associations tested are listed in output as a data.frame object.
 }
 \examples{
 

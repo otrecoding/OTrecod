@@ -21,7 +21,7 @@ imput_cov(
 
 \item{R_mice}{An integer. The number of imputed database to generate with MICE method (5 by default).}
 
-\item{meth}{A vector of characters which specify the imputation method to be used for each column in dat1.
+\item{meth}{A vector of characters which specify the imputation method to be used for each column in \code{dat1}.
 "pmm" for continuous covariates only, "logreg" for binary covariates, "polr" for ordinal covariates, "polyreg" for categorical covariates (no order), (cf \code{\link[mice]{mice}} for more details).}
 
 \item{missMDA}{A boolean. If \code{TRUE}, missing values are imputed using the factoral analysis for mixed data (\code{\link[missMDA]{imputeFAMD}}) from the \pkg{missMDA} package (Josse, 2016).}
