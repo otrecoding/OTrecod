@@ -64,8 +64,10 @@
 #'
 #'
 #' @param databa A data.frame with a column of identifiers, an outcome, and a set of predictors. The number of columns can exceed the number of rows.
-#' @param Y The label of the outcome with quotes
-#' @param ID The index of column of the row identifiers
+#' @param Y The label of a 1st target variable with quotes
+#' @param Z The label of a 2nd target variable with quotes when \code{databa} is a synthetic database made up of 2 overlayed databases.
+#' @param ID The index of column of the row identifiers (The 1st column by default)
+#' @param OUT A character that indicates the outcome to predict in the context of overlayed databases. By default, the outcome declared in the argument \code{Y} is predicted. The other possible value is "Z" to predict the outcome declared in the argument \code{Z}.
 #' @param quanti A vector of integers which corresponds to the indexes of columns of all the numeric predictors
 #' @param nominal A vector of integers which corresponds to the indexes of columns of all the categorical nominal predictors
 #' @param ordinal A vector of integers which corresponds to the indexes of columns of all the categorical ordinal predictors
@@ -85,18 +87,19 @@
 #'
 #' @return A list of 13 (If \code{RF} = TRUE) or 10 objects (Only the 1st ten objects if \code{RF} = FALSE) is returned:
 #' \item{seed}{The random number generator fixed or selected}
+#' \item{outc}{The identity fo the outcome to predict}
 #' \item{thresh}{A summarize of the different thresholds fixed for the study}
 #' \item{convert_num}{The labels of the continuous predictors transformed in categorical form}
 #' \item{DB_USED}{The final database used after eventual transformations of predictors}
 #' \item{vcrm_Y_cat}{Table of pairwise associations between the outcome and the categorical predictors (Cramer's V)}
 #' \item{cor_Y_num}{Table of pairwise associations between the outcome and the continuous predictors (Rank correlation)}
-#' \item{v_crm_X_cat}{Table of pairwise associations between the categorical predictors (Cramer's V)}
+#' \item{vcrm_X_cat}{Table of pairwise associations between the categorical predictors (Cramer's V)}
 #' \item{cor_X_num}{Table of pairwise associations between the continuous predictors (Cramer's V)}
 #' \item{FG_test}{Results of the Farrar and Glauber tests, with and without approximation form}
-#' \item{colinear_PB}{Table of predictors with problem of collinearity}
+#' \item{colinear_PB}{Table of predictors with problem of collinearity according to the thresholds chosen}
 #' \item{drop_var}{Labels of predictors to drop after RF process (optional output: Only if \code{RF}=TRUE)}
 #' \item{RF_PRED_Y}{Table of variable importance measurements, conditional or not, according to the argument \code{condi_RF} (optional output: Only if \code{RF}=TRUE)}
-#' \item{best_pred}{Labels of the best predictors selected (optional output: Only if \code{RF}=TRUE)}
+#' \item{best_pred}{Labels of the best predictors selected (optional output: Only if \code{RF}=TRUE) according to the value of the argument \code{thresh_Y}}
 #'
 #' @export
 #'
@@ -125,47 +128,123 @@
 #' @aliases select_pred
 #'
 #' @examples
-#' # Using the simu_data table, firstly, we separate the 2 bases A and B
-#' # and remove the unknown outcome in each DB
-#' data(simu_data)
-#' simu_A = simu_data[simu_data$DB == "A",-3]    # Base A
-#' simu_B = simu_data[simu_data$DB == "B",-2]    # Base B
 #'
-#' # In the 1st DB(A), the target variable is Yb1.
-#' # The indexes of the column covariates goes from 3 to 7.
-#' # By keeping the other default parameters:
+#' ### Example 1
+#' #-----
+#' # - From two overlayed databases: using the table simu_data
+#' # - Searching for the best predictors of "Yb1"
+#' # - Using raw database
+#' # - The RF approaches are not required
+#' #-----
+#'
+#' data(simu_data)
+#' test_DB1 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Y",
+#'                        quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
+#'                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+#'                        RF = FALSE)
+#'
+#' ### Example 2
+#' #-----
+#' # - With same conditions as example 1
+#' # - Searching for the best predictors of "Yb2"
+#' #-----
+#'
+#' test_DB2 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
+#'                        quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
+#'                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+#'                        RF = FALSE)
 #'
 #' \dontrun{
-#' ### Scenario 1: Discretization of age (7) in 3 classes (so no quantitative predictors),
-#' # RF process chosen, and conditional importance measures assessed, all other arguments
-#' # take their default values:
-#' sel_A2 = select_pred(simu_A,"Yb1", quanti = 7, nominal = c(3,4,6), ordinal = c(2,5),
-#'                      convert_num = 7,convert_clss = 3,
-#'                      RF = TRUE, RF_condi = TRUE)
+#' ### Example 3
+#' #-----
+#' # - With same conditions as example 1
+#' # - Using a RF approach to estimate the standard variable importance measures
+#' #   and determine the best subset of predictors
+#' # - Here a seed
+#' #-----
 #'
+#' test_DB3 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Y",
+#'                        quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
+#'                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+#'                        RF = TRUE, RF_condi = FALSE, RF_SEED = 3023)
 #'
-#' ### Scenario 2: Raw predictors, RF process chosen, and standard permutation
-#' # importance measures assessed (Default values for other arguments)
-#' sel_A3 = select_pred(simu_A,"Yb1", quanti = 7, nominal = c(3,4,6), ordinal = c(2,5),
-#'                      RF = TRUE)
+#' ### Example 4
+#' #-----
+#' # - With same conditions as example 1
+#' # - Using a RF approach to estimate the conditional variable importance measures
+#' #   and determine the best subset of predictors
+#' # - This approach requires to convert the numeric variables: Only "Age" here
+#' #   categorized in 3 levels
+#' #-----
+#'
+#' test_DB4 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
+#'                        quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
+#'                        convert_num = 8, convert_clss = 3,
+#'                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+#'                        RF = TRUE, RF_condi = TRUE, RF_condi_thr = 0.60, RF_SEED = 3023)
+#'
+#' ### Example 5
+#' #-----
+#' # - Starting with an unique database
+#' # - Same conditions as example 1
+#' #-----
+#' simu_A = simu_data[simu_data$DB == "A",-3]    # Base A
+#'
+#' test_DB5 = select_pred(simu_A, Y = "Yb1",
+#'                        quanti = 7, nominal = c(1,3:4,6), ordinal = c(2,5),
+#'                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+#'                        RF = FALSE)
+#'
+#' ### Example 6
+#' #-----
+#' # - Starting with an unique database
+#' # - Using a RF approach to estimate the conditional variable importance measures
+#' #   and determine the best subset of predictors
+#' # - This approach requires to convert the numeric variables: Only "Age" here
+#' #   categorized in 3 levels
+#' #-----
+#'
+#' simu_B = simu_data[simu_data$DB == "B",-2]    # Base B
+#'
+#' test_DB6 = select_pred(simu_B, Y = "Yb2",
+#'                        quanti = 7, nominal = c(1,3:4,6), ordinal = c(2,5),
+#'                        convert_num = 7, convert_clss = 3,
+#'                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+#'                        RF = TRUE, RF_condi = TRUE, RF_condi_thr = 0.60, RF_SEED = 3023)
+#'
 #' }
 #'
-#' ### Scenario 3: Discretization of age (7) in 3 classes and no random forest process:
-#' sel_A1 = select_pred(simu_A,"Yb1", quanti = 7, nominal = c(3,4,6), ordinal = c(2,5),
-#'                      convert_num = 7,convert_clss = 3,RF = FALSE)
-#'
-#'
-select_pred = function(databa,Y, ID = 1, quanti = NULL, nominal = NULL,ordinal = NULL,logic = NULL,
+select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
+                       quanti = NULL, nominal = NULL, ordinal = NULL, logic = NULL,
                        convert_num = NULL, convert_clss = NULL,
                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
-                       RF = TRUE, RF_ntree = 500, RF_condi = FALSE, RF_condi_thr = 0.2, RF_SEED = sample(1:1000000, 1)){
+                       RF = TRUE, RF_ntree = 500, RF_condi = FALSE, RF_condi_thr = 0.20, RF_SEED = sample(1:1000000, 1)){
+
+  if (!(OUT %in% c("Y","Z"))){
+
+    stop("Improper argument for OUT: Y or Z only")
+
+  } else {}
+
+  if ((OUT == "Y") & (is.null(Y))){
+
+    stop("When OUT = Y, Y can not be null")
+
+  } else {}
+
+  if ((OUT == "Z") & (is.null(Z))){
+
+    stop("When OUT = Z, Z can not be null")
+
+  } else {}
+
 
   # Exclude ID from arguments
 
-  quanti  = setdiff(quanti,ID)
+  quanti  = setdiff(quanti ,ID)
   nominal = setdiff(nominal,ID)
   ordinal = setdiff(ordinal,ID)
-  logic   = setdiff(logic,ID)
+  logic   = setdiff(logic  ,ID)
 
 
   # Convert boolean covariates
@@ -184,8 +263,8 @@ select_pred = function(databa,Y, ID = 1, quanti = NULL, nominal = NULL,ordinal =
 
     for (j in logic){
 
-      databa[,j]   = as.ordered(databa[,j])
-      ordinal      = unique(sort(c(ordinal,logic)))
+      databa[,j]   = as.factor(databa[,j])
+      nominal      = unique(sort(c(nominal,logic)))
       logic        = NULL
 
     }
@@ -201,7 +280,8 @@ select_pred = function(databa,Y, ID = 1, quanti = NULL, nominal = NULL,ordinal =
   stopifnot(thresh_num   <= 1)   ; stopifnot(thresh_num   >=0)
   stopifnot(thresh_Y     <= 1)   ; stopifnot(thresh_Y     >=0)
   stopifnot(RF_condi_thr <= 1)   ; stopifnot(RF_condi_thr >= 0)
-  stopifnot(!is.character(ordinal)); stopifnot(!is.character(quanti)); stopifnot(!is.character(nominal)); stopifnot(!is.character(logic))
+  stopifnot(!is.character(ordinal)); stopifnot(!is.character(quanti));
+  stopifnot(!is.character(nominal)); stopifnot(!is.character(logic))
   stopifnot(!is.character(convert_num));
   stopifnot(!is.character(convert_clss));
   stopifnot(length(intersect(ordinal,quanti))  == 0);
@@ -244,16 +324,17 @@ select_pred = function(databa,Y, ID = 1, quanti = NULL, nominal = NULL,ordinal =
   } else {}
 
 
-  cat("The select_pred function is in progress. Please wait ...","\n")
+  cat("The select_pred function is running. Please wait ...","\n")
 
 
-  # Exclude systematically ID and Y before discretization
+  # Exclude systematically ID and Y and Z before discretization
 
-  indexY    = (1:ncol(databa))[colnames(databa)== Y]
-  index_DB_Y = c(ID,indexY)
+  indexY       = (1:ncol(databa))[colnames(databa)== Y]
+  indexZ       = (1:ncol(databa))[colnames(databa)== Z]
+  index_DB_Y_Z = c(ID,indexY,indexZ)
 
-  convert_clss = convert_clss[convert_num != index_DB_Y]
-  convert_num  = setdiff(convert_num,index_DB_Y)
+  convert_clss = convert_clss[convert_num != index_DB_Y_Z]
+  convert_num  = setdiff(convert_num,index_DB_Y_Z)
 
 
   ### Re-classmt to avoid NAs in complete levels of factors
@@ -280,24 +361,55 @@ select_pred = function(databa,Y, ID = 1, quanti = NULL, nominal = NULL,ordinal =
 
 
 
-  ### Y must be nominal or ordinal: conversion
+  ### Y and Z must be nominal or ordinal: conversion
 
-  indY    = which(colnames(databa)==Y)
+  indY    = which(colnames(databa)== Y)
+  indZ    = which(colnames(databa)== Z)
 
-  if (indY %in% quanti){
 
-    databa[,indY] = ordered(databa[,indY])
-    ordinal       = sort(c(ordinal,indY))
-    quanti        = setdiff(quanti,indY)
+  if (OUT == "Y"){
+
+    outc          = Y
+    ordinal       = setdiff(ordinal,indZ)
+    quanti        = setdiff(quanti ,indZ)
+    nominal       = setdiff(nominal,indZ)
+
+    if (indY %in% quanti){
+
+        databa[,indY] = ordered(databa[,indY])
+        ordinal       = sort(c(ordinal,indY))
+        quanti        = setdiff(quanti,indY)
+
+    } else {}
+
+  } else if (OUT == "Z"){
+
+    outc          = Z
+    ordinal       = setdiff(ordinal,indY)
+    quanti        = setdiff(quanti ,indY)
+    nominal       = setdiff(nominal,indY)
+
+    if (indY %in% quanti){
+
+        databa[,indZ] = ordered(databa[,indZ])
+        ordinal       = sort(c(ordinal,indZ))
+        quanti        = setdiff(quanti,indZ)
+
+    } else {}
+
+  } else {
+
+    stop("Improper argument for OUT: Y or Z only")
 
   }
 
 
-  ### new indexes without Y index
 
-  indNOM  = setdiff(nominal,indY)
-  indORD  = setdiff(ordinal,indY)
-  indNUM  = setdiff(quanti,indY)
+  ### new indexes without Y and Z indexes
+
+  indNOM  = setdiff(nominal,c(indY,indZ))
+  indORD  = setdiff(ordinal,c(indY,indZ))
+  indNUM  = setdiff(quanti ,c(indY,indZ))
 
 
   convert_nm = convert_num
@@ -320,6 +432,15 @@ select_pred = function(databa,Y, ID = 1, quanti = NULL, nominal = NULL,ordinal =
 
   } else {}
 
+  if (OUT == "Y"){
+
+    databa = databa[!is.na(databa[,indY]),]
+
+  } else {
+
+    databa = databa[!is.na(databa[,indZ]),]
+
+  }
 
   ### Pairwise relationships between categorical predictors ordered or not and between the outcome Y and
   ### each categorical covariates
@@ -336,7 +457,16 @@ select_pred = function(databa,Y, ID = 1, quanti = NULL, nominal = NULL,ordinal =
 
     colnames(bbb) = colnames(databa)[indCAT]
 
-    datacov = data.frame(Y = factor(databa[,indY]),bbb)
+    if (OUT == "Y"){
+
+      datacov = data.frame(Y = factor(databa[,indY]),bbb)
+
+    } else {
+
+      datacov = data.frame(Y = factor(databa[,indZ]),bbb)
+
+    }
+
     datacov = datacov[!is.na(datacov$Y),]
 
 
@@ -398,11 +528,19 @@ select_pred = function(databa,Y, ID = 1, quanti = NULL, nominal = NULL,ordinal =
 
   if (length(indNUM2)!=0){
 
+    if (OUT == "Y"){
 
-    datacov3 = data.frame(Y = as.factor(databa[,indY]),databa[,sort(indNUM)],databa[,sort(indORD)])
-    datacov3 = datacov3[!is.na(datacov3$Y),]
-    colnames(datacov3) = c("Y",colnames(databa)[sort(indNUM)],colnames(databa)[sort(indORD)])
+      datacov3 = data.frame(Y = as.factor(databa[,indY]),databa[,sort(indNUM)],databa[,sort(indORD)])
+      datacov3 = datacov3[!is.na(datacov3$Y),]
+      colnames(datacov3) = c("Y",colnames(databa)[sort(indNUM)],colnames(databa)[sort(indORD)])
 
+    } else {
+
+      datacov3 = data.frame(Y = as.factor(databa[,indZ]),databa[,sort(indNUM)],databa[,sort(indORD)])
+      datacov3 = datacov3[!is.na(datacov3$Y),]
+      colnames(datacov3) = c("Y",colnames(databa)[sort(indNUM)],colnames(databa)[sort(indORD)])
+
+    }
 
     N_num = ncol(datacov3)
 
@@ -461,6 +599,12 @@ select_pred = function(databa,Y, ID = 1, quanti = NULL, nominal = NULL,ordinal =
 
   }
 
+  if (OUT == "Z"){
+
+    tab_cor2_Y[,1] = rep("Z",nrow(tab_cor2_Y))
+    tab_cor4_Y[,1] = rep("Z",nrow(tab_cor4_Y))
+
+  } else {}
 
   # Farrar and Glauber test
 
@@ -489,8 +633,18 @@ select_pred = function(databa,Y, ID = 1, quanti = NULL, nominal = NULL,ordinal =
   if (RF == TRUE){
 
     databa2 = databa[,-ID]
-    databa2 = databa2[,c(which(colnames(databa2)==Y),setdiff(1:ncol(databa2),which(colnames(databa2)==Y)))]
-    colnames(databa2)[1] = "Y"
+
+    if (OUT == "Y"){
+
+      databa2 = databa2[,c(which(colnames(databa2)==Y),setdiff(1:ncol(databa2),c(which(colnames(databa2) %in% c(Y,Z)))))]
+      colnames(databa2)[1] = "Y"
+
+    } else {
+
+      databa2 = databa2[,c(which(colnames(databa2)==Z),setdiff(1:ncol(databa2),c(which(colnames(databa2)%in% c(Y,Z)))))]
+      colnames(databa2)[1] = "Y"
+
+    }
 
     if (length(indNUM)!=0){
 
@@ -618,18 +772,20 @@ select_pred = function(databa,Y, ID = 1, quanti = NULL, nominal = NULL,ordinal =
     resYbis   = cumsum(rev(resY))
     best_pred = rev(names(resYbis)[resYbis>=(thresh_Y*100)])
 
-   return(list(seed = RF_SEED, thresh = c(CATEG = thresh_cat, NUM = thresh_num, RF_IMP = thresh_Y), convert_num = colnames(databa)[convert_nm], DB_USED = databa,
-               vcrm_Y_cat = tab_cor2_Y, cor_Y_num = tab_cor4_Y, v_crm_X_cat = tab_cor3_X, cor_X_num = tab_cor5_X, FG_test = FG_synt,
+   out1 = list(seed = RF_SEED, outc = outc, thresh = c(CATEG = thresh_cat, NUM = thresh_num, RF_IMP = thresh_Y), convert_num = colnames(databa)[convert_nm], DB_USED = databa,
+               vcrm_OUTC_cat = tab_cor2_Y, cor_OUTC_num = tab_cor4_Y, vcrm_X_cat = tab_cor2_X, cor_X_num = tab_cor4_X, FG_test = FG_synt,
                colinear_PB = list(VCRAM = tab_cor3_X,SPEARM = tab_cor5_X),
-               drop_var = drop_var, RF_PRED_Y = resY, best_pred = best_pred))
+               drop_var = drop_var, RF_PRED = resY, RF_best = best_pred)
 
   } else {
 
-    return(list(seed = RF_SEED, thresh = c(CATEG = thresh_cat, NUM = thresh_num, RF_IMP = thresh_Y), convert_num = colnames(databa)[convert_nm], DB_USED = databa,
-                vcrm_Y_cat = tab_cor2_Y, cor_Y_num = tab_cor4_Y, v_crm_X_cat = tab_cor3_X, cor_X_num = tab_cor5_X, FG_test = FG_synt,
-                colinear_PB = list(VCRAM = tab_cor3_X,SPEARM = tab_cor5_X)))
+    out1 = list(seed = RF_SEED, outc = outc, thresh = c(CATEG = thresh_cat, NUM = thresh_num, RF_IMP = thresh_Y), convert_num = colnames(databa)[convert_nm], DB_USED = databa,
+                vcrm_OUTC_cat = tab_cor2_Y, cor_OUTC_num = tab_cor4_Y, vcrm_X_cat = tab_cor2_X, cor_X_num = tab_cor4_X, FG_test = FG_synt,
+                colinear_PB = list(VCRAM = tab_cor3_X,SPEARM = tab_cor5_X))
 
    }
+
+   return(out1)
 
 }
 

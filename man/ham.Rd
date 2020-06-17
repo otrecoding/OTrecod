@@ -24,9 +24,9 @@ Calculate the Hamming distance stay possible despite the presence of missing dat
 
 Suppose that A and B are 2 matrices such as \code{ncol(A) = ncol(B)}. The Hamming distance between the ith row of A and the kth row of B equals:
 
-\deqn{\mbox{ham}(A_i,B_k) = \frac{\sum_j 1_{\left\{(A_{ij} \neq B_{kj}\right\}}}{\sum_j 1}\times\left(\frac{\sum_j 1}{\sum_j 1_{\left\{!\mbox{is.na}(A_{ij}) \& !\mbox{is.na}( B_{kj})\right\}}}\right)}
+\deqn{\mbox{ham}(A_i,B_k) = \frac{\sum_j 1_{\left\{A_{ij} \neq B_{kj}\right\}}}{\sum_j 1}\times\left(\frac{\sum_j 1}{\sum_j 1_{\left\{!\mbox{is.na}(A_{ij}) \& !\mbox{is.na}( B_{kj})\right\}}}\right)}
 
-Where: \eqn{i = 1,\ldots,\mbox{nrow}(A)} and  \eqn{k = 1,\ldots,\mbox{nrow}(B)}; And the term after the "*" corresponds to a weighting applies in presence of NAs in \eqn{A_i} and,or \eqn{B_k}.
+Where: \eqn{i = 1,\ldots,\mbox{nrow}(A)} and  \eqn{k = 1,\ldots,\mbox{nrow}(B)}; And the expression located to the right term of the multiplication corresponds to a specific weigh applies in presence of NAs in \eqn{A_i} and,or \eqn{B_k}.
 
 This option is not implemented in the \code{\link[rdist]{cdist}} function and the Hamming distance can not be computed using the \code{\link[proxy]{dist}} function either.
 
@@ -69,7 +69,10 @@ B_NA[2,2] = NA
 ham(A_NA,B_NA)
 
 }
+\references{
+Roth R (2006). Introduction to Coding Theory. Cambridge University Press.
+}
 \author{
 Gregory Guernec
-\email{gregory.guernec@inserm.fr}
+\email{otrecod.pkg@gmail.com}
 }

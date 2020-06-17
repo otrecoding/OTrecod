@@ -2,7 +2,7 @@
 #' compare_lists()
 #'
 #'    This function compares the elements of two lists of same length.
-#'    The order of inputs of the 2 lists have no importance.
+#'    The order of inputs of the two lists have no importance.
 #'
 #' @param listA A first list
 #' @param listB A second list
@@ -12,7 +12,7 @@
 #' between the 2 lists, or \code{FALSE} otherwise
 #'
 #' @author Gregory Guernec
-#' \email{gregory.guernec@@inserm.fr}
+#' \email{otrecod.pkg@@gmail.com}
 #' @export
 #'
 #' @aliases compare_lists
