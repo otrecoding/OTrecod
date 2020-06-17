@@ -5,7 +5,7 @@
 #' @aliases transfo_quali
 #'
 #' @param x A factor
-#' @param labx A new label for the binary variables generated (By default the name of the factor is conserved)
+#' @param labx A new label for the generated binary variables (By default the name of the factor is conserved)
 #'
 #' @return A matrix of (n-1) binary variables
 #'

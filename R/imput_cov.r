@@ -17,7 +17,7 @@
 #' @param dat1 A data.frame. containing the variables to be imputed and the one participating in the imputations
 #' @param indcol A vector of integers. The corresponding column numbers corresponding to the variables to be imputed and those which participate in the imputations.
 #' @param R_mice An integer. The number of imputed database to generate with MICE method (5 by default).
-#' @param meth A vector of characters which specify the imputation method to be used for each column in dat1.
+#' @param meth A vector of characters which specify the imputation method to be used for each column in \code{dat1}.
 #' "pmm" for continuous covariates only, "logreg" for binary covariates, "polr" for ordinal covariates, "polyreg" for categorical covariates (no order), (cf \code{\link[mice]{mice}} for more details).
 #' @param missMDA A boolean. If \code{TRUE}, missing values are imputed using the factoral analysis for mixed data (\code{\link[missMDA]{imputeFAMD}}) from the \pkg{missMDA} package (Josse, 2016).
 #' @param NB_COMP An integer corresponding to the number of components used in FAMD to predict the missing entries (3 by default) when the \code{missMDA} option is TRUE.
