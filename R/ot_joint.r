@@ -76,8 +76,8 @@
 #' \item The Hamming distance for binary data ("H")
 #' }
 #'
-#' Assuming that P1 and P2 are 2 profiles of covariates, they will be considered as neighbors if \eqn{dist(P1,P2) < \mbox{prox.X} * max(dist(Pi,Pj))} where \code{prox.X} must be also fixed by user. This choice comes into the calculation of the \code{JOINT} and \code{R_joint} algorithms.
-#' In the same way, for a given profile of covariates \code{P_j}, an individual i will be considered as a neighbor of \code{P_j} if \eqn{dist(i,P_j) < \mbox{prox.dist} * max(dist(i,P_j))} where \code{prox.dist} will be fixed by user.
+#' Assuming that P1 and P2 are 2 profiles of covariates, they will be considered as neighbors if \eqn{dist(P1,P2) < \code{prox.X} * max(dist(Pi,Pj))} where \code{prox.X} must be also fixed by user. This choice comes into the calculation of the \code{JOINT} and \code{R_joint} algorithms.
+#' In the same way, for a given profile of covariates \code{P_j}, an individual i will be considered as a neighbor of \code{P_j} if \eqn{dist(i,P_j) < \code{prox.dist} * max(dist(i,P_j))} where \code{prox.dist} will be fixed by user.
 #'
 #' For more details about the related algorithms integrated in \code{OT_joint}, please consult, the 2nd article referenced.
 #'

@@ -14,7 +14,7 @@
 #' with NAs in database A), and a set of shared covariates (at least one) between the two databases.
 #'
 #' The order of these variables in the database have no importance but the column indexes related to database identifier, Y and Z, must be specified in the \code{indx_DB_Y_Z} option.
-#' Users can refer to the structure of the table \code{simu_data} available in the package to adapt their databases to the inital format required.
+#' Users can refer to the structure of the table \code{\link{simu_data}} available in the package to adapt their databases to the inital format required.
 #'
 #' Missing values are allowed on covariates only (and in presence of more than one covariate), and are excluded from all computations involving the rows within which they occur.
 #' In the particular case where only one covariate with NAs is used, we recommend working with imputed or complete case only to avoid the presence of NA in the distance matrix that will be computed a posteriori.
@@ -29,7 +29,7 @@
 #' Thus, with the Euclidean or Manhattan distance (\code{norm} = "E" or "M"), if all types of variables will be allowed, logical variables will have to be previously transformed in binary variables, and categorical variables (factors ordered or not) will have to be transformed by their related disjunctive tables (the function \code{\link{transfo_quali}} can make these specific transformations).
 #' The Hamming distance (\code{norm} = "H") only requires binary variables (all other forms are prohibited). In this context, continuous variables could have been converted in factor of k levels (k>2) beforehand, and then transformed in disjunctive tables (containing the (k-1) corresponding binary variables) before use, just like with the categorical variables.
 #' Notice that, using the Hamming distance could be quite long in presence NAs on covariates, so please be a little patient and let the function runs few minutes if necessary.
-#' Finally, the Gower distance (\code{norm} = G") uses the (\code{\link[StatMatch]{gower.dist}}) function and so allows logical, categorical and numeric variables with no preliminary transformations.
+#' Finally, the Gower distance (\code{norm} = "G") uses the (\code{\link[StatMatch]{gower.dist}}) function and so allows logical, categorical and numeric variables with no preliminary transformations.
 #'
 #' In conclusion, the structure of the data.frame required in input of the function \code{proxim_dist} corresponds to two overlayed databases with two target outcomes and a set of shared covariates whose encodings depend on the distance function choosen by user.
 #'
@@ -41,14 +41,14 @@
 #' C. PROFILES OF COVARIATES AND OUTPUT DETAILS
 #'
 #' Whatever the type (mixed or not) and the number of covariates in the data.frame of interest, the function \code{proxim_dist} firstly detects all the possible profiles (or combinations) of covariates from the 2 databases, and saves them in the output \code{profile}.
-#' By example, assuming that a data.frame in input (composed of 2 overlayed data.frame A and B) have 3 shared binary covariates (ie identically encoded in A and B) so the sequences \code{011} and \code{101} will be considered as two distinct profiles of covariates.
+#' By example, assuming that a data.frame in input (composed of two overlayed data.frames A and B) have 3 shared binary covariates (ie identically encoded in A and B) so the sequences \code{011} and \code{101} will be considered as two distinct profiles of covariates.
 #' If each covariate is a factor of n1, n2 and n3 levels respectively, so it exists at most n1*n2*n3 possible profiles of covariates according to the data.frame.
 #' This estimation is considered as a maximum here because, in fact, only the profiles of covariates met in at least one of the two databases will be kept for the study.
 #'
 #' \code{proxim_dist} classifies individuals from the 2 databases according to their proximities to each profile of covariates and saves the corresponding indexes of rows from A and B in 2 lists \code{indXA} and \code{indXB} respectively.
 #' \code{indXA} and \code{indXB} thus contained as many objects as covariates profiles and the proximity between a given profile and a given individual is defined as follows.
 #' The function also provides in output the list of all the profiles of covariates encountered.
-#' As a decision rule, for a given profile of covariates Pj, an individual i will be considered as a neighbor of Pj if \eqn{dist(i,P_j) < \code{prox} * max(dist(i,P_j))} where \code{prox} will be fixed by user.
+#' As a decision rule, for a given profile of covariates Pj, an individual i will be considered as a neighbor of \code{Pj} if \eqn{dist(i,P_j) < prox * max(dist(i,P_j))} where \code{prox} will be fixed by user.
 #'
 #'
 #' @param data_file A data.frame corresponding ideally to an output of the function \code{\link{transfo_dist}}. Otherwise this data.frame is the result of two overlayed databases with a column of database identifier ("A" and "B", 1 and 2, by example), a target variable (called Y by example) only known in the first database, a target variable (Z) only stored in the 2nd database, such that Y and Z summarize a same information differently encoded in the 2 databases and set of common covariates (at least one) of any type.
@@ -76,7 +76,7 @@
 #' \item{DA}{A distance matrix corresponding to the pairwise distances between individuals of the 1st database}
 #' \item{DB}{A distance matrix corresponding to the pairwise distances between individuals of the 2nd database}
 #' \item{ROWS_TABLE}{Combinations of row numbers of the 2 databases that generate NAs in D}
-#' \item{ROWS_TO_RM}{Number of times a row of the 1st or 2nd database is involved in the NA process of D}
+#' \item{ROWS_TO_RM}{Number of times a row of the first or second database is involved in the NA process of D}
 #'
 #'
 #'
@@ -88,21 +88,21 @@
 #' @importFrom  stats na.omit
 #' @importFrom  StatMatch gower.dist
 #'
-#' @seealso \code{\link{transfo_dist}}, \code{\link{imput_cov}}
+#' @seealso \code{\link{transfo_dist}}, \code{\link{imput_cov}}, \code{\link{merge_dbs}}, \code{\link{simu_data}}
 #'
 #' @references
-#' ### About OT algorithms for data fusion:
+#' # About OT algorithms for data fusion:
 #' \enumerate{
 #' \item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
 #' Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
 #' \item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
 #' }
-#' ### About the Gower distance:
+#' # About the Gower distance:
 #' \itemize{
 #' \item Gower, J. C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623--637.
 #' \item D'Orazio M (2015). Integration and imputation of survey data in R: the StatMatch package. Romanian Statistical Review, vol. 63(2)
 #' }
-#' ### About other distance functions:
+#' # About other distance functions:
 #' \itemize{
 #' \item Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
 #' \item Borg, I. and Groenen, P. (1997) Modern Multidimensional Scaling. Theory and Applications. Springer.
