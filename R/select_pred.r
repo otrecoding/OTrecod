@@ -1,21 +1,32 @@
 #' select_pred()
 #'
-#' Selection of a subset of non collinear predictors having relevant relationships with a given target outcome.
+#' Selection of a subset of non collinear predictors having relevant relationships with a given target outcome
 #'
-#' The \code{select_pred} function provides several tools to identify, on the one hand, the relationships between predictors, by detecting especially potential problems of collinearity, and, on the other hand, proposes a parcimonious subset of relevant predictors using appropriate random forest procedures.
-#' Even if, in many contexts, this function can be seen as a preliminary step of regression, this function is particularly adapted to the context of data integration of two or more datasources by pre-selecting relevant subsets of shared predictors before fusion.
+#' The \code{select_pred} function provides several tools to identify, on the one hand, the relationships between predictors, by detecting especially potential problems of collinearity, and, on the other hand, proposes a parcimonious subset of relevant predictors (of the outcome) using appropriate random forest procedures.
+#' Even if this selection can be seen as a preliminary step of regression models and this function works fine in this situation, the function \code{select_pred} is particularly adapted to the context of data fusion by providing relevant subsets of predictors to algorithms dedicated to the solving of recoding problems.
 #'
 #'
-#' A. STRUCTURE OF DATABASE REQUIRED
+#' A. REQUIRED STRUCTURE FOR THE DATABASE
 #'
-#' The input expected database is a data.frame that especially requires a specific column of rows identifiers and a target variable (or outcome) having a finite number of values or classes (Therefore,in preference, of ordinal, nominal or discrete type). If the chosen outcome is in numeric form, it will be automatically converted in ordinal type.
-#' The number of predictors is not a constraint (even if, with less than 3 variables a process of variables selection has no real sense...), can exceed the number of rows (no problem of high dimensionality here).
+#' The expected input database is a data.frame that especially requires a specific column of row identifier and a target variable (or outcome) having a finite number of values or classes (ordinal, nominal or discrete type). Notice that if the chosen outcome is in numeric form, it will be automatically converted in ordinal type.
+#' The number of predictors is not a constraint for \code{select_pred} (even if, with less than three variables a process of variables' selection has no real sense...), and can exceed the number of rows (no problem of high dimensionality here).
 #' The predictors can be continuous (quantitative), nominal or ordinal with or without missing values. Nevertheless, this function provides optimal performances without or with only a limited number of continuous variables and with complete information. For this reason, this function is particularly adapted to
-#' data integration using the \code{OT_joint} function available in this package, which imposes the same conditions.
-#' In presence of numeric variables, it is therefore suggested to discretize them beforehand or to use the process of discretization directly integrated in the function. For doing this, \code{convert_num} and \code{convert_class} are the only two arguments that have to be strictly completed. With the \code{convert_num} argument, users choose the
-#' continuous variables to convert and the \code{convert_clss} argument specify the related number of classes chosen for each discretization.
-#' So, these 2 arguments must be 2 vectors of indexes of same length. The only exception allowed, when \code{convert_clss} equals a scalar S, supposed that the continuous predictors selected for conversion  will be disretized with a same number of classes S.
-#' By example, if \code{convert_class} = 4, all the continuous variables selected with the \code{convert_num} argument will be discretized by quartiles. Finally, missing informations from a predictor to convert, are not discretized and stay unchanged during the transformation.
+#' data integration using the function \code{OT_joint} available in this package, which imposes the same conditions.
+#' Therefore, in presence of numeric variables, users can decide to discretize them or a part of them by themselves beforehand. They can also choose to use the internal process directly integrated in the function. Indeed, to assist users, two arguments called \code{convert_num} and \code{convert_clss} are dedicated to these transformations.
+#' With the argument \code{convert_num}, users choose the continuous variables to convert and the related argument \code{convert_clss} specifies the corresponding number of classes chosen for each discretization.
+#' It is the reason why these two arguments must be two vectors of indexes of same length. Nevertheless, an unique exception exists when \code{convert_clss} is equalled to a scalar S. In this case, all the continuous predictors selected for conversion will be discretized with a same number of classes S.
+#' By example, if \code{convert_clss = 4}, all the continuous variables specified in the \code{convert_num} argument will be discretized by quartiles. Moreover, notice that missing information from incomplete predictors to convert are not taken into account during the conversion, and that each predictor specified in the argument \code{convert_num}
+#' must be also specified in the argument \code{quanti}.
+#' In this situation, the label of the outcome must be entered in the argument \code{Y}, and the arguments \code{Z} and \code{OUT} must keep their default values.
+#' Finally, the order of the row identifier and the outcome in the database have no importance.
+#'
+#' For a better flexibility,the waited input database can also be the result of two overlayed databases.
+#' In this case, the waited structure of the database must be similar to those observed in the datasets \code{\link{simu_data}} and \code{\link{tab_test}} available in the package with a column of database identifier, one target outcome by database (2 columns), and a subset of shared predictors.
+#' Notice that, overlaying two separate databases can also be done easily using the function \code{\link{merge_dbs}} beforehand.
+#' The labels of the two outcomes will have to be specified in the arguments \code{Y} for the top database, and in \code{Z} for the bottom one.
+#' Notice also that the function \code{select_pred} deals with only one outcome at a time that will have to be specified in the argument \code{OUT} which must be equalled to "Y" for the study of the top database or "Z" for the study of the bottom one.
+#'
+#' Finally, whatever the structure of the database declared in input, each column index related to the database variable must be entered once (and only once) in one of the following four arguments: \code{quanti}, \code{nominal}, \code{ordinal}, \code{logic}.
 #'
 #'
 #' B. PAIRWISE ASSOCIATIONS BETWEEN PREDICTORS
@@ -23,69 +34,70 @@
 #' In a first step of process, \code{select_pred} calculates standard pairwise associations between predictors according to their types.
 #' \enumerate{
 #' \item{Between categorical predictors (ordinal, nominal and logical):
-#' Cramer's V (and Bias-corrected Cramer's V, see Bergsma 2013, for more details) are calculated between categorical predictors and the \code{thres_cat} argument fixed the associated threshold beyond which two predictors can be considered as redundant.
-#' A similar process is done between the target variable and the subset of categorical variables which provides in output, a first table ranking the top scoring predictor variates which summarizes their abilities to predict the target.}
+#' Cramer's V (and Bias-corrected Cramer's V, see Bergsma 2013, for more details) are calculated between categorical predictors and the argument \code{thres_cat} fixed the associated threshold beyond which two predictors can be considered as redundant.
+#' A similar process is done between the target variable and the subset of categorical variables which provides in output a first table ranking the top scoring predictor variates. This table summarizes the ability of each variable to predict the target outcome.}
 #' \item{Between continuous predictors:
 #' If the\code{ordinal} and \code{logic} arguments differ from NULL, all the corresponding predictors are beforehand converted in discrete form.
-#' For numeric (quantitative), logical and ordinal predictors, pairwise correlations between ranks (Spearman) are calculated and the \code{thresh_num} arguments fixed the associated threshold beyond which two predictors can be considered as redundant.
+#' For numeric (quantitative), logical and ordinal predictors, pairwise correlations between ranks (Spearman) are calculated and the argument \code{thresh_num} fixed the related threshold beyond which two predictors can be considered as redundant.
 #' A similar process is done between the outcome and the subset of discrete variables which provides in output, a table ranking the top scoring predictor variates which summarizes their abilities to predict the target.
-#' In addition, the result of a Farrar and Glauber test is provided (see the corresponding reference for more details). This test is based on the determinant of the correlation matrix of covariates and the related null hypothesis of the test corresponds to an absence of collinearity between them.
+#' In addition, the result of a Farrar and Glauber test is provided. This test is based on the determinant of the correlation matrix of covariates and the related null hypothesis of the test corresponds to an absence of collinearity between them (see the corresponding reference for more details about the method).
 #' In presence of a large number of numeric covariates and/or ordered factors, the approximate Farrar-Glauber test, based on the normal approximation of the null distribution is more adapted (Johnson, 1994) and its result is also provided in output.
 #' These 2 tests are highly sensitive and, by consequence, it suggested to consider these results as simple indicators of collinearity between predictors rather than an essential condition of acceptability.}
 #' }
-#' If the initial number of predictors is not too important, these informations can be sufficient to users for the visualization of the potential problems of collinearity and for the selection of a subset of predictors (\code{RF} = FALSE).
-#' It is nevertheless often necessary to complete this visualization by an automatical process of selection like the Random Forest approach (see Breiman 2001, for more details about RF).
+#' If the initial number of predictors is not too important, these informations can be sufficient to users for the visualization of the potential problems of collinearity and for the selection of a subset of predictors (\code{RF = FALSE}).
+#' It is nevertheless often necessary to complete this visualization by an automatic process of selection like the Random Forest approach (see Breiman 2001, for a better understanding of the method) linked to the function \code{select_pred} (\code{RF = TRUE}).
 #'
 #'
 #' C. RANDOM FOREST PROCEDURE
 #'
-#' As a final step of the process, a random forest approach (RF) is here prefered (to regressions) for its great flexibility: A non parametric recursive partitioning method applyable even when the number of variables exceeds the number of rows, whatever the types of covariates considered, able to deal with non linearity,
-#' correlated predictors, ordered or not ordered categorical outcomes. For this, \code{select_pred} integrates in its algorithm the \code{\link[party]{cforest}} and \code{\link[party]{varimp}} of the package \pkg{party} (Hothorn, 2006) and so gives access
-#' to its main arguments.
+#' As a final step of the process, a random forest approach (RF) is here prefered (to regression models) for its great flexibility: A non parametric recursive partitioning method applicable even when the number of variables exceeds the number of rows, whatever the types of covariates considered.
+#' For this, \code{select_pred} integrates in its algorithm the functions \code{\link[party]{cforest}} and \code{\link[party]{varimp}} of the package \pkg{party} (Hothorn, 2006) and so gives access to their main arguments.
 #'
-#' A RF approach generally provides 2 types of measures for estimating the mean variable importance of each covariate in the prediction of an outcome: The Gini importance and the permutation importance.These measurements must be used with caution, by taking into account the following constraints:
+#' A RF approach generally provides two types of measures for estimating the mean variable importance of each covariate in the prediction of an outcome: The Gini importance and the permutation importance.These measurements must be used with caution, by taking into account the following constraints:
 #' \enumerate{
 #' \item{The Gini importance criterion can produce bias in favor of continuous variables and variables with many categories. To avoid this problem, only the permutation criterion is available in the function.}
 #' \item{The permutation importance criterion can overestimate the importance of highly correlated predictors.}
 #' }
-#' The function \code{select_pred} can so proceeds with 3 different scenarios according to the types of predictors:
+#' The function \code{select_pred} can so proceeds with three different scenarios according to the types of predictors:
 #' \enumerate{
-#' \item{The 1st scenario consists in boiling down to a set of categorical variables (ordered or not) by discretizing all the continuous predictors beforehand, using the internal \code{convert_num} argument or another one, and then works with the conditional importance measurements (\code{RF_condi} = TRUE) which give unbiased estimations.
-#' In the spirit of a partial correlation, conditional importance measure of a variable X, only use a more or less important part of predictors (called Z) correlated to X for the computation of the estimation. The argument \code{RF_condi_thr} that corresponds exactly to the \code{threshold} argument of the function \code{\link[party]{varimp}},
-#' fixes this ratio according to an association test between X and Z (see Strobl 2007 for more precision). It corresponds to 1 - pvalue of the test, kwnowing that a threshold value of zero will include all predictors in the computation.
-#' Moreover, taking into account only subsets of predictors in the computation of the variable importance measures could lead to a relevant saving of execution time.
-#' Nevertheless, this method does not take into account incomplete predictors an so have to be imputed beforehand if necessary (using the \code{imput_cov} function available in this package or another one).}
-#' \item{The 2nd possibility, always in presence of mixed types predictors, consists in the execution of 2 successive RF procedures. The 1st one is used to select an unique candidate in each susbset of correlated predictors (detecting in the first section), and the 2nd one extracts the permutation importance
-#' measurements from a second RF applies on the remaining subset of uncorrelated predictors (\code{RF_condi} = FALSE, default option). This 2nd possibility has the advantage to work in presence of incomplete predictors.}
-#' \item{The 3rd scenario consists in running a first time the function without RF process (\code{RF} = FALSE), and according to the presence of highly correlated predictors or not, makes a decision about the type of criterion used as a 2nd execution of the function.}
+#' \item{The 1st scenario consists in boiling down to a set of categorical variables (ordered or not) by discretizing all the continuous predictors beforehand, using the internal \code{convert_num} argument or another one, and then works with the conditional importance measures (\code{RF_condi = TRUE}) which give unbiased estimations.
+#' In the spirit of a partial correlation, the conditional importance measure related to a variable X for the prediction of an outcome Y, only uses the subset of variables the most correlated to X for its computation. The argument \code{RF_condi_thr} that corresponds exactly to the argument \code{threshold} of the function \code{\link[party]{varimp}},
+#' fixes a ratio below which a variable Z is considered sufficiently correlated to X to be used as an adjustment variable in the computation of the importance measure of X (In other words, Z is included in the conditioning for the computation, see Strobl 2007 for more details). A threshold value of zero will include all variables in the computation of
+#' conditional importance measure of each predictor X, while a threshold < 1, will only include a subset of variables.
+#' Two remarks related to this method: Firstly, notice that taking into account only subsets of predictors in the computation of the variable importance measures could lead to a relevant saving of execution time.
+#' Secondly, because this approach does not take into account incomplete information, the method will only be applied to complete data (incomplete rows will be temporarily removed for the study).}
+#' \item{The 2nd possibility, always in presence of mixed types predictors, consists in the execution of two successive RF procedures. The 1st one will be used to select an unique candidate in each susbset of correlated predictors (detecting in the 1st section), while the 2nd one will extract the permutation measures from the remaining subset
+#' of uncorrelated predictors (\code{RF_condi = FALSE}, by default). This 2nd possibility has the advantage to work in presence of incomplete predictors.}
+#' \item{The 3rd scenario consists in running a first time the function without RF process (\code{RF = FALSE}), and according to the presence of highly correlated predictors or not, users can choose to extract redundant predictors manually and re-runs the function with the subset of remaining non-collinear predictors to avoid bias potentially introduced by the standard permutations measures.}
 #' }
-#' The 3 scenarios finally provide a list of uncorrelated predictors of the outcome sorted in unbiased importance order and the argument \code{thresh_Y} corresponds to the minimal percent of importance required for a variable to be considered as a reliable predictor of the outcome.
-#' Finally, because all random forest results are subject to random variation, users can check whether the same importance ranking is achieved with a different random seed (\code{RF_SEED} argument) or otherwise by increasing the number of trees (\code{RF_ntree}).
+#' The three scenarios finally provide a list of uncorrelated predictors of the outcome sorted in importance order. The argument \code{thresh_Y} corresponds to the minimal percent of importance required (and fixed by user) for a variable to be considered as a reliable predictor of the outcome.
+#' Finally, because all random forest results are subjects to random variation, users can check whether the same importance ranking is achieved by varying the random seed parameter (\code{RF_SEED}) or by increasing the number of trees (\code{RF_ntree}).
 #'
 #'
-#' @param databa A data.frame with a column of identifiers, an outcome, and a set of predictors. The number of columns can exceed the number of rows.
+#' @param databa A data.frame with a column of identifiers (of row or of database), an outcome, and a set of predictors. The number of columns can exceed the number of rows.
 #' @param Y The label of a 1st target variable with quotes
-#' @param Z The label of a 2nd target variable with quotes when \code{databa} is a synthetic database made up of 2 overlayed databases.
-#' @param ID The index of column of the row identifiers (The 1st column by default)
+#' @param Z The label of a 2nd target variable with quotes when \code{databa} is a synthetic database made up of two overlayed databases.
+#' @param ID The column index of the row identifier (The 1st column by default)
 #' @param OUT A character that indicates the outcome to predict in the context of overlayed databases. By default, the outcome declared in the argument \code{Y} is predicted. The other possible value is "Z" to predict the outcome declared in the argument \code{Z}.
-#' @param quanti A vector of integers which corresponds to the indexes of columns of all the numeric predictors
-#' @param nominal A vector of integers which corresponds to the indexes of columns of all the categorical nominal predictors
-#' @param ordinal A vector of integers which corresponds to the indexes of columns of all the categorical ordinal predictors
+#' @param quanti A vector of integers which corresponds to the column indexes of all the numeric predictors
+#' @param nominal A vector of integers which corresponds to the the column indexes of all the categorical nominal predictors
+#' @param ordinal A vector of integers which corresponds to the the column indexes of all the categorical ordinal predictors
 #' @param logic A vector of integers indicating the indexes of logical predictors. No index remained by default
-#' @param convert_num A vector of integers indicating the indexes of quantitative variables to convert in ordered factors. No index remained by default. Each index selected must has been defined as quantitative in the quanti argument.
-#' @param convert_clss A vector of integers indicating the number of classes chosen for each transformation of quantitative variable in ordered factor. The length of this vector can not exceed the length of the convert_num argument. If length(convert_num) > 1 and length(convert_clss) = 1.
-#' All quantitative predictors selected for discretisation will have the same number of classes.
+#' @param convert_num A vector of integers indicating the indexes of quantitative variables to convert in ordered factors. No index remained by default. Each index selected must has been defined as quantitative in the argument \code{quanti}.
+#' @param convert_clss A vector of integers indicating the number of classes chosen for each transformation of quantitative variable in ordered factor. The length of this vector can not exceed the length of the argument \code{convert_num}. If length(convert_num) > 1 and length(convert_clss) = 1,
+#' all quantitative predictors selected for discretization will have the same number of classes.
 #' @param thresh_cat A threshold associated to the Cramer's V coefficient (= 0.30 by default)
 #' @param thresh_num A threshold associated to the Spearman's coefficient of correlation (= 0.70 by default)
 #' @param thresh_Y A threshold indicating the minimal percent of importance required for a variable to be considered as a reliable predictor
 #' @param RF A boolean that equals TRUE (default) if a random forest procedure must be used in the selecting of the best subset of predictors for the outcome
 #' @param RF_ntree Number of bootsrap samples required from the row datasource during the random forest procedure
 #' @param RF_condi A boolean specifying if the conditional importance measures must be assessed from the random forest procedure (\code{TRUE}) rather than the standard variable importance  measures (\code{FALSE} by default)
-#' @param RF_condi_thr A threshold linked to (1 - pvalue) of an association test, kwnowing that a threshold value of zero wil include all covariates.
+#' @param RF_condi_thr A threshold linked to (1 - pvalue) of an association test between each predictor X and the other variables, given that a threshold value of zero wil include all variables in the computation of the conditional importance measure of X (0.60 is the default value).
+#' Conversely, a larger threshold keeps only variables that are strongly correlated to X for conditioning.
 #' @param RF_SEED An integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default)
 #'
 #'
-#' @return A list of 13 (If \code{RF} = TRUE) or 10 objects (Only the 1st ten objects if \code{RF} = FALSE) is returned:
+#' @return A list of 13 (If \code{RF = TRUE}) or 10 objects (Only the 1st ten objects if \code{RF = FALSE}) is returned:
 #' \item{seed}{The random number generator fixed or selected}
 #' \item{outc}{The identity fo the outcome to predict}
 #' \item{thresh}{A summarize of the different thresholds fixed for the study}
@@ -105,17 +117,22 @@
 #'
 #' @references
 #' # About the Cramer's V measures:
-#' Bergsma W (2013). A bias-correction for Cramer's V and Tschuprow's T. Journal of the Korean Statistical Society, 42, 323–328.
-#'
+#' \itemize{
+#' \item Bergsma W (2013). A bias-correction for Cramer's V and Tschuprow's T. Journal of the Korean Statistical Society, 42, 323–328.
+#' }
 #' # About the Farrar and Glauber test:
-#' Farrar D, and Glauber R (1968). Multicolinearity in regression analysis. Review of Economics and Statistics, 49, 92–107.
-#'
-#' # About RF:
-#' Breiman L (2001). Random Forests. Machine Learning, 45(1), 5–32.
-#'
-#' About the estimation of conditional variable importances in RF:
-#' Strobl C, Boulesteix A-L, Kneib T, Augustin T, Zeileis A (2008). Conditional Variable Importance for Random Forests. BMC Bioinformatics, 9, 307.
-#'
+#' \itemize{
+#' \item Farrar D, and Glauber R (1968). Multicolinearity in regression analysis. Review of Economics and Statistics, 49, 92–107.
+#' }
+#' # About random forests:
+#' \itemize{
+#' \item Breiman L (2001). Random Forests. Machine Learning, 45(1), 5–32.
+#' }
+#' # About the estimation of conditional variable importances in random forests procedures:
+#' \itemize{
+#' \item Hothorn T, Buehlmann P, Dudoit S, Molinaro A, Van Der Laan M (2006). “Survival Ensembles.” Biostatistics, 7(3), 355–373.
+#' \item Strobl C, Boulesteix A-L, Kneib T, Augustin T, Zeileis A (2008). Conditional Variable Importance for Random Forests. BMC Bioinformatics, 9, 307. \url{http://www.biomedcentral.com/1471-2105/9/307}
+#' }
 #'
 #' @author Gregory Guernec
 #' \email{gregory.guernec@@inserm.fr}
@@ -126,6 +143,8 @@
 #'
 #'
 #' @aliases select_pred
+#'
+#' @seealso \code{\link{simu_data}}, \code{\link{tab_test}}
 #'
 #' @examples
 #'
@@ -174,7 +193,7 @@
 #' # - Using a RF approach to estimate the conditional variable importance measures
 #' #   and determine the best subset of predictors
 #' # - This approach requires to convert the numeric variables: Only "Age" here
-#' #   categorized in 3 levels
+#' #   discretized in 3 levels
 #' #-----
 #'
 #' test_DB4 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
@@ -201,7 +220,7 @@
 #' # - Using a RF approach to estimate the conditional variable importance measures
 #' #   and determine the best subset of predictors
 #' # - This approach requires to convert the numeric variables: Only "Age" here
-#' #   categorized in 3 levels
+#' #   discretized in 3 levels
 #' #-----
 #'
 #' simu_B = simu_data[simu_data$DB == "B",-2]    # Base B
