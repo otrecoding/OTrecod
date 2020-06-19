@@ -22,13 +22,13 @@ merge_dbs(
 )
 }
 \arguments{
-\item{DB1}{A data.frame corresponding to the 1st database to merge (Top database)}
+\item{DB1}{A data.frame corresponding to the 1st database to merge (top database)}
 
-\item{DB2}{A data.frame corresponding to the 2nd database to merge (Bottom database)}
+\item{DB2}{A data.frame corresponding to the 2nd database to merge (bottom database)}
 
-\item{row_ID1}{The column index of the row identifier of DB1 if DB1 has one (No identifier by default)}
+\item{row_ID1}{The column index of the row identifier of DB1 if DB1 has one (no identifier by default)}
 
-\item{row_ID2}{The column index of the row identifier of DB2 if DB2 has one (No identifier by default)}
+\item{row_ID2}{The column index of the row identifier of DB2 if DB2 has one (no identifier by default)}
 
 \item{NAME_Y}{Name of the outcome (with quotes) in its specific scale/encoding from the 1st database (DB1)}
 
@@ -38,9 +38,9 @@ merge_dbs(
 
 \item{order_levels_Z}{A vector of classes (with quotes) sorted in ascending order that permits to reorder the levels of Z in the 2nd database (DB2) if necessary, when Z is stored as an ordinal factor (scale).}
 
-\item{ordinal_DB1}{Vector of index of columns corresponding to ordinal variables in the 1st database (No ordinal variable by default)}
+\item{ordinal_DB1}{Vector of index of columns corresponding to ordinal variables in the 1st database (no ordinal variable by default)}
 
-\item{ordinal_DB2}{Vector of index of columns corresponding to ordinal variables in the 2nd database (No ordinal variable by default)}
+\item{ordinal_DB2}{Vector of index of columns corresponding to ordinal variables in the 2nd database (no ordinal variable by default)}
 
 \item{impute}{A character (with quotes) equals to "NO" when missing data on covariates are kept (By default), "CC" for Complete Case by keeping only covariates with no missing information , "MICE" for MICE multiple imputation approach, "FAMD" for single imputation approach using Factorial Analysis for Mixed Data}
 
@@ -60,38 +60,38 @@ A list containing 10 elements (11 if the argument \code{impute} equals "MICE"):
 \item{REMAINING_VAR}{Labels of the covariates remained for the data integration using OT algorithm}
 \item{IMPUTE_TYPE}{A character with quotes that specify the method eventually chosen to handle missing data in covariates}
 \item{MICE_DETAILS}{A list containing the details of the imputed datasets using \code{MICE} when this option is enabled. Databases imputed for DB1 and DB2 according to the number of mutliple imputation selected (Only if impute = "MICE")}
-\item{DB1_ID}{A data.frame corresponding to the row identifier of DB1 after data fusion}
-\item{DB2_ID}{A data.frame corresponding to the row identifier of DB2 after data fusion}
+\item{DB1_ID}{A data.frame corresponding to the row identifier of DB1 after merging}
+\item{DB2_ID}{A data.frame corresponding to the row identifier of DB2 after merging}
 \item{SEED}{An integer used as argument by the \code{set.seed} function for offsetting the random number generator (random selection by default)}
 }
 \description{
 Overlay of two databases with specific outcome variables and shared covariates
 }
 \details{
-Assuming that DB1 and DB2 are two databases (two separate data.frames with no overlapping part) to merge vertically, the function \code{merge_dbs} performs this overlay by checking the compatibility of the variables between the bases.
-Each database must contain a target variable (whose label must be filled in the argument \code{Y} for DB1 and in the argument \code{Z} for DB2 respectively, so that the final database in output will contain a target \code{Y} whose values will be missing in DB2 and another target \code{Z} whose values will be missing in DB1), a subset of shared covariates (By example, the best predictors of Y in DB1, and Z in DB2),
+Assuming that DB1 and DB2 are two databases (two separate data.frames with no overlapping part) to merge vertically, the function \code{merge_dbs} performs this overlay by checking the compatibility of the variables between the databases.
+Each database must contain a target variable (whose label must be filled in the argument \code{Y} for DB1 and in the argument \code{Z} for DB2 respectively, so that the final database in output will contain a target \code{Y} whose values will be missing in DB2 and another target \code{Z} whose values will be missing in DB1), a subset of shared covariates (by example, the best predictors of Y in DB1, and Z in DB2),
 and another possible subset of variables specific to each database.
 Each database can have a row identifier whose corresponding index of column must be assigned in the arguments \code{row_ID1} for DB1 and \code{row_ID2} for DB2. Nevertheless, by default, DB1 and DB2 have no row identifiers and the merging keeps unchanged the order of rows in the two databases provided that Y and Z have no missing values.
-A rule decided for the overlay is that the first database declared (in the argument \code{DB1}) will be placed above the second one (declared in the argument \code{DB2}).
+A rule for the overlay is that the declared first database (in the argument \code{DB1}) will be placed above the second one (declared in the argument \code{DB2}).
 
-The function \code{merge_dbs} proposes a helpful tool for any user who wants to prepare their databases to data fusion by solving matching problems using algorithms like those proposed in the package \code{Otrecod} via the functions \code{OT_outcome} or \code{OT_joint}.
-This function notably detects heterogenity between variables from one base to another and can so be useful as a preliminary step of data fusion using Optimal Transportation theory, where the sets of best predictors, specific to each base would be then selected using the function \code{select_pred}.
+The function \code{merge_dbs} proposes a helpful tool for any user who wants to prepare their databases to data fusion by solving matching problems using algorithms in the package \code{Otrecod} via the functions \code{OT_outcome} or \code{OT_joint}.
+This function notably detects heterogenity between variables from one database to another and can so be useful as a preliminary step of data fusion using Optimal Transportation theory, where the sets of best predictors, specific to each base would be then selected using the function \code{select_pred}.
 
 A. The function \code{merge_dbs} handles incomplete information, by respecting the following rules:
 \itemize{
 \item If \code{Y} or \code{Z} have missing values in DB1 or DB2, corresponding rows are excluded from the database before merging. Moreover, the data fusion leaves unchanged the order of the rows in the 2 databases, and in the case of incomplete outcomes,
 if A and B have row identifiers, the corresponding identifiers are removed and these latters are stored in the objects \code{DB1_ID} and \code{DB2_ID} of the output.
 \item Before overlay, the function deals with incomplete covariates according to the argument \code{impute}.
-Users can decide to work with complete case only ("CC"), to keep ("NO") or impute missing data ("MICE","FAMD").
+Users can decide to work with complete case only ("CC"), to keep ("NO") or impute incomplete information ("MICE","FAMD").
 \item the function \code{imput_cov}, integrated in the syntax of \code{merge_dbs} deals with imputations. Two approaches are actually available:
 The multivariate imputation by chained equation approach (MICE, see Van Buuren 2011 for more details about the approach or the corresponding package \pkg{mice}),
-and an imputation approach from the package \pkg{missMDA} that uses a dimensionality reduction method (Here a factor analysis for mixed data called FAMD, see Josse (2016)), to provide single imputations.
+and an imputation approach from the package \pkg{missMDA} that uses a dimensionality reduction method (here a factor analysis for mixed data called FAMD, see Josse (2016)), to provide single imputations.
 If multiple imputation is required (\code{impute} = "MICE"), the default imputation methods are applied according to the type of the variables. The average of the plausible values will be retained for a continuous variable, while the most frequent candidate will be remained as a consensus value for a categorical variable or factor (ordinal or not).
 }
 
 B. The function \code{merge_dbs} studies the compatiblities between A and B, of each shared covariate, by respecting the following rules:
 \itemize{
-\item The formats of \code{Y} and \code{Z} must be suitable. Categorical (ordered or not) factors are allowed. Numeric outcomes with infinite values are not allowed and discrete outcomes with finite values will be automatically converted as ordered factors
+\item The formats of \code{Y} and \code{Z} must be suitable. Categorical (ordered or not) factors are allowed. Numeric and discrete outcomes with a finite number of values are allowed but will be automatically converted as ordered factors
 using the function \code{transfo_target} integrated in the function \code{merge_dbs}.
 \item Shared variables with incompatible formats between the two databases will be removed from the merging and the related label will be saved in output (\code{REMOVE1}).
 \item Shared factors with incompatible levels (or number of levels) will be removed from the merging and the related label will be saved in output (\code{REMOVE2}).
@@ -109,7 +109,7 @@ data(simu_data)
 data_A = simu_data[simu_data$DB == "A",c(2,4:8)]; head(data_A)
 data_B = simu_data[simu_data$DB == "B",c(3,4:8)]; head(data_B)
 
-# For the example, we add a coavariate (Weight) only in data_A
+# For the example, a covariate is added (Weight) only in data_A
 data_A$Weight = rnorm(300,70,5)
 
 # Be careful: your target variables must be in factor (or ordered) in your 2 databases
@@ -125,7 +125,7 @@ data_B$Dosage = as.factor(ifelse(data_B$Dosage \%in\% c("Dos 1","Dos 2"),"D1",
 # For more diversity, we put this covariate at the last column of the data_B
 data_B        = data_B[,c(1:3,5,6,4)]
 
-# Ex 1: We merged the 2 databases and impute covariates using MICE
+# Ex 1: The two databases are merged and incomplete covariates are imputed using MICE
 soluc1  = merge_dbs(data_A,data_B,
                     NAME_Y = "Yb1",NAME_Z = "Yb2",
                     ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
@@ -133,19 +133,19 @@ soluc1  = merge_dbs(data_A,data_B,
 summary(soluc1$DB_READY)
 
 
-# Ex 2: We merged the 2 databases and kept all missing data
+# Ex 2: The two databases are merged and missing values are remained
 soluc2  = merge_dbs(data_A,data_B,
                     NAME_Y = "Yb1",NAME_Z = "Yb2",
                     ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
                     impute = "NO",seed_func = 3011)
 
-# Ex 3: We merged the 2 databases by only keeping the complete cases
+# Ex 3: The two databases are merged by only keeping the complete cases
 soluc3  = merge_dbs(data_A,data_B,
                     NAME_Y = "Yb1",NAME_Z = "Yb2",
                     ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
                     impute = "CC",seed_func = 3011)
 
-# Ex 4: We merged the 2 databases and impute covariates using FAMD
+# Ex 4: The two databases are merged and incomplete covariates are imputed using FAMD
 soluc4  = merge_dbs(data_A,data_B,
                     NAME_Y = "Yb1",NAME_Z = "Yb2",
                     ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),

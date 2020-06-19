@@ -15,15 +15,15 @@ indiv_grp_optimal(
 \arguments{
 \item{proxim}{An object corresponding to the output of the function \code{\link{proxim_dist}}}
 
-\item{jointprobaA}{A matrix whose number of columns equals the number of modalities of the target variable Y in database A, and which number of rows equals the number of modalities of Z in database B. It gives an estimation of the joint probability (Y,Z) in the database A.
+\item{jointprobaA}{A matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and which number of rows is equal to the number of modalities of Z in database B. It gives an estimation of the joint probability (Y,Z) in the database A.
 The sum of cells of this matrix must be equal to 1}
 
-\item{jointprobaB}{A matrix whose number of columns equals the number of modalities of the target variable Y in database A, and which number of rows equals the number of modalities of Z in database B. It gives an estimation of the joint probability (Y,Z) in the database B.
+\item{jointprobaB}{A matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and which number of rows is equal to the number of modalities of Z in database B. It gives an estimation of the joint probability (Y,Z) in the database B.
 The sum of cells of this matrix must be equal to 1}
 
-\item{percent_closest}{A value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals taken in the computation of the average distances}
+\item{percent_closest}{A value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals used in the computation of the average distances}
 
-\item{which.DB}{A character string (with quotes) that indicates which individual predictions compute: Only the individual predictions of Y in B ("B"), only those of Z in A ("A") or the both ("BOTH" by default)}
+\item{which.DB}{A character string (with quotes) that indicates which individual predictions compute: only the individual predictions of Y in B ("B"), only those of Z in A ("A") or the both ("BOTH" by default)}
 }
 \value{
 A list of two vectors of numeric values:
@@ -36,31 +36,30 @@ This function assigns individual predictions related to recoding problems of dat
 \details{
 A. THE RECODING PROBLEM IN DATA FUSION
 
-When two databases are constructed from heterogeneous sources, it is not usual that two different encodings can be used for a same target outcome.
-Assuming that Y and Z are these 2 variables that summarize a same latent information in 2 separated (no overlapping rows) databases A and B respectively,
+Assuming that Y and Z are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
 so that Y and Z are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (but same encodings in A and B)
-complete or not. Integrating these two databases often requires to solve the recoding problem observed between Y in Z by creating an unique database where
+completed or not. Integrating these two databases often requires to solve the recoding problem observed between Y and Z by creating an unique database where
 the missing information of Y and Z is completed.
 
 
 B. DESCRIPTION OF THE FUNCTION
 
-The function \code{indiv_grp_optimal} is an intermediate function used in the implementation of an original algorithm dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory (For more details about the algorithm, see the the models
-\code{OUTCOME},\code{R_OUTCOME},\code{JOINT} and \code{R_JOINT}, described in the references (1) and (2)).
-\code{\link{indiv_grp_optimal}} is so directly implemented in the \code{OT_outcome} and \code{OT_joint} functions but can also be used separately.
+The function \code{indiv_grp_optimal} is an intermediate function used in the implementation of a model called {OUTCOME} (and its enrichment {R-OUTCOME}, see the reference (2) for more details) dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory.
+The model is implemented in the function \code{\link{OT_outcome}} which integrates the function \code{indiv_grp_optimal} in its syntax as a possible second step of the algorithm.
+The function \code{indiv_grp_optimal} can nevertheless be used separately provided that the argument \code{proxim} receives an output object of the function \code{\link{proxim_dist}}.
+This latter is available in the package and is so directly usable beforehand.
 
-This function constitutes an alternative method to the nearest neighbor procedure implemented in the function \code{\link{indiv_grp_closest}}. Its objective consists in getting individual transports from grouped joint probabilities
+The function \code{indiv_grp_optimal} constitutes an alternative method to the nearest neighbor procedure implemented in the function \code{\link{indiv_grp_closest}}. Its objective consists in getting individual transports from grouped joint probabilities
 by directly targetting the solution of recoding problems without using a nearest neighbor approach which constraints to some arbitrary decisions.
-To avoid this, the approach implemented rather solves an optimization problem using the simplex algorithm to get the individual transport that minimizes total distance while satisfying the joint probability distribution provides by the arguments \code{jointprobaA} and \code{jointprobaB}.
+As for the function \code{\link{indiv_grp_closest}}, assuming that the objective consists in the prediction of Z in the database A, the first step of the algorithm related to \code{OUTCOME} provides an estimate of gamma which can be interpreted as an estimation of the joint distribution (Y,Z) in A.
+Rather than using a nearest neighbor approach to provide individual predictions,the function \code{indiv_grp_optimal} solves an optimization problem using the simplex algorithm which searches for the individual predictions of Z that minimize the computed total distance observed satisfying the joint probability distribution estimated in the first part.
 More details about the theory related to the solving of this optimization problem is described in the section 5.3 of (2).
 
-As for \code{\link{indiv_grp_closest}}:
-\itemize{
-\item The function \code{indiv_grp_optimal} requires the use of code{\link{proxim_dist}} and \code{\link{avg_dist_closest}} for running.
-Nevertheless, if the second one is directly integrated in the function, the specific output of the first one stays required in input of this latter.
-\item The arguments \code{jointprobaA} and \code{jointprobaB} are here transport matrices (where the sum of cells must be equal to 1) that correspond to estimations of gamma, the map that respectively pushes the distribution of Y forward to the distribution of Z and inversely.
-}
-All individuals can participate to the computation of the average distances (\code{percent_closest}=1) or only a fixed part p corresponding to the closest neighbors of each individual from each modalities of the outcomes (in this case \code{percent_closest} < p).
+Obviously, this algorithm  runs in the same way for the prediction of Y in the database B.
+The function \code{indiv_grp_optimal} integrates in its syntax the function \code{\link{avg_dist_closest}} and the related argument \code{percent_closest} is identical in the two functions.
+Thus, when computing average distances between an individual i and a subset of individuals assigned to a same level of Y or Z is required, user can decide if all individuals from the subset of interest can participate to the computation (\code{percent_closest}=1) or only a fixed part p (<1) corresponding to the closest neighbors of i (in this case \code{percent_closest} = p).
+
+The arguments \code{jointprobaA} and \code{jointprobaB} can be seen as cost matrices (sum of cells must be equal to 1) that correspond to estimations of the joint distributions of (Y,Z) in A and B respectively.
 }
 \examples{
 
@@ -71,8 +70,8 @@ data(tab_test)
 tab_test2 = tab_test[c(1:80,5001:5080),]; dim(tab_test2)
 
 # Adding NAs in Y1 and Y2
-tab_test2[tab_test2$ident == 2,2] = NA
-tab_test2[tab_test2$ident == 1,3] = NA
+tab_test2[tab_test2$ident == 2, 2] = NA
+tab_test2[tab_test2$ident == 1, 3] = NA
 
 # Because all covariates are ordered in numeric form,
 # the transfo_dist function is not required here
@@ -82,13 +81,13 @@ res3      = proxim_dist(tab_test2,norm = "M")
 #' ### Y(Y1) and Z(Y2) are a same variable encoded in 2 different forms:
 ### 4 levels for Y1 and 3 levels for Y2
 ### ... Stored in two distinct databases, A and B, respectively
-### The marginal distribution of Y1 in B is unknown,
-### as the marginal distribution of Z2 in A ...
+### The marginal distribution of Y in B is unknown,
+### as the marginal distribution of Z in A ...
 
-# By supposing that the following matrix called transport symbolizes
+# Assuming that the following matrix called transport symbolizes
 # an estimation of the joint distribution L(Y,Z) ...
 # Note that, in reality this distribution is UNKNOWN and is
-# estimated in the OT function by resolving an optimisation problem.
+# estimated in the OT function by resolving the optimization problem.
 
 # By supposing:
 
@@ -127,7 +126,7 @@ transport1 = matrix(c(0,0.35285714,0,0.09142857,0,0.03571429,
                       0.32714286,0,0),ncol = 5,byrow = FALSE)
 
 
-# The affectation of the predicted values of Y in database B and Z in
+# The predicted values of Y in database B and Z in
 database A are stored in the following object:
 
 res2 = indiv_grp_optimal(res1,jointprobaA = transport1,
