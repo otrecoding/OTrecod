@@ -18,12 +18,12 @@ for binary covariates only (\code{norm} = "H"), the Manhattan distance ("M", by 
 \item{prox}{A percentage (betwen 0 and 1) uses to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.}
 }
 \value{
-A list of 15 elements (the first 15 detailed below) is returned containing various distance matrices and lists useful for the algorithms that used Optimal Transportation theory. Two more objects (The last two of the following list) will be returned if distance matrices contained NAs.
+A list of 15 elements (the first 15 detailed below) is returned containing various distance matrices and lists useful for the algorithms that used Optimal Transportation theory. Two more objects (the last two of the following list) will be returned if distance matrices contain NAs.
 \item{FILE_NAME}{A simple reminder of the name of the raw database}
 \item{nA}{The row numbers of the first database (A)}
 \item{nB}{The row numbers of the second database (B)}
 \item{Xobserv}{The subset of the two merged databases composed of the common variables only}
-\item{profile}{The profiles of covariates met according to the data.frame}
+\item{profile}{The different encountered profiles of covariates according to the data.frame}
 \item{Yobserv}{The values of the target variable in the 1st database}
 \item{Zobserv}{The values of the target variable in the 2nd database}
 \item{D}{A distance matrix corresponding to the distances computed between individuals of the 2 databases}
@@ -39,7 +39,7 @@ A list of 15 elements (the first 15 detailed below) is returned containing vario
 \item{ROWS_TO_RM}{Number of times a row of the first or second database is involved in the NA process of D}
 }
 \description{
-\code{proxim_dist} computes pairwise distance matrix of a database and cross-distance matrix between two databases according to various distance functions in the context of data fusion.
+\code{proxim_dist} computes the pairwise distance matrix of a database and cross-distance matrix between two databases according to various distance functions in the context of data fusion.
 }
 \details{
 This function is the first step of a family of algorithms that solve recoding problems of data fusion using Optimal Transportation theory (See the details of these corresponding models \code{OUTCOME},\code{R_OUTCOME},\code{JOINT} and \code{R_JOINT} in the references (1) and (2))
@@ -64,15 +64,14 @@ If the database counts many covariates and some of them have missing data, user 
 B. DISTANCE FUNCTIONS AND TYPES OF COVARIATES
 
 In a second step, before including the data.frame in the function, the shared variables of the merged database will have to be encoded according to the choice of the distance function fixed by user, knowing that it is also frequent that it is the type of the variables which fixes the distance function to choose.
-The function \code{\link{transfo_dist}} is available in the package to assist users in this task but then again users can decide to make this preparation by themselves.
+The function \code{\link{transfo_dist}} is available in the package to assist users in this task but a user can also decide to make this preparation by themselves.
 Thus, with the Euclidean or Manhattan distance (\code{norm} = "E" or "M"), if all types of variables will be allowed, logical variables will have to be previously transformed in binary variables, and categorical variables (factors ordered or not) will have to be transformed by their related disjunctive tables (the function \code{\link{transfo_quali}} can make these specific transformations).
-The Hamming distance (\code{norm} = "H") only requires binary variables (all other forms are prohibited). In this context, continuous variables could have been converted in factor of k levels (k>2) beforehand, and then transformed in disjunctive tables (containing the (k-1) corresponding binary variables) before use, just like with the categorical variables.
+The Hamming distance (\code{norm} = "H") only requires binary variables (all other forms are not allowed). In this context, continuous variables could have been converted in factor of k levels (k>2) beforehand. The categorical covariates are then transformed in disjunctive tables (containing the (k-1) corresponding binary variables) before use. With this distance, categorical variables are also transformed in disjunctive tables.
 Notice that, using the Hamming distance could be quite long in presence NAs on covariates, so please be a little patient and let the function runs few minutes if necessary.
 Finally, the Gower distance (\code{norm} = "G") uses the (\code{\link[StatMatch]{gower.dist}}) function and so allows logical, categorical and numeric variables with no preliminary transformations.
 
 In conclusion, the structure of the data.frame required in input of the function \code{proxim_dist} corresponds to two overlayed databases with two target outcomes and a set of shared covariates whose encodings depend on the distance function choosen by user.
 
-One last remark:
 If some columns are excluded when computing an Euclidean, Manhattan, or Hamming distance between two rows, the sum is scaled up proportionally to the number of columns used in the computation as proposed by the standard (\code{\link[stats]{dist}}) function.
 If all pairs are excluded when computing a particular distance, instead of putting NA in the corresponding cell of the distance matrix, the process stops and an object listing the problematic rows is proposed in output.
 It suggests users to remove these rows before running the process again or impute NAs related to these rows (See ex 6 for more details).
@@ -80,19 +79,19 @@ It suggests users to remove these rows before running the process again or imput
 C. PROFILES OF COVARIATES AND OUTPUT DETAILS
 
 Whatever the type (mixed or not) and the number of covariates in the data.frame of interest, the function \code{proxim_dist} firstly detects all the possible profiles (or combinations) of covariates from the 2 databases, and saves them in the output \code{profile}.
-By example, assuming that a data.frame in input (composed of two overlayed data.frames A and B) have 3 shared binary covariates (ie identically encoded in A and B) so the sequences \code{011} and \code{101} will be considered as two distinct profiles of covariates.
-If each covariate is a factor of n1, n2 and n3 levels respectively, so it exists at most n1*n2*n3 possible profiles of covariates according to the data.frame.
-This estimation is considered as a maximum here because, in fact, only the profiles of covariates met in at least one of the two databases will be kept for the study.
+By example, assuming that a data.frame in input (composed of two overlayed data.frames A and B) have three shared binary covariates (ie identically encoded in A and B) so the sequences \code{011} and \code{101} will be considered as two distinct profiles of covariates.
+If each covariate is a factor of \eqn{n_1}, \eqn{n_2} and \eqn{n_3} levels respectively, so it exists at most \eqn{n_1 \times n_2 \times n_3} possible profiles of covariates.
+This number is considered as a maximum here because only the profiles of covariates met in at least one of the two databases will be kept for the study.
 
 \code{proxim_dist} classifies individuals from the 2 databases according to their proximities to each profile of covariates and saves the corresponding indexes of rows from A and B in 2 lists \code{indXA} and \code{indXB} respectively.
-\code{indXA} and \code{indXB} thus contained as many objects as covariates profiles and the proximity between a given profile and a given individual is defined as follows.
-The function also provides in output the list of all the profiles of covariates encountered.
-As a decision rule, for a given profile of covariates Pj, an individual i will be considered as a neighbor of \code{Pj} if \eqn{dist(i,P_j) < prox * max(dist(i,P_j))} where \code{prox} will be fixed by user.
+\code{indXA} and \code{indXB} thus contain as many objects as covariates profiles and the proximity between a given profile and a given individual is defined as follows.
+The function also provides in output the list of all the encountered profiles of covariates.
+As a decision rule, for a given profile of covariates \eqn{P_j}, an individual i will be considered as a neighbor of \eqn{P_j} if \eqn{dist(i,P_j) < prox \times max(dist(i,P_j))} where \code{prox} will be fixed by user.
 }
 \examples{
 
 data(simu_data)
-### The covariates of the data are prepared according to the distance chosen
+### The covariates of the data are prepared according to the chosen distance
 ### using the transfo_dist function
 
 ### Ex 1: The Manhattan distance

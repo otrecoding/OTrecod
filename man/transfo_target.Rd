@@ -18,7 +18,7 @@ The list returned is:
 \item{LEVELS_NEW}{The levels (ordered or not) retained for z}
 }
 \description{
-This function prepares the encoding of the target variable before OT algorithm
+This function prepares the encoding of the target variable before running an algorithm using Optimal Transportation theory.
 }
 \examples{
 y      = rnorm(100,30,10)

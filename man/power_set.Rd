@@ -12,7 +12,7 @@ power_set(n, ordinal = FALSE)
 \item{ordinal}{A boolean. If TRUE the power set is only composed of subsets of consecutive elements, FALSE (by default) otherwise}
 }
 \value{
-A list of (2^n -1) subsets (The empty set is excluded)
+A list of \eqn{2^n -1} subsets (The empty set is excluded)
 }
 \description{
 A function that gives the power set \code{P(S)} of any non empty set S

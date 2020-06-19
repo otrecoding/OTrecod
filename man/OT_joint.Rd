@@ -80,10 +80,9 @@ using optimal transportation of the joint distribution of outcomes and covariate
 \details{
 A. THE RECODING PROBLEM IN DATA FUSION
 
-When two databases are constructed from heterogeneous sources, it is not usual that two different encodings can be used for a same target outcome.
-Assuming that Y and Z are these 2 variables that summarize a same latent information in 2 separated (no overlapping rows) databases A and B respectively,
+Assuming that Y and Z are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
 so that Y and Z are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (but same encodings in A and B)
-complete or not. Integrating these two databases often requires to solve the recoding problem observed between Y in Z by creating an unique database where
+completed or not. Integrating these two databases often requires to solve the recoding problem observed between Y and Z by creating an unique database where
 the missing information of Y and Z is completed.
 
 

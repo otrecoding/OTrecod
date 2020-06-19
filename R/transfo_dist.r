@@ -3,17 +3,17 @@
 #' This function prepares the database for the resolution of a recoding problem according to the distance function chosen to evaluate the proximities between rows
 #'
 #'
-#' A. SPECIFIC STRUCTURE REQUIRED FOR THE DATABASE
+#' A. REQUIRED STRUCTURE FOR THE DATABASE
 #'
-#' In input of this function, the declared database must correspond to the fusion of two databases previously overlayed.
+#' In input of this function, the declared database can be the result of an overlay between two databases.
 #' This structure can be guaranteed using previously the function \code{\link{merge_dbs}}.
-#' Nevertheless, it is also posible to apply directly the function \code{transfo_dist} on a row database provided that a specific structure of database is respected in entry of the function.
-#' The database must count at least 4 columns (In an a unspecified order of appearance in the database):
+#' Nevertheless, it is also possible to apply directly the function \code{transfo_dist} on a row database provided that a specific structure is respected in input.
+#' The database must count at least four columns (in an a unspecified order of appearance in the database):
 #' \itemize{
-#' \item A column indicating the database identifiers (2 classes: A and B, 1 and 2, ...)
+#' \item A column indicating the database identifiers (two classes: A and B, 1 and 2, ...)
 #' \item A categorical (nominal or ordinal factor) variable corresponding to the outcome of the 1st database (on top) with its specific encoding (called Y by example).
-#' \item A second categorical (nominal or ordinal) variable corresponding to the specific outcome in the 2nd database (called Z by example).
-#' \item At least one covariate shared in the two bases (same encoding in the 2 bases). Incomplete information is possible on shared covariates provided you have more than one covariate.
+#' \item A second categorical (nominal or ordinal) variable corresponding to the outcome of the 2nd database (called Z by example).
+#' \item At least one covariate shared in the two bases (same encoding in the 2 bases). Incomplete information is possible on shared covariates if you have more than one covariate.
 #' }
 #' In this context, the information related to Y in the second database must be missing as the information related to Z in the first one.
 #' The indexes of columns related to the database identifier, Y and Z must be specified in this order in the argument \code{index_DB_Y_Z}.
@@ -23,9 +23,9 @@
 #'
 #' B. TRANSFORMATIONS OF CONTINUOUS COVARIATES
 #'
-#' Because some algorithms dedicated to solving recoding problems must run actually without continuous covariates (It is the case of the function \code{OT_joint} of this package), the function \code{transfo_dist} integrates in is syntax
-#' a process dedicated to the discretization of this type of variables. For this, it is necessary to rigorously filled in the arguments \code{convert_num} and \code{convert_clss} as vectors of indexes. The first one informs about the indexes of continuous variables to
-#' transform in ordered factor while the second one specifies the corresponding number of levels desired.
+#' Because some algorithms dedicated to solving recoding problems like \code{JOINT} and \code{R-JOINT}  must run actually without continuous covariates (It is the case of the function \code{OT_joint} of this package), the function \code{transfo_dist} integrates in is syntax
+#' a process dedicated to the discretization of this type of variables. For this, it is necessary to rigorously fill in the arguments \code{convert_num} and \code{convert_clss}. The first one specifies the indexes of continuous variables that need ot be transformed
+#' in ordered factors while the second one assigns the corresponding number of levels desired.
 #' Only covariates can be transformed (not outcomes) and missing informations are not taken into account for the transformations.
 #' Finally, all the indexes informed in the argument \code{convert_num} must also be informed in the argument \code{quanti}.
 #'
@@ -37,24 +37,24 @@
 #' It depends on the choice of the distance function chooses by user in the \code{prep_choice} option.
 #'
 #' 1. For the Euclidean ("E") and Manhattan ("M") distances:
-#' All the remaining continuous variables are standardized.
+#' all the remaining continuous variables are standardized.
 #' The related recoding to a boolean variable is 1 for \code{TRUE} and 0 for \code{FALSE}.
 #' The recoding for a nominal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
 #' The ordinal variables are all converted to numeric variables (Please take care that the order of the classes of each of these variables is well specified at the beginning).
 #'
 #' 2. For the Hamming ("H") distance:
-#' All the numeric variables must be transformed beforehand in categorical forms using the internal process described in section B or via another external approach.
+#' all the numeric variables must be transformed beforehand in categorical forms using the internal process described in section B or via another external approach.
 #' The boolean variables are all converted in ordinal forms and then turned into binaries.
 #' The recoding for nominal or ordinal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
 #'
 #' 3. For the Gower ("G") distance:
-#' All covariates remain unchanged
+#' all covariates remain unchanged
 #'
 #' 4. Using the principal components from a factor analysis for mixed data (FAMD):
-#' A factor analysis for mixed data is done on the covariates of the database and a specific number of the related principal components is remained (depending on the minimal part of variability explained by the covariates that the user wishes to keep by varying the \code{info} option).
+#' a factor analysis for mixed data is done on the covariates of the database and a specific number of the related principal components is remained (depending on the minimal part of variability explained by the covariates that the user wishes to keep by varying the \code{info} option).
 #' The function integrates in its syntax the function \code{\link[FactoMineR]{FAMD}} of the package \pkg{FactoMiner} (Lê, 2008) using default parameters.
 #' After this step, the covariates are replaced by the remaining principal components of the FAMD, and each value corresponds to coordinates linked to each components.
-#' Please notice that this method supposed complete covariates in input, nevertheless in presence of incomplete covariates, each corresponding rows will be dropped from the study, a warning will appear, and the number of remaining rows will be indicated.
+#' Please notice that this method supposed complete covariates in input, nevertheless in presence of incomplete covariates, each corresponding rows will be dropped from the study, a warning will appear and the number of remaining rows will be indicated.
 #'
 #' @param DB A data.frame composed of exactly two overlayed databases with a column of database identification, two columns corresponding to a same information
 #' differently encoded in the two databases and covariates. The order of the variables have no importance.
@@ -64,13 +64,13 @@
 #' @param nominal A vector of integers that corresponds to the indexes of columns of all the nominal (not ordered) variables (DB identification and target variables included)
 #' @param ordinal A vector of integers that corresponds to the indexes of columns of all the ordinal variables (DB identification and target variables included)
 #' @param logic A vector of integers that corresponds to the indexes of columns of all the boolean variables.
-#' @param convert_num Indexes of the continuous (quantitative) variables to convert in ordered factors. All indexes declared in this argument must have been declared in the argument \code{quanti} (No conversion by default).
-#' @param convert_clss A vector indicating for each continuous variable to convert, the corresponding number of levels desired.If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} equals 1 (only one integer),
+#' @param convert_num Indexes of the continuous (quantitative) variables to convert in ordered factors. All indexes declared in this argument must have been declared in the argument \code{quanti} (no conversion by default).
+#' @param convert_clss A vector indicating for each continuous variable that has to be converted, the corresponding number of levels desired. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} is equal to 1 (only one integer),
 #' each discretization will count the same number of levels.
-#' @param prep_choice A character (with quotes) corresponding to the distance function chosen between: The euclidean distance ("E", by default), The Manhattan distance ("M"),
+#' @param prep_choice A character (with quotes) corresponding to the distance function chosen between: the euclidean distance ("E", by default), the Manhattan distance ("M"),
 #' the Gower distance ("G"), and the Hamming (also called binary) distance ("H"), calculated from principal components of a factor analysis of mixed data ("FAMD").
-#' @param info A percetn value (between 0 and 1, 0.8 is the default value) that corresponds to the minimal part of variability that must be taken into account by the remaining principal components of the FAMD when this option is required.
-#' This ratio will fix the number of components to keep with this approach.
+#' @param info A percent value (between 0 and 1, 0.8 is the default value) that corresponds to the minimal part of variability that must be taken into account by the remaining principal components of the FAMD when this option is required.
+#' This ratio will fix the number of components that will be kept with this approach.
 #'
 #' @return A data.frame which covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the identifier, Y and Z correspond to the first three columns respectively.
 #' Moreover the order of rows stays unchanged during the process.

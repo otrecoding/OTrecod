@@ -3,7 +3,7 @@
 \docType{data}
 \name{simu_data}
 \alias{simu_data}
-\title{A simulated dataset to test the functions of the OTrecod package.}
+\title{A simulated dataset to test the functions of the OTrecod package}
 \format{
 A data frame with 700 observations on the following 8 variables.
 \describe{
@@ -25,10 +25,10 @@ simu_data
 }
 \description{
 The first 300 rows belong to the database A, while the next 400 rows belong to the database B.
-The 5 covariates: \code{Gender}, \code{Treatment}, \code{Dosage}, \code{Smoking} and \code{Age} are
-so common to both databases (same encodings).
+Five covariates: \code{Gender}, \code{Treatment}, \code{Dosage}, \code{Smoking} and \code{Age} are
+common to both databases (same encodings).
 The variables \code{Yb1} and \code{Yb2} are the target variables
-that summarize a same information saved in 2 distinct encodings, that is why, \code{Yb1} is
+that summarize a same information saved in two distinct encodings, that is why, \code{Yb1} is
 missing in the database B and \code{Yb2} is missing in the database A.
 }
 \details{

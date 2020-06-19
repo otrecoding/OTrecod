@@ -1,7 +1,7 @@
 
 #' ham()
 #'
-#' This function computes a matrix distance using the Hamming metric as proximity measure.
+#' This function computes a matrix distance using the Hamming distance as proximity measure.
 #'
 #' \code{ham} returns the pairwise distance between rows (observations) of a single matrix if \code{mat_1} equals \code{mat_2}.
 #' Otherwise \code{ham} returns the matrix distance between rows of the two matrices \code{mat_1} and \code{mat_2} if this 2 matrices are different in input.
@@ -11,16 +11,16 @@
 #'
 #' \deqn{\mbox{ham}(A_i,B_k) = \frac{\sum_j 1_{\left\{A_{ij} \neq B_{kj}\right\}}}{\sum_j 1}\times\left(\frac{\sum_j 1}{\sum_j 1_{\left\{!\mbox{is.na}(A_{ij}) \& !\mbox{is.na}( B_{kj})\right\}}}\right)}
 #'
-#' Where: \eqn{i = 1,\ldots,\mbox{nrow}(A)} and  \eqn{k = 1,\ldots,\mbox{nrow}(B)}; And the expression located to the right term of the multiplication corresponds to a specific weigh applies in presence of NAs in \eqn{A_i} and,or \eqn{B_k}.
+#' where: \eqn{i = 1,\ldots,\mbox{nrow}(A)} and  \eqn{k = 1,\ldots,\mbox{nrow}(B)}; And the expression located to the right term of the multiplication corresponds to a specific weigh applied in presence of NAs in \eqn{A_i} and(or) \eqn{B_k}.
 #'
 #' This option is not implemented in the \code{\link[rdist]{cdist}} function and the Hamming distance can not be computed using the \code{\link[proxy]{dist}} function either.
 #'
-#' The only 2 situations where the Hamming distance can not be calculated are:
+#' In only two situations the Hamming distance can not be calculated:
 #' \enumerate{
 #' \item If a row of A or B has only missing values (ie on each of the columns of A or B respectively).
 #' \item The union of the indexes of the missing values in row i of A with the indexes of the missing values in row j of B concerns the indexes of all considered columns.
 #' }
-#' Example: By supposing that \eqn{\mbox{ncol}(A) = \mbox{ncol}(B) = 3}, if \eqn{A_i = (1,NA,0)} and \eqn{B_j = (\mbox{NA},1,\mbox{NA})}, for each columns, either the information in row i is missing in A,
+#' Example: Assuming that \eqn{\mbox{ncol}(A) = \mbox{ncol}(B) = 3}, if \eqn{A_i = (1,\mbox{NA},0)} and \eqn{B_j = (\mbox{NA},1,\mbox{NA})}, for each columns, either the information in row i is missing in A,
 #' or the information is missing in B, which induces: \eqn{\mbox{ham}(A_i,B_k) = \mbox{NA}}.
 #'
 #' If \code{mat_1} is a vector and \code{mat_2} is a matrix (or data.frame) or vice versa, the length of \code{mat_1} must be equal to the number of columns of \code{mat_2}.

@@ -26,14 +26,14 @@ OT_outcome(
 )
 }
 \arguments{
-\item{datab}{A data.frame that must have at least 4 columns sorted in a non-specific order. One column must be a key column of 2 classes for the databases identification, where the names of the two databases
+\item{datab}{A data.frame that must have at least four columns sorted in a non-specific order. One column must be a key column of 2 classes for the databases identification, where the names of the two databases
 must be alphanumerically ranked in ascending order (By examples: 1 for the top database and 2 for the database from below, or more logically here A and B  ...But NOT B and A!).One column (Y here but other names are allowed)
 must correspond to the target variable related to the information of interest to merge with its specific encoding in the database A (corresponding encoding should be so missing in the database B). In the same way,
 one column (Z here) corresponds to the target variable that summarizes the same information as Y but with its specific encoding in the database B (corresponding encoding should be so missing in the database A).
 Finally, your database must have at least one shared covariate with same encoding in A and B. Please not that, if your data.frame has only 4 columns, that is to say, only one covariate, if this latter has NA, and unless user
 has previously imputed the corresponding missing information, the OT algorithm will only run with complete cases.}
 
-\item{index_DB_Y_Z}{A vector of 3 indexes of columns. The 1st index must correspond to the index of the databases identification column (DB identifier). The 2nd index corresponds
+\item{index_DB_Y_Z}{A vector of three indexes of columns. The 1st index must correspond to the index of the databases identification column (DB identifier). The 2nd index corresponds
 to the index of the target variable in the 1st database (A) while the 3rd index corresponds to the index of column related to the target variable in the 2nd database (B).}
 
 \item{quanti}{A vector of indexes that corresponds to the indexes of columns of all the quantitative variables (DB identification and target variables included if it is the case for them).}
@@ -89,10 +89,9 @@ using optimal transportation of outcomes
 \details{
 A. THE RECODING PROBLEM IN DATA FUSION
 
-When two databases are constructed from heterogeneous sources, it is not usual that two different encodings can be used for a same target outcome.
-Assuming that Y and Z are these 2 variables that summarize a same latent information in 2 separated (no overlapping rows) databases A and B respectively,
+Assuming that Y and Z are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
 so that Y and Z are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (but same encodings in A and B)
-complete or not. Integrating these two databases often requires to solve the recoding problem observed between Y in Z by creating an unique database where
+completed or not. Integrating these two databases often requires to solve the recoding problem observed between Y and Z by creating an unique database where
 the missing information of Y and Z is completed.
 
 
