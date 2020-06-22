@@ -1,28 +1,37 @@
 #' error_group()
 #'
-#' This function studies the proximity of two categorical distributions with unequal number of modalities
+#' This function studies the association between two categorical distributions by grouping modalities
 #'
-#' Assuming that Y and Z are two categorical variables with a different number of modalities nY and nZ  respectively, so that nY > nZ, the idea consists in
-#' measuring the association between Z and all possible new variables Y', built by grouping modalities of Y so that nY = nZ.
+#' Assuming that Y and Z are categorical variables summarizing a same latent information, or a very close information from a same target population, and that one of the two related encodings is unknown by user
+#' because this latter is, by example, the result of predictions provided by a given model or algorithm, the function \code{error_group} searches for potential links between the modalities of Y to approach at best the distribution of Z.
 #'
-#' If Y and Z are 2 categorical variables with the same number of modalities, summarizing a same latent information, then it must exist an association between them,
-#' and the function \code{error_group} aims to highlight it by searching the optimal grouping of modalities of Y that approaches at best the distribution of Z.
+#' Assuming that Y and Z have nY and nZ modalities respectively so that nY > nZ, in a first step, the
+#' function \code{error_group} groups combinations of modalities of Y to build all possible variables Y' verifying nY' = nZ.
+#' In a second step, the association between Z and each new variable Y' generated is measured by studying the ratio of concordant pairs related to the confusion matrix but also using standard criterions:
+#' the Cramer's V (1946), the Cohen's kappa coefficient (See McHugh, 2012) and the Spearman's rank correlation coefficient.
 #'
-#' All combinations of modalities of Y are here studied according to its type:
+#' According to the type of Y, different combinations of modalities are tested:
 #' \itemize{
-#' \item If Y and Z are ordinal (\code{ord = TRUE}), only consecutive modalities of Y will be grouped and tested.
-#' \item If Y and Z are nominal (\code{ord = FALSE}), all combinations of modalities of Y (consecutive or not) are tested.
+#' \item If Y and Z are ordinal (\code{ord = TRUE}), only consecutive modalities of Y will be grouped to build the variables Y'.
+#' \item If Y and Z are nominal (\code{ord = FALSE}), all combinations of modalities of Y (consecutive or not) will be grouped to build the variables Y'.
 #' }
 #'
-#' In a second step, the association between Z and each new variable Y' generated is measured by studying the ratio of concordant pairs of the related confusion matrix but also using standard criterions: Cramer's V (1946), Cohen's kappa coefficient (See McHugh, 2012),
-#' and rank coefficient of correlation (Spearman). All the associations tested are listed in output as a data.frame object.
+#' All the associations tested are listed in output as a data.frame object.
+#' The function \code{error_group} is directly integrated in the function \code{\link{verif_OT}} to evaluate the proximity of two multinomial distributions, when one of which is estimated from the predictions of an OT algorithm.
+#'
+#' Example:
+#' Assuming that \eqn{Y = (1,1,2,2,3,3,4,4)} and \eqn{Z = (1,1,1,1,2,2,2,2)}, so \eqn{nY = 4} and \eqn{nZ = 2} and the related coefficient of correlation \eqn{cor(Y,Z)} is 0.89.
+#' Are there groupings of modalities of Y which contribute to improving the proximity between Y and Z ?
+#' From Y, the function \code{error_group} gives an answer to this question by successively constructing the variables: \eqn{Y1 = (1,1,1,1,2,2,2,2)}, \eqn{Y2 = (1,1,2,2,1,1,2,2)}, \eqn{Y3 = (1,1,2,2,2,2,1,1)}
+#' and tests \eqn{cor(Z,Y1) = 1}, \eqn{cor(Z,Y2) = 0}, \eqn{cor(Z,Y3) = 0}.
+#' Here, the tests permit to conclude that the difference of encodings between Y and Z resulted in fact in a simple grouping of modalities.
 #'
 #'
 #' @param REF A factor with a reference number of levels.
 #' @param Z A factor with a number of levels greater than the number of levels of the reference.
 #' @param ord A boolean. If TRUE, only the subsequent levels of Z can be grouped together.
 #'
-#' @return A data.frame with 2 columns:
+#' @return A data.frame with two columns:
 #'         \item{combi}{The first column enumerates all possible groups of modalities of Y to obtain the same number of levels as the reference.}
 #'         \item{error_rate}{The second column gives the corresponding rate error from the confusion matrix (ratio of non-diagonal elements)}
 #'         \item{Kappa}{This column indicates the result of the Cohen's kappa coefficient related to each combination of Y}

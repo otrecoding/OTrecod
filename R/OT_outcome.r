@@ -16,7 +16,7 @@
 #'
 #' The algorithm integrated in the function \code{OT_outcome} provides a solution to the recoding problem previously described by considering the recoding as an
 #' application of optimal transportation which aims at searching for a bijective mapping between the distributions of Y in A and Z in B.
-#' Mathematically, the principle of the algorithm is based on the resolution of an optimization problem which provides a gamma solution (as called in the related articles)
+#' Mathematically, the principle of the algorithm is based on the resolution of an optimization problem which provides a \eqn{gamma} solution (as called in the related articles)
 #' that pushes the distribution of Y forward to the distribution of Z and can be so interpreted as an estimator of the joint distribution
 #' (Y,Z) in A (or B respetively). According to this result, a second step of the algorithm provides individual predictions of Y in B (of Z in A, or both, depending on the choice
 #' specified by user in the argument \code{which.DB}) two possible approaches are available depending on the argument \code{indiv.method}:
@@ -36,16 +36,16 @@
 #' is applied. In all other situations, the algorithm applied corresponds to a model called code{R_OUTCOME} (only described in the 2nd reference. Please, consult it for more details about
 #' the method).
 #' Estimations a posteriori of conditional probabilities \code{P[Y|X,Z]} and \code{P[Z|X,Y]} are available by profiles of covariates in output (See the objects \code{estimatorYB} and \code{estimatorZA}).
-#' Estimations of gamma are also available according to the direction of the distributions transport chosen (See \code{TRANSPORT_A} and \code{TRANSPORT_B}).
+#' Estimations of \eqn{gamma} are also available according to the direction of the distributions transport chosen (See \code{TRANSPORT_A} and \code{TRANSPORT_B}).
 #'
 #'
-#' C. TYPE OF INPUT DATABASE REQUIRED
+#' C. TYPE OF REQUIRED INPUT DATABASE
 #'
 #' The input database is a data.frame that must be saved in a specific form by users:
 #' \itemize{
 #' \item Two overlayed databases containing a common column of databases' identifiers (A and B, 1 or 2, by examples, encoded in numeric or factor form)
 #' \item A column corresponding to the target variable with its specific encoding in A (By example a factor Y encoded in nY levels, ordered or not, with NAs in the corresponding rows of B)
-#' \item A column corresponding to another target outcome summarizing the same latent information with its specific endoded in B (By example a factor Z in nZ levels, with NAs in rows of A)
+#' \item A column corresponding to the second target outcome with its specific endoded in B (By example a factor Z in nZ levels, with NAs in rows of A)
 #' \item The order of the variables in the database have no importance but the indexes of the columns related to the 3rd columns previously described (ie ID, Y and Z) must be rigorously specified
 #' in the argument \code{index_DB_Y_Z}.
 #' \item A set of shared common covariates (at least one but more is recommended) of any type, complete or not (provided that the number of covariates exceeds 1) is required.
@@ -57,7 +57,7 @@
 #' \item A target outcome can be categorical, in factor, ordered or not, discrete (with a finite number of values ONLY) but, notice that, if they are stored in numeric they will be automatically converted in ordered factors.
 #' \item If a target outcome is incomplete, the corresponding rows will be automatically dropped during the execution of the function.
 #' }
-#' The type of each variables (including ID, Y and Z) of the database must be rigorously specified once, in one of the 4 arguments \code{quanti},\code{nominal}, \code{ordinal} and \code{logic}.
+#' The type of each variables (including ID, Y and Z) of the database must be rigorously specified once, in one of the four arguments \code{quanti},\code{nominal}, \code{ordinal} and \code{logic}.
 #'
 #'
 #' D. TRANSFORMATIONS OF CONTINUOUS COVARIATES
@@ -73,57 +73,57 @@
 #' E. INFORMATIONS ABOUT DISTANCE FUNCTIONS
 #'
 #' Each individual (or row) of a given database is here characterized by his covariates, so the distance between 2 individuals or groups of individuals depends on similarities between covariates
-#' according to the distance function chosen by user. Users can specify the distance measure chosen via the argument \code{dist.choice}. Actually 4 distance functions are implemented in {OT_outcome} to take into account the most frequently encountered situation (see Anderberg 1973):
+#' according to the distance function chosen by user. Users can specify the distance measure chosen via the argument \code{dist.choice}. Actually 4 distance functions are implemented in \code{OT_outcome} to take into account the most frequently encountered situation (see Anderberg 1973):
 #' \itemize{
 #' \item The Manhattan distance ("M")
 #' \item The Euclidean distance ("E")
-#' \item The Gower distance for mixed data (See Gower(1971):"G")
+#' \item The Gower distance for mixed data (See Gower(1971): "G")
 #' \item The Hamming distance for binary data ("H")
 #' }
-#' Moreover, it is also possible to directly apply the first three distances mentioned on coordinates extracted from a multivariate analysis (Factor Analysis for Mixed Data, see Pages 2004) applied on row covariates using the arguments \code{FAMD.coord} and\code{FAMD.perc}.
+#' Moreover, it is also possible to directly apply the first three distances mentioned on coordinates extracted from a multivariate analysis (Factor Analysis for Mixed Data, see Pages 2004) applied on row covariates using the arguments \code{FAMD.coord} and \code{FAMD.perc}.
 #' This method corresponds to that used in the first article referenced.
 #'
-#' As a decision rule, for a given profile of covariates \code{P_j}, an individual i will be considered as a neighbor of \code{P_j} if \eqn{dist(i,P_j) < \mbox{prox.dist} * max(dist(i,P_j))} where \code{prox.dist} will be fixed by user.
+#' As a decision rule, for a given profile of covariates \eqn{P_j}, an individual i will be considered as a neighbor of \eqn{P_j} if \eqn{dist(i,P_j) < \mbox{prox.dist} \times max(dist(i,P_j))} where \code{prox.dist} will be fixed by user.
 #'
 #'
 #' @aliases OT_outcome ot_outcome OT
 #'
-#' @param datab A data.frame that must have at least four columns sorted in a non-specific order. One column must be a key column of 2 classes for the databases identification, where the names of the two databases
-#' must be alphanumerically ranked in ascending order (By examples: 1 for the top database and 2 for the database from below, or more logically here A and B  ...But NOT B and A!).One column (Y here but other names are allowed)
+#' @param datab A data.frame with least four columns sorted in a non-specific order. One column must be a column of identifier for the two databases, where the names of the two databases
+#' must be alphanumerically ranked in ascending order (By example: 1 for the top database and 2 for the database from below, or more logically here A and B  ...But NOT B and A!). One column (Y here but other names are allowed)
 #' must correspond to the target variable related to the information of interest to merge with its specific encoding in the database A (corresponding encoding should be so missing in the database B). In the same way,
-#' one column (Z here) corresponds to the target variable that summarizes the same information as Y but with its specific encoding in the database B (corresponding encoding should be so missing in the database A).
-#' Finally, your database must have at least one shared covariate with same encoding in A and B. Please not that, if your data.frame has only 4 columns, that is to say, only one covariate, if this latter has NA, and unless user
-#' has previously imputed the corresponding missing information, the OT algorithm will only run with complete cases.
-#' @param index_DB_Y_Z A vector of three indexes of columns. The 1st index must correspond to the index of the databases identification column (DB identifier). The 2nd index corresponds
-#' to the index of the target variable in the 1st database (A) while the 3rd index corresponds to the index of column related to the target variable in the 2nd database (B).
+#' one column (Z here) corresponds to the second target variable with its specific encoding in the database B (corresponding encoding should be so missing in the database A).
+#' Finally, the input database must have at least one shared covariate with same encoding in A and B. Please notice that, if your data.frame has only four columns, that is to say, only one covariate, if this latter has NA, and unless user
+#' has previously imputed the corresponding missing information, the OT algorithm will only run complete cases.
+#' @param index_DB_Y_Z A vector of three column indexes. The first index must correspond to the index of the databases identifier column (DB identifier). The second index must correspond
+#' to the index of the target variable in the first database (A) while the third index corresponds to the index of column related to the target variable in the second database (B).
 #' @param quanti A vector of indexes that corresponds to the indexes of columns of all the quantitative variables (DB identification and target variables included if it is the case for them).
 #' @param nominal A vector of indexes that corresponds to the indexes of columns of all the nominal (not ordered) variables (DB identification and target variables included if it is the case for them).
 #' @param ordinal A vector of indexes that corresponds to the indexes of columns of all the ordinal variables (DB identification and target variables included if it is the case for them).
-#' @param logic A vector of indexes that corresponds to the indexes of columns of all the boolean variables of the data.frame.
+#' @param logic A vector of indexes that corresponds to the indexes of columns of all the boolean variables.
 #' @param convert.num Indexes of the continuous (quantitative) variables to convert in ordered factors.All indexes declared in this argument must have been declared in the argument \code{quanti} (No conversion by default).
 #' @param convert.clss A vector indicating for each continuous variable to convert, the corresponding number of levels desired.If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} equals 1 (only one integer),
 #' each discretization will count the same number of levels.
 #' @param dist.choice A character (with quotes) corresponding to the distance function chosen between: The euclidean distance ("E", by default), The Manhattan distance ("M"),
 #' the Gower distance ("G"), the Hamming (also called binary) distance and the Euclidean or Manhattan distance, calculated from principal components of a factor analysis of mixed data ("FAMD").
 #' @param FAMD.coord A logical that must be equal to TRUE when user decides to work with principal components of a factor analysis for mixed data (FAMD) instead of the set of raw covariates (FALSE is the default value).
-#' @param FAMD.perc A percent value (between 0 and 100) linked to the \code{FAMD.coord} argument. When this latter equals TRUE, this argumentcorresponds to the minimum part of variability that must be taken into account by the principal components of the FAMD method.
-#' This option conditions the number retained of principal components for the rest of the study.
+#' @param FAMD.perc A percent value (between 0 and 100) linked to the \code{FAMD.coord} argument. When this latter equals TRUE, this argument corresponds to the minimum part of variability that must be taken into account by the principal components of the FAMD method.
+#' This option imposes the number retained of principal components for the rest of the study.
 #' @param percent.knn Percent of closest neighbors taken in the computation of the cost matrices.
 #' @param maxrelax Maximum percentage of deviation from expected probability masses (0 for the OUTCOME model, a non-zero value otherwise). Please consult the reference article for more details.
-#' @param prox.dist A percentage (betwen 0 and 1) uses to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates. This choice does not influence the estimate of gamma,
+#' @param prox.dist A percentage (betwen 0 and 1) uses to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates. This choice does not influence the estimate of \eqn{gamma},
 #' but the estimates of the conditional posterior probabilities stored, in output, in the objects \code{estimatorZA} and \code{estimatorYB}.
 #' @param indiv.method A character string indicating the method chosen to get individual predictions from the joint probabilities assessed, "sequential" by default, or "optimal". Please consult the section \code{details} and the corresponding article 2 for more details.
 #' @param which.DB A character string (with quotes) that indicates which individual predictions compute: Only the individual predictions of Y in B ("B"), only those of Z in A ("A") or the both ("BOTH" by default).
 #'
 #' @return A list containing 9 elements:
 #' \item{time_exe}{Running time of the function}
-#' \item{gamma_A}{Cost matrix corresponding to an estimation (gamma, see reference for more details) of the joint distribution of (YA,ZA)}
+#' \item{gamma_A}{Cost matrix corresponding to an estimation of the joint distribution of (YA,ZA)}
 #' \item{gamma_B}{Cost matrix corresponding to an estimation of the joint distribution of (YB,ZB)}
 #' \item{profile}{A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results}
 #' \item{res_prox}{The outputs of the function \code{proxim_dist}}
-#' \item{estimatorZA}{Estimates of the probability distribution of Z conditional to X and Y in database A from predictions saved in an array. The number of rows of each table corresponds to the total number of the P profiles of covariates.
+#' \item{estimatorZA}{An array that corresponds to estimates of the probability distribution of Z conditional to X and Y in database A from predictions. The number of rows of each table corresponds to the total number of the P profiles of covariates.
 #' The number of columns of each table corresponds to the number of levels of Y. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of Z}
-#' \item{estimatorYB}{Estimates of the probability distribution of Y conditional to X and Z in database B from predictions saved in an array. The number of rows of each table corresponds to the total number of profiles of covariates.
+#' \item{estimatorYB}{An array that corresponds to estimates of the probability distribution of Y conditional to X and Z in database B from predictions. The number of rows of each table corresponds to the total number of profiles of covariates.
 #' The number of columns of each table corresponds to the number of levels of Z. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of Y}
 #' \item{DATA1_OT}{database A with imputed individual prediction on Z using OT}
 #' \item{DATA2_OT}{database B with imputed individual prediction on Y using OT}
@@ -141,7 +141,7 @@
 #' # For the Gower distance:
 #' Gower J. C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637.
 #'
-#' # About the other distance measurements:
+#' # About the other distance functions:
 #' Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
 #'
 #' # For Factor Analysis with mixed data:
@@ -226,7 +226,7 @@
 #' ### An example of R-OUTCOME model using:
 #' # - An optimization procedure for individual predictions on the 2 databases
 #' # - The Manhattan distance
-#' # - Raw covariates
+#' # - Row covariates
 #' ###-----
 #' try4 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
 #'                   dist.choice = "M", percent.knn = 0.90, maxrelax = 0,
@@ -236,7 +236,7 @@
 #' ### An example of R-OUTCOME model with:
 #' # - An optimization procedure for individual predictions on the 2 databases
 #' # - The use of Euclidean distance on coordinates from FAMD
-#' # - Raw covariates
+#' # - Row covariates
 #' ###-----
 #'
 #' try5 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
@@ -249,7 +249,7 @@
 #' # - An optimization procedure for individual predictions on the 2 databases
 #' # - The use of the euclidean distance
 #' # - An arbitrary coefficient of relaxation
-#' # - Raw covariates
+#' # - Row covariates
 #' #-----
 #'
 #' try6 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
