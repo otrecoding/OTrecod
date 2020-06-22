@@ -1,15 +1,15 @@
 #' OT_outcome()
 #'
-#' The function \code{OT_outcome} integrates an original algorithm (\code{OUTCOME}) dedicated to the solving of recoding problems in data integration
-#' using optimal transportation of outcomes
+#' The function \code{OT_outcome} integrates two models called (\code{OUTCOME}) and \code{R-OUTCOME} dedicated to the solving of recoding problems in data integration
+#' using optimal transportation of outcomes.
 #'
 #'
 #' A. THE RECODING PROBLEM IN DATA FUSION
 #'
-#' Assuming that Y and Z are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
-#' so that Y and Z are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (but same encodings in A and B)
+#' Assuming that Y and Z are two variables that summarize a same latent information (or at least two variables with very close distributions) in two separate (no overlapping rows) databases A and B respectively,
+#' so that Y and Z are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (with same encodings in A and B)
 #' completed or not. Integrating these two databases often requires to solve the recoding problem observed between Y and Z by creating an unique database where
-#' the missing information of Y and Z is completed.
+#' the missing information of Y and/or Z is fully completed.
 #'
 #'
 #' B. INFORMATIONS ABOUT THE ALGORITHM

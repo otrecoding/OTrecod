@@ -74,30 +74,30 @@ A list of 7 elements containing:
     \item{DATA2_OT}{database B with imputed individual prediction on Y using OT}
 }
 \description{
-The function \code{OT_joint} integrates an original algorithm (\code{JOINT}) dedicated to the solving of recoding problems in data integration
+The function \code{OT_joint} integrates two models called (\code{JOINT}) and (\code{R-JOINT}) dedicated to the solving of recoding problems in data integration
 using optimal transportation of the joint distribution of outcomes and covariates.
 }
 \details{
 A. THE RECODING PROBLEM IN DATA FUSION
 
-Assuming that Y and Z are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
-so that Y and Z are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (but same encodings in A and B)
+Assuming that Y and Z are two variables that summarize a same latent information (or at least two variables with very close distributions) in two separate (no overlapping rows) databases A and B respectively,
+so that Y and Z are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (with same encodings in A and B)
 completed or not. Integrating these two databases often requires to solve the recoding problem observed between Y and Z by creating an unique database where
-the missing information of Y and Z is completed.
+the missing information of Y and/or Z is fully completed.
 
 
 B. INFORMATIONS ABOUT THE ALGORITHM
 
-As with the function \code{\link{OT_outcome}}, the function \code{OT_joint} provides a solution to the recoding problem previously described by considering the recoding as an
-application of optimal transportation which aims at searching for a bijective mapping between the conditional distributions of (Y|X) and (Z|X) in A and B (See the 2nd referenced article for more details).
-The principle of the algorithm is also based on the resolution of an optimization problem, provides a gamma solution (as called in the related articles) which is now an estimation
-of the distribution of (X,Y,Z) according to the database to complete (see the argument \code{which.DB}). While the algorithms \code{OUTCOME} and \code{R_OUTCOME} integrated in
-the function \code{\link{OT_outcome}} require post-treatment steps to provide individual predictions, the algorithm \code{JOINT} direcly use estimations of the conditional distributions (Y|Z,X) in B and
-(Z|Y,X) in A to predict the corresponding incomplete individuals informations of Y,Z or both of them.
+As with the function \code{\link{OT_outcome}}, the function \code{OT_joint} provides a solution to the recoding problem by proposing an
+application of optimal transportation which aims at searching for a bijective mapping between the joint distributions of (Y,X) and (Z,X) in A and B (See the reference (2) for more details).
+The principle of the algorithm is also based on the resolution of an optimization problem, which provides a gamma solution (as called in (1) and (2)) which is an estimation
+of the distribution of (X,Y,Z) according to the database to complete (see the argument \code{which.DB} for the choice of the database). While the models \code{OUTCOME} and \code{R_OUTCOME} integrated in
+the function \code{\link{OT_outcome}} require post-treatment steps to provide individual predictions, the algorithm \code{JOINT} direcly uses estimations of the conditional distributions (Y|Z,X) in B and
+(Z|Y,X) in A to predict the corresponding incomplete individuals informations of Y and/or Z respectively.
 Estimations a posteriori of conditional probabilities \code{P[Y|X,Z]} and \code{P[Z|X,Y]} are available by profiles of covariates in output (See the objects \code{estimatorYB} and \code{estimatorZA}).
-Estimations of gamma are also available according to the direction of the distributions transport chosen (See \code{TRANSPORT_A} and \code{TRANSPORT_B}).
+Estimations of gamma are also available according to the chosen distributions transport (See the arguments \code{gamma_A} and \code{gamma_B}).
 
-Enrichments of the algorithm \code{JOINT} is available with the function \code{OT_joint} by allowing users to add a relaxation term in the algorithm to relax distributional assumptions (\code{mawrelax}>0),
+The model \code{R-JOINT} gathers enrichments of the model \code{JOINT} and is also available called is available with the function \code{OT_joint} by allowing users to add a relaxation term in the algorithm to relax distributional assumptions (\code{mawrelax}>0),
 and (or) add also a positive regularization term (\code{lamdba.reg}>0) expressing that the transportation map does not vary to quickly with respect of X.
 These enrichments corresponds to an extension of the raw algorithm called \code{R_joint} in the 2nd article referenced.
 Is is suggested to users to calibrate these 2 parameters a posteriori by studying the stability of the individual predictions in output.
