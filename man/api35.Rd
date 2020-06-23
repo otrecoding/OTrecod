@@ -3,17 +3,17 @@
 \docType{data}
 \name{api35}
 \alias{api35}
-\title{Student performance in California schools: The results of the county 35}
+\title{Student performance in California schools: the results of the county 35}
 \format{
 A data.frame with 362 schools (rows) and 12 variables
 \describe{
   \item{cds}{The school identifier}
-  \item{apicl_1999}{API score in 1999 classed in 4 ordered levels: \code{G1},\code{G2},\code{G3}, \code{G4}}
-  \item{stype}{School type in a 3 ordered levels: \code{Elementary}, \code{Middle} or \code{High School}}
-  \item{awards}{School eligible for awards program ? Two possible answers: \code{No} or \code{Yes}. This variable counts 4\% of missing information.}
-  \item{acs.core}{Number of core academic courses in the school}
-  \item{api.stu}{Number of students tested in the school}
-  \item{acs.k3.20}{Average class size years K-3 in the school. This variable is stored in a 3-levels factor: \code{Unknown}, \code{<=20}, \code{>20}.}
+  \item{apicl_1999}{The API score in 1999 classed in 4 ordered levels: \code{G1},\code{G2},\code{G3}, \code{G4}}
+  \item{stype}{The school type in a 3 ordered levels: \code{Elementary}, \code{Middle} or \code{High School}}
+  \item{awards}{The school eligible for awards program ? Two possible answers: \code{No} or \code{Yes}. This variable counts 4\% of missing information.}
+  \item{acs.core}{The number of core academic courses in the school}
+  \item{api.stu}{The number of students tested in the school}
+  \item{acs.k3.20}{The average class size years K-3 in the school. This variable is stored in a 3-levels factor: \code{Unknown}, \code{<=20}, \code{>20}.}
   \item{grad.sch}{The percentage of parents with postgraduate education stored in a 3 ordered levels of percents: \code{0}, \code{1-10}, \code{>10}}
   \item{ell}{The percentage of English language learners stored in 4 ordered levels: \code{[0-10]},\code{(10-30]},\code{(30-50]},\code{(50-100]}. This variable counts 7\% of missing information.}
   \item{mobility}{The percentage of students for whom this is the first year at the school, stored in 2 levels: \code{1} and \code{2}}

@@ -9,8 +9,8 @@
 #' A. REQUIRED STRUCTURE FOR THE DATABASE
 #'
 #' The expected input database is a data.frame that especially requires a specific column of row identifier and a target variable (or outcome) having a finite number of values or classes (ordinal, nominal or discrete type). Notice that if the chosen outcome is in numeric form, it will be automatically converted in ordinal type.
-#' The number of predictors is not a constraint for \code{select_pred} (even if, with less than three variables a process of variables' selection has no real sense...), and can exceed the number of rows (no problem of high dimensionality here).
-#' The predictors can be continuous (quantitative), boolean, nominal or ordinal with or without missing values. Nevertheless, this function provides optimal performances wit or without only a limited number of continuous variables and with complete information.
+#' The number of predictors is not a constraint for \code{select_pred} (even if, with less than three variables a process of variables selection has no real sense...), and can exceed the number of rows (no problem of high dimensionality here).
+#' The predictors can be continuous (quantitative), boolean, nominal or ordinal with or without missing values. Nevertheless, this function provides optimal performances with or without only a limited number of continuous variables and with complete information.
 #' In presence of numeric variables, users can decide to discretize them or a part of them by themselves beforehand. They can also choose to use the internal process directly integrated in the function. Indeed, to assist users in this task, two arguments called \code{convert_num} and \code{convert_clss} dedicated to these transformations are available in input of the function.
 #' These options make the function \code{select_pred} particularly adapted to the function \code{\link{OT_joint}} which only allows data.frame with categorical covariates.
 #' With the argument \code{convert_num}, users choose the continuous variables to convert and the related argument \code{convert_clss} specifies the corresponding number of classes chosen for each discretization.
@@ -20,8 +20,8 @@
 #' In this situation, the label of the outcome must be entered in the argument \code{Y}, and the arguments \code{Z} and \code{OUT} must keep their default values.
 #' Finally, the order of the column indexes related to the identifier and the outcome have no importance.
 #'
-#' For a better flexibility, the waited input database can also be the result of two overlayed databases.
-#' In this case, the waited structure of the database must be similar to those observed in the datasets \code{\link{simu_data}} and \code{\link{tab_test}} available in the package with a column of database identifier, one target outcome by database (2 columns), and a subset of shared predictors.
+#' For a better flexibility, the input database can also be the result of two overlayed databases.
+#' In this case, the structure of the database must be similar to those observed in the datasets \code{\link{simu_data}} and \code{\link{tab_test}} available in the package with a column of database identifier, one target outcome by database (2 columns), and a subset of shared predictors.
 #' Notice that, overlaying two separate databases can also be done easily using the function \code{\link{merge_dbs}} beforehand.
 #' The labels of the two outcomes will have to be specified in the arguments \code{Y} for the top database, and in \code{Z} for the bottom one.
 #' Notice also that the function \code{select_pred} deals with only one outcome at a time that will have to be specified in the argument \code{OUT} which must be equalled to "Y" for the study of the top database or "Z" for the study of the bottom one.
@@ -50,7 +50,7 @@
 #'
 #' C. RANDOM FOREST PROCEDURE
 #'
-#' As a final step of the process, a random forest approach (RF) is here prefered (to regression models) for two main reasons: RF methods allow notably the number of variables to exceed the number of rows and stay applicable whatever the types of covariates considered.
+#' As a final step of the process, a random forest approach (RF) is here prefered (to regression models) for two main reasons: RF methods allow notably the number of variables to exceed the number of rows and remain applicable whatever the types of covariates considered.
 #' The function \code{select_pred} integrates in its algorithm the functions \code{\link[party]{cforest}} and \code{\link[party]{varimp}} of the package \pkg{party} (Hothorn, 2006) and so gives access to their main arguments.
 #'
 #' A RF approach generally provides two types of measures for estimating the mean variable importance of each covariate in the prediction of an outcome: the Gini importance and the permutation importance.These measurements must be used with caution, by taking into account the following constraints:
@@ -64,7 +64,7 @@
 #' In the spirit of a partial correlation, the conditional importance measure related to a variable X for the prediction of an outcome Y, only uses the subset of variables the most correlated to X for its computation. The argument \code{RF_condi_thr} that corresponds exactly to the argument \code{threshold} of the function \code{\link[party]{varimp}},
 #' fixes a ratio below which a variable Z is considered sufficiently correlated to X to be used as an adjustment variable in the computation of the importance measure of X (In other words, Z is included in the conditioning for the computation, see Strobl 2007 for more details). A threshold value of zero will include all variables in the computation of
 #' conditional importance measure of each predictor X, while a threshold < 1, will only include a subset of variables.
-#' Two remarks related to this method: Firstly, notice that taking into account only subsets of predictors in the computation of the variable importance measures could lead to a relevant saving of execution time.
+#' Two remarks related to this method: firstly, notice that taking into account only subsets of predictors in the computation of the variable importance measures could lead to a relevant saving of execution time.
 #' Secondly, because this approach does not take into account incomplete information, the method will only be applied to complete data (incomplete rows will be temporarily removed for the study).}
 #' \item{The second possibility, always in presence of mixed types predictors, consists in the execution of two successive RF procedures. The 1st one will be used to select an unique candidate in each susbset of correlated predictors (detecting in the 1st section), while the 2nd one will extract the permutation measures from the remaining subset
 #' of uncorrelated predictors (\code{RF_condi = FALSE}, by default). This 2nd possibility has the advantage to work in presence of incomplete predictors.}
@@ -84,7 +84,7 @@
 #' @param ordinal A vector of integers which corresponds to the column indexes of all the categorical ordinal predictors
 #' @param logic A vector of integers indicating the indexes of logical predictors. No index remained by default
 #' @param convert_num A vector of integers indicating the indexes of quantitative variables to convert in ordered factors. No index remained by default. Each index selected has to be defined as quantitative in the argument \code{quanti}.
-#' @param convert_clss A vector of integers indicating the number of classes related to each transformation of quantitative variable in ordered factor. The length of this vector can not exceed the length of the argument \code{convert_num}. Nevertheless, if length(convert_num) > 1 and length(convert_clss) = 1,
+#' @param convert_clss A vector of integers indicating the number of classes related to each transformation of quantitative variable in ordered factor. The length of this vector can not exceed the length of the argument \code{convert_num}. Nevertheless, if length(\code{convert_num}) > 1 and length(\code{convert_clss}) = 1,
 #' all quantitative predictors selected for discretization will have by default the same number of classes.
 #' @param thresh_cat A threshold associated to the Cramer's V coefficient (= 0.30 by default)
 #' @param thresh_num A threshold associated to the Spearman's coefficient of correlation (= 0.70 by default)
@@ -94,7 +94,7 @@
 #' @param RF_condi A boolean specifying if the conditional importance measures must be assessed from the random forest procedure (\code{TRUE}) rather than the standard variable importance  measures (\code{FALSE} by default)
 #' @param RF_condi_thr A threshold linked to (1 - pvalue) of an association test between each predictor X and the other variables, given that a threshold value of zero wil include all variables in the computation of the conditional importance measure of X (0.60 is the default value).
 #' Conversely, a larger threshold will only keeps for the computation of the variable importance measure of X, the subset of variables that is strongly correlated to X.
-#' @param RF_SEED An integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default). This value is only used when a RF method is required.
+#' @param RF_SEED An integer used as argument by the set.seed() for offsetting the random number generator (random integer by default). This value is only used when a RF method is required.
 #'
 #'
 #' @return A list of 13 (If \code{RF = TRUE}) or 10 objects (Only the 1st ten objects if \code{RF = FALSE}) is returned:

@@ -45,7 +45,7 @@ This ratio will fix the number of components that will be kept with this approac
 }
 \value{
 A data.frame which covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the identifier, Y and Z correspond to the first three columns respectively.
-Moreover the order of rows stays unchanged during the process.
+Moreover the order of rows remains unchanged during the process.
 }
 \description{
 This function prepares the database for the resolution of a recoding problem according to the distance function chosen to evaluate the proximities between rows
@@ -72,7 +72,7 @@ If the outcomes are of numeric types, they could be declared as quantitative, bu
 B. TRANSFORMATIONS OF CONTINUOUS COVARIATES
 
 Because some algorithms dedicated to solving recoding problems like \code{JOINT} and \code{R-JOINT}  must run actually without continuous covariates (It is the case of the function \code{OT_joint} of this package), the function \code{transfo_dist} integrates in is syntax
-a process dedicated to the discretization of this type of variables. For this, it is necessary to rigorously fill in the arguments \code{convert_num} and \code{convert_clss}. The first one specifies the indexes of continuous variables that need ot be transformed
+a process dedicated to the discretization of this type of variables. For this, it is necessary to rigorously fill in the arguments \code{convert_num} and \code{convert_clss}. The first one specifies the indexes of continuous variables that need to be transformed
 in ordered factors while the second one assigns the corresponding number of levels desired.
 Only covariates can be transformed (not outcomes) and missing informations are not taken into account for the transformations.
 Finally, all the indexes informed in the argument \code{convert_num} must also be informed in the argument \code{quanti}.
@@ -88,7 +88,7 @@ It depends on the choice of the distance function chooses by user in the \code{p
 all the remaining continuous variables are standardized.
 The related recoding to a boolean variable is 1 for \code{TRUE} and 0 for \code{FALSE}.
 The recoding for a nominal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
-The ordinal variables are all converted to numeric variables (Please take care that the order of the classes of each of these variables is well specified at the beginning).
+The ordinal variables are all converted to numeric variables (please take care that the order of the classes of each of these variables is well specified at the beginning).
 
 2. For the Hamming ("H") distance:
 all the numeric variables must be transformed beforehand in categorical forms using the internal process described in section B or via another external approach.

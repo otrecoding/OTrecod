@@ -10,23 +10,23 @@ avg_dist_closest(proxim, percent_closest = 1)
 \item{proxim}{An object corresponding to the output of the \code{proxim_dist} function}
 
 \item{percent_closest}{A value between 0 and 1 corresponding to the desired percent of rows (or individuals) that will be taken into acccount for the computation of the average distances between levels of factors or
-between individuals and levels of only one factor (The value 1 is taken by default, therefore, all individuals with a same level of Y or a same level of Z will be remained for the average computations).}
+between individuals and levels of only one factor (the value 1 is taken by default, therefore, all individuals with a same level of Y or a same level of Z will be remained for the average computations).}
 }
 \value{
 A list of 3 matrices is returned:
 \item{Davg}{The cost matrix whose number of rows corresponds to nY, the number of levels of the target variable Y in the database A, and whose number of columns corresponds to nZ: the number of levels of the target variable in B.
 In this case, the related cost matrix can be interpreted as the ability to move from one level of Y in A to one level of Z in B.
 Davg[P,Q] refers to the average distance between the modality P in Y (only known in A) and modality Q of Z (only known in B).}
-\item{DindivA}{A matrix whose number of rows corresponds to the number of rows of the 1st database A and number of columns corresponds to nZ, the number of levels of the target variable Z in the second database B.
-DindivA[i,Q] refers to the average distance between the \eqn{i^th} individual (or row) of the 1st database and a chosen proportion of individuals (\code{percent_closest} set by the user) of the second database having the modality Q of Z.}
-\item{DindivB}{A matrix whose number of rows corresponds to the number of rows of the 2nd database B and number of columns corresponds to nA, the number of levels of the target variable in the first database A.
-DindivB[k,P] refers to the average distance between the \eqn{k^th} individual (or row) of the 2nd database and a chosen proportion of individuals (depending on \code{percent_closest}) of the first database having the modality P of Y.}
+\item{DindivA}{A matrix whose number of rows corresponds to the number of rows of the first database A and number of columns corresponds to nZ, the number of levels of the target variable Z in the second database B.
+DindivA[i,Q] refers to the average distance between the \eqn{i^th} individual (or row) of the first database and a chosen proportion of individuals (\code{percent_closest} set by the user) of the second database having the modality Q of Z.}
+\item{DindivB}{A matrix whose number of rows corresponds to the number of rows of the second database B and number of columns corresponds to nA, the number of levels of the target variable in the first database A.
+DindivB[k,P] refers to the average distance between the \eqn{k^th} individual (or row) of the second database and a chosen proportion of individuals (depending on \code{percent_closest}) of the first database having the modality P of Y.}
 }
 \description{
 This function computes average distances between levels of two categorical outcomes located in two distinct databases
 }
 \details{
-The function \code{avg_dist_closest} is an intermediate function used in the implementation of an original algorithm dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory (For more details, consult the corresponding algorithms called
+The function \code{avg_dist_closest} is an intermediate function used in the implementation of an original algorithm dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory (for more details, consult the corresponding algorithms called
 \code{OUTCOME}, \code{R_OUTCOME}, \code{JOINT} and \code{R_JOINT}, in the reference (2)). The function \code{avg_dist_closest} is so directly implemented in the \code{OT_outcome} and \code{OT_joint} functions but can also be used separately.
 The function \code{avg_dist_closest} uses, in particular, the D distance matrix (that stores distances between rows of A and B) from \code{\link{proxim_dist}} to produce three distinct matrices saved in a list object.
 Therefore, the function requires in input, the specific output of the function \code{\link{proxim_dist}} which is available in the package and so must be used beforehand.
@@ -36,9 +36,9 @@ In consequence, do not use this function directly on your database, and do not h
 DEFINITION OF THE COST MATRIX
 
 Assuming that A and B are two databases with a set of shared variables and a same latent information (or at least a related information) stored as a variable Y in A and Z in B, such that Y is unknown in B and Z is unknown in A, whose encoding depends on the database (nY levels in A and nZ levels in B).
-A distance between one level of Y and one level of Z is estimated by averaging the covariates distances between  the subsets of individuals (rows) from the two databases that are related to the corresponding levels for Y in A and Z in B.
-The distance between two individuals depends on the variations between the shared covariates, and so depends on the distance function chosen using the function \code{proxim_dist}.
-For the average computations, all the individuals concerned by these two classes can be taken into a count, or only a part of them, depending on the argument \code{percent_closest}.
+A distance between one level of Y and one level of Z is estimated by averaging the distances on covariates vector between  the subsets of individuals (rows) from the two databases that are related to the corresponding levels for Y in A and Z in B.
+The distance between two individuals depends on the variations between the shared covariates, and so depends on the chosen distance function using the function \code{proxim_dist}.
+For the average computations, all the individuals concerned by these two classes can be taken into account, or only a part of them, depending on the argument \code{percent_closest}.
 When \code{percent_closest} < 1, the average distance between an individual i and a given level of factor z only uses the corresponding part of individuals related to z that are the closest to i for the computation.
 Therefore, this choice influences the estimations of average distances between levels of factors but also permits to reduce time computation if necessary.
 
@@ -58,7 +58,7 @@ try1 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
                     ordinal = c(2,6), logic = NULL, prep_choice = "M")
 res1 = proxim_dist(try1,norm = "M")
 
-# proxim_dist() fixes the distance function chosen,
+# proxim_dist() fixes the chosen distance function,
 # and defines neighborhoods between profiles and individuals
 
 # The following row uses only 80 percents of individuals of each level

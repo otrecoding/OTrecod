@@ -25,6 +25,9 @@ fam  =  power_set(4)
 # subsets of consecutive elements
 fam2 =  power_set(4,ordinal = TRUE)
 }
+\references{
+Devlin, Keith J (1979). Fundamentals of contemporary set theory. Universitext. Springer-Verlag
+}
 \author{
 Gregory Guernec
 \email{otrecod.pkg@gmail.com}

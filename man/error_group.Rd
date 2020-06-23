@@ -25,7 +25,7 @@ A data.frame with two columns:
 This function studies the association between two categorical distributions by grouping modalities
 }
 \details{
-Assuming that Y and Z are categorical variables summarizing a same latent information, or a very close information from a same target population, and that one of the two related encodings is unknown by user
+Assuming that Y and Z are categorical variables summarizing a same information, and that one of the two related encodings is unknown by user
 because this latter is, by example, the result of predictions provided by a given model or algorithm, the function \code{error_group} searches for potential links between the modalities of Y to approach at best the distribution of Z.
 
 Assuming that Y and Z have nY and nZ modalities respectively so that nY > nZ, in a first step, the
@@ -43,10 +43,10 @@ All the associations tested are listed in output as a data.frame object.
 The function \code{error_group} is directly integrated in the function \code{\link{verif_OT}} to evaluate the proximity of two multinomial distributions, when one of which is estimated from the predictions of an OT algorithm.
 
 Example:
-Assuming that \eqn{Y = (1,1,2,2,3,3,4,4)} and \eqn{Z = (1,1,1,1,2,2,2,2)}, so \eqn{nY = 4} and \eqn{nZ = 2} and the related coefficient of correlation \eqn{cor(Y,Z)} is 0.89.
+Assuming that \code{Y = (1,1,2,2,3,3,4,4)} and \code{Z = (1,1,1,1,2,2,2,2)}, so \code{nY = 4} and \code{nZ = 2} and the related coefficient of correlation \code{cor(Y,Z)} is 0.89.
 Are there groupings of modalities of Y which contribute to improving the proximity between Y and Z ?
-From Y, the function \code{error_group} gives an answer to this question by successively constructing the variables: \eqn{Y1 = (1,1,1,1,2,2,2,2)}, \eqn{Y2 = (1,1,2,2,1,1,2,2)}, \eqn{Y3 = (1,1,2,2,2,2,1,1)}
-and tests cor(Z,Y1) = 1, cor(Z,Y2) = 0, cor(Z,Y3) = 0.
+From Y, the function \code{error_group} gives an answer to this question by successively constructing the variables: \code{Y1 = (1,1,1,1,2,2,2,2)}, \code{Y2 = (1,1,2,2,1,1,2,2)}, \code{Y3 = (1,1,2,2,2,2,1,1)}
+and tests \code{cor(Z,Y1) = 1}, \code{cor(Z,Y2) = 0}, \code{cor(Z,Y3) = 0}.
 Here, the tests permit to conclude that the difference of encodings between Y and Z resulted in fact in a simple grouping of modalities.
 }
 \examples{

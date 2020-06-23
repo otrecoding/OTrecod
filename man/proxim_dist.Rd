@@ -7,15 +7,15 @@
 proxim_dist(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.8)
 }
 \arguments{
-\item{data_file}{A data.frame corresponding ideally to an output of the function \code{\link{transfo_dist}}. Otherwise this data.frame is the result of two overlayed databases with a column of database identifier ("A" and "B", 1 and 2, by example), a target variable (called Y by example) only known in the first database, a target variable (Z) only stored in the 2nd database, such that Y and Z summarize a same information differently encoded in the 2 databases and set of common covariates (at least one) of any type.
-The order of the variables in the data.frame have no importance.The type of the covariates must be in accordance with the distance measurement chosen in the \code{norm} option.}
+\item{data_file}{A data.frame corresponding ideally to an output of the function \code{\link{transfo_dist}}. Otherwise this data.frame is the result of two overlayed databases with a column of database identifier ("A" and "B", 1 and 2, for example), a target variable (called Y by example) only known in the first database, a target variable (Z) only stored in the 2nd database, such that Y and Z summarize a same information differently encoded in the two databases and set of common covariates (at least one) of any type.
+The order of the variables in the data.frame have no importance.The type of the covariates must be in accordance with the chosen distance function in the \code{norm} option.}
 
-\item{indx_DB_Y_Z}{A vector of 3 column numbers corresponding to the colum indexes of the ID variable, the target variable in the 1st database and the target variable in the 2nd database. The indexes must be declared in this specific order.}
+\item{indx_DB_Y_Z}{A vector of three column numbers corresponding to the colum indexes of the identifier, the target variable in the first database and the target variable in the second database. The indexes must be declared in this specific order.}
 
-\item{norm}{A character (with quotes) indicating the choice of the distance function. This latest depends on the type of the common covariates.The Hamming distance
+\item{norm}{A character (with quotes) indicating the choice of the distance function. This latest depends on the type of the common covariates: the Hamming distance
 for binary covariates only (\code{norm} = "H"), the Manhattan distance ("M", by default) and the euclidean distance ("E") for continuous covariates only, or the Gower distance for mixed covariates ("G").}
 
-\item{prox}{A percentage (betwen 0 and 1) uses to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.}
+\item{prox}{A percentage (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.}
 }
 \value{
 A list of 15 elements (the first 15 detailed below) is returned containing various distance matrices and lists useful for the algorithms that used Optimal Transportation theory. Two more objects (the last two of the following list) will be returned if distance matrices contain NAs.
@@ -48,8 +48,8 @@ The function \code{proxim_dist} is directly implemented in the functions \code{\
 A. REQUIRED STRUCTURE FOR THE DATABASE
 
 Firsly, the initial database required is a data.frame that must be prepared in a specific form by users. From two separate databases, the function \code{\link{merge_dbs}} available in this package can assist users in this initial merging, nevertheless notice that this preliminary transformation can also be made directly by following the imposed structure described below:
-Two overlayed databases containing a common column of databases' identifiers (A and B by examples, encoded in numeric or factor form),
-a column corresponding to the target variable with its specific encoding in A (By example a factor Y encoded in nY levels, ordered or not, with NAs in the corresponding rows of B), a column corresponding to the same variable with its specific endoded in B (By example a factor Z in nZ levels,
+two overlayed databases containing a common column of database identifiers (A and B for examples, encoded in numeric or factor form),
+a column corresponding to the target variable with its specific encoding in A (for example a factor Y encoded in nY levels, ordered or not, with NAs in the corresponding rows of B), a column corresponding to the same variable with its specific endoded in B (for example a factor Z in nZ levels,
 with NAs in database A), and a set of shared covariates (at least one) between the two databases.
 
 The order of these variables in the database have no importance but the column indexes related to database identifier, Y and Z, must be specified in the \code{indx_DB_Y_Z} option.
@@ -79,7 +79,7 @@ It suggests users to remove these rows before running the process again or imput
 C. PROFILES OF COVARIATES AND OUTPUT DETAILS
 
 Whatever the type (mixed or not) and the number of covariates in the data.frame of interest, the function \code{proxim_dist} firstly detects all the possible profiles (or combinations) of covariates from the 2 databases, and saves them in the output \code{profile}.
-By example, assuming that a data.frame in input (composed of two overlayed data.frames A and B) have three shared binary covariates (ie identically encoded in A and B) so the sequences \code{011} and \code{101} will be considered as two distinct profiles of covariates.
+For example, assuming that a data.frame in input (composed of two overlayed data.frames A and B) have three shared binary covariates (ie identically encoded in A and B) so the sequences \code{011} and \code{101} will be considered as two distinct profiles of covariates.
 If each covariate is a factor of \eqn{n_1}, \eqn{n_2} and \eqn{n_3} levels respectively, so it exists at most \eqn{n_1 \times n_2 \times n_3} possible profiles of covariates.
 This number is considered as a maximum here because only the profiles of covariates met in at least one of the two databases will be kept for the study.
 

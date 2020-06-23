@@ -71,7 +71,7 @@ Overlay of two databases with specific outcome variables and shared covariates
 Assuming that DB1 and DB2 are two databases (two separate data.frames with no overlapping part) to merge vertically, the function \code{merge_dbs} performs this overlay by checking the compatibility of the variables between the databases.
 Each database must contain a target variable (whose label must be filled in the argument \code{Y} for DB1 and in the argument \code{Z} for DB2 respectively, so that the final database in output will contain a target \code{Y} whose values will be missing in DB2 and another target \code{Z} whose values will be missing in DB1), a subset of shared covariates (by example, the best predictors of Y in DB1, and Z in DB2),
 and another possible subset of variables specific to each database.
-Each database can have a row identifier whose corresponding index of column must be assigned in the arguments \code{row_ID1} for DB1 and \code{row_ID2} for DB2. Nevertheless, by default, DB1 and DB2 have no row identifiers and the merging keeps unchanged the order of rows in the two databases provided that Y and Z have no missing values.
+Each database can have a row identifier whose corresponding index of column must be assigned in the arguments \code{row_ID1} for DB1 and \code{row_ID2} for DB2. Nevertheless, by default, DB1 and DB2 have no row identifiers and the merging remains unchanged the order of rows in the two databases provided that Y and Z have no missing values.
 A rule for the overlay is that the declared first database (in the argument \code{DB1}) will be placed above the second one (declared in the argument \code{DB2}).
 
 The function \code{merge_dbs} proposes a helpful tool for any user who wants to prepare their databases to data fusion by solving matching problems using algorithms in the package \code{Otrecod} via the functions \code{OT_outcome} or \code{OT_joint}.
@@ -79,12 +79,12 @@ This function notably detects heterogenity between variables from one database t
 
 A. The function \code{merge_dbs} handles incomplete information, by respecting the following rules:
 \itemize{
-\item If \code{Y} or \code{Z} have missing values in DB1 or DB2, corresponding rows are excluded from the database before merging. Moreover, the data fusion leaves unchanged the order of the rows in the 2 databases, and in the case of incomplete outcomes,
+\item If \code{Y} or \code{Z} have missing values in DB1 or DB2, corresponding rows are excluded from the database before merging. Moreover, the data fusion remains unchanged the order of the rows in the 2 databases, and in the case of incomplete outcomes,
 if A and B have row identifiers, the corresponding identifiers are removed and these latters are stored in the objects \code{DB1_ID} and \code{DB2_ID} of the output.
 \item Before overlay, the function deals with incomplete covariates according to the argument \code{impute}.
 Users can decide to work with complete case only ("CC"), to keep ("NO") or impute incomplete information ("MICE","FAMD").
-\item the function \code{imput_cov}, integrated in the syntax of \code{merge_dbs} deals with imputations. Two approaches are actually available:
-The multivariate imputation by chained equation approach (MICE, see Van Buuren 2011 for more details about the approach or the corresponding package \pkg{mice}),
+\item The function \code{imput_cov}, integrated in the syntax of \code{merge_dbs} deals with imputations. Two approaches are actually available:
+the multivariate imputation by chained equation approach (MICE, see Van Buuren 2011 for more details about the approach or the corresponding package \pkg{mice}),
 and an imputation approach from the package \pkg{missMDA} that uses a dimensionality reduction method (here a factor analysis for mixed data called FAMD, see Josse (2016)), to provide single imputations.
 If multiple imputation is required (\code{impute} = "MICE"), the default imputation methods are applied according to the type of the variables. The average of the plausible values will be retained for a continuous variable, while the most frequent candidate will be remained as a consensus value for a categorical variable or factor (ordinal or not).
 }

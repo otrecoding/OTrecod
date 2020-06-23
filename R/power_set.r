@@ -13,6 +13,9 @@
 #'
 #' @aliases power_set
 #'
+#' @references
+#' Devlin, Keith J (1979). Fundamentals of contemporary set theory. Universitext. Springer-Verlag
+#'
 #' @examples
 #' # Powerset of set of 4 elements
 #' fam  =  power_set(4)

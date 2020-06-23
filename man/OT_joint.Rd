@@ -22,11 +22,11 @@ OT_joint(
 )
 }
 \arguments{
-\item{datab}{A data.frame with least four columns sorted in a non-specific order. One column must be a column of identifier for the two databases, where the names of the two databases
-must be alphanumerically ranked in ascending order (By example: 1 for the top database and 2 for the database from below, or more logically here A and B  ...But NOT B and A!). One column (Y here but other names are allowed)
+\item{datab}{A data.frame with at least four columns sorted in a non-specific order. One column must be a column of identifier for the two databases, where the names of the two databases
+must be ranked in ascending order (By example: 1 for the top database and 2 for the database from below, or more logically here A and B  ...But NOT B and A!). One column (Y here but other names are allowed)
 must correspond to the target variable related to the information of interest to merge with its specific encoding in the database A (corresponding encoding should be so missing in the database B). In the same way,
 one column (Z here) corresponds to the second target variable with its specific encoding in the database B (corresponding encoding should be so missing in the database A).
-Finally, the input database must have at least one shared covariate with same encoding in A and B. Please notice that, if your data.frame has only four columns, that is to say, only one covariate, if this latter has NA, and unless user
+Finally, the input database must have at least one shared covariate with same encoding in A and B. Please notice that, if your data.frame has only four columns, that is to say with only one covariate, if this latter has NA, and unless user
 has previously imputed the corresponding missing information, the OT algorithm will only run complete cases.}
 
 \item{index_DB_Y_Z}{A vector of three column indexes. The first index must correspond to the index of the databases identifier column (DB identifier). The second index must correspond
@@ -40,35 +40,35 @@ to the index of the target variable in the first database (A) while the third in
 
 \item{convert.num}{Indexes of the continuous (quantitative) variables. They will be automatically converted in ordered factors. By default, no continuous variables is assumed in the database.}
 
-\item{convert.clss}{A vector indicating for each continuous variable to convert, the corresponding number of levels desired. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} equals 1 (only one integer),
+\item{convert.clss}{A vector indicating for each continuous variable to convert, the corresponding desired number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} equals 1 (only one integer),
 each discretization will count the same number of levels.}
 
-\item{dist.choice}{A character (with quotes) corresponding to the distance function chosen between: the euclidean distance ("E", by default), The Manhattan distance ("M"),
-the Gower distance ("G"), and the Hamming distance ("H") for binaries covariates only.}
+\item{dist.choice}{A character (with quotes) corresponding to the distance function chosen between: the euclidean distance ("E", by default), the Manhattan distance ("M"),
+the Gower distance ("G"), and the Hamming distance ("H") for binary covariates only.}
 
 \item{percent.knn}{Percent of closest neighbors taken in the computation of the cost matrix.}
 
-\item{maxrelax}{Maximum percentage of deviation from expected probability masses. It must be equal to 0 (default value) for the JOINT model, and equal to a strictly positive value for the R-JOINT model}
+\item{maxrelax}{The maximum percentage of deviation from expected probability masses. It must be equal to 0 (default value) for the \code{JOINT} model, and equal to a strictly positive value for the R-JOINT model}
 
-\item{lambda.reg}{A coefficient measuring the importance of the regularization term. In the related reference, it corresponds to the \code{R-JOINT} model for a value other than 0 (Default value))}
+\item{lambda.reg}{A coefficient measuring the importance of the regularization term. In the related reference, it corresponds to the \code{R-JOINT} model for a value other than 0 (default value))}
 
-\item{prox.dist}{A percentage (betwen 0 and 1) uses to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.}
+\item{prox.dist}{A percentage (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.}
 
-\item{prox.X}{A percentage (betwen 0 and 1) uses to calculate the distance threshold below which two covariates' profiles are supposed as neighbors.
+\item{prox.X}{A percentage (betwen 0 and 1) used to calculate the distance threshold below which two covariates' profiles are supposed as neighbors.
 If \code{prox.X = 1}, all profiles are considered as neighbors.}
 
-\item{which.DB}{A character indicating the database to complete ("BOTH" by default), "A" for the imputation of Z in A, "B" for the imputation of Y in B.}
+\item{which.DB}{A character indicating the database to complete ("BOTH" by default, for the prediction of Y and Z in the two databases), "A" only for the imputation of Z in A, "B" only for the imputation of Y in B.}
 }
 \value{
 A list of 7 elements containing:
     \item{time_exe}{Running time of the function}
-    \item{gamma_A}{Estimation of \eqn{gamma} for the completion of A. A cost matrix that corresponds to the joint distribution of (YA,ZA,XA)}
-    \item{gamma_B}{Estimation of \eqn{gamma} for the completion of B. A cost matrix that corresponds to the joint distribution of (YB,ZB,XB)}
+    \item{gamma_A}{Estimation of \eqn{\gamma} for the completion of A. A cost matrix that corresponds to the joint distribution of \eqn{(Y^A,Z^A,X^A)}}
+    \item{gamma_B}{Estimation of \eqn{\gamma} for the completion of B. A cost matrix that corresponds to the joint distribution of \eqn{(Y^B,Z^B,X^B)}}
     \item{profile}{A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results}
     \item{res_prox}{The outputs of the function \code{proxim_dist}}
-    \item{estimatorZA}{An array that corresponds to estimates of the probability distribution of Z conditional to X and Y in database A from predictions. The number of rows of each table corresponds to the total number of profiles of covariates.
+    \item{estimatorZA}{An array that corresponds to estimates of the probability distribution of Z conditional to X and Y in database A. The number of rows of each table corresponds to the total number of profiles of covariates.
     The number of columns of each table corresponds to the number of levels of Y. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of Z.}
-    \item{estimatorYB}{An array that corresponds to estimates of the probability distribution of Y conditional to X and Z in database B from predictions. The number of rows of each table corresponds to the total number of profiles of covariates.
+    \item{estimatorYB}{An array that corresponds to estimates of the probability distribution of Y conditional to X and Z in database B. The number of rows of each table corresponds to the total number of profiles of covariates.
     The number of columns of each table corresponds to the number of levels of Z. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of Y.}
     \item{DATA1_OT}{database A with imputed individual prediction on Z using OT}
     \item{DATA2_OT}{database B with imputed individual prediction on Y using OT}
@@ -80,7 +80,7 @@ using optimal transportation of the joint distribution of outcomes and covariate
 \details{
 A. THE RECODING PROBLEM IN DATA FUSION
 
-Assuming that Y and Z are two variables that summarize a same latent information (or at least two variables with very close distributions) in two separate (no overlapping rows) databases A and B respectively,
+Assuming that Y and Z are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
 so that Y and Z are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (with same encodings in A and B)
 completed or not. Integrating these two databases often requires to solve the recoding problem observed between Y and Z by creating an unique database where
 the missing information of Y and/or Z is fully completed.
@@ -89,16 +89,17 @@ the missing information of Y and/or Z is fully completed.
 B. INFORMATIONS ABOUT THE ALGORITHM
 
 As with the function \code{\link{OT_outcome}}, the function \code{OT_joint} provides a solution to the recoding problem by proposing an
-application of optimal transportation which aims at searching for a bijective mapping between the joint distributions of (Y,X) and (Z,X) in A and B (See the reference (2) for more details).
-The principle of the algorithm is also based on the resolution of an optimization problem, which provides a \eqn{gamma} solution (as called in (1) and (2)) which is an estimation
-of the distribution of (X,Y,Z) according to the database to complete (see the argument \code{which.DB} for the choice of the database). While the models \code{OUTCOME} and \code{R_OUTCOME} integrated in
-the function \code{\link{OT_outcome}} require post-treatment steps to provide individual predictions, the algorithm \code{JOINT} direcly uses estimations of the conditional distributions (Y|Z,X) in B and
-(Z|Y,X) in A to predict the corresponding incomplete individuals informations of Y and/or Z respectively.
+application of optimal transportation which aims is to search for a bijective mapping between the joint distributions of \code{(Y,X)} and \code{(Z,X)} in A and B (See the reference (2) for more details).
+The principle of the algorithm is also based on the resolution of an optimization problem, which provides a \eqn{\gamma} solution (as called in (1) and (2)) which is an estimation
+of the joint distribution of \code{(X,Y,Z)} according to the database to complete (see the argument \code{which.DB} for the choice of the database). While the models \code{OUTCOME} and \code{R_OUTCOME} integrated in
+the function \code{\link{OT_outcome}} require post-treatment steps to provide individual predictions, the algorithm \code{JOINT} direcly uses estimations of the conditional distributions \code{(Y|Z,X)} in B and
+\code{(Z|Y,X)} in A to predict the corresponding incomplete individuals informations of Y and/or Z respectively.
+This algorithm supposes that the conditional distribution \code{(Y|X)} must be identical in A and B. Respectively, \code{(Z|X)} is supposed identical in A and B.
 Estimations a posteriori of conditional probabilities \code{P[Y|X,Z]} and \code{P[Z|X,Y]} are available by profiles of covariates in output (See the objects \code{estimatorYB} and \code{estimatorZA}).
-Estimations of \eqn{gamma} are also available according to the chosen distributions transport (See the arguments \code{gamma_A} and \code{gamma_B}).
+Estimations of \eqn{\gamma} are also available according to the chosen transport distributions (See the arguments \code{gamma_A} and \code{gamma_B}).
 
 The model \code{R-JOINT} gathers enrichments of the model \code{JOINT} and is also available via the function \code{OT_joint} It allows users to add a relaxation term in the algorithm to relax distributional assumptions (\code{mawrelax}>0),
-and (or) add also a positive regularization term (\code{lamdba.reg}>0) expressing that the transportation map does not vary to quickly with respect of X.
+and (or) add also a positive regularization term (\code{lamdba.reg}>0) expressing that the transportation map does not vary to quickly with respect of covariates X.
 Is is suggested to users to calibrate these two parameters a posteriori by studying the stability of the individual predictions in output.
 
 
@@ -107,7 +108,7 @@ C. TYPE OF REQUIRED INPUT DATABASE
 The input database is a data.frame that must be saved in a specific form by users:
 \itemize{
 \item Two overlayed databases containing a common column of databases' identifiers (A and B, 1 or 2, by examples, encoded in numeric or factor form)
-\item A column corresponding to the target variable with its specific encoding in A (By example a factor Y encoded in nY levels, ordered or not, with NAs in the corresponding rows of B)
+\item A column corresponding to the target variable with its specific encoding in A (For example a factor Y encoded in nY levels, ordered or not, with NAs in the corresponding rows of B)
 \item A column corresponding to another target outcome summarizing the same latent information with its specific endoded in B (By example a factor Z in nZ levels, with NAs in rows of A)
 \item The order of the variables in the database have no importance but the indexes of the columns related to the 3rd columns previously described (ie ID, Y and Z) must be rigorously specified
 in the argument \code{index_DB_Y_Z}.
@@ -121,16 +122,16 @@ Remarks about the outcomes:
 \item A target outcome can be categorical, in factor, ordered or not, discrete (with a finite number of values ONLY) but, notice that, if they are stored in numeric they will be automatically converted in ordered factors.
 \item If a target outcome is incomplete, the corresponding rows will be automatically dropped during the execution of the function.
 }
-The type of each variables (including ID, Y and Z) of the database must be rigorously specified once, in one of the four arguments \code{quanti}, \code{nominal}, \code{ordinal} and \code{logic}.
+The type of each variables (including ID, Y and Z) of the database must be rigorously specified, in one of the four arguments \code{quanti}, \code{nominal}, \code{ordinal} and \code{logic}.
 
 
 D. TRANSFORMATIONS OF CONTINUOUS COVARIATES
 
 Continuous covariates with infinite numbers of values will have to be categorized beforehand their inclusions in the function.
-To assist users in this task, the function \code{OT_joint} integrates in is syntax a process dedicated to the categorization of continuous covariates. For this, it is necessary to rigorously filled in
+To assist users in this task, the function \code{OT_joint} integrates in its syntax a process dedicated to the categorization of continuous covariates. For this, it is necessary to rigorously fill in
 the arguments \code{quanti} and \code{convert.clss}.
-The first one informs about the indexes in database of the continuous variables to transform in ordered factor while the second one specifies the corresponding number of balanced levels desired (for unbalanced levels, users must do transformations by themselves).
-Therefore \code{quanti} and \code{convert.clss} must be vectors of same length, but if the length of \code{quanti} exceeds 1, while the length of \code{convert.clss} is 1, then, by default, all the covariates to convert will have the same number of classes,
+The first one informs about the indexes in database of the continuous variables to transform in ordered factor while the second one specifies the corresponding number of desired balanced levels (for unbalanced levels, users must do transformations by themselves).
+Therefore \code{convert.num} and \code{convert.clss} must be vectors of same length, but if the length of \code{quanti} exceeds 1, while the length of \code{convert.clss} is 1, then, by default, all the covariates to convert will have the same number of classes (transformation by quantiles),
 that corresponds to the value specified in the argument \code{convert.clss}.
 Please notice that only covariates can be transformed (not outcomes) and missing informations are not taken into account for the transformations.
 Moreover, all the indexes informed in the argument \code{convert.num} must also be informed in the argument \code{quanti}.
@@ -140,18 +141,18 @@ Finally, it is suggested to declare all discrete covariates as ordinal factors u
 E. INFORMATIONS ABOUT DISTANCE FUNCTIONS AND RELATED PARAMETERS
 
 Each individual (or row) of a given database is here characterized by his covariates, so the distance between 2 individuals or groups of individuals depends on similarities between covariates
-according to the distance function chosen by user. Users can specify the distance measure chosen via the argument \code{dist.choice}. Actually four distance functions are implemented in \code{OT_joint} to take into account the most frequently encountered situation (see Anderberg 1973):
+according to the distance function chosen by user (via the argument \code{dist.choice}). Actually four distance functions are implemented in \code{OT_joint} to take into account the most frequently encountered situation (see Anderberg 1973):
 \itemize{
-\item The Manhattan distance ("M")
-\item The Euclidean distance ("E")
-\item The Gower distance for mixed data (See Gower(1971): "G")
-\item The Hamming distance for binary data ("H")
+\item the Manhattan distance ("M")
+\item the Euclidean distance ("E")
+\item the Gower distance for mixed data (See Gower(1971): "G")
+\item the Hamming distance for binary data ("H")
 }
 
-Two profiles of covariates \eqn{P1} (n1 individuals) and \eqn{P2} (n2 individuals) will be considered as neighbors if \eqn{dist(P1,P2) < \code{prox.X} \times max(dist(Pi,Pj))} where \code{prox.X} must be fixed by user (\eqn{i = 1,..,n1} and \eqn{j = 1,..,n2}). This choice comes into the calculation of the \code{JOINT} and \code{R_JOINT} algorithms.
-In the same way, for a given profile of covariates \code{P_j}, an individual i will be considered as a neighbor of \code{P_j} if \eqn{dist(i,P_j) < \code{prox.dist} \times max(dist(i,P_j))} where \code{prox.dist} will be fixed by user.
+Let two profiles of covariates \eqn{P_1} (\eqn{n_1} individuals) and \eqn{P_2} (\eqn{n_2} individuals) will be considered as neighbors if \eqn{dist(P_1,P_2) < prox.X \times max(dist(P_i,P_j))} where \strong{prox.X} must be fixed by user (\eqn{i = 1,\Idots,n_1} and \eqn{j = 1,\Idots,n_2}). This choice is used in the calculation of the \code{JOINT} and \code{R_JOINT} algorithms.
+In the same way, for a given profile of covariates \code{Pj}, an individual i will be considered as a neighbor of \code{Pj} if \eqn{dist(i,P_j) < prox.dist \times max(dist(i,P_j))} where \strong{prox.dist} will be fixed by user.
 
-For more details about the related algorithms integrated in \code{OT_joint}, please consult, the 2nd article referenced.
+For more details about the related algorithms integrated in \code{OT_joint}, please consult the reference (2).
 }
 \examples{
 
