@@ -15,12 +15,12 @@
 #'
 #' The function \code{indiv_grp_closest} is an intermediate function used in the implementation of a model called {OUTCOME} (and its enrichment {R-OUTCOME}, see the reference (2) for more details) dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory.
 #' The model is implemented in the function \code{\link{OT_outcome}} which integrates the function \code{indiv_grp_closest} in its syntax as a possible second step of the algorithm.
-#' The function \code{indiv_grp_closest} can nevertheless be used separately provided that the argument \code{proxim} receives an output object of the function \code{\link{proxim_dist}}.
+#' The function \code{indiv_grp_closest} can also be used separately provided that the argument \code{proxim} receives an output object of the function \code{\link{proxim_dist}}.
 #' This latter is available in the package and is so directly usable beforehand.
 #'
 #' The algorithm related to \code{OUTCOME} (and \code{R-OUTCOME}) is made of two independent parts. Assuming that the objective consists in the prediction of Z in the database A:
 #' \itemize{
-#' \item The first part of the algorithm provides an estimate of gamma which can be interpreted as an estimation of the joint distribution (Y,Z) in A.
+#' \item The first part of the algorithm provides an estimate of \eqn{\gamma} which can be interpreted as an estimation of the joint distribution (Y,Z) in A.
 #' \item From the result of the first part, the second part executes a nearest neighbor procedure to provide the individual predictions of Z in A: and this procedure is taken over by the function \code{indiv_group_closest}.
 #' In other words, this function sequentially assigns to each individual of A the modality of Z that is closest.
 #' }
@@ -28,16 +28,16 @@
 #' The function \code{indiv_grp_closest} integrates in its syntax the function \code{\link{avg_dist_closest}} and the related argument \code{percent_closest} is identical in the two functions.
 #' Thus, when computing average distances between an individual i and a subset of individuals assigned to a same level of Y or Z is required, user can decide if all individuals from the subset of interest can participate to the computation (\code{percent_closest}=1) or only a fixed part p (<1) corresponding to the closest neighbors of i (in this case \code{percent_closest} = p).
 #'
-#' The arguments \code{jointprobaA} and \code{jointprobaB} can be seen as cost matrices (sum of cells must be equal to 1) that correspond to estimations of the joint distributions of (Y,Z) in A and B respectively.
-#' By example, assuming that nY1 individuals are assigned to the first modality of Y in A and the objective consists in the individual predictions of Z in A. Then, if jointprobaA[1,2] = 0.10,
+#' The arguments \code{jointprobaA} and \code{jointprobaB} corresponds to the estimations of \eqn{\gamma} (sum of cells must be equal to 1) in A and B respectively.
+#' For example, assuming that nY1 individuals are assigned to the first modality of Y in A and the objective consists in the individual predictions of Z in A. Then, if jointprobaA[1,2] = 0.10,
 #' the maximum number of individuals that can be assigned to the second modality of Z in A, can not exceed 0.10*nA.
 #' If nY1 < or = 0.10*nA then all individuals assigned to the first modality of Y will be assigned to the second modality of Z.
 #' At the end of the process, each individual with still no affectation  will receive the same modality of Z as those of his nearest neighbor in B.
 #'
 #' @param proxim An object corresponding to the output of the function \code{\link{proxim_dist}}
-#' @param jointprobaA A matrix whose number of columns corresponds to the number of modalities of the target variable Y in database A, and which number of rows corresponds to the number of modalities of Z in database B. It gives an estimation of the joint probability of (Y,Z) in A.
+#' @param jointprobaA A matrix whose number of columns corresponds to the number of modalities of the target variable Y in database A, and which number of rows corresponds to the number of modalities of Z in database B. It gives an estimation of the joint probability of \code{(Y,Z)} in A.
 #' The sum of cells of this matrix must be equal to 1
-#' @param jointprobaB A matrix whose number of columns equals the number of modalities of the target variable Y in database A, and which number of rows corresponds to the number of modalities of Z in database B. It gives an estimation of the joint probability of (Y,Z) in B.
+#' @param jointprobaB A matrix whose number of columns equals to the number of modalities of the target variable Y in database A, and which number of rows corresponds to the number of modalities of Z in database B. It gives an estimation of the joint probability of \code{(Y,Z)} in B.
 #' The sum of cells of this matrix must be equal to 1
 #' @param percent_closest A value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals taken in the computation of the average distances
 #' @param which.DB A character string (with quotes) that indicates which individual predictions need to be computed: only the individual predictions of Y in B ("B"), only those of Z in A ("A") or the both ("BOTH" by default)
@@ -61,13 +61,13 @@
 #' @examples
 #' data(simu_data)
 #'
-#' ### Example with The Manhattan distance
+#' ### Example with the Manhattan distance
 #'
 #' try1 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
 #'                     ordinal = c(2,6), logic = NULL, prep_choice = "M")
 #' res1 = proxim_dist(try1,norm = "M")
 #'
-#' ### Y(Yb1) and Z(Yb2) are a same variable encoded in 2 different forms:
+#' ### Y(Yb1) and Z(Yb2) are a same information encoded in 2 different forms:
 #' ### (3 levels for Y and 5 levels for Z)
 #' ### ... Stored in two distinct databases, A and B, respectively
 #' ### The marginal distribution of Y in B is unknown,

@@ -31,7 +31,7 @@ imput_cov(
 \item{seed_choice}{An integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default)}
 }
 \value{
-A list of 3 or 4 objects (depending on the missMDA argument). The 1st three following objects if \code{missMDA} = TRUE, otherwise 4 objects are returned:
+A list of 3 or 4 objects (depending on the missMDA argument). The first three following objects if \code{missMDA} = TRUE, otherwise 4 objects are returned:
 \item{RAW}{A data.frame corresponding to the initial (or raw) database}
 \item{IMPUTE}{A character corresponding to the type of selected imputation}
 \item{DATA_IMPUTE}{A data.frame corresponding to the completed (consensus if multiple imputations) database}
@@ -42,11 +42,11 @@ This function performs imputations on incomplete covariates, whatever their type
 }
 \details{
 By default, the function \code{impute_cov} handles missing information using multivariate imputation by chained equations (MICE, see Van Buuren, 2011 for more details about the method) by integrating in its syntax the function \code{\link[mice]{mice}}.
-All values of this last function are taken by default, excepted the required number of multiple imputations, which can be fixed by using the argument \code{R_mice}, and the imputation method chosen for each variable (\code{meth} argument),
+All values of this last function are taken by default, excepted the required number of multiple imputations, which can be fixed by using the argument \code{R_mice}, and the chosen imputation method for each variable (\code{meth} argument),
 that corresponds to the argument \code{defaultMethod} of the function \code{\link[mice]{mice}}.
 When multiple imputations are required (for MICE only), each missing information is imputed by a consensus value:
 the average of the candidate values will be retained for numerical variables, while the most frequent class will be retained for categorical variables (ordinal or not).
-The output \code{MICE_IMPS} stored the imputed databases to allow users to build their own consensus values by themselves and(or) to eventually assess the variabilities related to the proposed imputed values if necessary.
+The output \code{MICE_IMPS} stores the imputed databases to allow users to build their own consensus values by themselves and(or) to eventually assess the variabilities related to the proposed imputed values if necessary.
 For this method, a random number generator must be fixed or sampled using the argument \code{seed_choice}.
 
 When the argument \code{missMDA} is equalled to \code{TRUE}, incomplete values are replaced (single imputation) using a method based on dimensionality reduction called factor analysis for mixed data (FAMD) using the the \code{\link[missMDA]{imputeFAMD}} function of the \pkg{missMDA} package.

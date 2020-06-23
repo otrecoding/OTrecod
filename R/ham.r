@@ -5,9 +5,8 @@
 #'
 #' \code{ham} returns the pairwise distance between rows (observations) of a single matrix if \code{mat_1} equals \code{mat_2}.
 #' Otherwise \code{ham} returns the matrix distance between rows of the two matrices \code{mat_1} and \code{mat_2} if this 2 matrices are different in input.
-#' Calculate the Hamming distance stay possible despite the presence of missing data by applying the following formula.
-#'
-#' Suppose that A and B are 2 matrices such as \code{ncol(A) = ncol(B)}. The Hamming distance between the ith row of A and the kth row of B equals:
+#' Calculate the Hamming distance stay possible despite the presence of missing data by applying the following formula. Suppose that A and B are 2 matrices such as \code{ncol(A) = ncol(B)}.
+#' The Hamming distance between the \eqn{i^{th}} row of A and the \eqn{k^{th}} row of B equals:
 #'
 #' \deqn{\mbox{ham}(A_i,B_k) = \frac{\sum_j 1_{\left\{A_{ij} \neq B_{kj}\right\}}}{\sum_j 1}\times\left(\frac{\sum_j 1}{\sum_j 1_{\left\{!\mbox{is.na}(A_{ij}) \& !\mbox{is.na}( B_{kj})\right\}}}\right)}
 #'

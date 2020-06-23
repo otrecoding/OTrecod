@@ -44,22 +44,21 @@ the missing information of Y and Z is completed.
 
 B. DESCRIPTION OF THE FUNCTION
 
-The function \code{indiv_grp_optimal} is an intermediate function used in the implementation of a model called {OUTCOME} (and its enrichment {R-OUTCOME}, see the reference (2) for more details) dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory.
+The function \code{indiv_grp_optimal} is an intermediate function used in the implementation of a model called \code{OUTCOME} (and its enrichment \code{R-OUTCOME}, see the reference (2) for more details) dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory.
 The model is implemented in the function \code{\link{OT_outcome}} which integrates the function \code{indiv_grp_optimal} in its syntax as a possible second step of the algorithm.
 The function \code{indiv_grp_optimal} can nevertheless be used separately provided that the argument \code{proxim} receives an output object of the function \code{\link{proxim_dist}}.
 This latter is available in the package and is so directly usable beforehand.
 
-The function \code{indiv_grp_optimal} constitutes an alternative method to the nearest neighbor procedure implemented in the function \code{\link{indiv_grp_closest}}. Its objective consists in getting individual transports from grouped joint probabilities
-by directly targetting the solution of recoding problems without using a nearest neighbor approach which constraints to some arbitrary decisions.
-As for the function \code{\link{indiv_grp_closest}}, assuming that the objective consists in the prediction of Z in the database A, the first step of the algorithm related to \code{OUTCOME} provides an estimate of gamma which can be interpreted as an estimation of the joint distribution (Y,Z) in A.
-Rather than using a nearest neighbor approach to provide individual predictions,the function \code{indiv_grp_optimal} solves an optimization problem using the simplex algorithm which searches for the individual predictions of Z that minimize the computed total distance observed satisfying the joint probability distribution estimated in the first part.
+The function \code{indiv_grp_optimal} constitutes an alternative method to the nearest neighbor procedure implemented in the function \code{\link{indiv_grp_closest}}.
+As for the function \code{\link{indiv_grp_closest}}, assuming that the objective consists in the prediction of Z in the database A, the first step of the algorithm related to \code{OUTCOME} provides an estimate of \eqn{\gamma} which can is an estimation of the joint distribution \code{(Y,Z)} in A.
+Rather than using a nearest neighbor approach to provide individual predictions,the function \code{indiv_grp_optimal} solves an optimization problem using the simplex algorithm which searches for the individual predictions of Z that minimize the computed total distance satisfying the joint probability distribution estimated in the first part.
 More details about the theory related to the solving of this optimization problem is described in the section 5.3 of (2).
 
 Obviously, this algorithm  runs in the same way for the prediction of Y in the database B.
 The function \code{indiv_grp_optimal} integrates in its syntax the function \code{\link{avg_dist_closest}} and the related argument \code{percent_closest} is identical in the two functions.
-Thus, when computing average distances between an individual i and a subset of individuals assigned to a same level of Y or Z is required, user can decide if all individuals from the subset of interest can participate to the computation (\code{percent_closest}=1) or only a fixed part p (<1) corresponding to the closest neighbors of i (in this case \code{percent_closest} = p).
+Thus, when computing average distances between an individual i and a subset of individuals assigned to a same level of Y or Z is required, user can decide if all individuals from the subset of interest can participate to the computation (\code{percent_closest = 1}) or only a fixed part p (<1) corresponding to the closest neighbors of i (in this case \code{percent_closest} = p).
 
-The arguments \code{jointprobaA} and \code{jointprobaB} can be seen as cost matrices (sum of cells must be equal to 1) that correspond to estimations of the joint distributions of (Y,Z) in A and B respectively.
+The arguments \code{jointprobaA} and \code{jointprobaB} can be seen as estimations of \eqn{\gamma} (sum of cells must be equal to 1) that correspond to estimations of the joint distributions of \code{(Y,Z)} in A and B respectively.
 }
 \examples{
 
