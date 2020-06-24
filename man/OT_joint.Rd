@@ -149,7 +149,7 @@ according to the distance function chosen by user (via the argument \code{dist.c
 \item the Hamming distance for binary data ("H")
 }
 
-Let two profiles of covariates \eqn{P_1} (\eqn{n_1} individuals) and \eqn{P_2} (\eqn{n_2} individuals) will be considered as neighbors if \eqn{dist(P_1,P_2) < prox.X \times max(dist(P_i,P_j))} where \strong{prox.X} must be fixed by user (\eqn{i = 1,\Idots,n_1} and \eqn{j = 1,\Idots,n_2}). This choice is used in the calculation of the \code{JOINT} and \code{R_JOINT} algorithms.
+Let two profiles of covariates \eqn{P_1} (\eqn{n_1} individuals) and \eqn{P_2} (\eqn{n_2} individuals) will be considered as neighbors if \eqn{dist(P_1,P_2) < prox.X \times max(dist(P_i,P_j))} where \strong{prox.X} must be fixed by user (\eqn{i = 1,\dots,n_1} and \eqn{j = 1,\dots,n_2}). This choice is used in the calculation of the \code{JOINT} and \code{R_JOINT} algorithms.
 In the same way, for a given profile of covariates \code{Pj}, an individual i will be considered as a neighbor of \code{Pj} if \eqn{dist(i,P_j) < prox.dist \times max(dist(i,P_j))} where \strong{prox.dist} will be fixed by user.
 
 For more details about the related algorithms integrated in \code{OT_joint}, please consult the reference (2).
