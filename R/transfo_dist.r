@@ -102,6 +102,7 @@
 #'
 #'
 #' @author Gregory Guernec
+#'
 #' \email{otrecod.pkg@@gmail.com}
 #'
 #' @examples

@@ -122,5 +122,6 @@ percent_closest= 0.90,which.DB="A")
 }
 \author{
 Gregory Guernec, Valerie Gares, Jeremy Omer
+
 \email{otrecod.pkg@gmail.com}
 }

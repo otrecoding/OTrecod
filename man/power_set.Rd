@@ -30,5 +30,6 @@ Devlin, Keith J (1979). Fundamentals of contemporary set theory. Universitext. S
 }
 \author{
 Gregory Guernec
+
 \email{otrecod.pkg@gmail.com}
 }

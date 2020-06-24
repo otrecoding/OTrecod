@@ -11,6 +11,7 @@
 #' \item{LEVELS_NEW}{The levels (ordered or not) retained for z}
 #'
 #' @author Gregory Guernec
+#'
 #' \email{otrecod.pkg@@gmail.com}
 #'
 #' @seealso \code{\link{compare_lists}}

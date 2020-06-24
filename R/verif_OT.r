@@ -68,6 +68,7 @@
 #' @importFrom StatMatch pw.assoc
 #'
 #' @author Gregory Guernec
+#'
 #' \email{otrecod.pkg@@gmail.com}
 #'
 #' @aliases verif_OT

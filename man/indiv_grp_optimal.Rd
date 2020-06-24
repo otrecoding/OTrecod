@@ -147,5 +147,6 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb
 }
 \author{
 Gregory Guernec, Valerie Gares, Jeremy Omer
+
 \email{otrecod.pkg@gmail.com}
 }

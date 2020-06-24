@@ -12,7 +12,9 @@
 #' between the 2 lists, or \code{FALSE} otherwise
 #'
 #' @author Gregory Guernec
+#'
 #' \email{otrecod.pkg@@gmail.com}
+#'
 #' @export
 #'
 #' @aliases compare_lists

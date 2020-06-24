@@ -9,6 +9,7 @@
 #' @export
 #'
 #' @author Gregory Guernec
+#'
 #' \email{otrecod.pkg@@gmail.com}
 #'
 #' @aliases power_set
