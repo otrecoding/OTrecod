@@ -10,7 +10,7 @@
 #'
 #' \deqn{\mbox{ham}(A_i,B_k) = \frac{\sum_j 1_{\left\{A_{ij} \neq B_{kj}\right\}}}{\sum_j 1}\times\left(\frac{\sum_j 1}{\sum_j 1_{\left\{!\mbox{is.na}(A_{ij}) \& !\mbox{is.na}( B_{kj})\right\}}}\right)}
 #'
-#' where: \eqn{i = 1,\ldots,\mbox{nrow}(A)} and  \eqn{k = 1,\ldots,\mbox{nrow}(B)}; And the expression located to the right term of the multiplication corresponds to a specific weigh applied in presence of NAs in \eqn{A_i} and(or) \eqn{B_k}.
+#' where: \eqn{i = 1,\dots,\mbox{nrow}(A)} and  \eqn{k = 1,\dots,\mbox{nrow}(B)}; And the expression located to the right term of the multiplication corresponds to a specific weigh applied in presence of NAs in \eqn{A_i} and(or) \eqn{B_k}.
 #'
 #' This option is not implemented in the \code{\link[rdist]{cdist}} function and the Hamming distance can not be computed using the \code{\link[proxy]{dist}} function either.
 #'
