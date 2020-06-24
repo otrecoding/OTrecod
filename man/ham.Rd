@@ -73,5 +73,6 @@ Roth R (2006). Introduction to Coding Theory. Cambridge University Press.
 }
 \author{
 Gregory Guernec
+
 \email{otrecod.pkg@gmail.com}
 }

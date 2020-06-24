@@ -26,5 +26,6 @@ treat_bin = transfo_quali(treat,"trt")
 }
 \author{
 Gregory Guernec
+
 \email{otrecod.pkg@gmail.com}
 }

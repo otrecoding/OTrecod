@@ -40,5 +40,6 @@ OTrecod::compare_lists(list6,list7)
 }
 \author{
 Gregory Guernec
+
 \email{otrecod.pkg@gmail.com}
 }

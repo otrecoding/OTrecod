@@ -32,7 +32,7 @@
 #' \item The conditional distribution \code{(Y|X)} must be identical in A and B. Respectively, \code{(Z|X)} is supposed identical in A and B.
 #' }
 #' Because the first assumption can appear too strong in some situations, a relaxation of the constraints of marginal distribution is possible using the argument \code{maxrelax}.
-#' When \code{indiv.method = "sequential"} and \code{maxrelax = 0}, the first version of the algorithm (called \code{OUTCOME} in (2) and used in all the reference (1))
+#' When \code{indiv.method = "sequential"} and \code{maxrelax = 0}, the first version of the algorithm (called \code{OUTCOME} in (2) and used in all the article (1))
 #' is applied. In all other situations, the algorithm applied corresponds to a model called \code{R_OUTCOME} (only described in (2)).
 #' Estimations a posteriori of conditional probabilities \code{P[Y|X,Z]} and \code{P[Z|X,Y]} are available by profiles of covariates in output (See the objects \code{estimatorYB} and \code{estimatorZA}).
 #' Estimations of \eqn{\gamma} are also available according to the direction of the distributions transport chosen (See \code{gamma_A} and \code{gamma_B}).
@@ -72,17 +72,17 @@
 #' E. INFORMATIONS ABOUT DISTANCE FUNCTIONS
 #'
 #' Each individual (or row) of a given database is here characterized by their covariates, so the distance between two individuals or groups of individuals depends on similarities between covariates
-#' according to the distance function chosen by user (via the argument \code{dist.choice}). Actually four distance functions are implemented in \code{OT_outcome} to take into account the most frequently encountered situation (see Anderberg 1973):
+#' according to the distance function chosen by user (via the argument \code{dist.choice}). Actually four distance functions are implemented in \code{OT_outcome} to take into account the most frequently encountered situation (see (3)):
 #' \itemize{
 #' \item the Manhattan distance ("M")
 #' \item the Euclidean distance ("E")
-#' \item the Gower distance for mixed data (See Gower(1971): "G")
+#' \item the Gower distance for mixed data (see (4): "G")
 #' \item the Hamming distance for binary data ("H")
 #' }
-#' Moreover, it is also possible to directly apply the first three distances mentioned on coordinates extracted from a multivariate analysis (Factor Analysis for Mixed Data, see Pages 2004) applied on row covariates using the arguments \code{FAMD.coord} and \code{FAMD.perc}.
+#' Moreover, it is also possible to directly apply the first three distances mentioned on coordinates extracted from a multivariate analysis (Factor Analysis for Mixed Data, see (5)) applied on row covariates using the arguments \code{FAMD.coord} and \code{FAMD.perc}.
 #' This method is used in the article (1).
 #'
-#' As a decision rule, for a given profile of covariates \eqn{P_j}, an individual i will be considered as a neighbor of \eqn{P_j} if \eqn{dist(i,P_j) < \mbox{prox.dist} \times max(dist(i,P_j))} where \strong{prox.dist} must be fixed by user.
+#' As a decision rule, for a given profile of covariates \eqn{P_j}, an individual i will be considered as a neighbor of \eqn{P_j} if \eqn{dist(i,P_j) < \mbox{prox.dist} \times max(dist(i,P_j))} where \eqn{prox.dist} must be fixed by user.
 #'
 #'
 #' @aliases OT_outcome ot_outcome OT
@@ -108,7 +108,7 @@
 #' @param FAMD.perc A percent value (between 0 and 100) linked to the \code{FAMD.coord} argument. When this latter equals TRUE, this argument corresponds to the minimum part of variability that must be taken into account by the principal components of the FAMD method.
 #' This option fixes the remaining number of principal components for the rest of the study.
 #' @param percent.knn Percent of closest neighbors taken in the computation of the cost matrices.
-#' @param maxrelax The maximum percentage of deviation from expected probability masses (0 for the \code{OUTCOME} model, a non-zero value otherwise). Please consult the reference article for more details.
+#' @param maxrelax The maximum percentage of deviation from expected probability masses (0 for the \code{OUTCOME} model, a non-zero value otherwise). Please consult (2) for more details.
 #' @param prox.dist A percentage (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates. This choice does not influence the estimate of \eqn{\gamma},
 #' but the estimates of the conditional posterior probabilities stored, in output, in the objects \code{estimatorZA} and \code{estimatorYB}.
 #' @param indiv.method A character string indicating the chosen method to get individual predictions from the joint probabilities assessed, "sequential" by default, or "optimal". Please consult the section \code{details} and the corresponding article 2 for more details.
@@ -129,22 +129,18 @@
 #'
 #'
 #' @author Gregory Guernec, Valerie Gares, Jeremy Omer
+#'
 #' \email{otrecod.pkg@@gmail.com}
 #'
 #' @references
 #' \enumerate{
-#' \item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
+#' \item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N. (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
 #' Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
 #' \item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
+#' \item Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
+#' \item Gower J.C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637.
+#' \item Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.
 #' }
-#' # For the Gower distance:
-#' Gower J. C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637.
-#'
-#' # About the other distance functions:
-#' Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
-#'
-#' # For Factor Analysis with mixed data:
-#' Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.
 #'
 #'
 #' @seealso \code{\link{transfo_dist}},\code{\link{proxim_dist}}, \code{\link{avg_dist_closest}}, \code{\link{indiv_grp_closest}}, \code{\link{indiv_grp_optimal}}

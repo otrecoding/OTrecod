@@ -84,8 +84,8 @@ if A and B have row identifiers, the corresponding identifiers are removed and t
 \item Before overlay, the function deals with incomplete covariates according to the argument \code{impute}.
 Users can decide to work with complete case only ("CC"), to keep ("NO") or impute incomplete information ("MICE","FAMD").
 \item The function \code{imput_cov}, integrated in the syntax of \code{merge_dbs} deals with imputations. Two approaches are actually available:
-the multivariate imputation by chained equation approach (MICE, see Van Buuren 2011 for more details about the approach or the corresponding package \pkg{mice}),
-and an imputation approach from the package \pkg{missMDA} that uses a dimensionality reduction method (here a factor analysis for mixed data called FAMD, see Josse (2016)), to provide single imputations.
+the multivariate imputation by chained equation approach (MICE, see (3) for more details about the approach or the corresponding package \pkg{mice}),
+and an imputation approach from the package \pkg{missMDA} that uses a dimensionality reduction method (here a factor analysis for mixed data called FAMD (4), to provide single imputations.
 If multiple imputation is required (\code{impute} = "MICE"), the default imputation methods are applied according to the type of the variables. The average of the plausible values will be retained for a continuous variable, while the most frequent candidate will be remained as a consensus value for a categorical variable or factor (ordinal or not).
 }
 
@@ -158,18 +158,11 @@ soluc4  = merge_dbs(data_A,data_B,
 
 }
 \references{
-### For the Optimal Transportation algorithm:
 \enumerate{
-\item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics. 0, 20180106 (2019),\url{https://doi.org/10.1515/ijb-2018-0106}
-\item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
-}
-# For the package missMDA:
-\itemize{
-\item Josse J, Husson F (2016). missMDA: A Package for Handling Missing Values in Multivariate Data Analysis. Journal of Statistical Software, 70(1), 1–31. doi: 10.18637/jss.v070.i01
-}
-# For the package MICE:
-\itemize{
+\item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N. (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics. 0, 20180106 (2019),\url{https://doi.org/10.1515/ijb-2018-0106}
+\item Gares V, Omer J. (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
 \item van Buuren, S., Groothuis-Oudshoorn, K. (2011). mice: Multivariate Imputation by Chained Equations in R. Journal of Statistical Software, 45(3), 1–67. url{https://www.jstatsoft.org/v45/i03/}
+\item Josse J, Husson F. (2016). missMDA: A Package for Handling Missing Values in Multivariate Data Analysis. Journal of Statistical Software, 70(1), 1–31. doi: 10.18637/jss.v070.i01
 }
 }
 \seealso{
@@ -177,5 +170,6 @@ soluc4  = merge_dbs(data_A,data_B,
 }
 \author{
 Gregory Guernec
+
 \email{otrecod.pkg@gmail.com}
 }

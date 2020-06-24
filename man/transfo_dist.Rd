@@ -183,5 +183,6 @@ try5 = transfo_dist(simu_data2,index_DB_Y_Z = c(8,1,6),quanti = 6:7, nominal = c
 }
 \author{
 Gregory Guernec
+
 \email{otrecod.pkg@gmail.com}
 }

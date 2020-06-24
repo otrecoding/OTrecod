@@ -42,7 +42,7 @@ A list of 15 elements (the first 15 detailed below) is returned containing vario
 \code{proxim_dist} computes the pairwise distance matrix of a database and cross-distance matrix between two databases according to various distance functions in the context of data fusion.
 }
 \details{
-This function is the first step of a family of algorithms that solve recoding problems of data fusion using Optimal Transportation theory (See the details of these corresponding models \code{OUTCOME},\code{R_OUTCOME},\code{JOINT} and \code{R_JOINT} in the references (1) and (2))
+This function is the first step of a family of algorithms that solve recoding problems of data fusion using Optimal Transportation theory (See the details of these corresponding models \code{OUTCOME},\code{R_OUTCOME},\code{JOINT} and \code{R_JOINT} in (1) and (2))
 The function \code{proxim_dist} is directly implemented in the functions \code{\link{OT_outcome}} and \code{\link{OT_joint}} but can also be used separately as long as the input database has as suitable structure. Nevertheless, its preparation will have to be rigorously made in two steps detailled in the following sections.
 
 A. REQUIRED STRUCTURE FOR THE DATABASE
@@ -65,16 +65,16 @@ B. DISTANCE FUNCTIONS AND TYPES OF COVARIATES
 
 In a second step, before including the data.frame in the function, the shared variables of the merged database will have to be encoded according to the choice of the distance function fixed by user, knowing that it is also frequent that it is the type of the variables which fixes the distance function to choose.
 The function \code{\link{transfo_dist}} is available in the package to assist users in this task but a user can also decide to make this preparation by themselves.
-Thus, with the Euclidean or Manhattan distance (\code{norm} = "E" or "M"), if all types of variables will be allowed, logical variables will have to be previously transformed in binary variables, and categorical variables (factors ordered or not) will have to be transformed by their related disjunctive tables (the function \code{\link{transfo_quali}} can make these specific transformations).
+Thus, with the Euclidean or Manhattan distance ((3), \code{norm} = "E" or "M"), if all types of variables will be allowed, logical variables will have to be previously transformed in binary variables, and categorical variables (factors ordered or not) will have to be transformed by their related disjunctive tables (the function \code{\link{transfo_quali}} can make these specific transformations).
 The Hamming distance (\code{norm} = "H") only requires binary variables (all other forms are not allowed). In this context, continuous variables could have been converted in factor of k levels (k>2) beforehand. The categorical covariates are then transformed in disjunctive tables (containing the (k-1) corresponding binary variables) before use. With this distance, categorical variables are also transformed in disjunctive tables.
 Notice that, using the Hamming distance could be quite long in presence NAs on covariates, so please be a little patient and let the function runs few minutes if necessary.
-Finally, the Gower distance (\code{norm} = "G") uses the (\code{\link[StatMatch]{gower.dist}}) function and so allows logical, categorical and numeric variables with no preliminary transformations.
+Finally, the Gower distance ((4), \code{norm} = "G") uses the (\code{\link[StatMatch]{gower.dist}}) function (5) and so allows logical, categorical and numeric variables with no preliminary transformations.
 
 In conclusion, the structure of the data.frame required in input of the function \code{proxim_dist} corresponds to two overlayed databases with two target outcomes and a set of shared covariates whose encodings depend on the distance function choosen by user.
 
 If some columns are excluded when computing an Euclidean, Manhattan, or Hamming distance between two rows, the sum is scaled up proportionally to the number of columns used in the computation as proposed by the standard (\code{\link[stats]{dist}}) function.
 If all pairs are excluded when computing a particular distance, instead of putting NA in the corresponding cell of the distance matrix, the process stops and an object listing the problematic rows is proposed in output.
-It suggests users to remove these rows before running the process again or impute NAs related to these rows (See ex 6 for more details).
+It suggests users to remove these rows before running the process again or impute NAs related to these rows (see (6) for more details).
 
 C. PROFILES OF COVARIATES AND OUTPUT DETAILS
 
@@ -160,20 +160,13 @@ res8 = proxim_dist(try8,norm = "M")
 
 }
 \references{
-# About OT algorithms for data fusion:
 \enumerate{
 \item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
 Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
 \item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
-}
-# About the Gower distance:
-\itemize{
-\item Gower, J. C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623--637.
-\item D'Orazio M (2015). Integration and imputation of survey data in R: the StatMatch package. Romanian Statistical Review, vol. 63(2)
-}
-# About other distance functions:
-\itemize{
 \item Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
+\item Gower, J. C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623--637.
+\item D'Orazio M. (2015). Integration and imputation of survey data in R: the StatMatch package. Romanian Statistical Review, vol. 63(2)
 \item Borg, I. and Groenen, P. (1997) Modern Multidimensional Scaling. Theory and Applications. Springer.
 }
 }
@@ -182,5 +175,6 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb
 }
 \author{
 Gregory Guernec, Valerie Gares, Jeremy Omer
+
 \email{otrecod.pkg@gmail.com}
 }

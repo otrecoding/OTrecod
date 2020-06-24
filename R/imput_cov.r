@@ -3,7 +3,7 @@
 #'
 #' This function performs imputations on incomplete covariates, whatever their types, using functions from the package \pkg{MICE} (Van Buuren's Multiple Imputation) or functions from the package \pkg{missMDA} (Simple Imputation with Multivariate data analysis)
 #'
-#' By default, the function \code{impute_cov} handles missing information using multivariate imputation by chained equations (MICE, see Van Buuren, 2011 for more details about the method) by integrating in its syntax the function \code{\link[mice]{mice}}.
+#' By default, the function \code{impute_cov} handles missing information using multivariate imputation by chained equations (MICE, see (1) for more details about the method) by integrating in its syntax the function \code{\link[mice]{mice}}.
 #' All values of this last function are taken by default, excepted the required number of multiple imputations, which can be fixed by using the argument \code{R_mice}, and the chosen imputation method for each variable (\code{meth} argument),
 #' that corresponds to the argument \code{defaultMethod} of the function \code{\link[mice]{mice}}.
 #' When multiple imputations are required (for MICE only), each missing information is imputed by a consensus value:
@@ -11,7 +11,7 @@
 #' The output \code{MICE_IMPS} stores the imputed databases to allow users to build their own consensus values by themselves and(or) to eventually assess the variabilities related to the proposed imputed values if necessary.
 #' For this method, a random number generator must be fixed or sampled using the argument \code{seed_choice}.
 #'
-#' When the argument \code{missMDA} is equalled to \code{TRUE}, incomplete values are replaced (single imputation) using a method based on dimensionality reduction called factor analysis for mixed data (FAMD) using the the \code{\link[missMDA]{imputeFAMD}} function of the \pkg{missMDA} package.
+#' When the argument \code{missMDA} is equalled to \code{TRUE}, incomplete values are replaced (single imputation) using a method based on dimensionality reduction called factor analysis for mixed data (FAMD) using the the \code{\link[missMDA]{imputeFAMD}} function of the \pkg{missMDA} package (2).
 #' Using this approach, the function \code{imput_cov} keeps all the default values integrated in the function \code{imputeFAMD} excepted the number of dimensions used for FAMD which can be fixed by users (3 by default).
 #'
 #' @param dat1 A data.frame containing the variables to be imputed and the one participating in the imputations
@@ -35,18 +35,15 @@
 #'
 #' @export
 #' @author Gregory Guernec
+#'
 #' \email{otrecod.pkg@@gmail.com}
 #'
 #' @aliases imput_cov
 #'
 #' @references
-#' # For missMDA:
-#' \itemize{
-#' \item Josse J, Husson F (2016). missMDA: A Package for Handling Missing Values in Multivariate Data Analysis. Journal of Statistical Software, 70(1), 1–31. doi: 10.18637/jss.v070.i01
-#' }
-#' # For MICE:
-#' \itemize{
+#' \enumerate{
 #' \item van Buuren, S., Groothuis-Oudshoorn, K. (2011). mice: Multivariate Imputation by Chained Equations in R. Journal of Statistical Software, 45(3), 1–67. url{https://www.jstatsoft.org/v45/i03/}
+#' \item Josse J, Husson F. (2016). missMDA: A Package for Handling Missing Values in Multivariate Data Analysis. Journal of Statistical Software, 70(1), 1–31. doi: 10.18637/jss.v070.i01
 #' }
 #'
 #' @examples

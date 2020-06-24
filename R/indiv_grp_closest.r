@@ -43,6 +43,7 @@
 #' @param which.DB A character string (with quotes) that indicates which individual predictions need to be computed: only the individual predictions of Y in B ("B"), only those of Z in A ("A") or the both ("BOTH" by default)
 #'
 #' @author Gregory Guernec, Valerie Gares, Jeremy Omer
+#'
 #' \email{otrecod.pkg@@gmail.com}
 #'
 #' @seealso \code{\link{proxim_dist}},\code{\link{avg_dist_closest}}, ,\code{\link{OT_outcome}}

@@ -31,7 +31,7 @@ because this latter is, by example, the result of predictions provided by a give
 Assuming that Y and Z have nY and nZ modalities respectively so that nY > nZ, in a first step, the
 function \code{error_group} groups combinations of modalities of Y to build all possible variables Y' verifying nY' = nZ.
 In a second step, the association between Z and each new variable Y' generated is measured by studying the ratio of concordant pairs related to the confusion matrix but also using standard criterions:
-the Cramer's V (1946), the Cohen's kappa coefficient (See McHugh, 2012) and the Spearman's rank correlation coefficient.
+the Cramer's V (1), the Cohen's kappa coefficient (2) and the Spearman's rank correlation coefficient.
 
 According to the type of Y, different combinations of modalities are tested:
 \itemize{
@@ -88,11 +88,13 @@ error_group(Z3,Z1,FALSE)
 
 }
 \references{
-Cramér, Harald (1946) Mathematical Methods of Statistics. Princeton: Princeton University Press.
-
-McHugh, Mary L (2012) Interrater reliability: The kappa statistic. Biochemia Medica. 22 (3): 276–282
+\enumerate{
+\item Cramér, Harald. (1946). Mathematical Methods of Statistics. Princeton: Princeton University Press.
+\item McHugh, Mary L. (2012). Interrater reliability: The kappa statistic. Biochemia Medica. 22 (3): 276–282
+}
 }
 \author{
 Gregory Guernec
+
 \email{otrecod.pkg@gmail.com}
 }

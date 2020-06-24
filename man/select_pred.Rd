@@ -120,13 +120,13 @@ B. PAIRWISE ASSOCIATIONS BETWEEN PREDICTORS
 In a first step of process, \code{select_pred} calculates standard pairwise associations between predictors according to their types.
 \enumerate{
 \item{Between categorical predictors (ordinal, nominal and logical):
-Cramer's V (and Bias-corrected Cramer's V, see Bergsma 2013, for more details) are calculated between categorical predictors and the argument \code{thres_cat} fixed the associated threshold beyond which two predictors can be considered as redundant.
+Cramer's V (and Bias-corrected Cramer's V, see (1) for more details) are calculated between categorical predictors and the argument \code{thres_cat} fixed the associated threshold beyond which two predictors can be considered as redundant.
 A similar process is done between the target variable and the subset of categorical variables which provides in output a first table ranking the top scoring predictors. This table summarizes the ability of each variable to predict the target outcome.}
 \item{Between continuous predictors:
 If the \code{ordinal} and \code{logic} arguments differ from NULL, all the corresponding predictors are beforehand converted in rank values.
 For numeric (quantitative), logical and ordinal predictors, pairwise correlations between ranks (Spearman) are calculated and the argument \code{thresh_num} fixed the related threshold beyond which two predictors can be considered as redundant.
 A similar process is done between the outcome and the subset of discrete variables which provides in output, a table ranking the top scoring predictor variates which summarizes their abilities to predict the target.
-In addition, the result of a Farrar and Glauber test is provided. This test is based on the determinant of the correlation matrix of covariates and the related null hypothesis of the test corresponds to an absence of collinearity between them (see Johnson, 1994, for more details about the method).
+In addition, the result of a Farrar and Glauber test is provided. This test is based on the determinant of the correlation matrix of covariates and the related null hypothesis of the test corresponds to an absence of collinearity between them (see (2) for more details about the method).
 In presence of a large number of numeric covariates and/or ordered factors, the approximate Farrar-Glauber test, based on the normal approximation of the null distribution is more adapted and its result is also provided in output.
 These two tests are highly sensitive and, by consequence, it suggested to consider these results as simple indicators of collinearity between predictors rather than an essential condition of acceptability.}
 }
@@ -136,7 +136,7 @@ It is nevertheless often necessary to complete this visualization by an automati
 
 C. RANDOM FOREST PROCEDURE
 
-As a final step of the process, a random forest approach (RF) is here prefered (to regression models) for two main reasons: RF methods allow notably the number of variables to exceed the number of rows and remain applicable whatever the types of covariates considered.
+As a final step of the process, a random forest approach (RF(3)) is here prefered (to regression models) for two main reasons: RF methods allow notably the number of variables to exceed the number of rows and remain applicable whatever the types of covariates considered.
 The function \code{select_pred} integrates in its algorithm the functions \code{\link[party]{cforest}} and \code{\link[party]{varimp}} of the package \pkg{party} (Hothorn, 2006) and so gives access to their main arguments.
 
 A RF approach generally provides two types of measures for estimating the mean variable importance of each covariate in the prediction of an outcome: the Gini importance and the permutation importance.These measurements must be used with caution, by taking into account the following constraints:
@@ -148,7 +148,7 @@ The function \code{select_pred} proposes three different scenarios according to 
 \enumerate{
 \item{The first one consists in boiling down to a set of categorical variables (ordered or not) by discretizing all the continuous predictors beforehand, using the internal \code{convert_num} argument or another one, and then works with the conditional importance measures (\code{RF_condi = TRUE}) which give unbiased estimations.
 In the spirit of a partial correlation, the conditional importance measure related to a variable X for the prediction of an outcome Y, only uses the subset of variables the most correlated to X for its computation. The argument \code{RF_condi_thr} that corresponds exactly to the argument \code{threshold} of the function \code{\link[party]{varimp}},
-fixes a ratio below which a variable Z is considered sufficiently correlated to X to be used as an adjustment variable in the computation of the importance measure of X (In other words, Z is included in the conditioning for the computation, see Strobl 2007 for more details). A threshold value of zero will include all variables in the computation of
+fixes a ratio below which a variable Z is considered sufficiently correlated to X to be used as an adjustment variable in the computation of the importance measure of X (In other words, Z is included in the conditioning for the computation, see (4) and (5) for more details). A threshold value of zero will include all variables in the computation of
 conditional importance measure of each predictor X, while a threshold < 1, will only include a subset of variables.
 Two remarks related to this method: firstly, notice that taking into account only subsets of predictors in the computation of the variable importance measures could lead to a relevant saving of execution time.
 Secondly, because this approach does not take into account incomplete information, the method will only be applied to complete data (incomplete rows will be temporarily removed for the study).}
@@ -248,20 +248,10 @@ test_DB6 = select_pred(simu_B, Y = "Yb2",
 
 }
 \references{
-# About the Cramer's V measures:
-\itemize{
-\item Bergsma W (2013). A bias-correction for Cramer's V and Tschuprow's T. Journal of the Korean Statistical Society, 42, 323–328.
-}
-# About the Farrar and Glauber test:
-\itemize{
-\item Farrar D, and Glauber R (1968). Multicolinearity in regression analysis. Review of Economics and Statistics, 49, 92–107.
-}
-# About random forests:
-\itemize{
-\item Breiman L (2001). Random Forests. Machine Learning, 45(1), 5–32.
-}
-# About the estimation of conditional variable importances in random forests procedures:
-\itemize{
+\enumerate{
+\item Bergsma W. (2013). A bias-correction for Cramer's V and Tschuprow's T. Journal of the Korean Statistical Society, 42, 323–328.
+\item Farrar D, and Glauber R. (1968). Multicolinearity in regression analysis. Review of Economics and Statistics, 49, 92–107.
+\item Breiman L. (2001). Random Forests. Machine Learning, 45(1), 5–32.
 \item Hothorn T, Buehlmann P, Dudoit S, Molinaro A, Van Der Laan M (2006). “Survival Ensembles.” Biostatistics, 7(3), 355–373.
 \item Strobl C, Boulesteix A-L, Kneib T, Augustin T, Zeileis A (2008). Conditional Variable Importance for Random Forests. BMC Bioinformatics, 9, 307. \url{http://www.biomedcentral.com/1471-2105/9/307}
 }
@@ -271,5 +261,6 @@ test_DB6 = select_pred(simu_B, Y = "Yb2",
 }
 \author{
 Gregory Guernec
+
 \email{gregory.guernec@inserm.fr}
 }

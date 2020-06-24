@@ -31,6 +31,7 @@
 #' @export
 #'
 #' @author Gregory Guernec
+#'
 #' \email{otrecod.pkg@@gmail.com}
 #'
 #' @references

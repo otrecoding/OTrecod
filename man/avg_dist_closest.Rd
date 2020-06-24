@@ -18,9 +18,9 @@ A list of 3 matrices is returned:
 In this case, the related cost matrix can be interpreted as the ability to move from one level of Y in A to one level of Z in B.
 Davg[P,Q] refers to the average distance between the modality P in Y (only known in A) and modality Q of Z (only known in B).}
 \item{DindivA}{A matrix whose number of rows corresponds to the number of rows of the first database A and number of columns corresponds to nZ, the number of levels of the target variable Z in the second database B.
-DindivA[i,Q] refers to the average distance between the \eqn{i^th} individual (or row) of the first database and a chosen proportion of individuals (\code{percent_closest} set by the user) of the second database having the modality Q of Z.}
+DindivA[i,Q] refers to the average distance between the \eqn{i^{th}} individual (or row) of the first database and a chosen proportion of individuals (\code{percent_closest} set by the user) of the second database having the modality Q of Z.}
 \item{DindivB}{A matrix whose number of rows corresponds to the number of rows of the second database B and number of columns corresponds to nA, the number of levels of the target variable in the first database A.
-DindivB[k,P] refers to the average distance between the \eqn{k^th} individual (or row) of the second database and a chosen proportion of individuals (depending on \code{percent_closest}) of the first database having the modality P of Y.}
+DindivB[k,P] refers to the average distance between the \eqn{k^{th}} individual (or row) of the second database and a chosen proportion of individuals (depending on \code{percent_closest}) of the first database having the modality P of Y.}
 }
 \description{
 This function computes average distances between levels of two categorical outcomes located in two distinct databases
