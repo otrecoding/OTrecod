@@ -1,6 +1,6 @@
 #' power_set()
 #'
-#' A function that gives the power set \code{P(S)} of any non empty set S
+#' A function that gives the power set \eqn{P(S)} of any non empty set S
 #'
 #' @param n An integer. The cardinal of the set
 #' @param ordinal A boolean. If TRUE the power set is only composed of subsets of consecutive elements, FALSE (by default) otherwise

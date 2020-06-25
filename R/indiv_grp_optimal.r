@@ -5,10 +5,10 @@
 #'
 #' A. THE RECODING PROBLEM IN DATA FUSION
 #'
-#' Assuming that Y and Z are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
-#' so that Y and Z are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (but same encodings in A and B)
-#' completed or not. Integrating these two databases often requires to solve the recoding problem observed between Y and Z by creating an unique database where
-#' the missing information of Y and Z is completed.
+#' Assuming that \eqn{Y} and \eqn{Z} are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
+#' so that \eqn{Y} and \eqn{Z} are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (but same encodings in A and B)
+#' completed or not. Integrating these two databases often requires to solve the recoding problem observed between \eqn{Y} and \eqn{Z} by creating an unique database where
+#' the missing information of \eqn{Y} and \eqn{Z} is completed.
 #'
 #'
 #' B. DESCRIPTION OF THE FUNCTION
@@ -19,27 +19,27 @@
 #' This latter is available in the package and is so directly usable beforehand.
 #'
 #' The function \code{indiv_grp_optimal} constitutes an alternative method to the nearest neighbor procedure implemented in the function \code{\link{indiv_grp_closest}}.
-#' As for the function \code{\link{indiv_grp_closest}}, assuming that the objective consists in the prediction of Z in the database A, the first step of the algorithm related to \code{OUTCOME} provides an estimate of \eqn{\gamma} which can is an estimation of the joint distribution \code{(Y,Z)} in A.
-#' Rather than using a nearest neighbor approach to provide individual predictions,the function \code{indiv_grp_optimal} solves an optimization problem using the simplex algorithm which searches for the individual predictions of Z that minimize the computed total distance satisfying the joint probability distribution estimated in the first part.
+#' As for the function \code{\link{indiv_grp_closest}}, assuming that the objective consists in the prediction of \eqn{Z} in the database A, the first step of the algorithm related to \code{OUTCOME} provides an estimate of \eqn{\gamma} which can is an estimation of the joint distribution \eqn{(Y,Z)} in A.
+#' Rather than using a nearest neighbor approach to provide individual predictions,the function \code{indiv_grp_optimal} solves an optimization problem using the simplex algorithm which searches for the individual predictions of \eqn{Z} that minimize the computed total distance satisfying the joint probability distribution estimated in the first part.
 #' More details about the theory related to the solving of this optimization problem is described in the section 5.3 of (2).
 #'
-#' Obviously, this algorithm  runs in the same way for the prediction of Y in the database B.
+#' Obviously, this algorithm  runs in the same way for the prediction of \eqn{Y} in the database B.
 #' The function \code{indiv_grp_optimal} integrates in its syntax the function \code{\link{avg_dist_closest}} and the related argument \code{percent_closest} is identical in the two functions.
-#' Thus, when computing average distances between an individual i and a subset of individuals assigned to a same level of Y or Z is required, user can decide if all individuals from the subset of interest can participate to the computation (\code{percent_closest = 1}) or only a fixed part p (<1) corresponding to the closest neighbors of i (in this case \code{percent_closest} = p).
+#' Thus, when computing average distances between an individual i and a subset of individuals assigned to a same level of \eqn{Y} or \eqn{Z} is required, user can decide if all individuals from the subset of interest can participate to the computation (\code{percent_closest = 1}) or only a fixed part p (<1) corresponding to the closest neighbors of i (in this case \code{percent_closest} = p).
 #'
-#' The arguments \code{jointprobaA} and \code{jointprobaB} can be seen as estimations of \eqn{\gamma} (sum of cells must be equal to 1) that correspond to estimations of the joint distributions of \code{(Y,Z)} in A and B respectively.
+#' The arguments \code{jointprobaA} and \code{jointprobaB} can be seen as estimations of \eqn{\gamma} (sum of cells must be equal to 1) that correspond to estimations of the joint distributions of \eqn{(Y,Z)} in A and B respectively.
 #'
 #' @param proxim An object corresponding to the output of the function \code{\link{proxim_dist}}
-#' @param jointprobaA A matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and which number of rows is equal to the number of modalities of Z in database B. It gives an estimation of the joint probability (Y,Z) in the database A.
+#' @param jointprobaA A matrix whose number of columns is equal to the number of modalities of the target variable \eqn{Y} in database A, and which number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database A.
 #' The sum of cells of this matrix must be equal to 1
-#' @param jointprobaB A matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and which number of rows is equal to the number of modalities of Z in database B. It gives an estimation of the joint probability (Y,Z) in the database B.
+#' @param jointprobaB A matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and which number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database B.
 #' The sum of cells of this matrix must be equal to 1
 #' @param percent_closest A value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals used in the computation of the average distances
-#' @param which.DB A character string (with quotes) that indicates which individual predictions compute: only the individual predictions of Y in B ("B"), only those of Z in A ("A") or the both ("BOTH" by default)
+#' @param which.DB A character string (with quotes) that indicates which individual predictions compute: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default)
 #'
 #' @return A list of two vectors of numeric values:
-#' \item{YAtrans}{A vector corresponding to the predicted values of Y in database B (numeric form) using the Optimal Transportation theory}
-#' \item{ZBtrans}{A vector corresponding to the predicted values of Z in database A (numeric form) using the Optimal Transportation theory}
+#' \item{YAtrans}{A vector corresponding to the predicted values of \eqn{Y} in database B (numeric form) using the Optimal Transportation theory}
+#' \item{ZBtrans}{A vector corresponding to the predicted values of \eqn{Z} in database A (numeric form) using the Optimal Transportation theory}
 #'
 #'
 #' @author Gregory Guernec, Valerie Gares, Jeremy Omer
