@@ -233,7 +233,7 @@ the function <code>OT_outcome</code> require post-treatment steps to provide ind
 \((Z|Y,X)\) in A to predict the corresponding incomplete individuals informations of \(Y\) and/or \(Z\) respectively.
 This algorithm supposes that the conditional distribution \((Y|X)\) must be identical in A and B. Respectively, \((Z|X)\) is supposed identical in A and B.
 Estimations a posteriori of conditional probabilities \(P[Y|X,Z]\) and \(P[Z|X,Y]\) are available by profiles of covariates in output (See the objects <code>estimatorYB</code> and <code>estimatorZA</code>).
-Estimations of \(\gamma\) are also available according to the chosen transport distributions (See the arguments \(\gamma_A\) and \(\gamma_B\)).</p>
+Estimations of \(\gamma\) are also available according to the chosen transport distributions (See the arguments <code>gamma_A</code> and <code>gamma_B</code>).</p>
 <p>The model <code>R-JOINT</code> gathers enrichments of the model <code>JOINT</code> and is also available via the function <code>OT_joint</code> It allows users to add a relaxation term in the algorithm to relax distributional assumptions (<code>maxrelax</code>&gt;0),
 and (or) add also a positive regularization term (<code>lamdba.reg</code>&gt;0) expressing that the transportation map does not vary to quickly with respect of covariates \(X\).
 Is is suggested to users to calibrate these two parameters a posteriori by studying the stability of the individual predictions in output.</p>

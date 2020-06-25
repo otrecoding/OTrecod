@@ -191,10 +191,10 @@ of \(Z\) (or \(Y\)) to individuals that have a same given profile of covariates 
 object <code>estimatorZA</code> (see outputs of the functions <code>OT_outcome</code> and <code>OT_joint</code>) which contains the estimates of all the conditional probabilities of \(Z\) in A, given a profile of covariates x and given a level of \(Y = y\).
 Each individual (or row) from A, is associated with a conditional probability \(P(Z= z|Y= y, X= x)\).</p>
 <p>With the function <code>OT_joint</code>, the individual predictions for subject i: \(\widehat{z}_i\),\(i=1,\ldots,n_A\) are given using the maximum a posteriori rule:
-$$\widehat{z}_i= \text{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)$$
+$$\widehat{z}_i= \mbox{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)$$
 While the function <code>OT_outcome</code> directly gives the individual prediction and the probablities \(P(Z= z|Y= y, X= x)\) are computed in a second step (see (2)).</p>
 <p>For each subject i in database A, a new variable \(z_i'\) is simulate such that: $$z_i'\sim \mathcal{B}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))$$
-The average stability criterium is so calculated as: $$\text{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'$$
+The average stability criterium is so calculated as: $$\mbox{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'$$
 This criterion can be repeated with <code>R</code> samples and the related mean and variance are given in output.</p>
 <p>Some of these conditional probabilities are computed from only few individuals (because they are computed from a certain number of individuals considered as neighbors for each covariates profile \(x \in \mathcal{X}\)),  and can lead to not enough reliable estimation.
 To avoid this problem, conditional probabilities can be removed from the stability criterion since they have been assessed from an insufficient number of subjects.
