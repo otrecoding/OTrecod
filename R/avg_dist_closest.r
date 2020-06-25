@@ -13,31 +13,31 @@
 #'
 #' DEFINITION OF THE COST MATRIX
 #'
-#' Assuming that A and B are two databases with a set of shared variables and a same latent information (or at least a related information) stored as a variable Y in A and Z in B, such that Y is unknown in B and Z is unknown in A, whose encoding depends on the database (nY levels in A and nZ levels in B).
-#' A distance between one level of Y and one level of Z is estimated by averaging the distances on covariates vector between  the subsets of individuals (rows) from the two databases that are related to the corresponding levels for Y in A and Z in B.
+#' Assuming that A and B are two databases with a set of shared variables and a same latent information (or at least a related information) stored as a variable \eqn{Y} in A and Z in B, such that \eqn{Y} is unknown in B and Z is unknown in A, whose encoding depends on the database (\eqn{n_Y} levels in A and \eqn{n_Z} levels in B).
+#' A distance between one level of \eqn{Y} and one level of Z is estimated by averaging the distances on covariates vector between  the subsets of individuals (rows) from the two databases that are related to the corresponding levels for \eqn{Y} in A and Z in B.
 #' The distance between two individuals depends on the variations between the shared covariates, and so depends on the chosen distance function using the function \code{proxim_dist}.
 #' For the average computations, all the individuals concerned by these two classes can be taken into account, or only a part of them, depending on the argument \code{percent_closest}.
 #' When \code{percent_closest} < 1, the average distance between an individual i and a given level of factor z only uses the corresponding part of individuals related to z that are the closest to i for the computation.
 #' Therefore, this choice influences the estimations of average distances between levels of factors but also permits to reduce time computation if necessary.
 #'
-#' The average distance between each individual of Y (Z) and each levels of Z (Y) are returned in output, in the object \code{DindivA} (\code{DindivB} respectively).
-#' The average distance between each levels of Y and each levels of Z are returned in a matrix saved in output (the object \code{Davg}).
-#' \code{Davg} returns the computation of the cost matrix D, whose dimensions (nY*nZ) correspond to the number of levels of Y (rows) and Z (columns).
-#' This matrix can be seen as the ability for an individual (row) to move from a given level of the target variable (Y) in A to a given level of Z in the database B (or vice versa).
+#' The average distance between each individual of \eqn{Y} (\eqn{Z}) and each levels of \eqn{Z} (\eqn{Y}) are returned in output, in the object \code{DindivA} (\code{DindivB} respectively).
+#' The average distance between each levels of \eqn{Y} and each levels of \eqn{Z} are returned in a matrix saved in output (the object \code{Davg}).
+#' \code{Davg} returns the computation of the cost matrix D, whose dimensions (\eqn{n_Y \times n_Z}) correspond to the number of levels of \eqn{Y} (rows) and \eqn{Z} (columns).
+#' This matrix can be seen as the ability for an individual (row) to move from a given level of the target variable (\eqn{Y}) in A to a given level of \eqn{Z} in the database B (or vice versa).
 #'
 #'
 #' @param proxim An object corresponding to the output of the \code{proxim_dist} function
 #' @param percent_closest A value between 0 and 1 corresponding to the desired percent of rows (or individuals) that will be taken into acccount for the computation of the average distances between levels of factors or
-#' between individuals and levels of only one factor (the value 1 is taken by default, therefore, all individuals with a same level of Y or a same level of Z will be remained for the average computations).
+#' between individuals and levels of only one factor (the value 1 is taken by default, therefore, all individuals with a same level of \eqn{Y} or a same level of \eqn{Z} will be remained for the average computations).
 #'
 #' @return A list of 3 matrices is returned:
-#' \item{Davg}{The cost matrix whose number of rows corresponds to nY, the number of levels of the target variable Y in the database A, and whose number of columns corresponds to nZ: the number of levels of the target variable in B.
-#' In this case, the related cost matrix can be interpreted as the ability to move from one level of Y in A to one level of Z in B.
-#' Davg[P,Q] refers to the average distance between the modality P in Y (only known in A) and modality Q of Z (only known in B).}
-#' \item{DindivA}{A matrix whose number of rows corresponds to the number of rows of the first database A and number of columns corresponds to nZ, the number of levels of the target variable Z in the second database B.
-#' DindivA[i,Q] refers to the average distance between the \eqn{i^{th}} individual (or row) of the first database and a chosen proportion of individuals (\code{percent_closest} set by the user) of the second database having the modality Q of Z.}
+#' \item{Davg}{The cost matrix whose number of rows corresponds to \eqn{n_Y}, the number of levels of the target variable \eqn{Y} in the database A, and whose number of columns corresponds to \eqn{n_Z}: the number of levels of the target variable in B.
+#' In this case, the related cost matrix can be interpreted as the ability to move from one level of \eqn{Y} in A to one level of \eqn{Z} in B.
+#' Davg[P,Q] refers to the average distance between the modality P in \eqn{Y} (only known in A) and modality \eqn{Q} of \eqn{Z} (only known in B).}
+#' \item{DindivA}{A matrix whose number of rows corresponds to the number of rows of the first database A and number of columns corresponds to \eqn{n_Z}, the number of levels of the target variable \eqn{Z} in the second database B.
+#' DindivA[i,Q] refers to the average distance between the \eqn{i^{th}} individual (or row) of the first database and a chosen proportion of individuals (\code{percent_closest} set by the user) of the second database having the modality \eqn{Q} of \eqn{Z}.}
 #' \item{DindivB}{A matrix whose number of rows corresponds to the number of rows of the second database B and number of columns corresponds to nA, the number of levels of the target variable in the first database A.
-#' DindivB[k,P] refers to the average distance between the \eqn{k^{th}} individual (or row) of the second database and a chosen proportion of individuals (depending on \code{percent_closest}) of the first database having the modality P of Y.}
+#' DindivB[k,P] refers to the average distance between the \eqn{k^{th}} individual (or row) of the second database and a chosen proportion of individuals (depending on \code{percent_closest}) of the first database having the modality P of \eqn{Y}.}
 #'
 #' @author Gregory Guernec, Valerie Gares, Jeremy Omer
 #'
