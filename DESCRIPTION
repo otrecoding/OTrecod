@@ -1,0 +1,36 @@
+Package: OTrecod
+Title: Data integration using Optimal Transportation Theory
+Version: 0.1.0
+Authors@R: c(
+  person(given = "Gregory" , family = "Guernec"     , role = c("aut","cre"), email = "otrecod.pkg@gmail.com"),
+  person(given = "Valerie" , family = "Gares"       , role = "aut", email = "valerie.gares@insa-rennes.fr"),
+  person(given = "Pierre"  , family = "Navaro"      , role = "ctb"),
+  person(given = "Jeremy"  , family = "Omer"        , role = "ctb"),
+  person(given = "Philippe", family = "Saint-Pierre", role = "ctb"),
+  person(given = "Nicolas" , family = "Savy"        , role = "ctb"))
+Description: In the context of data integration, the package OTrecod provides a set of original functions dedicated to the solving of recoding problems by using optimal transportation theory (G.Monge, 1781). From two databases with no overlapping part except a subset of shared variables, the functions of the package assist users until the obtention of an unique synthetic database, where the missing information is fully completed.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0
+Depends:
+     R (>= 2.10)
+Imports: 
+    stats,
+    car,
+    dplyr,
+    mice,
+    missMDA,
+    plyr,
+    FactoMineR,
+    StatMatch,
+    proxy,
+    rdist,
+    ROI,
+    ROI.plugin.glpk,
+    ompr,
+    ompr.roi,
+    party,
+    vcd
+Suggests: 
+    testthat
