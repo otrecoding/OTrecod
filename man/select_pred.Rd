@@ -62,8 +62,8 @@ all quantitative predictors selected for discretization will have by default the
 
 \item{RF_condi}{A boolean specifying if the conditional importance measures must be assessed from the random forest procedure (\code{TRUE}) rather than the standard variable importance  measures (\code{FALSE} by default)}
 
-\item{RF_condi_thr}{A threshold linked to (1 - pvalue) of an association test between each predictor X and the other variables, given that a threshold value of zero wil include all variables in the computation of the conditional importance measure of X (0.60 is the default value).
-Conversely, a larger threshold will only keeps for the computation of the variable importance measure of X, the subset of variables that is strongly correlated to X.}
+\item{RF_condi_thr}{A threshold linked to (1 - pvalue) of an association test between each predictor \eqn{X} and the other variables, given that a threshold value of zero wil include all variables in the computation of the conditional importance measure of \eqn{X} (0.60 is the default value).
+Conversely, a larger threshold will only keeps for the computation of the variable importance measure of \eqn{X}, the subset of variables that is strongly correlated to \eqn{X}.}
 
 \item{RF_SEED}{An integer used as argument by the set.seed() for offsetting the random number generator (random integer by default). This value is only used when a RF method is required.}
 }
@@ -147,9 +147,9 @@ A RF approach generally provides two types of measures for estimating the mean v
 The function \code{select_pred} proposes three different scenarios according to the types of predictors:
 \enumerate{
 \item{The first one consists in boiling down to a set of categorical variables (ordered or not) by discretizing all the continuous predictors beforehand, using the internal \code{convert_num} argument or another one, and then works with the conditional importance measures (\code{RF_condi = TRUE}) which give unbiased estimations.
-In the spirit of a partial correlation, the conditional importance measure related to a variable X for the prediction of an outcome Y, only uses the subset of variables the most correlated to X for its computation. The argument \code{RF_condi_thr} that corresponds exactly to the argument \code{threshold} of the function \code{\link[party]{varimp}},
-fixes a ratio below which a variable Z is considered sufficiently correlated to X to be used as an adjustment variable in the computation of the importance measure of X (In other words, Z is included in the conditioning for the computation, see (4) and (5) for more details). A threshold value of zero will include all variables in the computation of
-conditional importance measure of each predictor X, while a threshold < 1, will only include a subset of variables.
+In the spirit of a partial correlation, the conditional importance measure related to a variable \eqn{X} for the prediction of an outcome \eqn{Y}, only uses the subset of variables the most correlated to \eqn{X} for its computation. The argument \code{RF_condi_thr} that corresponds exactly to the argument \code{threshold} of the function \code{\link[party]{varimp}},
+fixes a ratio below which a variable Z is considered sufficiently correlated to \eqn{X} to be used as an adjustment variable in the computation of the importance measure of \eqn{X} (In other words, Z is included in the conditioning for the computation, see (4) and (5) for more details). A threshold value of zero will include all variables in the computation of
+conditional importance measure of each predictor \eqn{X}, while a threshold \eqn{< 1}, will only include a subset of variables.
 Two remarks related to this method: firstly, notice that taking into account only subsets of predictors in the computation of the variable importance measures could lead to a relevant saving of execution time.
 Secondly, because this approach does not take into account incomplete information, the method will only be applied to complete data (incomplete rows will be temporarily removed for the study).}
 \item{The second possibility, always in presence of mixed types predictors, consists in the execution of two successive RF procedures. The 1st one will be used to select an unique candidate in each susbset of correlated predictors (detecting in the 1st section), while the 2nd one will extract the permutation measures from the remaining subset
