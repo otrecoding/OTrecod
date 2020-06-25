@@ -17,9 +17,9 @@ verif_OT(
 \arguments{
 \item{ot_out}{An output object of the function \code{OT_outcome} or \code{OT_joint}}
 
-\item{group.clss}{A boolean indicating if the results related to the proximity between outcomes by grouping of levels are requested in output (\code{FALSE} by default).}
+\item{group.clss}{A boolean indicating if the results related to the proximity between outcomes by grouping levels are requested in output (\code{FALSE} by default).}
 
-\item{ordinal}{A boolean that indicates if Y and Z are ordinal (\code{TRUE} by default) or not. This argument is only useful in the context of grouping of level (\code{group.clss}=TRUE).}
+\item{ordinal}{A boolean that indicates if \eqn{Y} and Z are ordinal (\code{TRUE} by default) or not. This argument is only useful in the context of groups of levels (\code{group.clss}=TRUE).}
 
 \item{stab.prob}{A boolean indicating if the results related to the stability of the algorithm are requested in output (\code{FALSE} by default).}
 
@@ -31,11 +31,11 @@ verif_OT(
 }
 \value{
 A list of seven objects is returned:
-\item{seed}{The list of random number generator used. The first one is fixed by user or randomly chosen}
+\item{seed}{The list of used random number generator. The first one is fixed by user or randomly chosen}
 \item{nb.profil}{The number of profiles of covariates}
-\item{conf.mat}{Global confusion matrix between Y and Z}
-\item{res.prox}{A summary table related to the association measures between Y and Z}
-\item{res.grp}{A summary table related to the study of the proximity of Y and Z using groupings of levels}
+\item{conf.mat}{The global confusion matrix between \eqn{Y} and Z}
+\item{res.prox}{A summary table related to the association measures between \eqn{Y} and Z}
+\item{res.grp}{A summary table related to the study of the proximity of \eqn{Y} and Z using group of levels}
 \item{eff.neig}{A table which corresponds to a count of conditional probabilities according to the number of neighbors used in their computation (Only the first ten values)}
 \item{res.stab}{A summary table related to the stability of the algorithm}
 }
@@ -43,48 +43,48 @@ A list of seven objects is returned:
 This function proposes post-process verifications after data fusion by Optimal Transportation algorithms
 }
 \details{
-In a context of data fusion, where information from a same target population is summarized via two specific variables Y and Z (two ordinal or nominal factors with different number of levels nY and nZ), stored in two distinct databases A and B respectively,
-Optimal Transportation (OT) algorithms (See the models \code{OUTCOME}, \code{R_OUTCOME}, \code{JOINT}, and \code{R_JOINT} of the reference (2) for more details)
-propose an original method for the recoding of Y in B and/or Z in A. Outputs from the functions \code{OT_outcome} and \code{OT_joint} so provides the related predictions to Y in B and/or Z in A,
+In a context of data fusion, where information from a same target population is summarized via two specific variables \eqn{Y} and \eqn{Z} (two ordinal or nominal factors with different number of levels \eqn{n_Y} and nZ), stored in two distinct databases A and B respectively,
+Optimal Transportation (OT) algorithms (see the models \code{OUTCOME}, \code{R_OUTCOME}, \code{JOINT}, and \code{R_JOINT} of the reference (2) for more details)
+propose a method for the recoding of \eqn{Y} in B and/or \eqn{Z} in A. Outputs from the functions \code{OT_outcome} and \code{OT_joint} so provides the related predictions to \eqn{Y} in B and/or \eqn{Z} in A,
 and from these results, the function \code{verif_OT} provides a set of tools (optional or not, depending on the choices done by user in input) to estimate:
 \enumerate{
-\item The association between Y and Z after recoding
-\item The stability of the predictions proposed by the algorithm
+\item the association between \eqn{Y} and \eqn{Z} after recoding
+\item the stability of the predictions proposed by the algorithm
 }
 
-A. PAIRWISE ASSOCIATION BETWEEN Y AND Z
+A. PAIRWISE ASSOCIATION BETWEEN \eqn{Y} AND \eqn{Z}
 
 The first step uses standard criterions (Cramer's V, chi square test of independence, Spearman's rank correlation coefficient) to evaluate associations between two ordinal variables in both databases or only one.
 When the argument \code{group.clss = TRUE}, these informations can be completed by those provided by the function \code{\link{error_group}} (available in the package), which is directly integrate in the function \code{verif_OT}.
-Assuming that nY > nZ, and that one of the two scales of Y or Z is unknown, this function gives additional informations about the potential link between the levels of the unknown scale.
-The function proceeds to this result in two steps. Firsty, \code{\link{error_group}} groups combinations of modalities of Y to build all possible variables Y' verifying nY' = nZ.
-Secondly, the function study the fluctuations in the association of Z with each new variable Y' by using adapted comparisons criterions (see the documentation of \code{\link{error_group}} for more details).
-if the grouping of successive classes of Y leads to an improvement in the initial association between Y and Z then it is possible to conclude in favor of an ordinal coding for Y (rather than nominal)
+Assuming that \eqn{n_Y > n_Z}, and that one of the two scales of \eqn{Y} or \eqn{Z} is unknown, this function gives additional informations about the potential link between the levels of the unknown scale.
+The function proceeds to this result in two steps. Firsty, \code{\link{error_group}} groups combinations of modalities of \eqn{Y} to build all possible variables \eqn{Y'} verifying \eqn{n_{Y'} = n_Z}.
+Secondly, the function studies the fluctuations in the association of \eqn{Z} with each new variable \eqn{Y'} by using adapted comparisons criterions (see the documentation of \code{\link{error_group}} for more details).
+if grouping successive classes of \eqn{Y} leads to an improvement in the initial association between \eqn{Y} and \eqn{Z} then it is possible to conclude in favor of an ordinal coding for \eqn{Y} (rather than nominal)
 but also to emphasize the consistency in the predictions proposed by the algorithm of fusion.
 
 B.STABILITY OF THE PREDICTIONS
 
 These optional results are based on the following decision rule which defines the stability of an algorithm in A (or B) as its average ability to assign a same prediction
-of Z (or Y) to individuals that have a same given profile of covariates x and a same given level of Y (Z).
+of \eqn{Z} (or \eqn{Y}) to individuals that have a same given profile of covariates x and a same given level of \eqn{Y} (\eqn{Z}).
 
-Assuming that the missing information of Z in base A was predicted from an OT algorithm (the reasoning will be identical with the prediction of Y in B, See (1) and (2) for more details), the function \code{verif_OT} uses the conditional probabilities stored in the
-object \code{estimatorZA} (see outputs of the functions \code{\link{OT_outcome}} and \code{\link{OT_joint}}) which contains the estimates of all the conditional probabilities of Z in A, given a profile of covariates x and kwowing a level of Y = y.
-Each individual (or row) from A, can be so associated with a conditional probability \eqn{P(Z= z|Y= y, X= x)}.
+Assuming that the missing information of \eqn{Z} in base A was predicted from an OT algorithm (the reasoning will be identical with the prediction of \eqn{Y} in B, see (1) and (2) for more details), the function \code{verif_OT} uses the conditional probabilities stored in the
+object \code{estimatorZA} (see outputs of the functions \code{\link{OT_outcome}} and \code{\link{OT_joint}}) which contains the estimates of all the conditional probabilities of \eqn{Z} in A, given a profile of covariates x and given a level of \eqn{Y = y}.
+Each individual (or row) from A, is associated with a conditional probability \eqn{P(Z= z|Y= y, X= x)}.
 
 With the function \code{\link{OT_joint}}, the individual predictions for subject i: \eqn{\widehat{z}_i},\eqn{i=1,\ldots,n_A} are given using the maximum a posteriori rule:
-\deqn{\widehat{z}_i= \text{argmax}_{z\in \mathcal{Z}} P(Z=z|Y=y_i, X=x_i)}
+\deqn{\widehat{z}_i= \text{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)}
 While the function \code{\link{OT_outcome}} directly gives the individual prediction and the probablities \eqn{P(Z= z|Y= y, X= x)} are computed in a second step (see (2)).
 
 For each subject i in database A, a new variable \eqn{z_i'} is simulate such that: \deqn{z_i'\sim \mathcal{B}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))}
 The average stability criterium is so calculated as: \deqn{\text{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'}
-This criterion can be repeated on \code{R} samples and the mean and variance related to this computation are given in output.
+This criterion can be repeated with \code{R} samples and the related mean and variance are given in output.
 
-Because these conditional probabilities estimation are computed from a certain number of individuals considered as neighbors for each profile \eqn{x \in \mathcal{X}}, the fact that some of these probabilities are computed from few individuals can makes the estimation
-not enough reliable. To avoid this problem, conditional probabilities can be removed from the stability estimation since they have been assessed from an insufficient number of subjects.
+Some of these conditional probabilities are computed from only few individuals (because they are computed from a certain number of individuals considered as neighbors for each covariates profile \eqn{x \in \mathcal{X}}),  and can lead to not enough reliable estimation.
+To avoid this problem, conditional probabilities can be removed from the stability criterion since they have been assessed from an insufficient number of subjects.
 In this way, the minimal number of subjects required for a conditional probability to participate to the stability estimation can be fixed a priori by filling in the argument \code{min.neigb}.
 
 These results are available when the argument \code{stab.prob = TRUE}.
-Finally, when the predictions of Z in A and Y in B are available, the function \code{verif_OT} provides in output, global and by databases results.
+Finally, when the predictions of Z in A and \eqn{Y} in B are available, the function \code{verif_OT} provides in output, global results and results by database.
 }
 \examples{
 

@@ -44,7 +44,7 @@ the Gower distance ("G"), and the Hamming (also called binary) distance ("H"), c
 This ratio will fix the number of components that will be kept with this approach.}
 }
 \value{
-A data.frame which covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the identifier, Y and Z correspond to the first three columns respectively.
+A data.frame which covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the identifier, \eqn{Y} and \eqn{Z} correspond to the first three columns respectively.
 Moreover the order of rows remains unchanged during the process.
 }
 \description{
@@ -59,13 +59,13 @@ Nevertheless, it is also possible to apply directly the function \code{transfo_d
 The database must count at least four columns (in an a unspecified order of appearance in the database):
 \itemize{
 \item A column indicating the database identifiers (two classes: A and B, 1 and 2, ...)
-\item A categorical (nominal or ordinal factor) variable corresponding to the outcome of the 1st database (on top) with its specific encoding (called Y by example).
-\item A second categorical (nominal or ordinal) variable corresponding to the outcome of the 2nd database (called Z by example).
+\item A categorical (nominal or ordinal factor) variable corresponding to the outcome of the 1st database (on top) with its specific encoding (called \eqn{Y} by example).
+\item A second categorical (nominal or ordinal) variable corresponding to the outcome of the 2nd database (called \eqn{Z} by example).
 \item At least one covariate shared in the two bases (same encoding in the 2 bases). Incomplete information is possible on shared covariates if you have more than one covariate.
 }
-In this context, the information related to Y in the second database must be missing as the information related to Z in the first one.
-The indexes of columns related to the database identifier, Y and Z must be specified in this order in the argument \code{index_DB_Y_Z}.
-Moreover, all column indexes (including those related to identifier and target variables Y and Z) of the overlayed database (DB) must be declared once (and only once), among the arguments \code{quanti}, \code{nominal}, \code{ordinal}, and \code{logic}.
+In this context, the information related to Y in the second database must be missing as the information related to \eqn{Z} in the first one.
+The indexes of columns related to the database identifier, \eqn{Y} and \eqn{Z} must be specified in this order in the argument \code{index_DB_Y_Z}.
+Moreover, all column indexes (including those related to identifier and target variables \eqn{Y} and \eqn{Z}) of the overlayed database (DB) must be declared once (and only once), among the arguments \code{quanti}, \code{nominal}, \code{ordinal}, and \code{logic}.
 If the outcomes are of numeric types, they could be declared as quantitative, but they will be automatically convert in ordered factors.
 
 
@@ -84,23 +84,23 @@ C. TRANSFORMATIONS ON THE DATABASE ACCORDING TO THE CHOSEN DISTANCE FUNCTION
 These necessary transformations are related to the type of each of the covariates.
 It depends on the choice of the distance function chooses by user in the \code{prep_choice} option.
 
-1. For the Euclidean ("E") and Manhattan ("M") distances:
+1. For the Euclidean ("E") and Manhattan ("M") distances ((1) and (2)):
 all the remaining continuous variables are standardized.
 The related recoding to a boolean variable is 1 for \code{TRUE} and 0 for \code{FALSE}.
 The recoding for a nominal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
 The ordinal variables are all converted to numeric variables (please take care that the order of the classes of each of these variables is well specified at the beginning).
 
-2. For the Hamming ("H") distance:
+2. For the Hamming ("H") distance ((1) and (2)):
 all the numeric variables must be transformed beforehand in categorical forms using the internal process described in section B or via another external approach.
 The boolean variables are all converted in ordinal forms and then turned into binaries.
 The recoding for nominal or ordinal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
 
-3. For the Gower ("G") distance:
+3. For the Gower ("G") distance (3):
 all covariates remain unchanged
 
-4. Using the principal components from a factor analysis for mixed data (FAMD):
+4. Using the principal components from a factor analysis for mixed data (FAMD(4)):
 a factor analysis for mixed data is done on the covariates of the database and a specific number of the related principal components is remained (depending on the minimal part of variability explained by the covariates that the user wishes to keep by varying the \code{info} option).
-The function integrates in its syntax the function \code{\link[FactoMineR]{FAMD}} of the package \pkg{FactoMiner} (Lê, 2008) using default parameters.
+The function integrates in its syntax the function \code{\link[FactoMineR]{FAMD}} of the package \pkg{FactoMiner} (5) using default parameters.
 After this step, the covariates are replaced by the remaining principal components of the FAMD, and each value corresponds to coordinates linked to each components.
 Please notice that this method supposed complete covariates in input, nevertheless in presence of incomplete covariates, each corresponding rows will be dropped from the study, a warning will appear and the number of remaining rows will be indicated.
 }
@@ -163,19 +163,12 @@ try5 = transfo_dist(simu_data2,index_DB_Y_Z = c(8,1,6),quanti = 6:7, nominal = c
 
 }
 \references{
-### For Factor Analysis with mixed data:
-\itemize{
-\item Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.
-\item Lê S, Josse J, Husson, F. (2008). FactoMineR: An R Package for Multivariate Analysis. Journal of Statistical Software. 25(1). pp. 1-18.
-}
-### About the Gower distance:
-\itemize{
-\item Gower, J. C. (1971), “A general coefficient of similarity and some of its properties”. Biometrics, 27, 623--637.
-}
-### About the other distance measurements:
-\itemize{
+\enumerate{
 \item Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
 \item Borg, I. and Groenen, P. (1997) Modern Multidimensional Scaling. Theory and Applications. Springer.
+\item Gower, J. C. (1971), “A general coefficient of similarity and some of its properties”. Biometrics, 27, 623--637.
+\item Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.
+\item Lê S, Josse J, Husson, F. (2008). FactoMineR: An R Package for Multivariate Analysis. Journal of Statistical Software. 25(1). pp. 1-18.
 }
 }
 \seealso{
