@@ -116,8 +116,8 @@
 #'
 #' @return A list containing 9 elements:
 #' \item{time_exe}{Running time of the function}
-#' \item{gamma_A}{A cost matrix corresponding to an estimation of the joint distribution of (YA,ZA)}
-#' \item{gamma_B}{A cost matrix corresponding to an estimation of the joint distribution of (YB,ZB)}
+#' \item{gamma_A}{A cost matrix corresponding to an estimation of the joint distribution of \eqn{(Y^A,Z^A)}}
+#' \item{gamma_B}{A cost matrix corresponding to an estimation of the joint distribution of \eqn{(Y^B,Z^B)}}
 #' \item{profile}{A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results}
 #' \item{res_prox}{The outputs of the function \code{proxim_dist}}
 #' \item{estimatorZA}{An array that corresponds to estimates of the probability distribution of \eqn{Z} conditional to X and \eqn{Y} in database A. The number of rows of each table corresponds to the total number of the P profiles of covariates.
