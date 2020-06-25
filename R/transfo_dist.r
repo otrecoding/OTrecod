@@ -36,23 +36,23 @@
 #' These necessary transformations are related to the type of each of the covariates.
 #' It depends on the choice of the distance function chooses by user in the \code{prep_choice} option.
 #'
-#' 1. For the Euclidean ("E") and Manhattan ("M") distances:
+#' 1. For the Euclidean ("E") and Manhattan ("M") distances ((1) and (2)):
 #' all the remaining continuous variables are standardized.
 #' The related recoding to a boolean variable is 1 for \code{TRUE} and 0 for \code{FALSE}.
 #' The recoding for a nominal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
 #' The ordinal variables are all converted to numeric variables (please take care that the order of the classes of each of these variables is well specified at the beginning).
 #'
-#' 2. For the Hamming ("H") distance:
+#' 2. For the Hamming ("H") distance ((1) and (2)):
 #' all the numeric variables must be transformed beforehand in categorical forms using the internal process described in section B or via another external approach.
 #' The boolean variables are all converted in ordinal forms and then turned into binaries.
 #' The recoding for nominal or ordinal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
 #'
-#' 3. For the Gower ("G") distance:
+#' 3. For the Gower ("G") distance (3):
 #' all covariates remain unchanged
 #'
-#' 4. Using the principal components from a factor analysis for mixed data (FAMD):
+#' 4. Using the principal components from a factor analysis for mixed data (FAMD(4)):
 #' a factor analysis for mixed data is done on the covariates of the database and a specific number of the related principal components is remained (depending on the minimal part of variability explained by the covariates that the user wishes to keep by varying the \code{info} option).
-#' The function integrates in its syntax the function \code{\link[FactoMineR]{FAMD}} of the package \pkg{FactoMiner} (Lê, 2008) using default parameters.
+#' The function integrates in its syntax the function \code{\link[FactoMineR]{FAMD}} of the package \pkg{FactoMiner} (5) using default parameters.
 #' After this step, the covariates are replaced by the remaining principal components of the FAMD, and each value corresponds to coordinates linked to each components.
 #' Please notice that this method supposed complete covariates in input, nevertheless in presence of incomplete covariates, each corresponding rows will be dropped from the study, a warning will appear and the number of remaining rows will be indicated.
 #'
@@ -83,19 +83,12 @@
 #' @seealso \code{\link{transfo_quali}},\code{\link{merge_dbs}}
 #'
 #' @references
-#' ### For Factor Analysis with mixed data:
-#' \itemize{
-#' \item Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.
-#' \item Lê S, Josse J, Husson, F. (2008). FactoMineR: An R Package for Multivariate Analysis. Journal of Statistical Software. 25(1). pp. 1-18.
-#' }
-#' ### About the Gower distance:
-#' \itemize{
-#' \item Gower, J. C. (1971), “A general coefficient of similarity and some of its properties”. Biometrics, 27, 623--637.
-#' }
-#' ### About the other distance measurements:
-#' \itemize{
+#' \enumerate{
 #' \item Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
 #' \item Borg, I. and Groenen, P. (1997) Modern Multidimensional Scaling. Theory and Applications. Springer.
+#' \item Gower, J. C. (1971), “A general coefficient of similarity and some of its properties”. Biometrics, 27, 623--637.
+#' \item Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.
+#' \item Lê S, Josse J, Husson, F. (2008). FactoMineR: An R Package for Multivariate Analysis. Journal of Statistical Software. 25(1). pp. 1-18.
 #' }
 #'
 #' @aliases transfo_dist

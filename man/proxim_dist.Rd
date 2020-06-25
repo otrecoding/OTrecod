@@ -7,7 +7,7 @@
 proxim_dist(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.8)
 }
 \arguments{
-\item{data_file}{A data.frame corresponding ideally to an output of the function \code{\link{transfo_dist}}. Otherwise this data.frame is the result of two overlayed databases with a column of database identifier ("A" and "B", 1 and 2, for example), a target variable (called Y by example) only known in the first database, a target variable (Z) only stored in the 2nd database, such that Y and Z summarize a same information differently encoded in the two databases and set of common covariates (at least one) of any type.
+\item{data_file}{A data.frame corresponding ideally to an output of the function \code{\link{transfo_dist}}. Otherwise this data.frame is the result of two overlayed databases with a column of database identifier ("A" and "B", 1 and 2, for example), a target variable (called \eqn{Y} by example) only known in the first database, a target variable (\eqn{Z}) only stored in the 2nd database, such that \eqn{Y} and \eqn{Z} summarize a same information differently encoded in the two databases and set of common covariates (at least one) of any type.
 The order of the variables in the data.frame have no importance.The type of the covariates must be in accordance with the chosen distance function in the \code{norm} option.}
 
 \item{indx_DB_Y_Z}{A vector of three column numbers corresponding to the colum indexes of the identifier, the target variable in the first database and the target variable in the second database. The indexes must be declared in this specific order.}
@@ -27,10 +27,10 @@ A list of 15 elements (the first 15 detailed below) is returned containing vario
 \item{Yobserv}{The values of the target variable in the 1st database}
 \item{Zobserv}{The values of the target variable in the 2nd database}
 \item{D}{A distance matrix corresponding to the distances computed between individuals of the 2 databases}
-\item{Y}{The nY levels of the target variable in numeric form, in the 1st database}
-\item{Z}{The nZ levels of the target variable in numeric form, in the 2nd database}
-\item{indY}{A list of nY groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of Y in the 1st database}
-\item{indZ}{A list of nZ groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of Z in the 2nd database}
+\item{Y}{The \eqn{n_Y} levels of the target variable in numeric form, in the 1st database}
+\item{Z}{The \eqn{n_Z} levels of the target variable in numeric form, in the 2nd database}
+\item{indY}{A list of \eqn{n_Y} groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of \eqn{Y} in the 1st database}
+\item{indZ}{A list of \eqn{n_Z} groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of \eqn{Z} in the 2nd database}
 \item{indXA}{A list of individual (row) indexes from the 1st database, sorted by profiles of covariates according to their proximities. See the \code{Details} part for more information}
 \item{indXB}{A list of individual (row) indexes from the 2nd database, sorted by profiles of covariates according to their proximities. See the \code{Details} part for more information}
 \item{DA}{A distance matrix corresponding to the pairwise distances between individuals of the 1st database}
@@ -49,10 +49,10 @@ A. REQUIRED STRUCTURE FOR THE DATABASE
 
 Firsly, the initial database required is a data.frame that must be prepared in a specific form by users. From two separate databases, the function \code{\link{merge_dbs}} available in this package can assist users in this initial merging, nevertheless notice that this preliminary transformation can also be made directly by following the imposed structure described below:
 two overlayed databases containing a common column of database identifiers (A and B for examples, encoded in numeric or factor form),
-a column corresponding to the target variable with its specific encoding in A (for example a factor Y encoded in nY levels, ordered or not, with NAs in the corresponding rows of B), a column corresponding to the same variable with its specific endoded in B (for example a factor Z in nZ levels,
+a column corresponding to the target variable with its specific encoding in A (for example a factor \eqn{Y} encoded in \eqn{n_Y} levels, ordered or not, with NAs in the corresponding rows of B), a column corresponding to the same variable with its specific endoded in B (for example a factor \eqn{Z} in \eqn{n_Z} levels,
 with NAs in database A), and a set of shared covariates (at least one) between the two databases.
 
-The order of these variables in the database have no importance but the column indexes related to database identifier, Y and Z, must be specified in the \code{indx_DB_Y_Z} option.
+The order of these variables in the database have no importance but the column indexes related to database identifier, \eqn{Y} and \eqn{Z}, must be specified in the \code{indx_DB_Y_Z} option.
 Users can refer to the structure of the table \code{\link{simu_data}} available in the package to adapt their databases to the inital format required.
 
 Missing values are allowed on covariates only (and in presence of more than one covariate), and are excluded from all computations involving the rows within which they occur.
@@ -66,7 +66,7 @@ B. DISTANCE FUNCTIONS AND TYPES OF COVARIATES
 In a second step, before including the data.frame in the function, the shared variables of the merged database will have to be encoded according to the choice of the distance function fixed by user, knowing that it is also frequent that it is the type of the variables which fixes the distance function to choose.
 The function \code{\link{transfo_dist}} is available in the package to assist users in this task but a user can also decide to make this preparation by themselves.
 Thus, with the Euclidean or Manhattan distance ((3), \code{norm} = "E" or "M"), if all types of variables will be allowed, logical variables will have to be previously transformed in binary variables, and categorical variables (factors ordered or not) will have to be transformed by their related disjunctive tables (the function \code{\link{transfo_quali}} can make these specific transformations).
-The Hamming distance (\code{norm} = "H") only requires binary variables (all other forms are not allowed). In this context, continuous variables could have been converted in factor of k levels (k>2) beforehand. The categorical covariates are then transformed in disjunctive tables (containing the (k-1) corresponding binary variables) before use. With this distance, categorical variables are also transformed in disjunctive tables.
+The Hamming distance (\code{norm} = "H") only requires binary variables (all other forms are not allowed). In this context, continuous variables could have been converted in factor of k levels (\eqn{k>2}) beforehand. The categorical covariates are then transformed in disjunctive tables (containing the (k-1) corresponding binary variables) before use. With this distance, categorical variables are also transformed in disjunctive tables.
 Notice that, using the Hamming distance could be quite long in presence NAs on covariates, so please be a little patient and let the function runs few minutes if necessary.
 Finally, the Gower distance ((4), \code{norm} = "G") uses the (\code{\link[StatMatch]{gower.dist}}) function (5) and so allows logical, categorical and numeric variables with no preliminary transformations.
 

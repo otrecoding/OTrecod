@@ -15,7 +15,7 @@ power_set(n, ordinal = FALSE)
 A list of \eqn{2^n -1} subsets (The empty set is excluded)
 }
 \description{
-A function that gives the power set \code{P(S)} of any non empty set S
+A function that gives the power set \eqn{P(S)} of any non empty set S
 }
 \examples{
 # Powerset of set of 4 elements
