@@ -2,7 +2,7 @@
 #'
 #' This function proposes post-process verifications after data fusion by Optimal Transportation algorithms
 #'
-#' In a context of data fusion, where information from a same target population is summarized via two specific variables \eqn{Y} and \eqn{Z} (two ordinal or nominal factors with different number of levels \eqn{n_Y} and nZ), stored in two distinct databases A and B respectively,
+#' In a context of data fusion, where information from a same target population is summarized via two specific variables \eqn{Y} and \eqn{Z} (two ordinal or nominal factors with different number of levels \eqn{n_Y} and \eqn{n_Z}), stored in two distinct databases A and B respectively,
 #' Optimal Transportation (OT) algorithms (See the models \code{OUTCOME}, \code{R_OUTCOME}, \code{JOINT}, and \code{R_JOINT} of the reference (2) for more details)
 #' propose an original method for the recoding of \eqn{Y} in B and/or \eqn{Z} in A. Outputs from the functions \code{OT_outcome} and \code{OT_joint} so provides the related predictions to \eqn{Y} in B and/or \eqn{Z} in A,
 #' and from these results, the function \code{verif_OT} provides a set of tools (optional or not, depending on the choices done by user in input) to estimate:
