@@ -72,11 +72,11 @@ object \code{estimatorZA} (see outputs of the functions \code{\link{OT_outcome}}
 Each individual (or row) from A, is associated with a conditional probability \eqn{P(Z= z|Y= y, X= x)}.
 
 With the function \code{\link{OT_joint}}, the individual predictions for subject i: \eqn{\widehat{z}_i},\eqn{i=1,\ldots,n_A} are given using the maximum a posteriori rule:
-\deqn{\widehat{z}_i= \text{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)}
+\deqn{\widehat{z}_i= \mbox{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)}
 While the function \code{\link{OT_outcome}} directly gives the individual prediction and the probablities \eqn{P(Z= z|Y= y, X= x)} are computed in a second step (see (2)).
 
 For each subject i in database A, a new variable \eqn{z_i'} is simulate such that: \deqn{z_i'\sim \mathcal{B}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))}
-The average stability criterium is so calculated as: \deqn{\text{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'}
+The average stability criterium is so calculated as: \deqn{\mbox{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'}
 This criterion can be repeated with \code{R} samples and the related mean and variance are given in output.
 
 Some of these conditional probabilities are computed from only few individuals (because they are computed from a certain number of individuals considered as neighbors for each covariates profile \eqn{x \in \mathcal{X}}),  and can lead to not enough reliable estimation.
