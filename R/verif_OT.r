@@ -38,7 +38,7 @@
 #' The average stability criterium is so calculated as: \deqn{\text{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'}
 #' This criterion can be repeated on \code{R} samples and the mean and variance related to this computation are given in output.
 #'
-#' Because these conditional probabilities estimation are computed from a certain number of individuals considered as neighbors for each profile \eqn{x \in \mathcal{X}}, the fact that some of these probabilities are computed from few individuals can makes the estimation
+#' Because these conditional probabilities estimation are computed from a certain number of individuals considered as neighbors for each profile \eqn{x}, the fact that some of these probabilities are computed from few individuals can makes the estimation
 #' not enough reliable. To avoid this problem, conditional probabilities can be removed from the stability estimation since they have been assessed from an insufficient number of subjects.
 #' In this way, the minimal number of subjects required for a conditional probability to participate to the stability estimation can be fixed a priori by filling in the argument \code{min.neigb}.
 #'
