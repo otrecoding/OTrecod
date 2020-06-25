@@ -44,7 +44,7 @@ the Gower distance ("G"), and the Hamming (also called binary) distance ("H"), c
 This ratio will fix the number of components that will be kept with this approach.}
 }
 \value{
-A data.frame which covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the identifier, Y and Z correspond to the first three columns respectively.
+A data.frame which covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the identifier, \eqn{Y} and \eqn{Z} correspond to the first three columns respectively.
 Moreover the order of rows remains unchanged during the process.
 }
 \description{
@@ -59,13 +59,13 @@ Nevertheless, it is also possible to apply directly the function \code{transfo_d
 The database must count at least four columns (in an a unspecified order of appearance in the database):
 \itemize{
 \item A column indicating the database identifiers (two classes: A and B, 1 and 2, ...)
-\item A categorical (nominal or ordinal factor) variable corresponding to the outcome of the 1st database (on top) with its specific encoding (called Y by example).
-\item A second categorical (nominal or ordinal) variable corresponding to the outcome of the 2nd database (called Z by example).
+\item A categorical (nominal or ordinal factor) variable corresponding to the outcome of the 1st database (on top) with its specific encoding (called \eqn{Y} by example).
+\item A second categorical (nominal or ordinal) variable corresponding to the outcome of the 2nd database (called \eqn{Z} by example).
 \item At least one covariate shared in the two bases (same encoding in the 2 bases). Incomplete information is possible on shared covariates if you have more than one covariate.
 }
-In this context, the information related to Y in the second database must be missing as the information related to Z in the first one.
-The indexes of columns related to the database identifier, Y and Z must be specified in this order in the argument \code{index_DB_Y_Z}.
-Moreover, all column indexes (including those related to identifier and target variables Y and Z) of the overlayed database (DB) must be declared once (and only once), among the arguments \code{quanti}, \code{nominal}, \code{ordinal}, and \code{logic}.
+In this context, the information related to Y in the second database must be missing as the information related to \eqn{Z} in the first one.
+The indexes of columns related to the database identifier, \eqn{Y} and \eqn{Z} must be specified in this order in the argument \code{index_DB_Y_Z}.
+Moreover, all column indexes (including those related to identifier and target variables \eqn{Y} and \eqn{Z}) of the overlayed database (DB) must be declared once (and only once), among the arguments \code{quanti}, \code{nominal}, \code{ordinal}, and \code{logic}.
 If the outcomes are of numeric types, they could be declared as quantitative, but they will be automatically convert in ordered factors.
 
 
