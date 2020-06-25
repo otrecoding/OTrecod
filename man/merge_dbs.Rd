@@ -34,9 +34,9 @@ merge_dbs(
 
 \item{NAME_Z}{Name of the outcome (with quotes) in its specific scale/encoding from the 2nd database (DB2)}
 
-\item{order_levels_Y}{A vector of classes (with quotes) sorted in ascending order that permits to reorder the levels of Y in the 1st database (DB1) if necessary, when Y is stored as an ordinal factor (scale).}
+\item{order_levels_Y}{A vector of classes (with quotes) sorted in ascending order that permits to reorder the levels of \eqn{Y} in the 1st database (DB1) if necessary, when \eqn{Y} is stored as an ordinal factor (scale).}
 
-\item{order_levels_Z}{A vector of classes (with quotes) sorted in ascending order that permits to reorder the levels of Z in the 2nd database (DB2) if necessary, when Z is stored as an ordinal factor (scale).}
+\item{order_levels_Z}{A vector of classes (with quotes) sorted in ascending order that permits to reorder the levels of \eqn{Z} in the 2nd database (DB2) if necessary, when \eqn{Z} is stored as an ordinal factor (scale).}
 
 \item{ordinal_DB1}{Vector of index of columns corresponding to ordinal variables in the 1st database (no ordinal variable by default)}
 
@@ -69,9 +69,9 @@ Overlay of two databases with specific outcome variables and shared covariates
 }
 \details{
 Assuming that DB1 and DB2 are two databases (two separate data.frames with no overlapping part) to merge vertically, the function \code{merge_dbs} performs this overlay by checking the compatibility of the variables between the databases.
-Each database must contain a target variable (whose label must be filled in the argument \code{Y} for DB1 and in the argument \code{Z} for DB2 respectively, so that the final database in output will contain a target \code{Y} whose values will be missing in DB2 and another target \code{Z} whose values will be missing in DB1), a subset of shared covariates (by example, the best predictors of Y in DB1, and Z in DB2),
+Each database must contain a target variable (whose label must be filled in the argument \code{Y} for DB1 and in the argument \code{Z} for DB2 respectively, so that the final database in output will contain a target \code{Y} whose values will be missing in DB2 and another target \code{Z} whose values will be missing in DB1), a subset of shared covariates (by example, the best predictors of \eqn{Y} in DB1, and \eqn{Z} in DB2),
 and another possible subset of variables specific to each database.
-Each database can have a row identifier whose corresponding index of column must be assigned in the arguments \code{row_ID1} for DB1 and \code{row_ID2} for DB2. Nevertheless, by default, DB1 and DB2 have no row identifiers and the merging remains unchanged the order of rows in the two databases provided that Y and Z have no missing values.
+Each database can have a row identifier whose corresponding index of column must be assigned in the arguments \code{row_ID1} for DB1 and \code{row_ID2} for DB2. Nevertheless, by default, DB1 and DB2 have no row identifiers and the merging remains unchanged the order of rows in the two databases provided that \eqn{Y} and \eqn{Z} have no missing values.
 A rule for the overlay is that the declared first database (in the argument \code{DB1}) will be placed above the second one (declared in the argument \code{DB2}).
 
 The function \code{merge_dbs} proposes a helpful tool for any user who wants to prepare their databases to data fusion by solving matching problems using algorithms in the package \code{Otrecod} via the functions \code{OT_outcome} or \code{OT_joint}.
@@ -98,7 +98,7 @@ using the function \code{transfo_target} integrated in the function \code{merge_
 \item Covariates whose names are specific to each database will be also deleted from the merging.
 }
 Notice that if certain important predictors have been improperly excluded from the merging, users can make the necessary transformations on these variables, and re-run the function.
-As a finally step, the function checks that all values related to Y in B are missing and inversely for Z in A.
+As a finally step, the function checks that all values related to \eqn{Y} in B are missing and inversely for \eqn{Z} in A.
 }
 \examples{
 

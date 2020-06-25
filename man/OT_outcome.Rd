@@ -27,9 +27,9 @@ OT_outcome(
 }
 \arguments{
 \item{datab}{A data.frame with at least four columns sorted in a non-specific order. One column must be a column of identifier for the two databases, where the names of the two databases
-must be alphanumerically ranked in ascending order (for example: 1 for the top database and 2 for the database from below, or more logically here A and B  ...But NOT B and A!). One column (Y here but other names are allowed)
+must be alphanumerically ranked in ascending order (for example: 1 for the top database and 2 for the database from below, or more logically here A and B  ...But NOT B and A!). One column (\eqn{Y} here but other names are allowed)
 must correspond to the target variable related to the information of interest to merge with its specific encoding in the database A (corresponding encoding should be so missing in the database B). In the same way,
-one column (Z here) corresponds to the second target variable with its specific encoding in the database B (corresponding encoding should be so missing in the database A).
+one column (\eqn{Z} here) corresponds to the second target variable with its specific encoding in the database B (corresponding encoding should be so missing in the database A).
 Finally, the input database must have at least one shared covariate with same encoding in A and B. Please notice that, if your data.frame has only four columns, that is to say, only one covariate, if this latter has NA, and unless user
 has previously imputed the corresponding missing information, the OT algorithm will only run complete cases.}
 
@@ -66,21 +66,21 @@ the Gower distance ("G"), the Hamming (also called binary) distance and the Eucl
 \item{prox.dist}{A percentage (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates. This choice does not influence the estimate of \eqn{\gamma},
 but the estimates of the conditional posterior probabilities stored, in output, in the objects \code{estimatorZA} and \code{estimatorYB}.}
 
-\item{which.DB}{A character string (with quotes) that indicates which individual predictions compute: Only the individual predictions of Y in B ("B"), only those of Z in A ("A") or the both ("BOTH" by default).}
+\item{which.DB}{A character string (with quotes) that indicates which individual predictions compute: Only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).}
 }
 \value{
 A list containing 9 elements:
 \item{time_exe}{Running time of the function}
-\item{gamma_A}{A cost matrix corresponding to an estimation of the joint distribution of (YA,ZA)}
-\item{gamma_B}{A cost matrix corresponding to an estimation of the joint distribution of (YB,ZB)}
+\item{gamma_A}{A cost matrix corresponding to an estimation of the joint distribution of \eqn{(Y^A,Z^A)}}
+\item{gamma_B}{A cost matrix corresponding to an estimation of the joint distribution of \eqn{(Y^B,Z^B)}}
 \item{profile}{A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results}
 \item{res_prox}{The outputs of the function \code{proxim_dist}}
-\item{estimatorZA}{An array that corresponds to estimates of the probability distribution of Z conditional to X and Y in database A. The number of rows of each table corresponds to the total number of the P profiles of covariates.
-The number of columns of each table corresponds to the number of levels of Y. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of Z}
-\item{estimatorYB}{An array that corresponds to estimates of the probability distribution of Y conditional to X and Z in database B. The number of rows of each table corresponds to the total number of profiles of covariates.
-The number of columns of each table corresponds to the number of levels of Z. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of Y}
-\item{DATA1_OT}{The database A with imputed individual prediction on Z using OT}
-\item{DATA2_OT}{The database B with imputed individual prediction on Y using OT}
+\item{estimatorZA}{An array that corresponds to estimates of the probability distribution of \eqn{Z} conditional to X and \eqn{Y} in database A. The number of rows of each table corresponds to the total number of the P profiles of covariates.
+The number of columns of each table corresponds to the number of levels of \eqn{Y}. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of Z}
+\item{estimatorYB}{An array that corresponds to estimates of the probability distribution of \eqn{Y} conditional to X and \eqn{Z} in database B. The number of rows of each table corresponds to the total number of profiles of covariates.
+The number of columns of each table corresponds to the number of levels of \eqn{Z}. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \eqn{Y}}
+\item{DATA1_OT}{The database A with imputed individual prediction on \eqn{Z} using OT}
+\item{DATA2_OT}{The database B with imputed individual prediction on \eqn{Y} using OT}
 }
 \description{
 The function \code{OT_outcome} integrates two models called (\code{OUTCOME}) and \code{R-OUTCOME} dedicated to the solving of recoding problems in data integration
@@ -89,36 +89,36 @@ using optimal transportation of outcomes.
 \details{
 A. THE RECODING PROBLEM IN DATA FUSION
 
-Assuming that Y and Z are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
-so that Y and Z are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (with same encodings in A and B)
-completed or not. Integrating these two databases often requires to solve the recoding problem observed between Y and Z by creating an unique database where
-the missing information of Y and/or Z is fully completed.
+Assuming that \eqn{Y} and \eqn{Z} are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
+so that \eqn{Y} and \eqn{Z} are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (with same encodings in A and B)
+completed or not. Integrating these two databases often requires to solve the recoding problem observed between \eqn{Y} and \eqn{Z} by creating an unique database where
+the missing information of \eqn{Y} and/or \eqn{Z} is fully completed.
 
 
 B. INFORMATIONS ABOUT THE ALGORITHM
 
 The algorithm integrated in the function \code{OT_outcome} provides a solution to the recoding problem previously described by proposing an
-application of optimal transportation which aims is to search for a bijective mapping between the distributions of of Y in A and Z in B.
+application of optimal transportation which aims is to search for a bijective mapping between the distributions of of \eqn{Y} in A and \eqn{Z} in B.
 Mathematically, the principle of the algorithm is based on the resolution of an optimization problem which provides a \eqn{\gamma} solution (as called in the related articles)
-that pushes the distribution of Y forward to the distribution of Z and can be so interpreted as an estimator of the joint distribution
-\code{(Y,Z)} in A (or B respetively). According to this result, a second step of the algorithm provides individual predictions of Y in B (of Z in A, or both, depending on the choice
+that pushes the distribution of \eqn{Y} forward to the distribution of \eqn{Z} and can be so interpreted as an estimator of the joint distribution
+\eqn{(Y,Z)} in A (or B respetively). According to this result, a second step of the algorithm provides individual predictions of \eqn{Y} in B (of \eqn{Z} in A, or both, depending on the choice
 specified by user in the argument \code{which.DB}) two possible approaches are available depending on the argument \code{indiv.method}:
 \itemize{
 \item When \code{indiv.method = "sequential"}, a nearest neighbor procedure is applied. This corresponds to the use of the function \code{\link{indiv_grp_closest}} directly
 implemented in the function \code{OT_outcome}.
 \item When \code{indiv.method = "optimal"}, a linear optimization problem is solved to determine the individual predictions that minimize the sum of the individual distances
-in A (B) with the modalities of Z in B (Y in A). This uses directly the function \code{\link{indiv_grp_optimal}} in the function \code{OT_outcome}.
+in A (B) with the modalities of \eqn{Z} in B (\eqn{Y} in A). This uses directly the function \code{\link{indiv_grp_optimal}} in the function \code{OT_outcome}.
 }
 This algorithm supposes the respect of the two following assumptions:
 \enumerate{
-\item \code{Y} must follow the same distribution in A and B. In the same way \code{Z} follows the same distribution in the two databases.
-\item The conditional distribution \code{(Y|X)} must be identical in A and B. Respectively, \code{(Z|X)} is supposed identical in A and B.
+\item \eqn{Y} must follow the same distribution in A and B. In the same way \eqn{Z} follows the same distribution in the two databases.
+\item The conditional distribution \eqn{(Y|X)} must be identical in A and B. Respectively, \eqn{(Z|X)} is supposed identical in A and B.
 }
 Because the first assumption can appear too strong in some situations, a relaxation of the constraints of marginal distribution is possible using the argument \code{maxrelax}.
 When \code{indiv.method = "sequential"} and \code{maxrelax = 0}, the first version of the algorithm (called \code{OUTCOME} in (2) and used in all the article (1))
 is applied. In all other situations, the algorithm applied corresponds to a model called \code{R_OUTCOME} (only described in (2)).
-Estimations a posteriori of conditional probabilities \code{P[Y|X,Z]} and \code{P[Z|X,Y]} are available by profiles of covariates in output (See the objects \code{estimatorYB} and \code{estimatorZA}).
-Estimations of \eqn{\gamma} are also available according to the direction of the distributions transport chosen (See \code{gamma_A} and \code{gamma_B}).
+Estimations a posteriori of conditional probabilities \eqn{P[Y|X,Z]} and \eqn{P[Z|X,Y]} are available by profiles of covariates in output (See the objects \code{estimatorYB} and \code{estimatorZA}).
+Estimations of \eqn{\gamma} are also available according to the direction of the distributions transport chosen (See \eqn{\gamma_A} and \eqn{\gamma_B}).
 
 
 C. TYPE OF REQUIRED INPUT DATABASE
@@ -126,9 +126,9 @@ C. TYPE OF REQUIRED INPUT DATABASE
 The input database is a data.frame that must be saved in a specific form by users:
 \itemize{
 \item Two overlayed databases containing a common column of databases' identifiers (A and B, 1 or 2, by examples, encoded in numeric or factor form)
-\item A column corresponding to the target variable with its specific encoding in A (For example a factor Y encoded in nY levels, ordered or not, with NAs in the corresponding rows of B)
-\item A column corresponding to the second target outcome with its specific endoded in B (For example a factor Z in nZ levels, with NAs in rows of A)
-\item The order of the variables in the database have no importance but the indexes of the columns related to the 3rd columns previously described (ie ID, Y and Z) must be rigorously specified
+\item A column corresponding to the target variable with its specific encoding in A (For example a factor \eqn{Y} encoded in \eqn{n_Y} levels, ordered or not, with NAs in the corresponding rows of B)
+\item A column corresponding to the second target outcome with its specific endoded in B (For example a factor \eqn{Z} in \eqn{n_Z} levels, with NAs in rows of A)
+\item The order of the variables in the database have no importance but the indexes of the columns related to the 3rd columns previously described (ie ID, \eqn{Y} and \eqn{Z}) must be rigorously specified
 in the argument \code{index_DB_Y_Z}.
 \item A set of shared common covariates (at least one but more is recommended) of any type, complete or not (provided that the number of covariates exceeds 1) is required.
 }
@@ -139,7 +139,7 @@ Remarks about the outcomes:
 \item A target outcome can be categorical, in factor, ordered or not, discrete (with a finite number of values ONLY) but, notice that, if they are stored in numeric they will be automatically converted in ordered factors.
 \item If a target outcome is incomplete, the corresponding rows will be automatically dropped during the execution of the function.
 }
-The type of each variables (including ID, Y and Z) of the database must be rigorously specified once, in one of the four arguments \code{quanti},\code{nominal}, \code{ordinal} and \code{logic}.
+The type of each variables (including ID, \eqn{Y} and \eqn{Z}) of the database must be rigorously specified once, in one of the four arguments \code{quanti},\code{nominal}, \code{ordinal} and \code{logic}.
 
 
 D. TRANSFORMATIONS OF CONTINUOUS COVARIATES
