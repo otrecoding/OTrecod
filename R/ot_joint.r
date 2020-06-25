@@ -22,7 +22,7 @@
 #' \eqn{(Z|Y,X)} in A to predict the corresponding incomplete individuals informations of \eqn{Y} and/or \eqn{Z} respectively.
 #' This algorithm supposes that the conditional distribution \eqn{(Y|X)} must be identical in A and B. Respectively, \eqn{(Z|X)} is supposed identical in A and B.
 #' Estimations a posteriori of conditional probabilities \eqn{P[Y|X,Z]} and \eqn{P[Z|X,Y]} are available by profiles of covariates in output (See the objects \code{estimatorYB} and \code{estimatorZA}).
-#' Estimations of \eqn{\gamma} are also available according to the chosen transport distributions (See the arguments \eqn{\gamma_A} and \eqn{\gamma_B}).
+#' Estimations of \eqn{\gamma} are also available according to the chosen transport distributions (See the arguments \code{gamma_A} and \code{gamma_B}).
 #'
 #' The model \code{R-JOINT} gathers enrichments of the model \code{JOINT} and is also available via the function \code{OT_joint} It allows users to add a relaxation term in the algorithm to relax distributional assumptions (\code{maxrelax}>0),
 #' and (or) add also a positive regularization term (\code{lamdba.reg}>0) expressing that the transportation map does not vary to quickly with respect of covariates \eqn{X}.
