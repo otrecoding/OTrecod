@@ -68,7 +68,7 @@ Conversely, a larger threshold will only keeps for the computation of the variab
 \item{RF_SEED}{An integer used as argument by the set.seed() for offsetting the random number generator (random integer by default). This value is only used when a RF method is required.}
 }
 \value{
-A list of 13 (If \code{RF = TRUE}) or 10 objects (Only the 1st ten objects if \code{RF = FALSE}) is returned:
+A list of 13 (if \code{RF = TRUE}) or 10 objects (Only the first ten objects if \code{RF = FALSE}) is returned:
 \item{seed}{The random number generator related to the study}
 \item{outc}{The identifier of the outcome to predict}
 \item{thresh}{A summarize of the different thresholds fixed for the study}
@@ -79,7 +79,7 @@ A list of 13 (If \code{RF = TRUE}) or 10 objects (Only the 1st ten objects if \c
 \item{vcrm_X_cat}{Table of pairwise associations between the categorical predictors (Cramer's V)}
 \item{cor_X_num}{Table of pairwise associations between the continuous predictors (Cramer's V)}
 \item{FG_test}{Results of the Farrar and Glauber tests, with and without approximation form}
-\item{colinear_PB}{Table of predictors with problem of collinearity according to the fixed thresholds}
+\item{collinear_PB}{Table of predictors with problem of collinearity according to the fixed thresholds}
 \item{drop_var}{Labels of predictors to drop after RF process (optional output: Only if \code{RF}=TRUE)}
 \item{RF_PRED_Y}{Table of variable importance measurements, conditional or not, according to the argument \code{condi_RF} (optional output: Only if \code{RF}=TRUE)}
 \item{best_pred}{Labels of the best predictors selected (optional output: Only if \code{RF}=TRUE) according to the value of the argument \code{thresh_Y}}
