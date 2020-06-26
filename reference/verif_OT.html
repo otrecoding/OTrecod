@@ -196,11 +196,11 @@ While the function <code>OT_outcome</code> directly gives the individual predict
 <p>For each subject i in database A, a new variable \(z_i'\) is simulate such that: $$z_i'\sim \mathcal{B}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))$$
 The average stability criterium is so calculated as: $$\mbox{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'$$
 This criterion can be repeated with <code>R</code> samples and the related mean and variance are given in output.</p>
-<p>Some of these conditional probabilities are computed from only few individuals (because they are computed from a certain number of individuals considered as neighbors for each covariates profile \(x \in \mathcal{X}\)),  and can lead to not enough reliable estimation.
+<p>Some of these conditional probabilities are computed from only few individuals (because they are computed from a certain number of individuals considered as neighbors for each covariates profile \(x\)),  and can lead to not enough reliable estimation.
 To avoid this problem, conditional probabilities can be removed from the stability criterion since they have been assessed from an insufficient number of subjects.
 In this way, the minimal number of subjects required for a conditional probability to participate to the stability estimation can be fixed a priori by filling in the argument <code>min.neigb</code>.</p>
 <p>These results are available when the argument <code>stab.prob = TRUE</code>.
-Finally, when the predictions of Z in A and \(Y\) in B are available, the function <code>verif_OT</code> provides in output, global results and results by database.</p>
+Finally, when the predictions of \(Z\) in A and \(Y\) in B are available, the function <code>verif_OT</code> provides in output, global results and results by database.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     

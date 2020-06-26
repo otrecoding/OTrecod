@@ -205,8 +205,8 @@ If <code>prox.X = 1</code>, all profiles are considered as neighbors.</p></td>
 
     <p>A list of 7 elements containing:</p>
 <dt>time_exe</dt><dd><p>Running time of the function</p></dd>
-    <dt>gamma_A</dt><dd><p>Estimation of \(\gamma\) for the completion of A. A cost matrix that corresponds to the joint distribution of \((Y^A,Z^A,X^A)\)</p></dd>
-    <dt>gamma_B</dt><dd><p>Estimation of \(\gamma\) for the completion of B. A cost matrix that corresponds to the joint distribution of \((Y^B,Z^B,X^B)\)</p></dd>
+    <dt>gamma_A</dt><dd><p>Estimation of \(\gamma\) for the completion of A. A cost matrix that corresponds to the joint distribution of \((Y,Z,X)\) in A</p></dd>
+    <dt>gamma_B</dt><dd><p>Estimation of \(\gamma\) for the completion of B. A cost matrix that corresponds to the joint distribution of \((Y,Z,X)\) in B</p></dd>
     <dt>profile</dt><dd><p>A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the <code>estimatorZA</code> and the <code>estimatorYB</code> objects for a better interpretation of the results</p></dd>
     <dt>res_prox</dt><dd><p>The outputs of the function <code>proxim_dist</code></p></dd>
     <dt>estimatorZA</dt><dd><p>An array that corresponds to estimates of the probability distribution of \(Z\) conditional to \(X\) and \(Y\) in database A. The number of rows of each table corresponds to the total number of profiles of covariates.
@@ -251,7 +251,7 @@ function <code>OT_outcome</code>, please notice, that the function <code>OT_join
 <p>Remarks about the outcomes:</p><ul>
 <li><p>A target outcome can be categorical, in factor, ordered or not, discrete (with a finite number of values ONLY) but, notice that, if they are stored in numeric they will be automatically converted in ordered factors.</p></li>
 <li><p>If a target outcome is incomplete, the corresponding rows will be automatically dropped during the execution of the function.</p></li>
-</ul><p>The type of each variables (including ID, \(Y\) and \(Z\)) of the database must be rigorously specified, in one of the four arguments <code>quanti</code>, <code>nominal</code>, <code>ordinal</code> and <code>logic</code>.</p>
+</ul><p>The type of each variables (including \(ID\), \(Y\) and \(Z\)) of the database must be rigorously specified, in one of the four arguments <code>quanti</code>, <code>nominal</code>, <code>ordinal</code> and <code>logic</code>.</p>
 
 <p>D. TRANSFORMATIONS OF CONTINUOUS COVARIATES</p>
 <p>Continuous covariates with infinite numbers of values will have to be categorized beforehand their inclusions in the function.

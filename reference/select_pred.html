@@ -219,7 +219,7 @@ Conversely, a larger threshold will only keeps for the computation of the variab
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of 13 (If <code>RF = TRUE</code>) or 10 objects (Only the 1st ten objects if <code>RF = FALSE</code>) is returned:</p>
+    <p>A list of 13 (if <code>RF = TRUE</code>) or 10 objects (Only the first ten objects if <code>RF = FALSE</code>) is returned:</p>
 <dt>seed</dt><dd><p>The random number generator related to the study</p></dd>
 <dt>outc</dt><dd><p>The identifier of the outcome to predict</p></dd>
 <dt>thresh</dt><dd><p>A summarize of the different thresholds fixed for the study</p></dd>
@@ -230,7 +230,7 @@ Conversely, a larger threshold will only keeps for the computation of the variab
 <dt>vcrm_X_cat</dt><dd><p>Table of pairwise associations between the categorical predictors (Cramer's V)</p></dd>
 <dt>cor_X_num</dt><dd><p>Table of pairwise associations between the continuous predictors (Cramer's V)</p></dd>
 <dt>FG_test</dt><dd><p>Results of the Farrar and Glauber tests, with and without approximation form</p></dd>
-<dt>colinear_PB</dt><dd><p>Table of predictors with problem of collinearity according to the fixed thresholds</p></dd>
+<dt>collinear_PB</dt><dd><p>Table of predictors with problem of collinearity according to the fixed thresholds</p></dd>
 <dt>drop_var</dt><dd><p>Labels of predictors to drop after RF process (optional output: Only if <code>RF</code>=TRUE)</p></dd>
 <dt>RF_PRED_Y</dt><dd><p>Table of variable importance measurements, conditional or not, according to the argument <code>condi_RF</code> (optional output: Only if <code>RF</code>=TRUE)</p></dd>
 <dt>best_pred</dt><dd><p>Labels of the best predictors selected (optional output: Only if <code>RF</code>=TRUE) according to the value of the argument <code>thresh_Y</code></p></dd>

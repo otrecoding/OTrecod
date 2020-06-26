@@ -215,14 +215,14 @@ but the estimates of the conditional posterior probabilities stored, in output, 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list containing 9 elements:</p>
-<dt>time_exe</dt><dd><p>Running time of the function</p></dd>
-<dt>gamma_A</dt><dd><p>A cost matrix corresponding to an estimation of the joint distribution of \((Y^A,Z^A)\)</p></dd>
-<dt>gamma_B</dt><dd><p>A cost matrix corresponding to an estimation of the joint distribution of \((Y^B,Z^B)\)</p></dd>
-<dt>profile</dt><dd><p>A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the <code>estimatorZA</code> and the <code>estimatorYB</code> objects for a better interpretation of the results</p></dd>
+<dt>time_exe</dt><dd><p>The running time of the function</p></dd>
+<dt>gamma_A</dt><dd><p>A cost matrix corresponding to an estimation of the joint distribution of \((Y,Z)\) in A</p></dd>
+<dt>gamma_B</dt><dd><p>A cost matrix corresponding to an estimation of the joint distribution of \((Y,Z)\) in B</p></dd>
+<dt>profile</dt><dd><p>A data.frame that gives all details about the remaining \(P\) profiles of covariates. These informations can be linked to the <code>estimatorZA</code> and the <code>estimatorYB</code> objects for a better interpretation of the results</p></dd>
 <dt>res_prox</dt><dd><p>The outputs of the function <code>proxim_dist</code></p></dd>
-<dt>estimatorZA</dt><dd><p>An array that corresponds to estimates of the probability distribution of \(Z\) conditional to X and \(Y\) in database A. The number of rows of each table corresponds to the total number of the P profiles of covariates.
-The number of columns of each table corresponds to the number of levels of \(Y\). The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of Z</p></dd>
-<dt>estimatorYB</dt><dd><p>An array that corresponds to estimates of the probability distribution of \(Y\) conditional to X and \(Z\) in database B. The number of rows of each table corresponds to the total number of profiles of covariates.
+<dt>estimatorZA</dt><dd><p>An array that corresponds to estimates of the probability distribution of \(Z\) conditional to \(X\) and \(Y\) in database A. The number of rows of each table corresponds to the total number of the P profiles of covariates.
+The number of columns of each table corresponds to the number of levels of \(Y\). The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \(Z\)</p></dd>
+<dt>estimatorYB</dt><dd><p>An array that corresponds to estimates of the probability distribution of \(Y\) conditional to \(X\) and \(Z\) in database B. The number of rows of each table corresponds to the total number of profiles of covariates.
 The number of columns of each table corresponds to the number of levels of \(Z\). The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \(Y\)</p></dd>
 <dt>DATA1_OT</dt><dd><p>The database A with imputed individual prediction on \(Z\) using OT</p></dd>
 <dt>DATA2_OT</dt><dd><p>The database B with imputed individual prediction on \(Y\) using OT</p></dd>
@@ -267,7 +267,7 @@ in the argument <code>index_DB_Y_Z</code>.</p></li>
 <p>Remarks about the outcomes:</p><ul>
 <li><p>A target outcome can be categorical, in factor, ordered or not, discrete (with a finite number of values ONLY) but, notice that, if they are stored in numeric they will be automatically converted in ordered factors.</p></li>
 <li><p>If a target outcome is incomplete, the corresponding rows will be automatically dropped during the execution of the function.</p></li>
-</ul><p>The type of each variables (including ID, \(Y\) and \(Z\)) of the database must be rigorously specified once, in one of the four arguments <code>quanti</code>,<code>nominal</code>, <code>ordinal</code> and <code>logic</code>.</p>
+</ul><p>The type of each variables (including \(ID\), \(Y\) and \(Z\)) of the database must be rigorously specified once, in one of the four arguments <code>quanti</code>,<code>nominal</code>, <code>ordinal</code> and <code>logic</code>.</p>
 
 <p>D. TRANSFORMATIONS OF CONTINUOUS COVARIATES</p>
 <p>The function <code>OT_outcome</code> integrates in its syntax a process dedicated to the discretization of continuous covariates. For this, it is necessary to rigorously fill in the arguments <code>convert.num</code> and <code>convert.clss</code>.
