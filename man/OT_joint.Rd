@@ -62,8 +62,8 @@ If \code{prox.X = 1}, all profiles are considered as neighbors.}
 \value{
 A list of 7 elements containing:
     \item{time_exe}{Running time of the function}
-    \item{gamma_A}{Estimation of \eqn{\gamma} for the completion of A. A cost matrix that corresponds to the joint distribution of \eqn{(Y^A,Z^A,X^A)}}
-    \item{gamma_B}{Estimation of \eqn{\gamma} for the completion of B. A cost matrix that corresponds to the joint distribution of \eqn{(Y^B,Z^B,X^B)}}
+    \item{gamma_A}{Estimation of \eqn{\gamma} for the completion of A. A cost matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in A}
+    \item{gamma_B}{Estimation of \eqn{\gamma} for the completion of B. A cost matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in B}
     \item{profile}{A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results}
     \item{res_prox}{The outputs of the function \code{proxim_dist}}
     \item{estimatorZA}{An array that corresponds to estimates of the probability distribution of \eqn{Z} conditional to \eqn{X} and \eqn{Y} in database A. The number of rows of each table corresponds to the total number of profiles of covariates.
@@ -122,7 +122,7 @@ Remarks about the outcomes:
 \item A target outcome can be categorical, in factor, ordered or not, discrete (with a finite number of values ONLY) but, notice that, if they are stored in numeric they will be automatically converted in ordered factors.
 \item If a target outcome is incomplete, the corresponding rows will be automatically dropped during the execution of the function.
 }
-The type of each variables (including ID, \eqn{Y} and \eqn{Z}) of the database must be rigorously specified, in one of the four arguments \code{quanti}, \code{nominal}, \code{ordinal} and \code{logic}.
+The type of each variables (including \eqn{ID}, \eqn{Y} and \eqn{Z}) of the database must be rigorously specified, in one of the four arguments \code{quanti}, \code{nominal}, \code{ordinal} and \code{logic}.
 
 
 D. TRANSFORMATIONS OF CONTINUOUS COVARIATES

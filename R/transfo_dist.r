@@ -333,17 +333,19 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,
 
   if (index_DB_Y_Z[2] %in% nominal){
 
-    DB$Y = as.character(DB$Y)
+    # DB$Y = as.character(DB$Y)
+    DB$Y = as.factor(DB$Y)
 
   } else if (index_DB_Y_Z[3] %in% nominal){
 
-    DB$Z = as.character(DB$Z)
+    # DB$Z = as.character(DB$Z)
+    DB$Z = as.factor(DB$Z)
 
   } else {}
 
   ordinal2 = setdiff(ordinal,index_DB_Y_Z)
   nominal2 = setdiff(nominal,index_DB_Y_Z)
-  quanti2  = setdiff(quanti,index_DB_Y_Z)
+  quanti2  = setdiff(quanti ,index_DB_Y_Z)
 
   if (prep_choice == "H"){
 

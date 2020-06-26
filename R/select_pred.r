@@ -97,7 +97,7 @@
 #' @param RF_SEED An integer used as argument by the set.seed() for offsetting the random number generator (random integer by default). This value is only used when a RF method is required.
 #'
 #'
-#' @return A list of 13 (If \code{RF = TRUE}) or 10 objects (Only the 1st ten objects if \code{RF = FALSE}) is returned:
+#' @return A list of 13 (if \code{RF = TRUE}) or 10 objects (Only the first ten objects if \code{RF = FALSE}) is returned:
 #' \item{seed}{The random number generator related to the study}
 #' \item{outc}{The identifier of the outcome to predict}
 #' \item{thresh}{A summarize of the different thresholds fixed for the study}
@@ -108,7 +108,7 @@
 #' \item{vcrm_X_cat}{Table of pairwise associations between the categorical predictors (Cramer's V)}
 #' \item{cor_X_num}{Table of pairwise associations between the continuous predictors (Cramer's V)}
 #' \item{FG_test}{Results of the Farrar and Glauber tests, with and without approximation form}
-#' \item{colinear_PB}{Table of predictors with problem of collinearity according to the fixed thresholds}
+#' \item{collinear_PB}{Table of predictors with problem of collinearity according to the fixed thresholds}
 #' \item{drop_var}{Labels of predictors to drop after RF process (optional output: Only if \code{RF}=TRUE)}
 #' \item{RF_PRED_Y}{Table of variable importance measurements, conditional or not, according to the argument \code{condi_RF} (optional output: Only if \code{RF}=TRUE)}
 #' \item{best_pred}{Labels of the best predictors selected (optional output: Only if \code{RF}=TRUE) according to the value of the argument \code{thresh_Y}}
@@ -386,9 +386,9 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
 
     if (indY %in% quanti){
 
-        databa[,indY] = ordered(databa[,indY])
-        ordinal       = sort(c(ordinal,indY))
-        quanti        = setdiff(quanti,indY)
+      databa[,indY] = ordered(databa[,indY])
+      ordinal       = sort(c(ordinal,indY))
+      quanti        = setdiff(quanti,indY)
 
     } else {}
 
@@ -401,9 +401,9 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
 
     if (indY %in% quanti){
 
-        databa[,indZ] = ordered(databa[,indZ])
-        ordinal       = sort(c(ordinal,indZ))
-        quanti        = setdiff(quanti,indZ)
+      databa[,indZ] = ordered(databa[,indZ])
+      ordinal       = sort(c(ordinal,indZ))
+      quanti        = setdiff(quanti,indZ)
 
     } else {}
 
@@ -432,8 +432,8 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
     for (k in convert_num){
       tt = tt + 1
       databa[,k]  = cut(databa[,k],breaks = stats::quantile(databa[,k],
-                                                    probs = seq(0,1,by = 1/convert_clss[tt]),na.rm = TRUE),
-                    include.lowest = TRUE, ordered_result = TRUE)
+                                                            probs = seq(0,1,by = 1/convert_clss[tt]),na.rm = TRUE),
+                        include.lowest = TRUE, ordered_result = TRUE)
     }
 
     indORD      = sort(c(indORD,convert_num))
@@ -635,9 +635,6 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
 
   }
 
-  # Farrar, D., and R. Glauber(1968) : “Multicolinearity in regression analysis,”Review of Economics and Statistics, 49, 92–107.
-  # Ref package party: Hothorn, T., Hornik, K., Zeileis, A., 2012. Party: a laboratory for recursive partytioning. R package version 10-3, URL http://cranr-projectorg/package=party.
-
   ### Finding the best predictors of Y using Random Forest
 
   if (RF == TRUE){
@@ -677,98 +674,105 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
     }
 
     stocimp = sort(party::varimp(stocres,conditional= RF_condi, threshold = RF_condi_thr),decreasing=TRUE)
-
+    nomlist = names(stocimp)
 
 
     ### Groups of highly correlated covariates
 
     candidates     = rbind(tab_cor3_X[,1:2],tab_cor5_X[,1:2])
 
-    if (length(ncol(candidates)!=0)){
+    if (nrow(candidates)!=0){
 
-      cat("Risks of colinearity between predictors detected. Consult outputs for more details ...","\n")
+      cat("Risks of collinearity between predictors detected. Consult outputs for more details ...","\n")
 
-    } else {}
+      # } else {}
 
-    candidates[,1] = as.character(candidates[,1])
-    candidates[,2] = as.character(candidates[,2])
-    nomlist        = names(stocimp)
+      candidates[,1] = as.character(candidates[,1])
+      candidates[,2] = as.character(candidates[,2])
 
-    candid = list()
-    kk = 1
+      candid = list()
+      kk = 1
 
-    while (nrow(candidates)!=0){
+      while (nrow(candidates)!=0){
 
-      candid[[kk]] = as.character(candidates[1,])
-      tt = 1
+        candid[[kk]] = as.character(candidates[1,])
+        tt = 1
 
-      repeat{
+        repeat{
 
-        ncandid      = length(candid[[kk]])
+          ncandid      = length(candid[[kk]])
 
 
-        for (k in 2:nrow(candidates)){
+          for (k in 2:nrow(candidates)){
 
-          if (length(intersect(candid[[kk]],candidates[k,]))!=0){
+            if (length(intersect(candid[[kk]],candidates[k,]))!=0){
 
-            tt = unique(c(tt,k))
-            candid[[kk]] = unique(c(candid[[kk]],as.character(candidates[k,])))
+              tt = unique(c(tt,k))
+              candid[[kk]] = unique(c(candid[[kk]],as.character(candidates[k,])))
+
+            } else {}
+
+          }
+
+          if (length(candid[[kk]])==ncandid){
+
+            break
+
+          }
+        }
+
+        candidates = candidates[-tt,]
+        kk = kk + 1
+
+      }
+
+      ### Selection of uncorrelated covariates
+
+      for (kk in 1:length(candid)){
+
+        for (k in 1:length(nomlist)){
+
+          if (nomlist[k] %in% candid[[kk]]){
+
+            candid[[kk]] = setdiff(candid[[kk]],nomlist[k])
+            break()
 
           } else {}
 
         }
 
-        if (length(candid[[kk]])==ncandid){
-
-          break
-
-        }
       }
 
-      candidates = candidates[-tt,]
-      kk = kk + 1
+      drop_var   = unlist(candid)
+      remain_var = setdiff(nomlist,drop_var)
 
-    }
 
-    ### Selection of uncorrelated covariates
+      ### Best predictors for Y
 
-    for (kk in 1:length(candid)){
+      new_var = intersect(c("Y",remain_var),colnames(databa2))
+      # databa3 = databa2[,intersect(c("Y",remain_var),colnames(databa2))]
 
-      for (k in 1:length(nomlist)){
+      if (RF_condi == TRUE){
 
-        if (nomlist[k] %in% candid[[kk]]){
+        databa3bis = databa2bis[,intersect(c("Y",remain_var),colnames(databa2))]
+        set.seed(RF_SEED); stocres = party::cforest(Y~.,data=databa3bis,control = party::cforest_unbiased(mtry = 5,ntree = RF_ntree))
 
-          candid[[kk]] = setdiff(candid[[kk]],nomlist[k])
-          break()
+      } else {
 
-        } else {}
+        databa3 = databa2[,intersect(c("Y",remain_var),colnames(databa2))]
+        set.seed(RF_SEED); stocres = party::cforest(Y~.,data=databa3, control = party::cforest_unbiased(mtry = 5,ntree = RF_ntree))
 
       }
 
-    }
-
-    drop_var   = unlist(candid)
-    remain_var = setdiff(nomlist,drop_var)
-
-
-    ### Best predictors for Y
-
-    new_var = intersect(c("Y",remain_var),colnames(databa2))
-    # databa3 = databa2[,intersect(c("Y",remain_var),colnames(databa2))]
-
-    if (RF_condi == TRUE){
-
-      databa3bis = databa2bis[,intersect(c("Y",remain_var),colnames(databa2))]
-      set.seed(RF_SEED); stocres = party::cforest(Y~.,data=databa3bis,control = party::cforest_unbiased(mtry = 5,ntree = RF_ntree))
+      stocimp2 = sort(party::varimp(stocres,conditional= RF_condi, threshold = RF_condi_thr),decreasing=TRUE)
 
     } else {
 
-      databa3 = databa2[,intersect(c("Y",remain_var),colnames(databa2))]
-      set.seed(RF_SEED); stocres = party::cforest(Y~.,data=databa3, control = party::cforest_unbiased(mtry = 5,ntree = RF_ntree))
+      stocimp2   = stocimp
+      drop_var   = NULL
+      remain_var = nomlist
 
     }
-
-    stocimp2 = sort(party::varimp(stocres,conditional= RF_condi, threshold = RF_condi_thr),decreasing=TRUE)
 
     if (min(stocimp2)<0){
 
@@ -782,22 +786,26 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
     resYbis   = cumsum(rev(resY))
     best_pred = rev(names(resYbis)[resYbis>=(thresh_Y*100)])
 
-   out1 = list(seed = RF_SEED, outc = outc, thresh = c(CATEG = thresh_cat, NUM = thresh_num, RF_IMP = thresh_Y), convert_num = colnames(databa)[convert_nm], DB_USED = databa,
-               vcrm_OUTC_cat = tab_cor2_Y, cor_OUTC_num = tab_cor4_Y, vcrm_X_cat = tab_cor2_X, cor_X_num = tab_cor4_X, FG_test = FG_synt,
-               colinear_PB = list(VCRAM = tab_cor3_X,SPEARM = tab_cor5_X),
-               drop_var = drop_var, RF_PRED = resY, RF_best = best_pred)
+    out1 = list(seed = RF_SEED, outc = outc, thresh = c(CATEG = thresh_cat, NUM = thresh_num, RF_IMP = thresh_Y), convert_num = colnames(databa)[convert_nm], DB_USED = databa,
+                vcrm_OUTC_cat = tab_cor2_Y, cor_OUTC_num = tab_cor4_Y, vcrm_X_cat = tab_cor2_X, cor_X_num = tab_cor4_X, FG_test = FG_synt,
+                collinear_PB = list(VCRAM = tab_cor3_X,SPEARM = tab_cor5_X),
+                drop_var = drop_var, RF_PRED = resY, RF_best = best_pred)
 
   } else {
 
     out1 = list(seed = RF_SEED, outc = outc, thresh = c(CATEG = thresh_cat, NUM = thresh_num, RF_IMP = thresh_Y), convert_num = colnames(databa)[convert_nm], DB_USED = databa,
                 vcrm_OUTC_cat = tab_cor2_Y, cor_OUTC_num = tab_cor4_Y, vcrm_X_cat = tab_cor2_X, cor_X_num = tab_cor4_X, FG_test = FG_synt,
-                colinear_PB = list(VCRAM = tab_cor3_X,SPEARM = tab_cor5_X))
+                collinear_PB = list(VCRAM = tab_cor3_X,SPEARM = tab_cor5_X))
 
-   }
+  }
 
-   return(out1)
+  return(out1)
 
 }
+
+
+
+
 
 
 

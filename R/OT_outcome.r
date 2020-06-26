@@ -56,7 +56,7 @@
 #' \item A target outcome can be categorical, in factor, ordered or not, discrete (with a finite number of values ONLY) but, notice that, if they are stored in numeric they will be automatically converted in ordered factors.
 #' \item If a target outcome is incomplete, the corresponding rows will be automatically dropped during the execution of the function.
 #' }
-#' The type of each variables (including ID, \eqn{Y} and \eqn{Z}) of the database must be rigorously specified once, in one of the four arguments \code{quanti},\code{nominal}, \code{ordinal} and \code{logic}.
+#' The type of each variables (including \eqn{ID}, \eqn{Y} and \eqn{Z}) of the database must be rigorously specified once, in one of the four arguments \code{quanti},\code{nominal}, \code{ordinal} and \code{logic}.
 #'
 #'
 #' D. TRANSFORMATIONS OF CONTINUOUS COVARIATES
@@ -115,14 +115,14 @@
 #' @param which.DB A character string (with quotes) that indicates which individual predictions compute: Only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).
 #'
 #' @return A list containing 9 elements:
-#' \item{time_exe}{Running time of the function}
+#' \item{time_exe}{The running time of the function}
 #' \item{gamma_A}{A cost matrix corresponding to an estimation of the joint distribution of \eqn{(Y,Z)} in A}
 #' \item{gamma_B}{A cost matrix corresponding to an estimation of the joint distribution of \eqn{(Y,Z)} in B}
-#' \item{profile}{A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results}
+#' \item{profile}{A data.frame that gives all details about the remaining \eqn{P} profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results}
 #' \item{res_prox}{The outputs of the function \code{proxim_dist}}
-#' \item{estimatorZA}{An array that corresponds to estimates of the probability distribution of \eqn{Z} conditional to X and \eqn{Y} in database A. The number of rows of each table corresponds to the total number of the P profiles of covariates.
-#' The number of columns of each table corresponds to the number of levels of \eqn{Y}. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of Z}
-#' \item{estimatorYB}{An array that corresponds to estimates of the probability distribution of \eqn{Y} conditional to X and \eqn{Z} in database B. The number of rows of each table corresponds to the total number of profiles of covariates.
+#' \item{estimatorZA}{An array that corresponds to estimates of the probability distribution of \eqn{Z} conditional to \eqn{X} and \eqn{Y} in database A. The number of rows of each table corresponds to the total number of the P profiles of covariates.
+#' The number of columns of each table corresponds to the number of levels of \eqn{Y}. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \eqn{Z}}
+#' \item{estimatorYB}{An array that corresponds to estimates of the probability distribution of \eqn{Y} conditional to \eqn{X} and \eqn{Z} in database B. The number of rows of each table corresponds to the total number of profiles of covariates.
 #' The number of columns of each table corresponds to the number of levels of \eqn{Z}. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \eqn{Y}}
 #' \item{DATA1_OT}{The database A with imputed individual prediction on \eqn{Z} using OT}
 #' \item{DATA2_OT}{The database B with imputed individual prediction on \eqn{Y} using OT}
