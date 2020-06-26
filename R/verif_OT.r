@@ -38,12 +38,12 @@
 #' The average stability criterium is so calculated as: \deqn{\mbox{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'}
 #' This criterion can be repeated with \code{R} samples and the related mean and variance are given in output.
 #'
-#' Some of these conditional probabilities are computed from only few individuals (because they are computed from a certain number of individuals considered as neighbors for each covariates profile \eqn{x \in \mathcal{X}}),  and can lead to not enough reliable estimation.
+#' Some of these conditional probabilities are computed from only few individuals (because they are computed from a certain number of individuals considered as neighbors for each covariates profile \eqn{x}),  and can lead to not enough reliable estimation.
 #' To avoid this problem, conditional probabilities can be removed from the stability criterion since they have been assessed from an insufficient number of subjects.
 #' In this way, the minimal number of subjects required for a conditional probability to participate to the stability estimation can be fixed a priori by filling in the argument \code{min.neigb}.
 #'
 #' These results are available when the argument \code{stab.prob = TRUE}.
-#' Finally, when the predictions of Z in A and \eqn{Y} in B are available, the function \code{verif_OT} provides in output, global results and results by database.
+#' Finally, when the predictions of \eqn{Z} in A and \eqn{Y} in B are available, the function \code{verif_OT} provides in output, global results and results by database.
 #'
 #'
 #' @param ot_out An output object of the function \code{OT_outcome} or \code{OT_joint}
