@@ -108,8 +108,8 @@
 #'
 #' @return A list of 7 elements containing:
 #'     \item{time_exe}{Running time of the function}
-#'     \item{gamma_A}{Estimation of \eqn{\gamma} for the completion of A. A cost matrix that corresponds to the joint distribution of \eqn{(Y^A,Z^A,X^A)}}
-#'     \item{gamma_B}{Estimation of \eqn{\gamma} for the completion of B. A cost matrix that corresponds to the joint distribution of \eqn{(Y^B,Z^B,X^B)}}
+#'     \item{gamma_A}{Estimation of \eqn{\gamma} for the completion of A. A cost matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in A}
+#'     \item{gamma_B}{Estimation of \eqn{\gamma} for the completion of B. A cost matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in B}
 #'     \item{profile}{A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results}
 #'     \item{res_prox}{The outputs of the function \code{proxim_dist}}
 #'     \item{estimatorZA}{An array that corresponds to estimates of the probability distribution of \eqn{Z} conditional to \eqn{X} and \eqn{Y} in database A. The number of rows of each table corresponds to the total number of profiles of covariates.
