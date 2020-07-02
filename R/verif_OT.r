@@ -556,6 +556,7 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
 
   } else if (is.null(DATA2_OT)){
 
+    Y    = predY
     conf = stats::addmargins(table(Y,predZ))
 
   } else {
