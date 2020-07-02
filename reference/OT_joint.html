@@ -229,7 +229,7 @@ the missing information of \(Y\) and/or \(Z\) is fully completed.</p>
 application of optimal transportation which aims is to search for a bijective mapping between the joint distributions of \((Y,X)\) and \((Z,X)\) in A and B (see (2) for more details).
 The principle of the algorithm is also based on the resolution of an optimization problem, which provides a \(\gamma\) solution (as called in (1) and (2)) which is an estimation
 of the joint distribution of \((X,Y,Z)\) according to the database to complete (see the argument <code>which.DB</code> for the choice of the database). While the models <code>OUTCOME</code> and <code>R_OUTCOME</code> integrated in
-the function <code>OT_outcome</code> require post-treatment steps to provide individual predictions, the algorithm <code>JOINT</code> direcly uses estimations of the conditional distributions \((Y|Z,X)\) in B and
+the function <code>OT_outcome</code> require post-treatment steps to provide individual predictions, the algorithm <code>JOINT</code> directly uses estimations of the conditional distributions \((Y|Z,X)\) in B and
 \((Z|Y,X)\) in A to predict the corresponding incomplete individuals informations of \(Y\) and/or \(Z\) respectively.
 This algorithm supposes that the conditional distribution \((Y|X)\) must be identical in A and B. Respectively, \((Z|X)\) is supposed identical in A and B.
 Estimations a posteriori of conditional probabilities \(P[Y|X,Z]\) and \(P[Z|X,Y]\) are available by profiles of covariates in output (See the objects <code>estimatorYB</code> and <code>estimatorZA</code>).

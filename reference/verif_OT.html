@@ -135,7 +135,7 @@
     </tr>
     <tr>
       <th>ordinal</th>
-      <td><p>A boolean that indicates if \(Y\) and Z are ordinal (<code>TRUE</code> by default) or not. This argument is only useful in the context of groups of levels (<code>group.clss</code>=TRUE).</p></td>
+      <td><p>A boolean that indicates if \(Y\) and \(Z\) are ordinal (<code>TRUE</code> by default) or not. This argument is only useful in the context of groups of levels (<code>group.clss</code>=TRUE).</p></td>
     </tr>
     <tr>
       <th>stab.prob</th>
@@ -160,9 +160,10 @@
     <p>A list of seven objects is returned:</p>
 <dt>seed</dt><dd><p>The list of used random number generator. The first one is fixed by user or randomly chosen</p></dd>
 <dt>nb.profil</dt><dd><p>The number of profiles of covariates</p></dd>
-<dt>conf.mat</dt><dd><p>The global confusion matrix between \(Y\) and Z</p></dd>
-<dt>res.prox</dt><dd><p>A summary table related to the association measures between \(Y\) and Z</p></dd>
-<dt>res.grp</dt><dd><p>A summary table related to the study of the proximity of \(Y\) and Z using group of levels</p></dd>
+<dt>conf.mat</dt><dd><p>The global confusion matrix between \(Y\) and \(Z\)</p></dd>
+<dt>res.prox</dt><dd><p>A summary table related to the association measures between \(Y\) and \(Z\)</p></dd>
+<dt>res.grp</dt><dd><p>A summary table related to the study of the proximity of \(Y\) and \(Z\) using group of levels</p></dd>
+<dt>hell</dt><dd><p>Hellinger distances between observed and predicted distributions</p></dd>
 <dt>eff.neig</dt><dd><p>A table which corresponds to a count of conditional probabilities according to the number of neighbors used in their computation (Only the first ten values)</p></dd>
 <dt>res.stab</dt><dd><p>A summary table related to the stability of the algorithm</p></dd>
 
@@ -173,6 +174,7 @@ Optimal Transportation (OT) algorithms (see the models <code>OUTCOME</code>, <co
 propose a method for the recoding of \(Y\) in B and/or \(Z\) in A. Outputs from the functions <code>OT_outcome</code> and <code>OT_joint</code> so provides the related predictions to \(Y\) in B and/or \(Z\) in A,
 and from these results, the function <code>verif_OT</code> provides a set of tools (optional or not, depending on the choices done by user in input) to estimate:</p><ol>
 <li><p>the association between \(Y\) and \(Z\) after recoding</p></li>
+<li><p>the similarities between observed and predicted distributions</p></li>
 <li><p>the stability of the predictions proposed by the algorithm</p></li>
 </ol>
 
@@ -184,15 +186,19 @@ The function proceeds to this result in two steps. Firsty, <code>error_group</co
 Secondly, the function studies the fluctuations in the association of \(Z\) with each new variable \(Y'\) by using adapted comparisons criterions (see the documentation of <code>error_group</code> for more details).
 if grouping successive classes of \(Y\) leads to an improvement in the initial association between \(Y\) and \(Z\) then it is possible to conclude in favor of an ordinal coding for \(Y\) (rather than nominal)
 but also to emphasize the consistency in the predictions proposed by the algorithm of fusion.</p>
-<p>B.STABILITY OF THE PREDICTIONS</p>
+<p>B. SIMILARITIES BETWEEN OBSERVED AND PREDICTED DISTRIBUTIONS</p>
+<p>When the predictions of \(Y\) in B and/or \(Z\) in A are available in the <code>datab</code> argument, the similarities between the observed and predicted probabilistic distributions of \(Y\) and/or \(Z\) are quantified from the Hellinger distance (see (1)).
+This measure varies between 0 and 1: a value of 0 corresponds to a perfect similarity while a value close to 1 (the maximum) indicates a great dissimilarity.
+Two distributions will be considered as close with this distance as soon as the observed measure will be less than 0.05.</p>
+<p>C.STABILITY OF THE PREDICTIONS</p>
 <p>These optional results are based on the following decision rule which defines the stability of an algorithm in A (or B) as its average ability to assign a same prediction
 of \(Z\) (or \(Y\)) to individuals that have a same given profile of covariates x and a same given level of \(Y\) (\(Z\)).</p>
-<p>Assuming that the missing information of \(Z\) in base A was predicted from an OT algorithm (the reasoning will be identical with the prediction of \(Y\) in B, see (1) and (2) for more details), the function <code>verif_OT</code> uses the conditional probabilities stored in the
+<p>Assuming that the missing information of \(Z\) in base A was predicted from an OT algorithm (the reasoning will be identical with the prediction of \(Y\) in B, see (2) and (3) for more details), the function <code>verif_OT</code> uses the conditional probabilities stored in the
 object <code>estimatorZA</code> (see outputs of the functions <code>OT_outcome</code> and <code>OT_joint</code>) which contains the estimates of all the conditional probabilities of \(Z\) in A, given a profile of covariates x and given a level of \(Y = y\).
 Each individual (or row) from A, is associated with a conditional probability \(P(Z= z|Y= y, X= x)\).</p>
 <p>With the function <code>OT_joint</code>, the individual predictions for subject i: \(\widehat{z}_i\),\(i=1,\ldots,n_A\) are given using the maximum a posteriori rule:
 $$\widehat{z}_i= \mbox{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)$$
-While the function <code>OT_outcome</code> directly gives the individual prediction and the probablities \(P(Z= z|Y= y, X= x)\) are computed in a second step (see (2)).</p>
+While the function <code>OT_outcome</code> directly gives the individual prediction and the probablities \(P(Z= z|Y= y, X= x)\) are computed in a second step (see (3)).</p>
 <p>For each subject i in database A, a new variable \(z_i'\) is simulate such that: $$z_i'\sim \mathcal{B}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))$$
 The average stability criterium is so calculated as: $$\mbox{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'$$
 This criterion can be repeated with <code>R</code> samples and the related mean and variance are given in output.</p>
@@ -205,9 +211,10 @@ Finally, when the predictions of \(Z\) in A and \(Y\) in B are available, the fu
 
     
 <ol>
-<li><p>Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
+<li><p>Liese F, Miescke K-J. (2008). Statistical Decision Theory: Estimation, Testing, and Selection. Springer</p></li>
+<li><p>Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N. (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
 Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515/ijb-2018-0106'>https://doi.org/10.1515/ijb-2018-0106</a></p></li>
-<li><p>Gares V, Omer J. Regularized optimal transport of covariates and outcomes in datarecoding(2019).hal-02123109 <a href='https://hal.archives-ouvertes.fr/hal-02123109/document'>https://hal.archives-ouvertes.fr/hal-02123109/document</a></p></li>
+<li><p>Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615</p></li>
 </ol>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -241,9 +248,7 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 #&gt; Relaxation value         =  0 
 #&gt; Individual pred process  =  Sequential 
 #&gt; DB imputed               =  BOTH 
-#&gt; --------------------------------------- 
-#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
-#&gt; 5 remaining levels </div><div class='input'>
+#&gt; --------------------------------------- </div><div class='input'>
 <span class='kw'>ver1</span> <span class='op'>=</span> <span class='fu'>verif_OT</span>(<span class='kw'>try1</span>); <span class='kw'>ver1</span></div><div class='output co'>#&gt; $seed
 #&gt; [1] 875204
 #&gt; 
@@ -266,6 +271,10 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 #&gt; 
 #&gt; $res.grp
 #&gt; NULL
+#&gt; 
+#&gt; $hell
+#&gt;                 YA_YB ZA_ZB
+#&gt; Hellinger dist. 0.005 0.012
 #&gt; 
 #&gt; $eff.neig
 #&gt; NULL

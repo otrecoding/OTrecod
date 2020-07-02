@@ -159,7 +159,7 @@ The function <code>error_group</code> is directly integrated in the function <co
 Assuming that \(Y = (1,1,2,2,3,3,4,4)\) and \(Z = (1,1,1,1,2,2,2,2)\), so \(n_Y = 4\) and \(n_Z = 2\) and the related coefficient of correlation \(cor(Y,Z)\) is 0.89.
 Are there groupings of modalities of \(Y\) which contribute to improving the proximity between \(Y\) and \(Z\) ?
 From \(Y\), the function <code>error_group</code> gives an answer to this question by successively constructing the variables: \(Y_1 = (1,1,1,1,2,2,2,2)\), \(Y_2 = (1,1,2,2,1,1,2,2)\), \(Y_3 = (1,1,2,2,2,2,1,1)\)
-and tests \(\mbox{cor}(Z,Y_1) = 1\), \(\mbox{cor}(Z,Y_2) = 0\), \(\mbox{cor}(Z,Y_3) = 0\).
+and tests \(\text{cor}(Z,Y_1) = 1\), \(\text{cor}(Z,Y_2) = 0\), \(\text{cor}(Z,Y_3) = 0\).
 Here, the tests permit to conclude that the difference of encodings between \(Y\) and \(Z\) resulted in fact in a simple grouping of modalities.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -182,7 +182,7 @@ Here, the tests permit to conclude that the difference of encodings between \(Y\
 
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>tab_test</span>)
 <span class='co'># Example with n1 = n2 = 70 and only X1 and X2 as covariates</span>
-<span class='kw'>tab_test2</span> <span class='op'>=</span> <span class='kw'>tab_test</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>75</span>,<span class='fl'>5001</span><span class='op'>:</span><span class='fl'>5075</span>),<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>]
+<span class='kw'>tab_test2</span> <span class='op'>=</span> <span class='kw'>tab_test</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>70</span>,<span class='fl'>5001</span><span class='op'>:</span><span class='fl'>5070</span>),<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>]
 
 <span class='co'>### An example of JOINT model (Manhattan distance)</span>
 <span class='co'># Suppose we want to impute the missing parts of Y1 in DB2 only ...</span>
@@ -204,14 +204,11 @@ Here, the tests permit to conclude that the difference of encodings between \(Y\
 #&gt; 3 remaining levels </div><div class='input'>
 <span class='co'># Error rates between Y2 and the predictions of Y1 in the DB 2</span>
 <span class='co'># by grouping the levels of Y1:</span>
-<span class='fu'>error_group</span>(<span class='kw'>try1J</span><span class='op'>$</span><span class='kw'>DATA2_OT</span><span class='op'>$</span><span class='kw'>Z</span>,<span class='kw'>try1J</span><span class='op'>$</span><span class='kw'>DATA2_OT</span><span class='op'>$</span><span class='kw'>OTpred</span>)</div><div class='output co'>#&gt;     combi error_rate Kappa Vcramer RankCor
-#&gt; 2 1/2 3/4        0.0 1.000    1.00   1.000
-#&gt; 1 1 2/3/4        8.0 0.876    0.89   0.950
-#&gt; 3 1/2/3 4       17.3 0.728    0.78   0.917</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='kw'>try1J</span><span class='op'>$</span><span class='kw'>DATA2_OT</span><span class='op'>$</span><span class='kw'>Z</span>,<span class='kw'>try1J</span><span class='op'>$</span><span class='kw'>DATA2_OT</span><span class='op'>$</span><span class='kw'>OTpred</span>)</div><div class='output co'>#&gt;    
-#&gt;      1  2  3  4
-#&gt;   1 29  0  0  0
-#&gt;   2  0  6 13  0
-#&gt;   3  0  0  0 27</div><div class='input'>
+<span class='fu'>error_group</span>(<span class='kw'>try1J</span><span class='op'>$</span><span class='kw'>DATA2_OT</span><span class='op'>$</span><span class='kw'>Z</span>,<span class='kw'>try1J</span><span class='op'>$</span><span class='kw'>DATA2_OT</span><span class='op'>$</span><span class='kw'>OTpred</span>)</div><div class='output co'>#&gt; <span class='error'>Error in vector(length = nrow(mat_coord)): invalid 'length' argument</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='kw'>try1J</span><span class='op'>$</span><span class='kw'>DATA2_OT</span><span class='op'>$</span><span class='kw'>Z</span>,<span class='kw'>try1J</span><span class='op'>$</span><span class='kw'>DATA2_OT</span><span class='op'>$</span><span class='kw'>OTpred</span>)</div><div class='output co'>#&gt;    
+#&gt;      1  2  4
+#&gt;   1 28  0  0
+#&gt;   2  0 17  0
+#&gt;   3  0  0 25</div><div class='input'>
 <span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># Error rates between Y1 and the predictions of Y2 in the DB 1</span>
 <span class='fu'>error_group</span>(<span class='kw'>try1J</span><span class='op'>$</span><span class='kw'>DATA1_OT</span><span class='op'>$</span><span class='kw'>OTpred</span>,<span class='kw'>try1J</span><span class='op'>$</span><span class='kw'>DATA1_OT</span><span class='op'>$</span><span class='kw'>Y</span>)
