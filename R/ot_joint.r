@@ -154,14 +154,14 @@
 #' # - A sample of the database tab_test
 #' # - Y1 and Y2 are a 2 outcomes encoded in 2 different forms in DB 1 and 2:
 #' #   4 levels for Y1 and 3 levels for Y2
-#' # - n1 = n2 = 75
+#' # - n1 = n2 = 70
 #' # - 2 discrete covariates X1 and X2 defined as ordinal
 #' # - Distances estimated using the Manhattan function
 #' # Predictions are assessed for Y1 in B only
 #' #-----
 #'
 #' data(tab_test)
-#' tab_test2 = tab_test[c(1:75,5001:5075),1:5]
+#' tab_test2 = tab_test[c(1:70,5001:5070),1:5]
 #'
 #' try1J = OT_joint(tab_test2, nominal = c(1,4:5), ordinal = c(2,3),
 #'                  dist.choice = "M", which.DB = "B")
