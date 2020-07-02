@@ -3,7 +3,7 @@ Title: Data integration using Optimal Transportation Theory
 Version: 0.1.0
 Authors@R: c(
   person(given = "Gregory" , family = "Guernec"     , role = c("aut","cre"), email = "otrecod.pkg@gmail.com"),
-  person(given = "Valerie" , family = "Gares"       , role = "aut", email = "valerie.gares@insa-rennes.fr"),
+  person(given = "Valerie" , family = "Gares"       , role = "aut", email = "otrecod.pkg@gmail.com"),
   person(given = "Pierre"  , family = "Navaro"      , role = "ctb"),
   person(given = "Jeremy"  , family = "Omer"        , role = "ctb"),
   person(given = "Philippe", family = "Saint-Pierre", role = "ctb"),

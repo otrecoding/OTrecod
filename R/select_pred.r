@@ -343,7 +343,7 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
   indexZ       = (1:ncol(databa))[colnames(databa)== Z]
   index_DB_Y_Z = c(ID,indexY,indexZ)
 
-  convert_clss = convert_clss[convert_num != index_DB_Y_Z]
+  convert_clss = convert_clss[!(convert_num %in% index_DB_Y_Z)]
   convert_num  = setdiff(convert_num,index_DB_Y_Z)
 
 

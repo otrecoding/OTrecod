@@ -19,7 +19,7 @@ verif_OT(
 
 \item{group.clss}{A boolean indicating if the results related to the proximity between outcomes by grouping levels are requested in output (\code{FALSE} by default).}
 
-\item{ordinal}{A boolean that indicates if \eqn{Y} and Z are ordinal (\code{TRUE} by default) or not. This argument is only useful in the context of groups of levels (\code{group.clss}=TRUE).}
+\item{ordinal}{A boolean that indicates if \eqn{Y} and \eqn{Z} are ordinal (\code{TRUE} by default) or not. This argument is only useful in the context of groups of levels (\code{group.clss}=TRUE).}
 
 \item{stab.prob}{A boolean indicating if the results related to the stability of the algorithm are requested in output (\code{FALSE} by default).}
 
@@ -33,9 +33,10 @@ verif_OT(
 A list of seven objects is returned:
 \item{seed}{The list of used random number generator. The first one is fixed by user or randomly chosen}
 \item{nb.profil}{The number of profiles of covariates}
-\item{conf.mat}{The global confusion matrix between \eqn{Y} and Z}
-\item{res.prox}{A summary table related to the association measures between \eqn{Y} and Z}
-\item{res.grp}{A summary table related to the study of the proximity of \eqn{Y} and Z using group of levels}
+\item{conf.mat}{The global confusion matrix between \eqn{Y} and \eqn{Z}}
+\item{res.prox}{A summary table related to the association measures between \eqn{Y} and \eqn{Z}}
+\item{res.grp}{A summary table related to the study of the proximity of \eqn{Y} and \eqn{Z} using group of levels}
+\item{hell}{Hellinger distances between observed and predicted distributions}
 \item{eff.neig}{A table which corresponds to a count of conditional probabilities according to the number of neighbors used in their computation (Only the first ten values)}
 \item{res.stab}{A summary table related to the stability of the algorithm}
 }
@@ -49,6 +50,7 @@ propose a method for the recoding of \eqn{Y} in B and/or \eqn{Z} in A. Outputs f
 and from these results, the function \code{verif_OT} provides a set of tools (optional or not, depending on the choices done by user in input) to estimate:
 \enumerate{
 \item the association between \eqn{Y} and \eqn{Z} after recoding
+\item the similarities between observed and predicted distributions
 \item the stability of the predictions proposed by the algorithm
 }
 
@@ -62,18 +64,24 @@ Secondly, the function studies the fluctuations in the association of \eqn{Z} wi
 if grouping successive classes of \eqn{Y} leads to an improvement in the initial association between \eqn{Y} and \eqn{Z} then it is possible to conclude in favor of an ordinal coding for \eqn{Y} (rather than nominal)
 but also to emphasize the consistency in the predictions proposed by the algorithm of fusion.
 
-B.STABILITY OF THE PREDICTIONS
+B. SIMILARITIES BETWEEN OBSERVED AND PREDICTED DISTRIBUTIONS
+
+When the predictions of \eqn{Y} in B and/or \eqn{Z} in A are available in the \code{datab} argument, the similarities between the observed and predicted probabilistic distributions of \eqn{Y} and/or \eqn{Z} are quantified from the Hellinger distance (see (1)).
+This measure varies between 0 and 1: a value of 0 corresponds to a perfect similarity while a value close to 1 (the maximum) indicates a great dissimilarity.
+Two distributions will be considered as close with this distance as soon as the observed measure will be less than 0.05.
+
+C.STABILITY OF THE PREDICTIONS
 
 These optional results are based on the following decision rule which defines the stability of an algorithm in A (or B) as its average ability to assign a same prediction
 of \eqn{Z} (or \eqn{Y}) to individuals that have a same given profile of covariates x and a same given level of \eqn{Y} (\eqn{Z}).
 
-Assuming that the missing information of \eqn{Z} in base A was predicted from an OT algorithm (the reasoning will be identical with the prediction of \eqn{Y} in B, see (1) and (2) for more details), the function \code{verif_OT} uses the conditional probabilities stored in the
+Assuming that the missing information of \eqn{Z} in base A was predicted from an OT algorithm (the reasoning will be identical with the prediction of \eqn{Y} in B, see (2) and (3) for more details), the function \code{verif_OT} uses the conditional probabilities stored in the
 object \code{estimatorZA} (see outputs of the functions \code{\link{OT_outcome}} and \code{\link{OT_joint}}) which contains the estimates of all the conditional probabilities of \eqn{Z} in A, given a profile of covariates x and given a level of \eqn{Y = y}.
 Each individual (or row) from A, is associated with a conditional probability \eqn{P(Z= z|Y= y, X= x)}.
 
 With the function \code{\link{OT_joint}}, the individual predictions for subject i: \eqn{\widehat{z}_i},\eqn{i=1,\ldots,n_A} are given using the maximum a posteriori rule:
 \deqn{\widehat{z}_i= \mbox{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)}
-While the function \code{\link{OT_outcome}} directly gives the individual prediction and the probablities \eqn{P(Z= z|Y= y, X= x)} are computed in a second step (see (2)).
+While the function \code{\link{OT_outcome}} directly gives the individual prediction and the probablities \eqn{P(Z= z|Y= y, X= x)} are computed in a second step (see (3)).
 
 For each subject i in database A, a new variable \eqn{z_i'} is simulate such that: \deqn{z_i'\sim \mathcal{B}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))}
 The average stability criterium is so calculated as: \deqn{\mbox{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'}
@@ -142,9 +150,10 @@ ver3 = verif_OT(try2, group.clss = TRUE, ordinal = TRUE, stab.prob = TRUE, min.n
 }
 \references{
 \enumerate{
-\item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
+\item Liese F, Miescke K-J. (2008). Statistical Decision Theory: Estimation, Testing, and Selection. Springer
+\item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N. (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
 Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
-\item Gares V, Omer J. Regularized optimal transport of covariates and outcomes in datarecoding(2019).hal-02123109 \url{https://hal.archives-ouvertes.fr/hal-02123109/document}
+\item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
 }
 }
 \seealso{

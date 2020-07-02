@@ -18,7 +18,7 @@
 #' application of optimal transportation which aims is to search for a bijective mapping between the joint distributions of \eqn{(Y,X)} and \eqn{(Z,X)} in A and B (see (2) for more details).
 #' The principle of the algorithm is also based on the resolution of an optimization problem, which provides a \eqn{\gamma} solution (as called in (1) and (2)) which is an estimation
 #' of the joint distribution of \eqn{(X,Y,Z)} according to the database to complete (see the argument \code{which.DB} for the choice of the database). While the models \code{OUTCOME} and \code{R_OUTCOME} integrated in
-#' the function \code{\link{OT_outcome}} require post-treatment steps to provide individual predictions, the algorithm \code{JOINT} direcly uses estimations of the conditional distributions \eqn{(Y|Z,X)} in B and
+#' the function \code{\link{OT_outcome}} require post-treatment steps to provide individual predictions, the algorithm \code{JOINT} directly uses estimations of the conditional distributions \eqn{(Y|Z,X)} in B and
 #' \eqn{(Z|Y,X)} in A to predict the corresponding incomplete individuals informations of \eqn{Y} and/or \eqn{Z} respectively.
 #' This algorithm supposes that the conditional distribution \eqn{(Y|X)} must be identical in A and B. Respectively, \eqn{(Z|X)} is supposed identical in A and B.
 #' Estimations a posteriori of conditional probabilities \eqn{P[Y|X,Z]} and \eqn{P[Z|X,Y]} are available by profiles of covariates in output (See the objects \code{estimatorYB} and \code{estimatorZA}).
@@ -437,7 +437,8 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
           ompr::add_variable(errorA_XZ[x,z]      , x = 1:nbX, z = Z,       type = "continuous") %>%
           ompr::add_variable(abserrorA_XZ[x,z]   , x = 1:nbX, z = Z,       type = "continuous") %>%
           # REGULARIZATION ---------------------------------------------------------------------------------
-          ompr::add_variable(reg_absA[x1,x2,y,z] , x1= 1:nbX, x2= 1:nbX, y= Y, z= Z, type = "continuous") %>%
+          # ompr::add_variable(reg_absA[x1,x2,y,z] , x1 = 1:nbX, x2 = 1:nbX, y= Y, z= Z, type = "continuous") %>%
+          ompr::add_variable(reg_absA[x1,x2,y,z]   , x1 = 1:nbX, x2 = ind_voisins[[x1]], y= Y, z= Z, type = "continuous") %>%
           # OBJECTIVE ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
           ompr::set_objective(sum_expr(Cf(y,z) * gammaA[x,y,z], y = Y, z = Z, x = 1:nbX) + sum_expr(voisin(x1)*reg_absA[x1,x2,y,z], x1 = 1:nbX, x2 = ind_voisins[[x1]],y=Y,z= Z), "min") %>%
           # CONSTRAINTS ----------------------------------------------------------------------------------------------------
@@ -454,7 +455,12 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
           ompr::add_constraint(-errorA_XZ[x,z] <= abserrorA_XZ[x,z], x = 1:nbX, z =Z) %>%
 
           ompr::add_constraint(sum_expr(abserrorA_XZ[x,z], x = 1:nbX, z = Z)<= maxrelax/2.0) %>%
-          ompr::add_constraint(sum_expr(errorA_XZ[x,z]   , x = 1:nbX, z = Z)<= maxrelax/2.0) %>%
+          ompr::add_constraint(sum_expr(errorA_XZ[x,z]   , x = 1:nbX, z = Z) == 0) %>%
+          # ompr::add_constraint(sum_expr(errorA_XZ[x,z]   , x = 1:nbX, z = Z)<= maxrelax/2.0) %>%
+
+          # Constraints regularization - Ajout GG
+          ompr::add_constraint(reg_absA[x1,x2,y,z] + gammaA[x2,y,z]/(max(1,length(indXA[[x2]]))/nA) >= gammaA[x1,y,z]/(max(1,length(indXA[[x1]]))/nA), x1 = 1:nbX, x2 = which(voisins_X[x1,]), y= Y, z = Z) %>%
+          ompr::add_constraint(reg_absA[x1,x2,y,z] + gammaA[x1,y,z]/(max(1,length(indXA[[x1]]))/nA) >= gammaA[x2,y,z]/(max(1,length(indXA[[x2]]))/nA), x1 = 1:nbX, x2 = which(voisins_X[x1,]), y= Y, z = Z) %>%
 
           # SOLUTION -------------------------------------------------------
         ompr::solve_model(with_ROI(solver = "glpk"))
@@ -509,13 +515,29 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
         }
 
         DATA1_OT         = dataB[dataB[,1] == unique(dataB[,1])[1],]
-        DATA1_OT$OTpred  = as.factor(plyr::mapvalues(predZA,from = sort(unique(predZA)), to = levels(dataB[,3])[sort(unique(predZA))]))
+        # DATA1_OT$OTpred  = as.factor(plyr::mapvalues(predZA,from = sort(unique(predZA)), to = levels(dataB[,3])[sort(unique(predZA))]))
 
-        if (is.ordered(dataB[,3])){
 
-          DATA1_OT$OTpred = as.ordered(DATA1_OT$OTpred)
+        if (index_DB_Y_Z[3] %in% nominal){
 
-        } else {}
+          DATA1_OT$OTpred  = factor(plyr::mapvalues(predZA,from = sort(unique(predZA)),
+                                                    to = levels(dataB[,3])[sort(unique(predZA))]),
+                                                    levels = levels(dataB[,3])[sort(unique(predZA))])
+        } else {
+
+          DATA1_OT$OTpred  = ordered(plyr::mapvalues(predZA,from = sort(unique(predZA)),
+                                                     to = levels(dataB[,3])[sort(unique(predZA))]),
+                                                     levels = levels(dataB[,3])[sort(unique(predZA))])
+
+        }
+
+
+
+        #if (is.ordered(dataB[,3])){
+
+        #  DATA1_OT$OTpred = as.ordered(DATA1_OT$OTpred)
+
+        #} else {}
 
       } else {}
 
@@ -526,17 +548,26 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
 
         result <-  ompr::MIPModel() %>%
           # DEFINE VARIABLES ----------------------------------------------------------------------
-        # gammaA[x,y,z]: joint probability of X=x, Y=y and Z=z in base A
-        ompr::add_variable(gammaB[x,y,z]    , x = 1:nbX, y = Y, z= Z   ,type = "continuous") %>%
+        # gammaA[x,y,z]: joint probability of X=x, Y=y and Z=z in base B
+
+          ompr::add_variable(gammaB[x,y,z]    , x = 1:nbX, y = Y, z = Z,type = "continuous") %>%
+
           ompr::add_variable(errorB_XY[x,y]   , x = 1:nbX, y = Y,       type = "continuous") %>%
           ompr::add_variable(abserrorB_XY[x,y], x = 1:nbX, y = Y,       type = "continuous") %>%
           ompr::add_variable(errorB_XZ[x,z]   , x = 1:nbX,        z = Z,type = "continuous") %>%
           ompr::add_variable(abserrorB_XZ[x,z], x = 1:nbX,        z = Z,type = "continuous") %>%
-          # REGULARIZATION ----------------------------------------------------------------------------
-        ompr::add_variable(reg_absB[x1, x2,y,z],x1=1:nbX, x2=1:nbX,y=Y,z= Z, type = "continuous") %>%
-          # OBJECTIVE ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ompr::set_objective(sum_expr(Cf(y,z) * gammaB[x,y,z],y = Y,z=Z, x = 1:nbX)  + sum_expr(voisin(x1)*reg_absB[x1,x2,y,z],x1=1:nbX, x2= ind_voisins[[x1]],y=Y,z= Z), "min")  %>%
-          # CONSTRAINTS ----------------------------------------------------------------------------------------------------
+
+        # REGULARIZATION ----------------------------------------------------------------------------
+
+          # ompr::add_variable(reg_absB[x1, x2,y,z], x1 = 1:nbX, x2 = 1:nbX, y = Y, z = Z, type = "continuous") %>%
+          ompr::add_variable(reg_absB[x1,x2,y,z], x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z, type = "continuous") %>%
+
+        # OBJECTIVE ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        ompr::set_objective(sum_expr(Cf(y,z) * gammaB[x,y,z],y = Y, z = Z, x = 1:nbX)  + sum_expr(voisin(x1)*reg_absB[x1,x2,y,z],x1=1:nbX, x2= ind_voisins[[x1]],y=Y,z= Z), "min")  %>%
+
+        # CONSTRAINTS ----------------------------------------------------------------------------------------------------
+
         ompr::add_constraint(sum_expr(gammaB[x,y,z], y = Y) -errorB_XZ[x,z]  == estim_XB_ZB[[x]][z] , x = 1:nbX, z = Z) %>%
 
         ompr::add_constraint(estim_XA[[x]]*sum_expr(gammaB[x,y,z] ,z = Z) - estim_XA[[x]] * errorB_XY[x,y] == estim_XA_YA[[x]][y] * estim_XB[[x]] , x = 1:nbX, y = Y) %>%
@@ -551,7 +582,12 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
           ompr::add_constraint(-errorB_XZ[x,z] <= abserrorB_XZ[x,z], x = 1:nbX,z =Z) %>%
 
           ompr::add_constraint(sum_expr(abserrorB_XZ[x,z], x = 1:nbX, z = Z)<= maxrelax/2.0) %>%
-          ompr::add_constraint(sum_expr(errorB_XZ[x,z]   , x = 1:nbX, z = Z)<= maxrelax/2.0) %>%
+          ompr::add_constraint(sum_expr(errorB_XZ[x,z]   , x = 1:nbX, z = Z) == 0) %>%
+          # ompr::add_constraint(sum_expr(errorB_XZ[x,z]   , x = 1:nbX, z = Z)<= maxrelax/2.0) %>%
+
+        # Constraints regularization - Ajout GG
+          ompr::add_constraint(reg_absB[x1,x2,y,z] + gammaB[x2,y,z]/(max(1,length(indXB[[x2]]))/nB) >= gammaB[x1,y,z]/(max(1,length(indXB[[x1]]))/nB), x1 = 1:nbX, x2 = ind_voisins[[x1]], y= Y, z = Z) %>%
+          ompr::add_constraint(reg_absB[x1,x2,y,z] + gammaB[x1,y,z]/(max(1,length(indXB[[x1]]))/nB) >= gammaB[x2,y,z]/(max(1,length(indXB[[x2]]))/nB), x1 = 1:nbX, x2 = ind_voisins[[x1]], y= Y, z = Z) %>%
 
           # SOLUTION -------------------------------------------------------
         ompr::solve_model(with_ROI(solver = "glpk"))
@@ -616,13 +652,28 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
 
 
         DATA2_OT         = dataB[dataB[,1] == unique(dataB[,1])[2],]
-        DATA2_OT$OTpred  = as.factor(plyr::mapvalues(predYB,from = sort(unique(predYB)), to = levels(dataB[,2])[sort(unique(predYB))]))
 
-        if (is.ordered(dataB[,2])){
+        if (index_DB_Y_Z[2] %in% nominal){
 
-          DATA2_OT$OTpred = as.ordered(DATA2_OT$OTpred)
+          DATA2_OT$OTpred  = factor(plyr::mapvalues(predYB,from = sort(unique(predYB)),
+                                                    to = levels(dataB[,2])[sort(unique(predYB))]),
+                                    levels = levels(dataB[,2])[sort(unique(predYB))])
+        } else {
 
-        } else {}
+          DATA2_OT$OTpred  = ordered(plyr::mapvalues(predYB,from = sort(unique(predYB)),
+                                                     to = levels(dataB[,2])[sort(unique(predYB))]),
+                                     levels = levels(dataB[,2])[sort(unique(predYB))])
+        }
+
+
+
+        # DATA2_OT$OTpred  = as.factor(plyr::mapvalues(predYB,from = sort(unique(predYB)), to = levels(dataB[,2])[sort(unique(predYB))]))
+
+        # if (is.ordered(dataB[,2])){
+
+        #  DATA2_OT$OTpred = as.ordered(DATA2_OT$OTpred)
+
+        #} else {}
 
       } else {}
 
@@ -630,7 +681,7 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
 
         GAMMA_B            = NULL
         estimatorYB        = NULL
-        DATA2_OT           = NULL
+        DATA2_OT           = dataB[dataB[,1] == unique(dataB[,1])[2],]
         GAMMA_A            = apply(gammaA_val,c(2,3),sum)
         colnames(GAMMA_A)  = levels(dataB[,3])
         row.names(GAMMA_A) = levels(dataB[,2])
@@ -639,7 +690,7 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
 
         GAMMA_A            = NULL
         estimatorZA        = NULL
-        DATA1_OT           = NULL
+        DATA1_OT           = dataB[dataB[,1] == unique(dataB[,1])[1],]
         GAMMA_B            = apply(gammaB_val,c(2,3),sum)
         colnames(GAMMA_B)  = levels(dataB[,3])
         row.names(GAMMA_B) = levels(dataB[,2])

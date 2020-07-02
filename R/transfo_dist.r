@@ -334,12 +334,14 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,
   if (index_DB_Y_Z[2] %in% nominal){
 
     # DB$Y = as.character(DB$Y)
-    DB$Y = as.factor(DB$Y)
+    DB$Y = factor(as.character(DB$Y), levels = levels(DB$Y))
 
-  } else if (index_DB_Y_Z[3] %in% nominal){
+  } else {}
+
+  if (index_DB_Y_Z[3] %in% nominal){
 
     # DB$Z = as.character(DB$Z)
-    DB$Z = as.factor(DB$Z)
+    DB$Z = factor(as.character(DB$Z), levels = levels(DB$Z))
 
   } else {}
 

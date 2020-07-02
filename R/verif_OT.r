@@ -8,6 +8,7 @@
 #' and from these results, the function \code{verif_OT} provides a set of tools (optional or not, depending on the choices done by user in input) to estimate:
 #' \enumerate{
 #' \item the association between \eqn{Y} and \eqn{Z} after recoding
+#' \item the similarities between observed and predicted distributions
 #' \item the stability of the predictions proposed by the algorithm
 #' }
 #'
@@ -21,18 +22,24 @@
 #' if grouping successive classes of \eqn{Y} leads to an improvement in the initial association between \eqn{Y} and \eqn{Z} then it is possible to conclude in favor of an ordinal coding for \eqn{Y} (rather than nominal)
 #' but also to emphasize the consistency in the predictions proposed by the algorithm of fusion.
 #'
-#' B.STABILITY OF THE PREDICTIONS
+#' B. SIMILARITIES BETWEEN OBSERVED AND PREDICTED DISTRIBUTIONS
+#'
+#' When the predictions of \eqn{Y} in B and/or \eqn{Z} in A are available in the \code{datab} argument, the similarities between the observed and predicted probabilistic distributions of \eqn{Y} and/or \eqn{Z} are quantified from the Hellinger distance (see (1)).
+#' This measure varies between 0 and 1: a value of 0 corresponds to a perfect similarity while a value close to 1 (the maximum) indicates a great dissimilarity.
+#' Two distributions will be considered as close with this distance as soon as the observed measure will be less than 0.05.
+#'
+#' C.STABILITY OF THE PREDICTIONS
 #'
 #' These optional results are based on the following decision rule which defines the stability of an algorithm in A (or B) as its average ability to assign a same prediction
 #' of \eqn{Z} (or \eqn{Y}) to individuals that have a same given profile of covariates x and a same given level of \eqn{Y} (\eqn{Z}).
 #'
-#' Assuming that the missing information of \eqn{Z} in base A was predicted from an OT algorithm (the reasoning will be identical with the prediction of \eqn{Y} in B, see (1) and (2) for more details), the function \code{verif_OT} uses the conditional probabilities stored in the
+#' Assuming that the missing information of \eqn{Z} in base A was predicted from an OT algorithm (the reasoning will be identical with the prediction of \eqn{Y} in B, see (2) and (3) for more details), the function \code{verif_OT} uses the conditional probabilities stored in the
 #' object \code{estimatorZA} (see outputs of the functions \code{\link{OT_outcome}} and \code{\link{OT_joint}}) which contains the estimates of all the conditional probabilities of \eqn{Z} in A, given a profile of covariates x and given a level of \eqn{Y = y}.
 #' Each individual (or row) from A, is associated with a conditional probability \eqn{P(Z= z|Y= y, X= x)}.
 #'
 #' With the function \code{\link{OT_joint}}, the individual predictions for subject i: \eqn{\widehat{z}_i},\eqn{i=1,\ldots,n_A} are given using the maximum a posteriori rule:
 #' \deqn{\widehat{z}_i= \mbox{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)}
-#' While the function \code{\link{OT_outcome}} directly gives the individual prediction and the probablities \eqn{P(Z= z|Y= y, X= x)} are computed in a second step (see (2)).
+#' While the function \code{\link{OT_outcome}} directly gives the individual prediction and the probablities \eqn{P(Z= z|Y= y, X= x)} are computed in a second step (see (3)).
 #'
 #' For each subject i in database A, a new variable \eqn{z_i'} is simulate such that: \deqn{z_i'\sim \mathcal{B}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))}
 #' The average stability criterium is so calculated as: \deqn{\mbox{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'}
@@ -48,7 +55,7 @@
 #'
 #' @param ot_out An output object of the function \code{OT_outcome} or \code{OT_joint}
 #' @param group.clss A boolean indicating if the results related to the proximity between outcomes by grouping levels are requested in output (\code{FALSE} by default).
-#' @param ordinal A boolean that indicates if \eqn{Y} and Z are ordinal (\code{TRUE} by default) or not. This argument is only useful in the context of groups of levels (\code{group.clss}=TRUE).
+#' @param ordinal A boolean that indicates if \eqn{Y} and \eqn{Z} are ordinal (\code{TRUE} by default) or not. This argument is only useful in the context of groups of levels (\code{group.clss}=TRUE).
 #' @param stab.prob A boolean indicating if the results related to the stability of the algorithm are requested in output (\code{FALSE} by default).
 #' @param min.neigb A value indicating the minimal required number of neighbors to consider in the estimation of stability (1 by default).
 #' @param R A positive integer indicating the number of desired repetitions for the bernoulli simulations in the stability study
@@ -57,9 +64,10 @@
 #' @return A list of seven objects is returned:
 #' \item{seed}{The list of used random number generator. The first one is fixed by user or randomly chosen}
 #' \item{nb.profil}{The number of profiles of covariates}
-#' \item{conf.mat}{The global confusion matrix between \eqn{Y} and Z}
-#' \item{res.prox}{A summary table related to the association measures between \eqn{Y} and Z}
-#' \item{res.grp}{A summary table related to the study of the proximity of \eqn{Y} and Z using group of levels}
+#' \item{conf.mat}{The global confusion matrix between \eqn{Y} and \eqn{Z}}
+#' \item{res.prox}{A summary table related to the association measures between \eqn{Y} and \eqn{Z}}
+#' \item{res.grp}{A summary table related to the study of the proximity of \eqn{Y} and \eqn{Z} using group of levels}
+#' \item{hell}{Hellinger distances between observed and predicted distributions}
 #' \item{eff.neig}{A table which corresponds to a count of conditional probabilities according to the number of neighbors used in their computation (Only the first ten values)}
 #' \item{res.stab}{A summary table related to the stability of the algorithm}
 #'
@@ -78,9 +86,10 @@
 #'
 #' @references
 #' \enumerate{
-#' \item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
+#' \item Liese F, Miescke K-J. (2008). Statistical Decision Theory: Estimation, Testing, and Selection. Springer
+#' \item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N. (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
 #' Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
-#' \item Gares V, Omer J. Regularized optimal transport of covariates and outcomes in datarecoding(2019).hal-02123109 \url{https://hal.archives-ouvertes.fr/hal-02123109/document}
+#' \item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
 #' }
 #'
 #' @export
@@ -152,10 +161,46 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
   ### Test 1: Evaluation of the proximity between the distributions of Y and Z
 
   DATA1_OT = ot_out$DATA1_OT
+  lev1     = levels(DATA1_OT[,2])
   DATA2_OT = ot_out$DATA2_OT
+  lev2     = levels(DATA2_OT[,3])
   inst     = ot_out$res_prox
 
-  n1 = nrow(DATA1_OT)
+  yy       = factor(c(as.character(DATA1_OT$Y)     , as.character(DATA2_OT$OTpred)) ,levels = lev1)
+  zz       = factor(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT$Z))      ,levels = lev2)
+
+  # Hellinger distance
+  YA = prop.table(table(yy[1:nrow(DATA1_OT)]))
+  YB = prop.table(table(yy[(nrow(DATA1_OT)+1):(nrow(DATA1_OT)+nrow(DATA2_OT))]))
+
+  ZA = prop.table(table(zz[1:nrow(DATA1_OT)]))
+  ZB = prop.table(table(zz[(nrow(DATA1_OT)+1):(nrow(DATA1_OT)+nrow(DATA2_OT))]))
+
+  if (length(yy) == length(zz)){
+
+    hh = data.frame(
+        YA_YB = round(sqrt(0.5 * sum((sqrt(YA) - sqrt(YB))^2)),3),
+        ZA_ZB = round(sqrt(0.5 * sum((sqrt(ZA) - sqrt(ZB))^2)),3)
+    )
+    row.names(hh) = "Hellinger dist."
+
+  } else if (length(yy) > length(zz)){
+
+    hh            = data.frame(YA_YB  = round(sqrt(0.5 * sum((sqrt(YA) - sqrt(YB))^2)),3),
+                               ZA_ZB  = NA)
+    row.names(hh) = "Hellinger dist."
+
+  } else {
+
+    hh = data.frame(
+      YA_YB = NA,
+      ZA_ZB = round(sqrt(0.5 * sum((sqrt(ZA) - sqrt(ZB))^2)),3)
+    )
+    row.names(hh) = "Hellinger dist."
+
+  }
+
+  n1 = n2 = nrow(DATA1_OT)
 
   if (!("OTpred" %in% colnames(ot_out$DATA2_OT))){
 
@@ -164,16 +209,73 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
   } else if (!("OTpred" %in% colnames(ot_out$DATA1_OT))){
 
     DATA1_OT = NULL
+    n2       = 0
 
   } else {}
 
 
+  if (is.null(DATA1_OT)){
+
+    predZ = DATA2_OT[,3]
+
+    if (is.ordered(DATA1_OT[,2])){
+
+      predY = ordered(c(as.character(DATA1_OT[,2]), as.character(DATA2_OT$OTpred)), levels = lev1)
+
+    } else {
+
+      predY = factor(c(as.character(DATA1_OT[,2]), as.character(DATA2_OT$OTpred)), levels = lev1)
+
+    }
+
+  } else {}
+
+
+  if (is.null(DATA2_OT)){
+
+    predY = DATA1_OT[,2]
+
+    if (is.ordered(DATA1_OT[,2])){
+
+      predZ = ordered(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT[,3])), levels = lev2)
+
+    } else {
+
+      predZ = factor(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT[,3])), levels = lev2)
+
+    }
+  }
+
+  if ((!is.null(DATA1_OT))&(!is.null(DATA2_OT))){
+
+    if (is.ordered(DATA1_OT[,2])){
+
+      predY = ordered(c(as.character(DATA1_OT[,2]), as.character(DATA2_OT$OTpred)), levels = lev1)
+
+    } else {
+
+      predY = factor(c(as.character(DATA1_OT[,2]), as.character(DATA2_OT$OTpred)), levels = lev1)
+
+    }
+
+    if (is.ordered(DATA1_OT[,2])){
+
+      predZ = ordered(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT[,3])), levels = lev2)
+
+    } else {
+
+      predZ = factor(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT[,3])), levels = lev2)
+
+    }
+
+  }
+
   ID.DB1 = unique(as.character(DATA1_OT[,1]))
   ID.DB2 = unique(as.character(DATA2_OT[,1]))
 
-  predZ = as.factor(c(as.character(DATA1_OT$OTpred),as.character(DATA2_OT[,3])))
-  predY = as.factor(c(as.character(DATA1_OT[,2])   ,as.character(DATA2_OT$OTpred)))
-  ID.DB = c(as.character(DATA1_OT[,1])             ,as.character(DATA2_OT[,1]))
+  # predZ = ordered(as.factor(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT[,3])))   , levels = lev2)
+  # predY = ordered(as.factor(c(as.character(DATA1_OT[,2])   , as.character(DATA2_OT$OTpred))), levels = lev1)
+  ID.DB = c(as.character(DATA1_OT[,1]), as.character(DATA2_OT[,1]))
 
 
   if ((!is.null(DATA1_OT))&(!is.null(DATA2_OT))){
@@ -237,11 +339,13 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
 
       resgrp = error_group(predY,predZ, ord = ordinal)
       colnames(resgrp)[1] = paste("combi","Y",paste ="_")
+      colnames(resgrp)[1] = "grp levels Z to Y"
 
     } else {
 
       resgrp = error_group(predZ,predY, ord = ordinal)
       colnames(resgrp)[1] = paste("combi","Z",paste ="_")
+      colnames(resgrp)[1] = "grp levels Y to Z"
 
       }
 
@@ -264,6 +368,7 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
 
     # assignment of a profile of covariates to each individual
 
+    row.names(inst$Xobserv) = 1:nrow(inst$Xobserv)
     aaa    = duplicated(inst$Xobserv)
     bbb    = inst$Xobserv[aaa == TRUE, ]
     ccc    = inst$Xobserv[aaa == FALSE,]
@@ -304,7 +409,8 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
       for (i in 1:nrow(DATA1_OT)){
 
         coord1 = which(row.names(estimatorZA[profil[i],,]) == as.character(DATA1_OT$Y)[i])
-        coord2 = as.numeric(DATA1_OT$OTpred)[i]
+        # coord2 = as.numeric(DATA1_OT$OTpred)[i]
+        coord2 = as.numeric(predZ)[i]
 
         DATA1_OT$prob[i] = estimatorZA[profil[i],coord1,coord2]
 
@@ -358,7 +464,8 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
       for (i in 1:nrow(DATA2_OT)){
 
         coord1 = which(row.names(estimatorYB[profil[i+n1],,]) == as.character(DATA2_OT$Z)[i])
-        coord2 = as.numeric(DATA2_OT$OTpred)[i]
+        #coord2 = as.numeric(DATA2_OT$OTpred)[i]
+        coord2 = as.numeric(predY)[i+n2]
 
         DATA2_OT$prob[i] = estimatorYB[profil[i+n1],coord1,coord2]
 
@@ -442,8 +549,23 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
 
  }
 
-  out_verif = list(seed = seed.stab, nb.profil = length(inst$indXA), conf.mat = stats::addmargins(table(predY,predZ)),
-                   res.prox = restand, res.grp = resgrp, eff.neig = eff_tb, res.stab = restand3)
+  if (is.null(DATA1_OT)){
+
+    Z    = predZ
+    conf = stats::addmargins(table(predY,Z))
+
+  } else if (is.null(DATA2_OT)){
+
+    conf = stats::addmargins(table(Y,predZ))
+
+  } else {
+
+    conf = stats::addmargins(table(predY,predZ))
+
+  }
+
+  out_verif = list(seed = seed.stab, nb.profil = length(inst$indXA), conf.mat = conf,
+                   res.prox = restand, res.grp = resgrp, hell = hh, eff.neig = eff_tb, res.stab = restand3)
 
 }
 
