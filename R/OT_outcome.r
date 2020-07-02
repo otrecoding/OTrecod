@@ -278,6 +278,23 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
   cat("---------------------------------------","\n")
 
 
+  if (index_DB_Y_Z[2] %in% quanti){
+
+    datab[,index_DB_Y_Z[2]] = ordered(datab[,index_DB_Y_Z[2]])
+    quanti                  = setdiff(quanti,index_DB_Y_Z[2])
+    ordinal                 = sort(c(ordinal,index_DB_Y_Z[2]))
+
+  } else {}
+
+  if (index_DB_Y_Z[3] %in% quanti){
+
+    datab[,index_DB_Y_Z[3]] = ordered(datab[,index_DB_Y_Z[3]])
+    quanti                  = setdiff(quanti,index_DB_Y_Z[3])
+    ordinal                 = sort(c(ordinal,index_DB_Y_Z[3]))
+
+  } else {}
+
+
 
   if (!(which.DB %in% c("A","B","BOTH"))){
 
@@ -518,14 +535,27 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
     estimatorYB = NULL
 
     DATA1_OT         = dataB[dataB[,1] == unique(dataB[,1])[1],]
-    DATA1_OT$OTpred  = as.factor(plyr::mapvalues(YBpred,from = sort(unique(YBpred)), to = levels(dataB[,3])[sort(unique(YBpred))]))
     DATA2_OT         = dataB[dataB[,1] == unique(dataB[,1])[2],]
 
-    if (is.ordered(dataB[,3])){
+    if (index_DB_Y_Z[3] %in% nominal){
 
-      DATA1_OT$OTpred = as.ordered(DATA1_OT$OTpred)
+      DATA1_OT$OTpred  = factor(plyr::mapvalues(YBpred,from = sort(unique(YBpred)),
+                                                to = levels(dataB[,3])[sort(unique(YBpred))]),
+                                                levels = levels(dataB[,3])[sort(unique(YBpred))])
+    } else {
 
-    } else {}
+      DATA1_OT$OTpred  = ordered(plyr::mapvalues(YBpred,from = sort(unique(YBpred)),
+                                                 to = levels(dataB[,3])[sort(unique(YBpred))]),
+                                                 levels = levels(dataB[,3])[sort(unique(YBpred))])
+
+    }
+
+
+    # if (is.ordered(dataB[,3])){
+
+    #    DATA1_OT$OTpred = as.ordered(DATA1_OT$OTpred)
+
+    # } else {}
 
 
   } else if (which.DB == "B"){
@@ -538,13 +568,24 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
 
     DATA1_OT         = dataB[dataB[,1] == unique(dataB[,1])[1],]
     DATA2_OT         = dataB[dataB[,1] == unique(dataB[,1])[2],]
-    DATA2_OT$OTpred  = as.factor(plyr::mapvalues(YApred,from = sort(unique(YApred)), to = levels(dataB[,2])[sort(unique(YApred))]))
 
-    if (is.ordered(dataB[,2])){
+    if (index_DB_Y_Z[2] %in% nominal){
 
-      DATA2_OT$OTpred = as.ordered(DATA2_OT$OTpred)
+        DATA2_OT$OTpred  = factor(plyr::mapvalues(YApred,from = sort(unique(YApred)),
+                                                  to = levels(dataB[,2])[sort(unique(YApred))]),
+                                                  levels = levels(dataB[,2])[sort(unique(YApred))])
+    } else {
 
-    } else {}
+        DATA2_OT$OTpred  = ordered(plyr::mapvalues(YApred,from = sort(unique(YApred)),
+                                                   to = levels(dataB[,2])[sort(unique(YApred))]),
+                                                   levels = levels(dataB[,2])[sort(unique(YApred))])
+    }
+
+    #if (is.ordered(dataB[,2])){
+
+    #  DATA2_OT$OTpred = as.ordered(DATA2_OT$OTpred)
+
+    # } else {}
 
   } else {
 
@@ -555,21 +596,47 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
     estimatorYB = array(rep(0,nbX*length(Y)*length(Z)),dim = c(nbX,length(Z),length(Y)))
 
     DATA1_OT         = dataB[dataB[,1] == unique(dataB[,1])[1],]
-    DATA1_OT$OTpred  = as.factor(plyr::mapvalues(YBpred,from = sort(unique(YBpred)), to = levels(dataB[,3])[sort(unique(YBpred))]))
     DATA2_OT         = dataB[dataB[,1] == unique(dataB[,1])[2],]
-    DATA2_OT$OTpred  = as.factor(plyr::mapvalues(YApred,from = sort(unique(YApred)), to = levels(dataB[,2])[sort(unique(YApred))]))
 
-    if (is.ordered(dataB[,3])){
+    if (index_DB_Y_Z[3] %in% nominal){
 
-      DATA1_OT$OTpred = as.ordered(DATA1_OT$OTpred)
+      DATA1_OT$OTpred  = factor(plyr::mapvalues(YBpred,from = sort(unique(YBpred)),
+                                                to = levels(dataB[,3])[sort(unique(YBpred))]),
+                                                levels = levels(dataB[,3])[sort(unique(YBpred))])
+    } else {
 
-    } else {}
+      DATA1_OT$OTpred  = ordered(plyr::mapvalues(YBpred,from = sort(unique(YBpred)),
+                                                 to = levels(dataB[,3])[sort(unique(YBpred))]),
+                                                 levels = levels(dataB[,3])[sort(unique(YBpred))])
 
-    if (is.ordered(dataB[,2])){
+    }
 
-      DATA2_OT$OTpred = as.ordered(DATA2_OT$OTpred)
+    if (index_DB_Y_Z[2] %in% nominal){
 
-    } else {}
+      DATA2_OT$OTpred  = factor(plyr::mapvalues(YApred,from = sort(unique(YApred)),
+                                                to = levels(dataB[,2])[sort(unique(YApred))]),
+                                levels = levels(dataB[,2])[sort(unique(YApred))])
+    } else {
+
+      DATA2_OT$OTpred  = ordered(plyr::mapvalues(YApred,from = sort(unique(YApred)),
+                                                 to = levels(dataB[,2])[sort(unique(YApred))]),
+                                 levels = levels(dataB[,2])[sort(unique(YApred))])
+    }
+
+    # DATA1_OT$OTpred  = as.factor(plyr::mapvalues(YBpred,from = sort(unique(YBpred)), to = levels(dataB[,3])[sort(unique(YBpred))]))
+    # DATA2_OT$OTpred  = as.factor(plyr::mapvalues(YApred,from = sort(unique(YApred)), to = levels(dataB[,2])[sort(unique(YApred))]))
+
+    # if (is.ordered(dataB[,3])){
+
+      # DATA1_OT$OTpred = as.ordered(DATA1_OT$OTpred)
+
+    #} else {}
+
+    #if (is.ordered(dataB[,2])){
+
+    #  DATA2_OT$OTpred = as.ordered(DATA2_OT$OTpred)
+
+    # } else {}
 
   }
 

@@ -51,7 +51,7 @@ This latter is available in the package and is so directly usable beforehand.
 
 The function \code{indiv_grp_optimal} constitutes an alternative method to the nearest neighbor procedure implemented in the function \code{\link{indiv_grp_closest}}.
 As for the function \code{\link{indiv_grp_closest}}, assuming that the objective consists in the prediction of \eqn{Z} in the database A, the first step of the algorithm related to \code{OUTCOME} provides an estimate of \eqn{\gamma} which can is an estimation of the joint distribution \eqn{(Y,Z)} in A.
-Rather than using a nearest neighbor approach to provide individual predictions,the function \code{indiv_grp_optimal} solves an optimization problem using the simplex algorithm which searches for the individual predictions of \eqn{Z} that minimize the computed total distance satisfying the joint probability distribution estimated in the first part.
+Rather than using a nearest neighbor approach to provide individual predictions, the function \code{indiv_grp_optimal} solves an optimization problem using the simplex algorithm which searches for the individual predictions of \eqn{Z} that minimize the computed total distance satisfying the joint probability distribution estimated in the first part.
 More details about the theory related to the solving of this optimization problem is described in the section 5.3 of (2).
 
 Obviously, this algorithm  runs in the same way for the prediction of \eqn{Y} in the database B.
