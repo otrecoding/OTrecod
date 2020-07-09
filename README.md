@@ -20,8 +20,6 @@ The goal of OTrecod is to recod data using optimal transport theory.
 You can install OTrecod with:
 
 ``` r
-# Install release version from CRAN
-install.packages("OTrecod")
 # Install development version from GitHub
 devtools::install_github("otrecoding/OTrecod")
 ```
