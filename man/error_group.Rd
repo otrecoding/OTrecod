@@ -46,7 +46,7 @@ Example:
 Assuming that \eqn{Y = (1,1,2,2,3,3,4,4)} and \eqn{Z = (1,1,1,1,2,2,2,2)}, so \eqn{n_Y = 4} and \eqn{n_Z = 2} and the related coefficient of correlation \eqn{cor(Y,Z)} is 0.89.
 Are there groupings of modalities of \eqn{Y} which contribute to improving the proximity between \eqn{Y} and \eqn{Z} ?
 From \eqn{Y}, the function \code{error_group} gives an answer to this question by successively constructing the variables: \eqn{Y_1 = (1,1,1,1,2,2,2,2)}, \eqn{Y_2 = (1,1,2,2,1,1,2,2)}, \eqn{Y_3 = (1,1,2,2,2,2,1,1)}
-and tests \eqn{\text{cor}(Z,Y_1) = 1}, \eqn{\text{cor}(Z,Y_2) = 0}, \eqn{\text{cor}(Z,Y_3) = 0}.
+and tests \eqn{\mbox{cor}(Z,Y_1) = 1}, \eqn{\mbox{cor}(Z,Y_2) = 0}, \eqn{\mbox{cor}(Z,Y_3) = 0}.
 Here, the tests permit to conclude that the difference of encodings between \eqn{Y} and \eqn{Z} resulted in fact in a simple grouping of modalities.
 }
 \examples{
