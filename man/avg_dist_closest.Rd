@@ -16,7 +16,7 @@ between individuals and levels of only one factor (the value 1 is taken by defau
 A list of 3 matrices is returned:
 \item{Davg}{The cost matrix whose number of rows corresponds to \eqn{n_Y}, the number of levels of the target variable \eqn{Y} in the database A, and whose number of columns corresponds to \eqn{n_Z}: the number of levels of the target variable in B.
 In this case, the related cost matrix can be interpreted as the ability to move from one level of \eqn{Y} in A to one level of \eqn{Z} in B.
-Davg[P,Q] refers to the average distance between the modality P in \eqn{Y} (only known in A) and modality \eqn{Q} of \eqn{Z} (only known in B).}
+Davg[P,Q] refers to the average distance between the modality P of \eqn{Y} (only known in A) and modality \eqn{Q} of \eqn{Z} (only known in B).}
 \item{DindivA}{A matrix whose number of rows corresponds to the number of rows of the first database A and number of columns corresponds to \eqn{n_Z}, the number of levels of the target variable \eqn{Z} in the second database B.
 DindivA[i,Q] refers to the average distance between the \eqn{i^{th}} individual (or row) of the first database and a chosen proportion of individuals (\code{percent_closest} set by the user) of the second database having the modality \eqn{Q} of \eqn{Z}.}
 \item{DindivB}{A matrix whose number of rows corresponds to the number of rows of the second database B and number of columns corresponds to nA, the number of levels of the target variable in the first database A.
@@ -26,21 +26,21 @@ DindivB[k,P] refers to the average distance between the \eqn{k^{th}} individual 
 This function computes average distances between levels of two categorical outcomes located in two distinct databases
 }
 \details{
-The function \code{avg_dist_closest} is an intermediate function used in the implementation of an original algorithm dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory (for more details, consult the corresponding algorithms called
+The function \code{avg_dist_closest} is an intermediate function for the implementation of original algorithms dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory (for more details, consult the corresponding algorithms called
 \code{OUTCOME}, \code{R_OUTCOME}, \code{JOINT} and \code{R_JOINT}, in the reference (2)). The function \code{avg_dist_closest} is so directly implemented in the \code{OT_outcome} and \code{OT_joint} functions but can also be used separately.
-The function \code{avg_dist_closest} uses, in particular, the D distance matrix (that stores distances between rows of A and B) from \code{\link{proxim_dist}} to produce three distinct matrices saved in a list object.
+The function \code{avg_dist_closest} uses, in particular, the D distance matrix (that stores distances between rows of A and B) from the function \code{\link{proxim_dist}} to produce three distinct matrices saved in a list object.
 Therefore, the function requires in input, the specific output of the function \code{\link{proxim_dist}} which is available in the package and so must be used beforehand.
 In consequence, do not use this function directly on your database, and do not hesitate to consult the provided examples provided for a better understanding.
 
 
 DEFINITION OF THE COST MATRIX
 
-Assuming that A and B are two databases with a set of shared variables and a same latent information (or at least a related information) stored as a variable \eqn{Y} in A and Z in B, such that \eqn{Y} is unknown in B and Z is unknown in A, whose encoding depends on the database (\eqn{n_Y} levels in A and \eqn{n_Z} levels in B).
-A distance between one level of \eqn{Y} and one level of Z is estimated by averaging the distances on covariates vector between  the subsets of individuals (rows) from the two databases that are related to the corresponding levels for \eqn{Y} in A and Z in B.
+Assuming that A and B are two databases with a set of shared variables and that a same information (referred to a same target population) is stored as a variable \eqn{Y} in A and \eqn{Z} in B, such that \eqn{Y} is unknown in B and \eqn{Z} is unknown in A, whose encoding depends on the database (\eqn{n_Y} levels in A and \eqn{n_Z} levels in B).
+A distance between one given level y of \eqn{Y} and one given level z of Z is estimated by averaging the distances between the two subsets of individuals (units or rows) assigned to y in A and z in B, characterized by their vectors of covariates.
 The distance between two individuals depends on the variations between the shared covariates, and so depends on the chosen distance function using the function \code{proxim_dist}.
-For the average computations, all the individuals concerned by these two classes can be taken into account, or only a part of them, depending on the argument \code{percent_closest}.
-When \code{percent_closest} < 1, the average distance between an individual i and a given level of factor z only uses the corresponding part of individuals related to z that are the closest to i for the computation.
-Therefore, this choice influences the estimations of average distances between levels of factors but also permits to reduce time computation if necessary.
+For these computations, all the individuals concerned by these two levels can be taken into account, or only a part of them, depending on the argument \code{percent_closest}.
+When \code{percent_closest} < 1, the average distance between an individual i and a given level of factor z only uses the corresponding part of individuals related to z that are the closest to i.
+Therefore, this choice influences the estimations of average distances between levels of factors but also permits to reduce time computation when necessary.
 
 The average distance between each individual of \eqn{Y} (\eqn{Z}) and each levels of \eqn{Z} (\eqn{Y}) are returned in output, in the object \code{DindivA} (\code{DindivB} respectively).
 The average distance between each levels of \eqn{Y} and each levels of \eqn{Z} are returned in a matrix saved in output (the object \code{Davg}).

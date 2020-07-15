@@ -3,9 +3,9 @@
 #'
 #' This function computes a matrix distance using the Hamming distance as proximity measure.
 #'
-#' \code{ham} returns the pairwise distance between rows (observations) of a single matrix if \code{mat_1} equals \code{mat_2}.
+#' \code{ham} returns the pairwise distances between rows (observations) of a single matrix if \code{mat_1} equals \code{mat_2}.
 #' Otherwise \code{ham} returns the matrix distance between rows of the two matrices \code{mat_1} and \code{mat_2} if this 2 matrices are different in input.
-#' Calculate the Hamming distance stay possible despite the presence of missing data by applying the following formula. Suppose that A and B are 2 matrices such as \code{ncol(A) = ncol(B)}.
+#' Computing the Hamming distance stays possible despite the presence of missing data by applying the following formula. Assuming that A and B are 2 matrices such as \code{ncol(A) = ncol(B)}.
 #' The Hamming distance between the \eqn{i^{th}} row of A and the \eqn{k^{th}} row of B equals:
 #'
 #' \deqn{\mbox{ham}(A_i,B_k) = \frac{\sum_j 1_{\left\{A_{ij} \neq B_{kj}\right\}}}{\sum_j 1}\times\left(\frac{\sum_j 1}{\sum_j 1_{\left\{!\mbox{is.na}(A_{ij}) \& !\mbox{is.na}( B_{kj})\right\}}}\right)}
@@ -16,10 +16,10 @@
 #'
 #' In only two situations the Hamming distance can not be calculated:
 #' \enumerate{
-#' \item If a row of A or B has only missing values (ie on each of the columns of A or B respectively).
+#' \item If a row of A or B has only missing values (ie for each of the columns of A or B respectively).
 #' \item The union of the indexes of the missing values in row i of A with the indexes of the missing values in row j of B concerns the indexes of all considered columns.
 #' }
-#' Example: Assuming that \eqn{\mbox{ncol}(A) = \mbox{ncol}(B) = 3}, if \eqn{A_i = (1,\mbox{NA},0)} and \eqn{B_j = (\mbox{NA},1,\mbox{NA})}, for each columns, either the information in row i is missing in A,
+#' Example: Assuming that \eqn{\mbox{ncol}(A) = \mbox{ncol}(B) = 3}, if \eqn{A_i = (1,\mbox{NA},0)} and \eqn{B_j = (\mbox{NA},1,\mbox{NA})}, for each column, either the information in row i is missing in A,
 #' or the information is missing in B, which induces: \eqn{\mbox{ham}(A_i,B_k) = \mbox{NA}}.
 #'
 #' If \code{mat_1} is a vector and \code{mat_2} is a matrix (or data.frame) or vice versa, the length of \code{mat_1} must be equal to the number of columns of \code{mat_2}.

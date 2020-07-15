@@ -14,7 +14,7 @@ error_group(REF, Z, ord = TRUE)
 \item{ord}{A boolean. If TRUE, only the subsequent levels of \eqn{Z} can be grouped together.}
 }
 \value{
-A data.frame with two columns:
+A data.frame with five columns:
         \item{combi}{The first column enumerates all possible groups of modalities of \eqn{Y} to obtain the same number of levels as the reference.}
         \item{error_rate}{The second column gives the corresponding rate error from the confusion matrix (ratio of non-diagonal elements)}
         \item{Kappa}{This column indicates the result of the Cohen's kappa coefficient related to each combination of \eqn{Y}}
@@ -51,6 +51,20 @@ Here, the tests permit to conclude that the difference of encodings between \eqn
 }
 \examples{
 
+# Basic examples:
+Z1 = as.factor(sample(1:3,50,replace = TRUE)); length(Z1)
+Z3 = as.factor(sample(1:2,50,replace = TRUE)); length(Z3)
+Z2 = as.factor(sample(c("A","B","C","D"),50, replace = TRUE)); length(Z2)
+Z4 = as.factor(sample(c("A","B","C","D","E"),50, replace = TRUE)); length(Z4)
+
+ # By only grouping consecutive levels of Z1:
+error_group(Z1,Z4)
+# By only all possible levels of Z1, consecutive or not:
+error_group(Z3,Z1,FALSE)
+
+
+\dontrun{
+
 ### using a sample of the tab_test object (3 complete covariates)
 ### Y1 and Y2 are a same variable encoded in 2 different forms in DB 1 and 2:
 ### (4 levels for Y1 and 3 levels for Y2)
@@ -69,22 +83,8 @@ try1J = OT_joint(tab_test2, nominal = c(1,4:5), ordinal = c(2,3),
 error_group(try1J$DATA2_OT$Z,try1J$DATA2_OT$OTpred)
 table(try1J$DATA2_OT$Z,try1J$DATA2_OT$OTpred)
 
-\dontrun{
-# Error rates between Y1 and the predictions of Y2 in the DB 1
-error_group(try1J$DATA1_OT$OTpred,try1J$DATA1_OT$Y)
-table(try1J$DATA1_OT$OTpred,try1J$DATA1_OT$Y)
-
-# Basic examples:
-Z1 = as.factor(sample(1:3,50,replace = TRUE)); length(Z1)
-Z3 = as.factor(sample(1:2,50,replace = TRUE)); length(Z3)
-Z2 = as.factor(sample(c("A","B","C","D"),50, replace = TRUE)); length(Z2)
-Z4 = as.factor(sample(c("A","B","C","D","E"),50, replace = TRUE)); length(Z4)
-
- # By only grouping consecutive levels of Z1:
-error_group(Z1,Z4)
-# By only all possible levels of Z1, consecutive or not:
-error_group(Z3,Z1,FALSE)
 }
+
 
 }
 \references{
