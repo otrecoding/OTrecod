@@ -9,13 +9,13 @@ power_set(n, ordinal = FALSE)
 \arguments{
 \item{n}{An integer. The cardinal of the set}
 
-\item{ordinal}{A boolean. If TRUE the power set is only composed of subsets of consecutive elements, FALSE (by default) otherwise}
+\item{ordinal}{A boolean. If TRUE the power set is only composed of subsets of consecutive elements, FALSE (by default) otherwise.}
 }
 \value{
 A list of \eqn{2^n -1} subsets (The empty set is excluded)
 }
 \description{
-A function that gives the power set \eqn{P(S)} of any non empty set S
+A function that gives the power set \eqn{P(S)} of any non empty set S.
 }
 \examples{
 # Powerset of set of 4 elements

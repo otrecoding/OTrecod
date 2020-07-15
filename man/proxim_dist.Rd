@@ -7,8 +7,8 @@
 proxim_dist(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.8)
 }
 \arguments{
-\item{data_file}{A data.frame corresponding ideally to an output of the function \code{\link{transfo_dist}}. Otherwise this data.frame is the result of two overlayed databases with a column of database identifier ("A" and "B", 1 and 2, for example), a target variable (called \eqn{Y} by example) only known in the first database, a target variable (\eqn{Z}) only stored in the 2nd database, such that \eqn{Y} and \eqn{Z} summarize a same information differently encoded in the two databases and set of common covariates (at least one) of any type.
-The order of the variables in the data.frame have no importance.The type of the covariates must be in accordance with the chosen distance function in the \code{norm} option.}
+\item{data_file}{A data.frame corresponding ideally to an output of the function \code{\link{transfo_dist}}. Otherwise this data.frame is the result of two overlayed databases with a column of database identifier ("A" and "B", 1 and 2, for example), a target variable (called \eqn{Y} by example) only known in the first database, a target variable (\eqn{Z}) only stored in the second database, such that \eqn{Y} and \eqn{Z} summarize a same information differently encoded in the two databases and set of common covariates (at least one) of any type.
+The order of the variables in the data.frame have no importance. The type of the covariates must be in accordance with the chosen distance function in the \code{norm} option.}
 
 \item{indx_DB_Y_Z}{A vector of three column numbers corresponding to the colum indexes of the identifier, the target variable in the first database and the target variable in the second database. The indexes must be declared in this specific order.}
 
@@ -18,31 +18,31 @@ for binary covariates only (\code{norm} = "H"), the Manhattan distance ("M", by 
 \item{prox}{A percentage (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.}
 }
 \value{
-A list of 15 elements (the first 15 detailed below) is returned containing various distance matrices and lists useful for the algorithms that used Optimal Transportation theory. Two more objects (the last two of the following list) will be returned if distance matrices contain NAs.
+A list of 16 elements (the first 16 detailed below) is returned containing various distance matrices and lists useful for the algorithms that used Optimal Transportation theory. Two more objects (the last two of the following list) will be returned if distance matrices contain NAs.
 \item{FILE_NAME}{A simple reminder of the name of the raw database}
 \item{nA}{The row numbers of the first database (A)}
 \item{nB}{The row numbers of the second database (B)}
 \item{Xobserv}{The subset of the two merged databases composed of the common variables only}
 \item{profile}{The different encountered profiles of covariates according to the data.frame}
-\item{Yobserv}{The values of the target variable in the 1st database}
-\item{Zobserv}{The values of the target variable in the 2nd database}
-\item{D}{A distance matrix corresponding to the distances computed between individuals of the 2 databases}
-\item{Y}{The \eqn{n_Y} levels of the target variable in numeric form, in the 1st database}
-\item{Z}{The \eqn{n_Z} levels of the target variable in numeric form, in the 2nd database}
-\item{indY}{A list of \eqn{n_Y} groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of \eqn{Y} in the 1st database}
-\item{indZ}{A list of \eqn{n_Z} groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of \eqn{Z} in the 2nd database}
-\item{indXA}{A list of individual (row) indexes from the 1st database, sorted by profiles of covariates according to their proximities. See the \code{Details} part for more information}
-\item{indXB}{A list of individual (row) indexes from the 2nd database, sorted by profiles of covariates according to their proximities. See the \code{Details} part for more information}
-\item{DA}{A distance matrix corresponding to the pairwise distances between individuals of the 1st database}
-\item{DB}{A distance matrix corresponding to the pairwise distances between individuals of the 2nd database}
-\item{ROWS_TABLE}{Combinations of row numbers of the 2 databases that generate NAs in D}
+\item{Yobserv}{The values of the target variable in the first database}
+\item{Zobserv}{The values of the target variable in the second database}
+\item{D}{A distance matrix corresponding to the computed distances between individuals of the two databases}
+\item{Y}{The \eqn{n_Y} levels of the target variable in numeric form, in the first database}
+\item{Z}{The \eqn{n_Z} levels of the target variable in numeric form, in the second database}
+\item{indY}{A list of \eqn{n_Y} groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of \eqn{Y} in the first database}
+\item{indZ}{A list of \eqn{n_Z} groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of \eqn{Z} in the second database}
+\item{indXA}{A list of individual (row) indexes from the first database, sorted by profiles of covariates according to their proximities. See the \code{Details} part for more information}
+\item{indXB}{A list of individual (row) indexes from the second database, sorted by profiles of covariates according to their proximities. See the \code{Details} part for more information}
+\item{DA}{A distance matrix corresponding to the pairwise distances between individuals of the first database}
+\item{DB}{A distance matrix corresponding to the pairwise distances between individuals of the second database}
+\item{ROWS_TABLE}{Combinations of row numbers of the two databases that generate NAs in D}
 \item{ROWS_TO_RM}{Number of times a row of the first or second database is involved in the NA process of D}
 }
 \description{
 \code{proxim_dist} computes the pairwise distance matrix of a database and cross-distance matrix between two databases according to various distance functions in the context of data fusion.
 }
 \details{
-This function is the first step of a family of algorithms that solve recoding problems of data fusion using Optimal Transportation theory (See the details of these corresponding models \code{OUTCOME},\code{R_OUTCOME},\code{JOINT} and \code{R_JOINT} in (1) and (2))
+This function is the first step of a family of algorithms that solve recoding problems of data fusion using Optimal Transportation theory (See the details of these corresponding models \code{OUTCOME}, \code{R_OUTCOME}, \code{JOINT} and \code{R_JOINT} in (1) and (2))
 The function \code{proxim_dist} is directly implemented in the functions \code{\link{OT_outcome}} and \code{\link{OT_joint}} but can also be used separately as long as the input database has as suitable structure. Nevertheless, its preparation will have to be rigorously made in two steps detailled in the following sections.
 
 A. REQUIRED STRUCTURE FOR THE DATABASE
@@ -78,12 +78,12 @@ It suggests users to remove these rows before running the process again or imput
 
 C. PROFILES OF COVARIATES AND OUTPUT DETAILS
 
-Whatever the type (mixed or not) and the number of covariates in the data.frame of interest, the function \code{proxim_dist} firstly detects all the possible profiles (or combinations) of covariates from the 2 databases, and saves them in the output \code{profile}.
+Whatever the type (mixed or not) and the number of covariates in the data.frame of interest, the function \code{proxim_dist} firstly detects all the possible profiles (or combinations) of covariates from the two databases, and saves them in the output \code{profile}.
 For example, assuming that a data.frame in input (composed of two overlayed data.frames A and B) have three shared binary covariates (ie identically encoded in A and B) so the sequences \code{011} and \code{101} will be considered as two distinct profiles of covariates.
 If each covariate is a factor of \eqn{n_1}, \eqn{n_2} and \eqn{n_3} levels respectively, so it exists at most \eqn{n_1 \times n_2 \times n_3} possible profiles of covariates.
 This number is considered as a maximum here because only the profiles of covariates met in at least one of the two databases will be kept for the study.
 
-\code{proxim_dist} classifies individuals from the 2 databases according to their proximities to each profile of covariates and saves the corresponding indexes of rows from A and B in 2 lists \code{indXA} and \code{indXB} respectively.
+\code{proxim_dist} classifies individuals from the two databases according to their proximities to each profile of covariates and saves the corresponding indexes of rows from A and B in two lists \code{indXA} and \code{indXB} respectively.
 \code{indXA} and \code{indXB} thus contain as many objects as covariates profiles and the proximity between a given profile and a given individual is defined as follows.
 The function also provides in output the list of all the encountered profiles of covariates.
 As a decision rule, for a given profile of covariates \eqn{P_j}, an individual i will be considered as a neighbor of \eqn{P_j} if \eqn{dist(i,P_j) < prox \times max(dist(i,P_j))} where \code{prox} will be fixed by user.

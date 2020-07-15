@@ -1,9 +1,9 @@
 #' select_pred()
 #'
-#' Selection of a subset of non collinear predictors having relevant relationships with a given target outcome
+#' Selection of a subset of non collinear predictors having relevant relationships with a given target outcome.
 #'
 #' The \code{select_pred} function provides several tools to identify, on the one hand, the relationships between predictors, by detecting especially potential problems of collinearity, and, on the other hand, proposes a parcimonious subset of relevant predictors (of the outcome) using appropriate random forest procedures.
-#' The function which can be used as a preliminary step of prediction in regression areas is particularly adapted to the context of data fusion by providing relevant subsets of predictors to algorithms dedicated to the solving of recoding problems.
+#' The function which can be used as a preliminary step of prediction in regression areas is particularly adapted to the context of data fusion by providing relevant subsets of predictors (the matching variables) to algorithms dedicated to the solving of recoding problems.
 #'
 #'
 #' A. REQUIRED STRUCTURE FOR THE DATABASE
@@ -45,7 +45,7 @@
 #' These two tests are highly sensitive and, by consequence, it suggested to consider these results as simple indicators of collinearity between predictors rather than an essential condition of acceptability.}
 #' }
 #' If the initial number of predictors is not too important, these informations can be sufficient to users for the visualization of the potential problems of collinearity and for the selection of a subset of predictors (\code{RF = FALSE}).
-#' It is nevertheless often necessary to complete this visualization by an automatic process of selection like the Random Forest approach (see Breiman 2001, for a better understanding of the method) linked to the function \code{select_pred} (\code{RF = TRUE}).
+#' It is nevertheless often necessary to complete this visualization by an automatical process of selection like the Random Forest approach (see Breiman 2001, for a better understanding of the method) linked to the function \code{select_pred} (\code{RF = TRUE}).
 #'
 #'
 #' C. RANDOM FOREST PROCEDURE
@@ -53,7 +53,7 @@
 #' As a final step of the process, a random forest approach (RF(3)) is here prefered (to regression models) for two main reasons: RF methods allow notably the number of variables to exceed the number of rows and remain applicable whatever the types of covariates considered.
 #' The function \code{select_pred} integrates in its algorithm the functions \code{\link[party]{cforest}} and \code{\link[party]{varimp}} of the package \pkg{party} (Hothorn, 2006) and so gives access to their main arguments.
 #'
-#' A RF approach generally provides two types of measures for estimating the mean variable importance of each covariate in the prediction of an outcome: the Gini importance and the permutation importance.These measurements must be used with caution, by taking into account the following constraints:
+#' A RF approach generally provides two types of measures for estimating the mean variable importance of each covariate in the prediction of an outcome: the Gini importance and the permutation importance. These measurements must be used with caution, by taking into account the following constraints:
 #' \enumerate{
 #' \item{The Gini importance criterion can produce bias in favor of continuous variables and variables with many categories. To avoid this problem, only the permutation criterion is available in the function.}
 #' \item{The permutation importance criterion can overestimate the importance of highly correlated predictors.}
@@ -66,11 +66,11 @@
 #' conditional importance measure of each predictor \eqn{X}, while a threshold \eqn{< 1}, will only include a subset of variables.
 #' Two remarks related to this method: firstly, notice that taking into account only subsets of predictors in the computation of the variable importance measures could lead to a relevant saving of execution time.
 #' Secondly, because this approach does not take into account incomplete information, the method will only be applied to complete data (incomplete rows will be temporarily removed for the study).}
-#' \item{The second possibility, always in presence of mixed types predictors, consists in the execution of two successive RF procedures. The 1st one will be used to select an unique candidate in each susbset of correlated predictors (detecting in the 1st section), while the 2nd one will extract the permutation measures from the remaining subset
-#' of uncorrelated predictors (\code{RF_condi = FALSE}, by default). This 2nd possibility has the advantage to work in presence of incomplete predictors.}
+#' \item{The second possibility, always in presence of mixed types predictors, consists in the execution of two successive RF procedures. The first one will be used to select an unique candidate in each susbset of correlated predictors (detecting in the 1st section), while the second one will extract the permutation measures from the remaining subset
+#' of uncorrelated predictors (\code{RF_condi = FALSE}, by default). This second possibility has the advantage to work in presence of incomplete predictors.}
 #' \item{The third scenario consists in running a first time the function without RF process (\code{RF = FALSE}), and according to the presence of highly correlated predictors or not, users can choose to extract redundant predictors manually and re-runs the function with the subset of remaining non-collinear predictors to avoid potential biases introduced by the standard permutations measures.}
 #' }
-#' The three scenarios finally provide a list of uncorrelated predictors of the outcome sorted in importance order. The argument \code{thresh_Y} corresponds to the minimal percent of importance required (and fixed by user) for a variable to be considered as a reliable predictor of the outcome.
+#' The three scenarios finally lead to a list of uncorrelated predictors of the outcome sorted in importance order. The argument \code{thresh_Y} corresponds to the minimal percent of importance required (and fixed by user) for a variable to be considered as a reliable predictor of the outcome.
 #' Finally, because all random forest results are subjects to random variation, users can check whether the same importance ranking is achieved by varying the random seed parameter (\code{RF_SEED}) or by increasing the number of trees (\code{RF_ntree}).
 #'
 #'
@@ -79,9 +79,9 @@
 #' @param Z The label of a second target variable with quotes when \code{databa} is the result of two overlayed databases.
 #' @param ID The column index of the database identifier (The first column by default) in the case of two concatened databases, a row identifier otherwise
 #' @param OUT A character that indicates the outcome to predict in the context of overlayed databases. By default, the outcome declared in the argument \code{Y} is predicted. Another possible outcome to predict can be set with the related argument \code{Z}.
-#' @param quanti A vector of integers corresponding to the column indexes of all the numeric predictors
-#' @param nominal A vector of integers which corresponds to the column indexes of all the categorical nominal predictors
-#' @param ordinal A vector of integers which corresponds to the column indexes of all the categorical ordinal predictors
+#' @param quanti A vector of integers corresponding to the column indexes of all the numeric predictors.
+#' @param nominal A vector of integers which corresponds to the column indexes of all the categorical nominal predictors.
+#' @param ordinal A vector of integers which corresponds to the column indexes of all the categorical ordinal predictors.
 #' @param logic A vector of integers indicating the indexes of logical predictors. No index remained by default
 #' @param convert_num A vector of integers indicating the indexes of quantitative variables to convert in ordered factors. No index remained by default. Each index selected has to be defined as quantitative in the argument \code{quanti}.
 #' @param convert_clss A vector of integers indicating the number of classes related to each transformation of quantitative variable in ordered factor. The length of this vector can not exceed the length of the argument \code{convert_num}. Nevertheless, if length(\code{convert_num}) > 1 and length(\code{convert_clss}) = 1,
@@ -90,14 +90,14 @@
 #' @param thresh_num A threshold associated to the Spearman's coefficient of correlation (= 0.70 by default)
 #' @param thresh_Y A threshold linked to the RF approach, that indicates the minimal percent of importance required for a variable to be considered as a reliable predictor of the outcome.
 #' @param RF A boolean equals to TRUE (default) if a random forest procedure must be used in the selecting of the best subset of predictors for the outcome.
-#' @param RF_ntree Number of bootsrap samples required from the row datasource during the random forest procedure
+#' @param RF_ntree The number of bootsrap samples required from the row datasource during the random forest procedure
 #' @param RF_condi A boolean specifying if the conditional importance measures must be assessed from the random forest procedure (\code{TRUE}) rather than the standard variable importance  measures (\code{FALSE} by default)
-#' @param RF_condi_thr A threshold linked to (1 - pvalue) of an association test between each predictor \eqn{X} and the other variables, given that a threshold value of zero wil include all variables in the computation of the conditional importance measure of \eqn{X} (0.60 is the default value).
+#' @param RF_condi_thr A threshold linked to (1 - pvalue) of an association test between each predictor \eqn{X} and the other variables, given that a threshold value of zero wil include all variables in the computation of the conditional importance measure of \eqn{X} (0.20 is the default value).
 #' Conversely, a larger threshold will only keeps for the computation of the variable importance measure of \eqn{X}, the subset of variables that is strongly correlated to \eqn{X}.
 #' @param RF_SEED An integer used as argument by the set.seed() for offsetting the random number generator (random integer by default). This value is only used when a RF method is required.
 #'
 #'
-#' @return A list of 13 (if \code{RF = TRUE}) or 10 objects (Only the first ten objects if \code{RF = FALSE}) is returned:
+#' @return A list of 14 (if \code{RF = TRUE}) or 11 objects (Only the first ten objects if \code{RF = FALSE}) is returned:
 #' \item{seed}{The random number generator related to the study}
 #' \item{outc}{The identifier of the outcome to predict}
 #' \item{thresh}{A summarize of the different thresholds fixed for the study}

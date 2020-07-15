@@ -20,8 +20,8 @@
 #'   \item{Yb2}{the target variable encoded in 5 ordered classes in DB B, missing in database A, stored as integer}
 #'   \item{Gender}{a complete 2 class covariate saved as factor}
 #'   \item{Treatment}{a 3 class covariates stored as a character with 2\% of missing information}
-#'   \item{Dosage}{a 4 class covariate, stored as a factor, with 5\% of missing information}
-#'   \item{Smoking}{a 2 class covariate stored as a character: NO for non smoker, YES otherwise. 10\% of missing information}
+#'   \item{Dosage}{a 4-levels factor, with 5\% of missing information}
+#'   \item{Smoking}{a 2 classes covariate stored as a character: NO for non smoker, YES otherwise. 10\% of missing information}
 #'   \item{Age}{a double corresponding to the age of participants in years. The last covariate of the database counts 5\% of missing information}
 #' }
 #' @source randomly generated
