@@ -8,22 +8,22 @@
 #' Each database can have a row identifier whose corresponding index of column must be assigned in the arguments \code{row_ID1} for DB1 and \code{row_ID2} for DB2. Nevertheless, by default, DB1 and DB2 have no row identifiers and the merging remains unchanged the order of rows in the two databases provided that \eqn{Y} and \eqn{Z} have no missing values.
 #' A rule for the overlay is that the declared first database (in the argument \code{DB1}) will be placed above the second one (declared in the argument \code{DB2}).
 #'
-#' The function \code{merge_dbs} proposes a helpful tool for any user who wants to prepare their databases to data fusion by solving matching problems using algorithms in the package \code{Otrecod} via the functions \code{OT_outcome} or \code{OT_joint}.
-#' This function notably detects heterogenity between variables from one database to another and can so be useful as a preliminary step of data fusion using Optimal Transportation theory, where the sets of best predictors, specific to each base would be then selected using the function \code{select_pred}.
+#' The function \code{merge_dbs} is dedicated to the harmonization of databases in data fusion projects.
+#' This function notably detects heterogenity between variables from one database to another and so, can be useful as a preliminary step of data fusion using Optimal Transportation theory.
 #'
 #' A. The function \code{merge_dbs} handles incomplete information, by respecting the following rules:
 #' \itemize{
-#' \item If \code{Y} or \code{Z} have missing values in DB1 or DB2, corresponding rows are excluded from the database before merging. Moreover, the data fusion remains unchanged the order of the rows in the 2 databases, and in the case of incomplete outcomes,
+#' \item If \code{Y} or \code{Z} have missing values in DB1 or DB2, corresponding rows are excluded from the database before merging. Moreover, in the case of incomplete outcomes,
 #' if A and B have row identifiers, the corresponding identifiers are removed and these latters are stored in the objects \code{DB1_ID} and \code{DB2_ID} of the output.
 #' \item Before overlay, the function deals with incomplete covariates according to the argument \code{impute}.
 #' Users can decide to work with complete case only ("CC"), to keep ("NO") or impute incomplete information ("MICE","FAMD").
 #' \item The function \code{imput_cov}, integrated in the syntax of \code{merge_dbs} deals with imputations. Two approaches are actually available:
 #' the multivariate imputation by chained equation approach (MICE, see (3) for more details about the approach or the corresponding package \pkg{mice}),
 #' and an imputation approach from the package \pkg{missMDA} that uses a dimensionality reduction method (here a factor analysis for mixed data called FAMD (4), to provide single imputations.
-#' If multiple imputation is required (\code{impute} = "MICE"), the default imputation methods are applied according to the type of the variables. The average of the plausible values will be retained for a continuous variable, while the most frequent candidate will be remained as a consensus value for a categorical variable or factor (ordinal or not).
+#' If multiple imputation is required (\code{impute} = "MICE"), the default imputation methods are applied according to the type of the variables. The average of the plausible values will be remained for a continuous variable, while the most frequent candidate will be remained as a consensus value for a categorical variable or factor (ordinal or not).
 #' }
 #'
-#' B. The function \code{merge_dbs} studies the compatiblities between A and B, of each shared covariate, by respecting the following rules:
+#' B. The function \code{merge_dbs} studies the compatibilities between A and B, of each shared covariate, by respecting the following rules:
 #' \itemize{
 #' \item The formats of \code{Y} and \code{Z} must be suitable. Categorical (ordered or not) factors are allowed. Numeric and discrete outcomes with a finite number of values are allowed but will be automatically converted as ordered factors
 #' using the function \code{transfo_target} integrated in the function \code{merge_dbs}.
@@ -31,31 +31,31 @@
 #' \item Shared factors with incompatible levels (or number of levels) will be removed from the merging and the related label will be saved in output (\code{REMOVE2}).
 #' \item Covariates whose names are specific to each database will be also deleted from the merging.
 #' }
-#' Notice that if certain important predictors have been improperly excluded from the merging, users can make the necessary transformations on these variables, and re-run the function.
+#' Notice that if certain important predictors have been improperly excluded from the merging, users can transform these variables a posteriori, and re-run the function.
 #' As a finally step, the function checks that all values related to \eqn{Y} in B are missing and inversely for \eqn{Z} in A.
 #'
 #' @param DB1 A data.frame corresponding to the 1st database to merge (top database)
 #' @param DB2 A data.frame corresponding to the 2nd database to merge (bottom database)
-#' @param NAME_Y Name of the outcome (with quotes) in its specific scale/encoding from the 1st database (DB1)
-#' @param NAME_Z Name of the outcome (with quotes) in its specific scale/encoding from the 2nd database (DB2)
+#' @param NAME_Y The name of the outcome (with quotes) in its specific scale/encoding from the 1st database (DB1)
+#' @param NAME_Z The name of the outcome (with quotes) in its specific scale/encoding from the 2nd database (DB2)
 #' @param row_ID1 The column index of the row identifier of DB1 if DB1 has one (no identifier by default)
 #' @param row_ID2 The column index of the row identifier of DB2 if DB2 has one (no identifier by default)
 #' @param order_levels_Y A vector of classes (with quotes) sorted in ascending order that permits to reorder the levels of \eqn{Y} in the 1st database (DB1) if necessary, when \eqn{Y} is stored as an ordinal factor (scale).
 #' @param order_levels_Z A vector of classes (with quotes) sorted in ascending order that permits to reorder the levels of \eqn{Z} in the 2nd database (DB2) if necessary, when \eqn{Z} is stored as an ordinal factor (scale).
-#' @param ordinal_DB1 Vector of index of columns corresponding to ordinal variables in the 1st database (no ordinal variable by default)
-#' @param ordinal_DB2 Vector of index of columns corresponding to ordinal variables in the 2nd database (no ordinal variable by default)
+#' @param ordinal_DB1 A vector of index of columns corresponding to ordinal variables in the 1st database (no ordinal variable by default)
+#' @param ordinal_DB2 A vector of index of columns corresponding to ordinal variables in the 2nd database (no ordinal variable by default)
 #' @param impute A character (with quotes) equals to "NO" when missing data on covariates are kept (By default), "CC" for Complete Case by keeping only covariates with no missing information , "MICE" for MICE multiple imputation approach, "FAMD" for single imputation approach using Factorial Analysis for Mixed Data
-#' @param R_MICE Number of multiple imputations required for the  MICE approach (5 by default)
-#' @param NCP_FAMD Integer corresponding to the number of components used to predict missing values in FAMD imputation (3 by default)
-#' @param seed_func Integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default, only useful with MICE)
+#' @param R_MICE The chosen number of multiple imputations required for the  MICE approach (5 by default)
+#' @param NCP_FAMD An integer corresponding to the number of components used to predict missing values in FAMD imputation (3 by default)
+#' @param seed_func An integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default, only useful with MICE)
 #'
-#' @return A list containing 10 elements (11 if the argument \code{impute} equals "MICE"):
+#' @return A list containing 10 elements (11 when \code{impute} equals "MICE"):
 #' \item{DB_READY}{The database matched from the two initial databases with common covariates and imputed or not according to the impute option}
-#' \item{Y_LEVELS}{Levels retained for the target variable in the DB1}
-#' \item{Z_LEVELS}{Levels retained for the target variable in the DB2}
-#' \item{REMOVE1}{Labels of deleted covariates because of their different types observed from DB1 to DB2}
-#' \item{REMOVE2}{Removed factor(s) because of their different levels observed from DB1 to DB2}
-#' \item{REMAINING_VAR}{Labels of the covariates remained for the data integration using OT algorithm}
+#' \item{Y_LEVELS}{The remaining levels of the target variable \eqn{Y} in the DB1}
+#' \item{Z_LEVELS}{The remaining Levels of the target variable \eqn{Z} in the DB2}
+#' \item{REMOVE1}{The labels of the deleted covariates because of type incompatibilies of type from DB1 to DB2}
+#' \item{REMOVE2}{The removed factor(s) because of levels incompatibilities from DB1 to DB2}
+#' \item{REMAINING_VAR}{Labels of the remained covariates for data fusion}
 #' \item{IMPUTE_TYPE}{A character with quotes that specify the method eventually chosen to handle missing data in covariates}
 #' \item{MICE_DETAILS}{A list containing the details of the imputed datasets using \code{MICE} when this option is enabled. Databases imputed for DB1 and DB2 according to the number of mutliple imputation selected (Only if impute = "MICE")}
 #' \item{DB1_ID}{A data.frame corresponding to the row identifier of DB1 after merging}

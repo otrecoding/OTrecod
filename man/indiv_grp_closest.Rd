@@ -21,7 +21,7 @@ The sum of cells of this matrix must be equal to 1}
 \item{jointprobaB}{A matrix whose number of columns equals to the number of modalities of the target variable \eqn{Y} in database A, and which number of rows corresponds to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability of \eqn{(Y,Z)} in B.
 The sum of cells of this matrix must be equal to 1}
 
-\item{percent_closest}{A value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals taken in the computation of the average distances}
+\item{percent_closest}{A value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals remained in the computation of the average distances}
 
 \item{which.DB}{A character string (with quotes) that indicates which individual predictions need to be computed: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default)}
 }
@@ -36,10 +36,10 @@ This function sequentially assigns individual predictions using a nearest neighb
 \details{
 A. THE RECODING PROBLEM IN DATA FUSION
 
-Assuming that \eqn{Y} and \eqn{Z} are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
-so that \eqn{Y} and \eqn{Z} are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates \eqn{X} of any types (but same encodings in A and B)
-completed or not. Integrating these two databases often requires to solve the recoding problem observed between \eqn{Y} and \eqn{Z} by creating an unique database where
-the missing information of \eqn{Y} and \eqn{Z} is completed.
+Assuming that \eqn{Y} and \eqn{Z} are two variables which refered to a same target population in two separate (no overlapping rows) databases A and B respectively,
+so that \eqn{Y} and \eqn{Z} are never jointly observed. Assuming also that A and B share a subset of common covariates \eqn{X} of any types (same encodings in A and B)
+completed or not. Integrating these two databases often requires to solve this observed recoding problem by creating an unique database where
+the missing information of \eqn{Y} and \eqn{Z} is fully completed.
 
 
 B. DESCRIPTION OF THE FUNCTION
@@ -59,7 +59,7 @@ Obviously, this algorithm  runs in the same way for the prediction of \eqn{Y} in
 The function \code{indiv_grp_closest} integrates in its syntax the function \code{\link{avg_dist_closest}} and the related argument \code{percent_closest} is identical in the two functions.
 Thus, when computing average distances between an individual i and a subset of individuals assigned to a same level of \eqn{Y} or \eqn{Z} is required, user can decide if all individuals from the subset of interest can participate to the computation (\code{percent_closest}=1) or only a fixed part p (<1) corresponding to the closest neighbors of i (in this case \code{percent_closest} = p).
 
-The arguments \code{jointprobaA} and \code{jointprobaB} corresponds to the estimations of \eqn{\gamma} (sum of cells must be equal to 1) in A and B respectively.
+The arguments \code{jointprobaA} and \code{jointprobaB} correspond to the estimations of \eqn{\gamma} (sum of cells must be equal to 1) in A and B respectively.
 For example, assuming that nY1 individuals are assigned to the first modality of \eqn{Y} in A and the objective consists in the individual predictions of \eqn{Z} in A. Then, if \code{jointprobaA}[1,2] = 0.10,
 the maximum number of individuals that can be assigned to the second modality of \eqn{Z} in A, can not exceed \eqn{0.10 \times n_A}.
 If \eqn{n_{Y_1} \leq 0.10 \times n_A} then all individuals assigned to the first modality of \eqn{Y} will be assigned to the second modality of \eqn{Z}.

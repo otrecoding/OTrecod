@@ -3,12 +3,13 @@
 #'
 #' This function assigns individual predictions related to recoding problems of data fusion by solving a linear optimization problem
 #'
+#'
 #' A. THE RECODING PROBLEM IN DATA FUSION
 #'
-#' Assuming that \eqn{Y} and \eqn{Z} are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
-#' so that \eqn{Y} and \eqn{Z} are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (but same encodings in A and B)
-#' completed or not. Integrating these two databases often requires to solve the recoding problem observed between \eqn{Y} and \eqn{Z} by creating an unique database where
-#' the missing information of \eqn{Y} and \eqn{Z} is completed.
+#' Assuming that \eqn{Y} and \eqn{Z} are two variables which refered to a same target population in two separate (no overlapping rows) databases A and B respectively,
+#' so that \eqn{Y} and \eqn{Z} are never jointly observed. Assuming also that A and B share a subset of common covariates \eqn{X} of any types (same encodings in A and B)
+#' completed or not. Integrating these two databases often requires to solve this observed recoding problem by creating an unique database where
+#' the missing information of \eqn{Y} and \eqn{Z} is fully completed.
 #'
 #'
 #' B. DESCRIPTION OF THE FUNCTION
@@ -31,11 +32,11 @@
 #'
 #' @param proxim An object corresponding to the output of the function \code{\link{proxim_dist}}
 #' @param jointprobaA A matrix whose number of columns is equal to the number of modalities of the target variable \eqn{Y} in database A, and which number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database A.
-#' The sum of cells of this matrix must be equal to 1
+#' The sum of cells of this matrix must be equal to 1.
 #' @param jointprobaB A matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and which number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database B.
-#' The sum of cells of this matrix must be equal to 1
+#' The sum of cells of this matrix must be equal to 1.
 #' @param percent_closest A value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals used in the computation of the average distances
-#' @param which.DB A character string (with quotes) that indicates which individual predictions compute: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default)
+#' @param which.DB A character string (with quotes) that indicates which individual predictions compute: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).
 #'
 #' @return A list of two vectors of numeric values:
 #' \item{YAtrans}{A vector corresponding to the predicted values of \eqn{Y} in database B (numeric form) using the Optimal Transportation theory}
