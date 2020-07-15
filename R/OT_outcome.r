@@ -189,6 +189,8 @@
 #' # ... And so on, the reasoning is the same for the estimatorYB object.
 #'
 #'
+#' \dontrun{
+#'
 #' ### An example of OUTCOME model with same conditions as the previous example, excepted that;
 #' # - Only the individual predictions of Y in B are required
 #' # - The continuous covariates "age" (related index = 8) will be converted in an ordinal factors
@@ -201,7 +203,6 @@
 #'                   convert.num = 8, convert.clss = 3,
 #'                   indiv.method = "sequential", which.DB = "B")
 #'
-#' \dontrun{
 #'
 #' ### An example of OUTCOME model with same conditions as the first example, excepted that;
 #' # - Only the individual predictions of Z in A are required
