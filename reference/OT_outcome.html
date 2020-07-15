@@ -152,19 +152,19 @@ to the index of the target variable in the first database (A) while the third in
     </tr>
     <tr>
       <th>quanti</th>
-      <td><p>A vector of indexes that corresponds to the indexes of columns of all the quantitative variables (DB identification and target variables included if it is the case for them).</p></td>
+      <td><p>A vector of indexes that corresponds to the column indexes of all the quantitative variables (DB identification and target variables included if it is the case for them).</p></td>
     </tr>
     <tr>
       <th>nominal</th>
-      <td><p>A vector of indexes that corresponds to the indexes of columns of all the nominal (not ordered) variables (DB identification and target variables included if it is the case for them).</p></td>
+      <td><p>A vector of indexes that corresponds to the column indexes of all the nominal (not ordered) variables (DB identification and target variables included if it is the case for them).</p></td>
     </tr>
     <tr>
       <th>ordinal</th>
-      <td><p>A vector of indexes that corresponds to the indexes of columns of all the ordinal variables (DB identification and target variables included if it is the case for them).</p></td>
+      <td><p>A vector of indexes that corresponds to the column indexes of all the ordinal variables (DB identification and target variables included if it is the case for them).</p></td>
     </tr>
     <tr>
       <th>logic</th>
-      <td><p>A vector of indexes that corresponds to the indexes of columns of all the boolean variables.</p></td>
+      <td><p>A vector of indexes that corresponds to the column indexes of all the boolean variables.</p></td>
     </tr>
     <tr>
       <th>convert.num</th>
@@ -172,7 +172,7 @@ to the index of the target variable in the first database (A) while the third in
     </tr>
     <tr>
       <th>convert.clss</th>
-      <td><p>A vector indicating for each continuous variable to convert, the desired corresponding number of levels.If the length of the argument <code>convert_num</code> exceeds 1 while the length of <code>convert_clss</code> equals 1 (only one integer),
+      <td><p>A vector indicating for each continuous variable to convert, the desired corresponding number of levels. If the length of the argument <code>convert_num</code> exceeds 1 while the length of <code>convert_clss</code> equals 1 (only one integer),
 each discretization will count the same number of levels (quantiles).</p></td>
     </tr>
     <tr>
@@ -216,9 +216,9 @@ but the estimates of the conditional posterior probabilities stored, in output, 
 
     <p>A list containing 9 elements:</p>
 <dt>time_exe</dt><dd><p>The running time of the function</p></dd>
-<dt>gamma_A</dt><dd><p>A cost matrix corresponding to an estimation of the joint distribution of \((Y,Z)\) in A</p></dd>
-<dt>gamma_B</dt><dd><p>A cost matrix corresponding to an estimation of the joint distribution of \((Y,Z)\) in B</p></dd>
-<dt>profile</dt><dd><p>A data.frame that gives all details about the remaining \(P\) profiles of covariates. These informations can be linked to the <code>estimatorZA</code> and the <code>estimatorYB</code> objects for a better interpretation of the results</p></dd>
+<dt>gamma_A</dt><dd><p>A matrix corresponding to an estimation of the joint distribution of \((Y,Z)\) in A</p></dd>
+<dt>gamma_B</dt><dd><p>A matrix corresponding to an estimation of the joint distribution of \((Y,Z)\) in B</p></dd>
+<dt>profile</dt><dd><p>A data.frame that gives all details about the remaining \(P\) profiles of covariates. These informations can be linked to the <code>estimatorZA</code> and the <code>estimatorYB</code> objects for a better interpretation of the results.</p></dd>
 <dt>res_prox</dt><dd><p>The outputs of the function <code>proxim_dist</code></p></dd>
 <dt>estimatorZA</dt><dd><p>An array that corresponds to estimates of the probability distribution of \(Z\) conditional to \(X\) and \(Y\) in database A. The number of rows of each table corresponds to the total number of the P profiles of covariates.
 The number of columns of each table corresponds to the number of levels of \(Y\). The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \(Z\)</p></dd>
@@ -257,10 +257,10 @@ Estimations of \(\gamma\) are also available according to the direction of the d
 
 <p>C. TYPE OF REQUIRED INPUT DATABASE</p>
 <p>The input database is a data.frame that must be saved in a specific form by users:</p><ul>
-<li><p>Two overlayed databases containing a common column of databases' identifiers (A and B, 1 or 2, by examples, encoded in numeric or factor form)</p></li>
+<li><p>Two overlayed databases containing a common column of database identifiers (A and B, 1 or 2, by examples, encoded in numeric or factor form)</p></li>
 <li><p>A column corresponding to the target variable with its specific encoding in A (For example a factor \(Y\) encoded in \(n_Y\) levels, ordered or not, with NAs in the corresponding rows of B)</p></li>
 <li><p>A column corresponding to the second target outcome with its specific endoded in B (For example a factor \(Z\) in \(n_Z\) levels, with NAs in rows of A)</p></li>
-<li><p>The order of the variables in the database have no importance but the indexes of the columns related to the 3rd columns previously described (ie ID, \(Y\) and \(Z\)) must be rigorously specified
+<li><p>The order of the variables in the database have no importance but the column indexes related to the three columns previously described (ie ID, \(Y\) and \(Z\)) must be rigorously specified
 in the argument <code>index_DB_Y_Z</code>.</p></li>
 <li><p>A set of shared common covariates (at least one but more is recommended) of any type, complete or not (provided that the number of covariates exceeds 1) is required.</p></li>
 </ul><p>The function <code>merge_dbs</code> is available in this package to assist user in the preparation of their databases, so please, do not hesitate to use it beforehand if necessary.</p>
@@ -270,7 +270,7 @@ in the argument <code>index_DB_Y_Z</code>.</p></li>
 </ul><p>The type of each variables (including \(ID\), \(Y\) and \(Z\)) of the database must be rigorously specified once, in one of the four arguments <code>quanti</code>,<code>nominal</code>, <code>ordinal</code> and <code>logic</code>.</p>
 
 <p>D. TRANSFORMATIONS OF CONTINUOUS COVARIATES</p>
-<p>The function <code>OT_outcome</code> integrates in its syntax a process dedicated to the discretization of continuous covariates. For this, it is necessary to rigorously fill in the arguments <code>convert.num</code> and <code>convert.clss</code>.
+<p>The function <code>OT_outcome</code> integrates in its syntax a process dedicated to the categorization of continuous covariates. For this, it is necessary to rigorously fill in the arguments <code>convert.num</code> and <code>convert.clss</code>.
 The first one informs about the indexes in database of the continuous variables to transform in ordered factor while the second one specifies the corresponding number of desired balanced levels (for unbalanced levels, users must do transformations by themselves).
 Therefore <code>convert.num</code> and <code>convert.clss</code> must be vectors of same length, but if the length of <code>convert.num</code> exceeds 1, while the length of <code>convert.clss</code> is 1, then, by default, all the covariates to convert will have the same number of classes,
 that corresponds to the value specified in the argument <code>convert.clss</code>.
@@ -284,7 +284,7 @@ according to the distance function chosen by user (via the argument <code>dist.c
 <li><p>the Euclidean distance ("E")</p></li>
 <li><p>the Gower distance for mixed data (see (4): "G")</p></li>
 <li><p>the Hamming distance for binary data ("H")</p></li>
-</ul><p>Moreover, it is also possible to directly apply the first three distances mentioned on coordinates extracted from a multivariate analysis (Factor Analysis for Mixed Data, see (5)) applied on row covariates using the arguments <code>FAMD.coord</code> and <code>FAMD.perc</code>.
+</ul><p>Moreover, it is also possible to directly apply the first three distances mentioned on coordinates extracted from a multivariate analysis (Factor Analysis for Mixed Data, see (5)) applied on raw covariates using the arguments <code>FAMD.coord</code> and <code>FAMD.perc</code>.
 This method is used in the article (1).</p>
 <p>As a decision rule, for a given profile of covariates \(P_j\), an individual i will be considered as a neighbor of \(P_j\) if \(dist(i,P_j) &lt; \mbox{prox.dist} \times max(dist(i,P_j))\) where \(prox.dist\) must be fixed by user.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -374,6 +374,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 <span class='co'># ... And so on, the reasoning is the same for the estimatorYB object.</span>
 
 
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+
 <span class='co'>### An example of OUTCOME model with same conditions as the previous example, excepted that;</span>
 <span class='co'># - Only the individual predictions of Y in B are required</span>
 <span class='co'># - The continuous covariates "age" (related index = 8) will be converted in an ordinal factors</span>
@@ -384,18 +386,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 <span class='kw'>try2</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span>(<span class='kw'>simu_dat</span>, quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>), ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>),
                   dist.choice = <span class='st'>"G"</span>,percent.knn = <span class='fl'>0.90</span>, maxrelax = <span class='fl'>0</span>,
                   convert.num = <span class='fl'>8</span>, convert.clss = <span class='fl'>3</span>,
-                  indiv.method = <span class='st'>"sequential"</span>, which.DB = <span class='st'>"B"</span>)</div><div class='output co'>#&gt; --------------------------------------- 
-#&gt; OT PROCEDURE in progress ... 
-#&gt; --------------------------------------- 
-#&gt; Type                     =  OUTCOME 
-#&gt; Distance                 =  Gower 
-#&gt; Percent closest knn      =  90 % 
-#&gt; Relaxation parameter     =  NO 
-#&gt; Relaxation value         =  0 
-#&gt; Individual pred process  =  Sequential 
-#&gt; DB imputed               =  B 
-#&gt; --------------------------------------- </div><div class='input'>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+                  indiv.method = <span class='st'>"sequential"</span>, which.DB = <span class='st'>"B"</span>)
+
 
 <span class='co'>### An example of OUTCOME model with same conditions as the first example, excepted that;</span>
 <span class='co'># - Only the individual predictions of Z in A are required</span>

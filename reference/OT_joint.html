@@ -176,7 +176,7 @@ the Gower distance ("G"), and the Hamming distance ("H") for binary covariates o
     </tr>
     <tr>
       <th>percent.knn</th>
-      <td><p>Percent of closest neighbors taken in the computation of the cost matrix.</p></td>
+      <td><p>The percentage of closest neighbors involved in the computations of the cost matrices.</p></td>
     </tr>
     <tr>
       <th>maxrelax</th>
@@ -203,18 +203,18 @@ If <code>prox.X = 1</code>, all profiles are considered as neighbors.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of 7 elements containing:</p>
+    <p>A list of 9 elements containing:</p>
 <dt>time_exe</dt><dd><p>Running time of the function</p></dd>
-    <dt>gamma_A</dt><dd><p>Estimation of \(\gamma\) for the completion of A. A cost matrix that corresponds to the joint distribution of \((Y,Z,X)\) in A</p></dd>
-    <dt>gamma_B</dt><dd><p>Estimation of \(\gamma\) for the completion of B. A cost matrix that corresponds to the joint distribution of \((Y,Z,X)\) in B</p></dd>
-    <dt>profile</dt><dd><p>A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the <code>estimatorZA</code> and the <code>estimatorYB</code> objects for a better interpretation of the results</p></dd>
+    <dt>gamma_A</dt><dd><p>Estimation of \(\gamma\) for the completion of A. A matrix that corresponds to the joint distribution of \((Y,Z,X)\) in A</p></dd>
+    <dt>gamma_B</dt><dd><p>Estimation of \(\gamma\) for the completion of B. A matrix that corresponds to the joint distribution of \((Y,Z,X)\) in B</p></dd>
+    <dt>profile</dt><dd><p>A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the <code>estimatorZA</code> and the <code>estimatorYB</code> objects for a better interpretation of the results.</p></dd>
     <dt>res_prox</dt><dd><p>The outputs of the function <code>proxim_dist</code></p></dd>
     <dt>estimatorZA</dt><dd><p>An array that corresponds to estimates of the probability distribution of \(Z\) conditional to \(X\) and \(Y\) in database A. The number of rows of each table corresponds to the total number of profiles of covariates.
-    The number of columns of each table corresponds to the number of levels of \(Y\). The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \(Z\).</p></dd>
+    The number of columns of each table corresponds to the number of levels of \(Y\). The row names of each table correspond to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \(Z\).</p></dd>
     <dt>estimatorYB</dt><dd><p>An array that corresponds to estimates of the probability distribution of \(Y\) conditional to \(X\) and \(Z\) in database B. The number of rows of each table corresponds to the total number of profiles of covariates.
-    The number of columns of each table corresponds to the number of levels of \(Z\). The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \(Y\).</p></dd>
-    <dt>DATA1_OT</dt><dd><p>database A with imputed individual prediction on \(Z\) using OT</p></dd>
-    <dt>DATA2_OT</dt><dd><p>database B with imputed individual prediction on \(Y\) using OT</p></dd>
+    The number of columns of each table corresponds to the number of levels of \(Z\). The row names of each table correspond to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \(Y\).</p></dd>
+    <dt>DATA1_OT</dt><dd><p>The database A with imputed individual prediction on \(Z\) using OT</p></dd>
+    <dt>DATA2_OT</dt><dd><p>The database B with imputed individual prediction on \(Y\) using OT</p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -227,26 +227,26 @@ the missing information of \(Y\) and/or \(Z\) is fully completed.</p>
 <p>B. INFORMATIONS ABOUT THE ALGORITHM</p>
 <p>As with the function <code>OT_outcome</code>, the function <code>OT_joint</code> provides a solution to the recoding problem by proposing an
 application of optimal transportation which aims is to search for a bijective mapping between the joint distributions of \((Y,X)\) and \((Z,X)\) in A and B (see (2) for more details).
-The principle of the algorithm is also based on the resolution of an optimization problem, which provides a \(\gamma\) solution (as called in (1) and (2)) which is an estimation
+The principle of the algorithm is also based on the resolution of an optimization problem, which provides a \(\gamma\) solution (as called in (1) and (2)), estimation
 of the joint distribution of \((X,Y,Z)\) according to the database to complete (see the argument <code>which.DB</code> for the choice of the database). While the models <code>OUTCOME</code> and <code>R_OUTCOME</code> integrated in
 the function <code>OT_outcome</code> require post-treatment steps to provide individual predictions, the algorithm <code>JOINT</code> directly uses estimations of the conditional distributions \((Y|Z,X)\) in B and
 \((Z|Y,X)\) in A to predict the corresponding incomplete individuals informations of \(Y\) and/or \(Z\) respectively.
 This algorithm supposes that the conditional distribution \((Y|X)\) must be identical in A and B. Respectively, \((Z|X)\) is supposed identical in A and B.
 Estimations a posteriori of conditional probabilities \(P[Y|X,Z]\) and \(P[Z|X,Y]\) are available by profiles of covariates in output (See the objects <code>estimatorYB</code> and <code>estimatorZA</code>).
 Estimations of \(\gamma\) are also available according to the chosen transport distributions (See the arguments <code>gamma_A</code> and <code>gamma_B</code>).</p>
-<p>The model <code>R-JOINT</code> gathers enrichments of the model <code>JOINT</code> and is also available via the function <code>OT_joint</code> It allows users to add a relaxation term in the algorithm to relax distributional assumptions (<code>maxrelax</code>&gt;0),
+<p>The model <code>R-JOINT</code> gathers enrichments of the model <code>JOINT</code> and is also available via the function <code>OT_joint</code>. It allows users to add a relaxation term in the algorithm to relax distributional assumptions (<code>maxrelax</code>&gt;0),
 and (or) add also a positive regularization term (<code>lamdba.reg</code>&gt;0) expressing that the transportation map does not vary to quickly with respect of covariates \(X\).
 Is is suggested to users to calibrate these two parameters a posteriori by studying the stability of the individual predictions in output.</p>
 
 <p>C. TYPE OF REQUIRED INPUT DATABASE</p>
 <p>The input database is a data.frame that must be saved in a specific form by users:</p><ul>
-<li><p>Two overlayed databases containing a common column of databases' identifiers (A and B, 1 or 2, by examples, encoded in numeric or factor form)</p></li>
+<li><p>Two overlayed databases containing a common column of databases identifiers (A and B, 1 or 2, by examples, encoded in numeric or factor form)</p></li>
 <li><p>A column corresponding to the target variable with its specific encoding in A (For example a factor \(Y\) encoded in \(n_Y\) levels, ordered or not, with NAs in the corresponding rows of B)</p></li>
 <li><p>A column corresponding to another target outcome summarizing the same latent information with its specific endoded in B (By example a factor \(Z\) in \(n_Z\) levels, with NAs in rows of A)</p></li>
-<li><p>The order of the variables in the database have no importance but the indexes of the columns related to the 3rd columns previously described (ie ID, \(Y\) and \(Z\)) must be rigorously specified
+<li><p>The order of the variables in the database have no importance but the column indexes related to the three columns previously described (ie ID, \(Y\) and \(Z\)) must be rigorously specified
 in the argument <code>index_DB_Y_Z</code>.</p></li>
 <li><p>A set of shared common categorical covariates (at least one but more is recommended) complete or not (provided that the number of covariates exceeds 1) is required. On the contrary to the
-function <code>OT_outcome</code>, please notice, that the function <code>OT_joint</code> does not accept continuous covariates therefore these latters will have to be categorized beforehand or using the provided input process (see <code>quanti</code>).</p></li>
+function <code>OT_outcome</code>, please notice, that the function <code>OT_joint</code> does not accept continuous covariates therefore these latters will have to be categorized beforehand or using the provided input process (see <code>convert.num</code>).</p></li>
 </ul><p>The function <code>merge_dbs</code> is available in this package to assist user in the preparation of their databases, so please, do not hesitate to use it beforehand if necessary.</p>
 <p>Remarks about the outcomes:</p><ul>
 <li><p>A target outcome can be categorical, in factor, ordered or not, discrete (with a finite number of values ONLY) but, notice that, if they are stored in numeric they will be automatically converted in ordered factors.</p></li>
@@ -265,7 +265,7 @@ Moreover, all the indexes informed in the argument <code>convert.num</code> must
 Finally, it is suggested to declare all discrete covariates as ordinal factors using the argument <code>ordinal</code>.</p>
 
 <p>E. INFORMATIONS ABOUT DISTANCE FUNCTIONS AND RELATED PARAMETERS</p>
-<p>Each individual (or row) of a given database is here characterized by his covariates, so the distance between 2 individuals or groups of individuals depends on similarities between covariates
+<p>Each individual (or row) of a given database is here characterized by a vector of covariates, so the distance between two individuals or groups of individuals depends on similarities between covariates
 according to the distance function chosen by user (via the argument <code>dist.choice</code>). Actually four distance functions are implemented in <code>OT_joint</code> to take into account the most frequently encountered situation (see (3)):</p><ul>
 <li><p>the Manhattan distance ("M")</p></li>
 <li><p>the Euclidean distance ("E")</p></li>
@@ -273,9 +273,9 @@ according to the distance function chosen by user (via the argument <code>dist.c
 <li><p>the Hamming distance for binary data ("H")</p></li>
 </ul>
 
-<p>Let two profiles of covariates \(P_1\) (\(n_1\) individuals) and \(P_2\) (\(n_2\) individuals) will be considered as neighbors if \(dist(P_1,P_2) &lt; prox.X \times max(dist(P_i,P_j))\) where \(prox.X\) must be fixed by user (\(i = 1,\dots,n_1\) and \(j = 1,\dots,n_2\)). This choice is used in the calculation of the <code>JOINT</code> and <code>R_JOINT</code> algorithms.
+<p>Finally, two profiles of covariates \(P_1\) (\(n_1\) individuals) and \(P_2\) (\(n_2\) individuals) will be considered as neighbors if \(dist(P_1,P_2) &lt; prox.X \times max(dist(P_i,P_j))\) where \(prox.X\) must be fixed by user (\(i = 1,\dots,n_1\) and \(j = 1,\dots,n_2\)). This choice is used in the calculation of the <code>JOINT</code> and <code>R_JOINT</code> algorithms.
 In the same way, for a given profile of covariates \(Pj\), an individual i will be considered as a neighbor of \(Pj\) if \(dist(i,P_j) &lt; prox.dist \times max(dist(i,P_j))\) where \(prox.dist\) will be fixed by user.</p>
-<p>For more details about the related algorithms integrated in <code>OT_joint</code>, please consult (2).</p>
+<p>For more details about the algorithms integrated in <code>OT_joint</code>, please consult (2).</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     

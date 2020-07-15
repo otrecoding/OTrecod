@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="select_pred() — select_pred" />
-<meta property="og:description" content="Selection of a subset of non collinear predictors having relevant relationships with a given target outcome" />
+<meta property="og:description" content="Selection of a subset of non collinear predictors having relevant relationships with a given target outcome." />
 
 
 
@@ -109,7 +109,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Selection of a subset of non collinear predictors having relevant relationships with a given target outcome</p>
+    <p>Selection of a subset of non collinear predictors having relevant relationships with a given target outcome.</p>
     </div>
 
     <pre class="usage"><span class='fu'>select_pred</span>(
@@ -159,15 +159,15 @@
     </tr>
     <tr>
       <th>quanti</th>
-      <td><p>A vector of integers corresponding to the column indexes of all the numeric predictors</p></td>
+      <td><p>A vector of integers corresponding to the column indexes of all the numeric predictors.</p></td>
     </tr>
     <tr>
       <th>nominal</th>
-      <td><p>A vector of integers which corresponds to the column indexes of all the categorical nominal predictors</p></td>
+      <td><p>A vector of integers which corresponds to the column indexes of all the categorical nominal predictors.</p></td>
     </tr>
     <tr>
       <th>ordinal</th>
-      <td><p>A vector of integers which corresponds to the column indexes of all the categorical ordinal predictors</p></td>
+      <td><p>A vector of integers which corresponds to the column indexes of all the categorical ordinal predictors.</p></td>
     </tr>
     <tr>
       <th>logic</th>
@@ -200,7 +200,7 @@ all quantitative predictors selected for discretization will have by default the
     </tr>
     <tr>
       <th>RF_ntree</th>
-      <td><p>Number of bootsrap samples required from the row datasource during the random forest procedure</p></td>
+      <td><p>The number of bootsrap samples required from the row datasource during the random forest procedure</p></td>
     </tr>
     <tr>
       <th>RF_condi</th>
@@ -208,7 +208,7 @@ all quantitative predictors selected for discretization will have by default the
     </tr>
     <tr>
       <th>RF_condi_thr</th>
-      <td><p>A threshold linked to (1 - pvalue) of an association test between each predictor \(X\) and the other variables, given that a threshold value of zero wil include all variables in the computation of the conditional importance measure of \(X\) (0.60 is the default value).
+      <td><p>A threshold linked to (1 - pvalue) of an association test between each predictor \(X\) and the other variables, given that a threshold value of zero wil include all variables in the computation of the conditional importance measure of \(X\) (0.20 is the default value).
 Conversely, a larger threshold will only keeps for the computation of the variable importance measure of \(X\), the subset of variables that is strongly correlated to \(X\).</p></td>
     </tr>
     <tr>
@@ -219,7 +219,7 @@ Conversely, a larger threshold will only keeps for the computation of the variab
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of 13 (if <code>RF = TRUE</code>) or 10 objects (Only the first ten objects if <code>RF = FALSE</code>) is returned:</p>
+    <p>A list of 14 (if <code>RF = TRUE</code>) or 11 objects (Only the first ten objects if <code>RF = FALSE</code>) is returned:</p>
 <dt>seed</dt><dd><p>The random number generator related to the study</p></dd>
 <dt>outc</dt><dd><p>The identifier of the outcome to predict</p></dd>
 <dt>thresh</dt><dd><p>A summarize of the different thresholds fixed for the study</p></dd>
@@ -238,7 +238,7 @@ Conversely, a larger threshold will only keeps for the computation of the variab
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The <code>select_pred</code> function provides several tools to identify, on the one hand, the relationships between predictors, by detecting especially potential problems of collinearity, and, on the other hand, proposes a parcimonious subset of relevant predictors (of the outcome) using appropriate random forest procedures.
-The function which can be used as a preliminary step of prediction in regression areas is particularly adapted to the context of data fusion by providing relevant subsets of predictors to algorithms dedicated to the solving of recoding problems.</p>
+The function which can be used as a preliminary step of prediction in regression areas is particularly adapted to the context of data fusion by providing relevant subsets of predictors (the matching variables) to algorithms dedicated to the solving of recoding problems.</p>
 
 <p>A. REQUIRED STRUCTURE FOR THE DATABASE</p>
 <p>The expected input database is a data.frame that especially requires a specific column of row identifier and a target variable (or outcome) having a finite number of values or classes (ordinal, nominal or discrete type). Notice that if the chosen outcome is in numeric form, it will be automatically converted in ordinal type.
@@ -272,12 +272,12 @@ In addition, the result of a Farrar and Glauber test is provided. This test is b
 In presence of a large number of numeric covariates and/or ordered factors, the approximate Farrar-Glauber test, based on the normal approximation of the null distribution is more adapted and its result is also provided in output.
 These two tests are highly sensitive and, by consequence, it suggested to consider these results as simple indicators of collinearity between predictors rather than an essential condition of acceptability.</p></li>
 </ol><p>If the initial number of predictors is not too important, these informations can be sufficient to users for the visualization of the potential problems of collinearity and for the selection of a subset of predictors (<code>RF = FALSE</code>).
-It is nevertheless often necessary to complete this visualization by an automatic process of selection like the Random Forest approach (see Breiman 2001, for a better understanding of the method) linked to the function <code>select_pred</code> (<code>RF = TRUE</code>).</p>
+It is nevertheless often necessary to complete this visualization by an automatical process of selection like the Random Forest approach (see Breiman 2001, for a better understanding of the method) linked to the function <code>select_pred</code> (<code>RF = TRUE</code>).</p>
 
 <p>C. RANDOM FOREST PROCEDURE</p>
 <p>As a final step of the process, a random forest approach (RF(3)) is here prefered (to regression models) for two main reasons: RF methods allow notably the number of variables to exceed the number of rows and remain applicable whatever the types of covariates considered.
 The function <code>select_pred</code> integrates in its algorithm the functions <code><a href='https://rdrr.io/pkg/party/man/cforest.html'>cforest</a></code> and <code><a href='https://rdrr.io/pkg/party/man/varimp.html'>varimp</a></code> of the package <span class="pkg">party</span> (Hothorn, 2006) and so gives access to their main arguments.</p>
-<p>A RF approach generally provides two types of measures for estimating the mean variable importance of each covariate in the prediction of an outcome: the Gini importance and the permutation importance.These measurements must be used with caution, by taking into account the following constraints:</p><ol>
+<p>A RF approach generally provides two types of measures for estimating the mean variable importance of each covariate in the prediction of an outcome: the Gini importance and the permutation importance. These measurements must be used with caution, by taking into account the following constraints:</p><ol>
 <li><p>The Gini importance criterion can produce bias in favor of continuous variables and variables with many categories. To avoid this problem, only the permutation criterion is available in the function.</p></li>
 <li><p>The permutation importance criterion can overestimate the importance of highly correlated predictors.</p></li>
 </ol><p>The function <code>select_pred</code> proposes three different scenarios according to the types of predictors:</p><ol>
@@ -287,10 +287,10 @@ fixes a ratio below which a variable Z is considered sufficiently correlated to 
 conditional importance measure of each predictor \(X\), while a threshold \(&lt; 1\), will only include a subset of variables.
 Two remarks related to this method: firstly, notice that taking into account only subsets of predictors in the computation of the variable importance measures could lead to a relevant saving of execution time.
 Secondly, because this approach does not take into account incomplete information, the method will only be applied to complete data (incomplete rows will be temporarily removed for the study).</p></li>
-<li><p>The second possibility, always in presence of mixed types predictors, consists in the execution of two successive RF procedures. The 1st one will be used to select an unique candidate in each susbset of correlated predictors (detecting in the 1st section), while the 2nd one will extract the permutation measures from the remaining subset
-of uncorrelated predictors (<code>RF_condi = FALSE</code>, by default). This 2nd possibility has the advantage to work in presence of incomplete predictors.</p></li>
+<li><p>The second possibility, always in presence of mixed types predictors, consists in the execution of two successive RF procedures. The first one will be used to select an unique candidate in each susbset of correlated predictors (detecting in the 1st section), while the second one will extract the permutation measures from the remaining subset
+of uncorrelated predictors (<code>RF_condi = FALSE</code>, by default). This second possibility has the advantage to work in presence of incomplete predictors.</p></li>
 <li><p>The third scenario consists in running a first time the function without RF process (<code>RF = FALSE</code>), and according to the presence of highly correlated predictors or not, users can choose to extract redundant predictors manually and re-runs the function with the subset of remaining non-collinear predictors to avoid potential biases introduced by the standard permutations measures.</p></li>
-</ol><p>The three scenarios finally provide a list of uncorrelated predictors of the outcome sorted in importance order. The argument <code>thresh_Y</code> corresponds to the minimal percent of importance required (and fixed by user) for a variable to be considered as a reliable predictor of the outcome.
+</ol><p>The three scenarios finally lead to a list of uncorrelated predictors of the outcome sorted in importance order. The argument <code>thresh_Y</code> corresponds to the minimal percent of importance required (and fixed by user) for a variable to be considered as a reliable predictor of the outcome.
 Finally, because all random forest results are subjects to random variation, users can check whether the same importance ranking is achieved by varying the random seed parameter (<code>RF_SEED</code>) or by increasing the number of trees (<code>RF_ntree</code>).</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 

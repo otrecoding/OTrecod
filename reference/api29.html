@@ -42,9 +42,9 @@
 <meta property="og:title" content="Student performance in California schools: the results of the county 29 — api29" />
 <meta property="og:description" content="This database is a sample of the API program https://www.cde.ca.gov/re/pr/api.asp that ended in 2018.
 The sample is extracted from the data api of the package survey, related to the results of the
-county 29.
+county 29 (Nevada).
 The database contains information for the 418 schools of this county having at least 100 students.
-Missing information has been randomly (and voluntary) added to the award and ell variables (4% and 7% respectively).
+Missing information has been randomly (and voluntary) added to the awards and ell variables (4% and 7% respectively).
 Several variables have been voluntary categorized from their initial types." />
 
 
@@ -116,9 +116,9 @@ Several variables have been voluntary categorized from their initial types." />
     <div class="ref-description">
     <p>This database is a sample of the API program <a href='https://www.cde.ca.gov/re/pr/api.asp'>https://www.cde.ca.gov/re/pr/api.asp</a> that ended in 2018.
 The sample is extracted from the data <code><a href='https://rdrr.io/pkg/survey/man/api.html'>api</a></code> of the package <span class="pkg">survey</span>, related to the results of the
-county 29.
+county 29 (Nevada).
 The database contains information for the 418 schools of this county having at least 100 students.
-Missing information has been randomly (and voluntary) added to the <code>award</code> and <code>ell</code> variables (4% and 7% respectively).
+Missing information has been randomly (and voluntary) added to the <code>awards</code> and <code>ell</code> variables (4% and 7% respectively).
 Several variables have been voluntary categorized from their initial types.</p>
     </div>
 
@@ -130,13 +130,13 @@ Several variables have been voluntary categorized from their initial types.</p>
     <p>A data.frame with 418 schools (rows) and 12 variables</p><dl>
   <dt>cds</dt><dd><p>The school identifier</p></dd>
   <dt>apicl_2000</dt><dd><p>The API score in 2000 classed in 3 ordered levels: <code>[200-600]</code>,<code>(600-800]</code>,<code>(800-1000]</code></p></dd>
-  <dt>stype</dt><dd><p>The school type in a 3 ordered levels: <code>Elementary</code>, <code>Middle</code> or <code>High School</code></p></dd>
+  <dt>stype</dt><dd><p>The school type in a 3 ordered levels factor: <code>Elementary</code>, <code>Middle</code> or <code>High School</code></p></dd>
   <dt>awards</dt><dd><p>The school eligible for awards program ? Two possible answers: <code>No</code> or <code>Yes</code>. This variable counts 4% of missing information.</p></dd>
   <dt>acs.core</dt><dd><p>The number of core academic courses in the school</p></dd>
   <dt>api.stu</dt><dd><p>The number of students tested in the school</p></dd>
   <dt>acs.k3.20</dt><dd><p>The average class size years K-3 in the school. This variable is stored in a 3-levels factor: <code>Unknown</code>, <code>&lt;=20</code>, <code>&gt;20</code>.</p></dd>
-  <dt>grad.sch</dt><dd><p>The percentage of parents with postgraduate education stored in a 3 ordered levels of percents: <code>0</code>, <code>1-10</code>, <code>&gt;10</code></p></dd>
-  <dt>ell</dt><dd><p>The percentage of English language learners stored in 4 ordered levels: <code>[0-10]</code>,<code>(10-30]</code>,<code>(30-50]</code>,<code>(50-100]</code>. This variable counts 7% of missing information.</p></dd>
+  <dt>grad.sch</dt><dd><p>The percentage of parents with postgraduate education stored in a 3 ordered levels factor of percents: <code>0</code>, <code>1-10</code>, <code>&gt;10</code></p></dd>
+  <dt>ell</dt><dd><p>The percentage of English language learners stored in a 4 ordered levels factor: <code>[0-10]</code>,<code>(10-30]</code>,<code>(30-50]</code>,<code>(50-100]</code>. This variable counts 7% of missing information.</p></dd>
   <dt>mobility</dt><dd><p>The percentage of students for whom this is the first year at the school, stored in 2 levels: <code>[0-20]</code> and <code>(20-100]</code></p></dd>
   <dt>meals</dt><dd><p>The percentage of students eligible for subsidized meals stored in a 4 balanced levels factor (By quartiles): <code>[0-25]</code>, <code>(25-50]</code>, <code>(50-75]</code>, <code>(75-100]</code></p></dd>
   <dt>full</dt><dd><p>The percentage of fully qualified teachers stored in a 2-levels factor: <code>1</code>: For strictly less than 90%, <code>2</code> otherwise</p></dd>

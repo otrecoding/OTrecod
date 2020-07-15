@@ -139,7 +139,7 @@ The sum of cells of this matrix must be equal to 1</p></td>
     </tr>
     <tr>
       <th>percent_closest</th>
-      <td><p>A value between 0 and 1 (by default) corresponding to the fixed <code>percent closest</code> of individuals taken in the computation of the average distances</p></td>
+      <td><p>A value between 0 and 1 (by default) corresponding to the fixed <code>percent closest</code> of individuals remained in the computation of the average distances</p></td>
     </tr>
     <tr>
       <th>which.DB</th>
@@ -156,10 +156,10 @@ The sum of cells of this matrix must be equal to 1</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>A. THE RECODING PROBLEM IN DATA FUSION</p>
-<p>Assuming that \(Y\) and \(Z\) are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
-so that \(Y\) and \(Z\) are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates \(X\) of any types (but same encodings in A and B)
-completed or not. Integrating these two databases often requires to solve the recoding problem observed between \(Y\) and \(Z\) by creating an unique database where
-the missing information of \(Y\) and \(Z\) is completed.</p>
+<p>Assuming that \(Y\) and \(Z\) are two variables which refered to a same target population in two separate (no overlapping rows) databases A and B respectively,
+so that \(Y\) and \(Z\) are never jointly observed. Assuming also that A and B share a subset of common covariates \(X\) of any types (same encodings in A and B)
+completed or not. Integrating these two databases often requires to solve this observed recoding problem by creating an unique database where
+the missing information of \(Y\) and \(Z\) is fully completed.</p>
 
 <p>B. DESCRIPTION OF THE FUNCTION</p>
 <p>The function <code>indiv_grp_closest</code> is an intermediate function used in the implementation of a model called OUTCOME (and its enrichment R-OUTCOME, see the reference (2) for more details) dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory.
@@ -173,7 +173,7 @@ In other words, this function sequentially assigns to each individual of A the m
 </ul><p>Obviously, this algorithm  runs in the same way for the prediction of \(Y\) in the database B.
 The function <code>indiv_grp_closest</code> integrates in its syntax the function <code>avg_dist_closest</code> and the related argument <code>percent_closest</code> is identical in the two functions.
 Thus, when computing average distances between an individual i and a subset of individuals assigned to a same level of \(Y\) or \(Z\) is required, user can decide if all individuals from the subset of interest can participate to the computation (<code>percent_closest</code>=1) or only a fixed part p (&lt;1) corresponding to the closest neighbors of i (in this case <code>percent_closest</code> = p).</p>
-<p>The arguments <code>jointprobaA</code> and <code>jointprobaB</code> corresponds to the estimations of \(\gamma\) (sum of cells must be equal to 1) in A and B respectively.
+<p>The arguments <code>jointprobaA</code> and <code>jointprobaB</code> correspond to the estimations of \(\gamma\) (sum of cells must be equal to 1) in A and B respectively.
 For example, assuming that nY1 individuals are assigned to the first modality of \(Y\) in A and the objective consists in the individual predictions of \(Z\) in A. Then, if <code>jointprobaA</code>[1,2] = 0.10,
 the maximum number of individuals that can be assigned to the second modality of \(Z\) in A, can not exceed \(0.10 \times n_A\).
 If \(n_{Y_1} \leq 0.10 \times n_A\) then all individuals assigned to the first modality of \(Y\) will be assigned to the second modality of \(Z\).

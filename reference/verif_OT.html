@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="verif_OT() — verif_OT" />
-<meta property="og:description" content="This function proposes post-process verifications after data fusion by Optimal Transportation algorithms" />
+<meta property="og:description" content="This function proposes post-process verifications after data fusion by Optimal Transportation algorithms." />
 
 
 
@@ -109,7 +109,7 @@
     </div>
 
     <div class="ref-description">
-    <p>This function proposes post-process verifications after data fusion by Optimal Transportation algorithms</p>
+    <p>This function proposes post-process verifications after data fusion by Optimal Transportation algorithms.</p>
     </div>
 
     <pre class="usage"><span class='fu'>verif_OT</span>(
@@ -169,9 +169,9 @@
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>In a context of data fusion, where information from a same target population is summarized via two specific variables \(Y\) and \(Z\) (two ordinal or nominal factors with different number of levels \(n_Y\) and nZ), stored in two distinct databases A and B respectively,
+    <p>In a context of data fusion, where information from a same target population is summarized via two specific variables \(Y\) and \(Z\) (two ordinal or nominal factors with different number of levels \(n_Y\) and \(n_Z\)), never jointly observed and respectively stored in two distinct databases A and B,
 Optimal Transportation (OT) algorithms (see the models <code>OUTCOME</code>, <code>R_OUTCOME</code>, <code>JOINT</code>, and <code>R_JOINT</code> of the reference (2) for more details)
-propose a method for the recoding of \(Y\) in B and/or \(Z\) in A. Outputs from the functions <code>OT_outcome</code> and <code>OT_joint</code> so provides the related predictions to \(Y\) in B and/or \(Z\) in A,
+propose methods for the recoding of \(Y\) in B and/or \(Z\) in A. Outputs from the functions <code>OT_outcome</code> and <code>OT_joint</code> so provides the related predictions to \(Y\) in B and/or \(Z\) in A,
 and from these results, the function <code>verif_OT</code> provides a set of tools (optional or not, depending on the choices done by user in input) to estimate:</p><ol>
 <li><p>the association between \(Y\) and \(Z\) after recoding</p></li>
 <li><p>the similarities between observed and predicted distributions</p></li>
@@ -179,7 +179,7 @@ and from these results, the function <code>verif_OT</code> provides a set of too
 </ol>
 
 <p>A. PAIRWISE ASSOCIATION BETWEEN \(Y\) AND \(Z\)</p>
-<p>The first step uses standard criterions (Cramer's V, chi square test of independence, Spearman's rank correlation coefficient) to evaluate associations between two ordinal variables in both databases or only one.
+<p>The first step uses standard criterions (Cramer's V, Spearman's rank correlation coefficient) to evaluate associations between two ordinal variables in both databases or only one.
 When the argument <code>group.clss = TRUE</code>, these informations can be completed by those provided by the function <code>error_group</code> (available in the package), which is directly integrate in the function <code>verif_OT</code>.
 Assuming that \(n_Y &gt; n_Z\), and that one of the two scales of \(Y\) or \(Z\) is unknown, this function gives additional informations about the potential link between the levels of the unknown scale.
 The function proceeds to this result in two steps. Firsty, <code>error_group</code> groups combinations of modalities of \(Y\) to build all possible variables \(Y'\) verifying \(n_{Y'} = n_Z\).
@@ -189,23 +189,23 @@ but also to emphasize the consistency in the predictions proposed by the algorit
 <p>B. SIMILARITIES BETWEEN OBSERVED AND PREDICTED DISTRIBUTIONS</p>
 <p>When the predictions of \(Y\) in B and/or \(Z\) in A are available in the <code>datab</code> argument, the similarities between the observed and predicted probabilistic distributions of \(Y\) and/or \(Z\) are quantified from the Hellinger distance (see (1)).
 This measure varies between 0 and 1: a value of 0 corresponds to a perfect similarity while a value close to 1 (the maximum) indicates a great dissimilarity.
-Two distributions will be considered as close with this distance as soon as the observed measure will be less than 0.05.</p>
+Using this distance, two distributions will be considered as close as soon as the observed measure will be less than 0.05.</p>
 <p>C.STABILITY OF THE PREDICTIONS</p>
 <p>These optional results are based on the following decision rule which defines the stability of an algorithm in A (or B) as its average ability to assign a same prediction
 of \(Z\) (or \(Y\)) to individuals that have a same given profile of covariates x and a same given level of \(Y\) (\(Z\)).</p>
 <p>Assuming that the missing information of \(Z\) in base A was predicted from an OT algorithm (the reasoning will be identical with the prediction of \(Y\) in B, see (2) and (3) for more details), the function <code>verif_OT</code> uses the conditional probabilities stored in the
 object <code>estimatorZA</code> (see outputs of the functions <code>OT_outcome</code> and <code>OT_joint</code>) which contains the estimates of all the conditional probabilities of \(Z\) in A, given a profile of covariates x and given a level of \(Y = y\).
-Each individual (or row) from A, is associated with a conditional probability \(P(Z= z|Y= y, X= x)\).</p>
-<p>With the function <code>OT_joint</code>, the individual predictions for subject i: \(\widehat{z}_i\),\(i=1,\ldots,n_A\) are given using the maximum a posteriori rule:
+Indeed, each individual (or row) from A, is associated with a conditional probability \(P(Z= z|Y= y, X= x)\).</p>
+<p>With the function <code>OT_joint</code>, the individual predictions for subject i: \(\widehat{z}_i\), \(i=1,\ldots,n_A\) are given using the maximum a posteriori rule:
 $$\widehat{z}_i= \mbox{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)$$
-While the function <code>OT_outcome</code> directly gives the individual prediction and the probablities \(P(Z= z|Y= y, X= x)\) are computed in a second step (see (3)).</p>
+While the function <code>OT_outcome</code> directly gives the individual predictions and the probablities \(P(Z= z|Y= y, X= x)\) are computed in a second step (see (3)).</p>
 <p>For each subject i in database A, a new variable \(z_i'\) is simulate such that: $$z_i'\sim \mathcal{B}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))$$
 The average stability criterium is so calculated as: $$\mbox{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'$$
 This criterion can be repeated with <code>R</code> samples and the related mean and variance are given in output.</p>
-<p>Some of these conditional probabilities are computed from only few individuals (because they are computed from a certain number of individuals considered as neighbors for each covariates profile \(x\)),  and can lead to not enough reliable estimation.
+<p>Nevertheless, it is possible that some of these conditional probabilities could be computed from only few individuals (because they are computed from a certain number of neighbor individuals for each covariates profile \(x\)) and lead to unreliable estimations.
 To avoid this problem, conditional probabilities can be removed from the stability criterion since they have been assessed from an insufficient number of subjects.
 In this way, the minimal number of subjects required for a conditional probability to participate to the stability estimation can be fixed a priori by filling in the argument <code>min.neigb</code>.</p>
-<p>These results are available when the argument <code>stab.prob = TRUE</code>.
+<p>Notice that, these results are optional and available only if the argument <code>stab.prob = TRUE</code>.
 Finally, when the predictions of \(Z\) in A and \(Y\) in B are available, the function <code>verif_OT</code> provides in output, global results and results by database.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 

@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="transfo_dist() — transfo_dist" />
-<meta property="og:description" content="This function prepares the database for the resolution of a recoding problem according to the distance function chosen to evaluate the proximities between rows" />
+<meta property="og:description" content="This function prepares an overlayed database for data fusion according to the distance function chosen to evaluate the proximities between units." />
 
 
 
@@ -109,7 +109,7 @@
     </div>
 
     <div class="ref-description">
-    <p>This function prepares the database for the resolution of a recoding problem according to the distance function chosen to evaluate the proximities between rows</p>
+    <p>This function prepares an overlayed database for data fusion according to the distance function chosen to evaluate the proximities between units.</p>
     </div>
 
     <pre class="usage"><span class='fu'>transfo_dist</span>(
@@ -130,29 +130,29 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>DB</th>
-      <td><p>A data.frame composed of exactly two overlayed databases with a column of database identification, two columns corresponding to a same information
+      <td><p>A data.frame composed of exactly two overlayed databases with a column of database identifier, two columns corresponding to a same information
 differently encoded in the two databases and covariates. The order of the variables have no importance.</p></td>
     </tr>
     <tr>
       <th>index_DB_Y_Z</th>
       <td><p>A vector of exactly three integers. The first integer must correspond to the column index of the database identifier. The second integer corresponds
-to the index of the target variable in the first database while the third integer corresponds to the index of column related to the target varaible in the second database.</p></td>
+to the index of the target variable in the first database while the third integer corresponds to the index of column related to the target variable in the second database.</p></td>
     </tr>
     <tr>
       <th>quanti</th>
-      <td><p>A vector of integers that corresponds to the indexes of columns of all the quantitative variables (DB identification and target variables included)</p></td>
+      <td><p>A vector of integers that corresponds to the column indexes of all the quantitative variables (DB identification and target variables included).</p></td>
     </tr>
     <tr>
       <th>nominal</th>
-      <td><p>A vector of integers that corresponds to the indexes of columns of all the nominal (not ordered) variables (DB identification and target variables included)</p></td>
+      <td><p>A vector of integers that corresponds to the column indexes of all the nominal (not ordered) variables (DB identification and target variables included).</p></td>
     </tr>
     <tr>
       <th>ordinal</th>
-      <td><p>A vector of integers that corresponds to the indexes of columns of all the ordinal variables (DB identification and target variables included)</p></td>
+      <td><p>A vector of integers that corresponds to the column indexes of all the ordinal variables (DB identification and target variables included).</p></td>
     </tr>
     <tr>
       <th>logic</th>
-      <td><p>A vector of integers that corresponds to the indexes of columns of all the boolean variables.</p></td>
+      <td><p>A vector of integers that corresponds to the column indexes of all the boolean variables.</p></td>
     </tr>
     <tr>
       <th>convert_num</th>
@@ -160,7 +160,7 @@ to the index of the target variable in the first database while the third intege
     </tr>
     <tr>
       <th>convert_clss</th>
-      <td><p>A vector indicating for each continuous variable that has to be converted, the corresponding number of levels desired. If the length of the argument <code>convert_num</code> exceeds 1 while the length of <code>convert_clss</code> is equal to 1 (only one integer),
+      <td><p>A vector indicating for each continuous variable to convert the corresponding desired number of levels. If the length of the argument <code>convert_num</code> exceeds 1 while the length of <code>convert_clss</code> is equal to 1 (only one integer),
 each discretization will count the same number of levels.</p></td>
     </tr>
     <tr>
@@ -170,57 +170,57 @@ the Gower distance ("G"), and the Hamming (also called binary) distance ("H"), c
     </tr>
     <tr>
       <th>info</th>
-      <td><p>A percent value (between 0 and 1, 0.8 is the default value) that corresponds to the minimal part of variability that must be taken into account by the remaining principal components of the FAMD when this option is required.
+      <td><p>A percent value (between 0 and 1, 0.8 is the default value) that corresponds to the minimal part of variability that must be taken into account by the remaining principal components of the FAMD when this approach is required.
 This ratio will fix the number of components that will be kept with this approach.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.frame which covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the identifier, \(Y\) and \(Z\) correspond to the first three columns respectively.
+    <p>A data.frame which covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the database identifier, \(Y\) and \(Z\) correspond to the first three columns respectively.
 Moreover the order of rows remains unchanged during the process.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>A. REQUIRED STRUCTURE FOR THE DATABASE</p>
 <p>In input of this function, the declared database can be the result of an overlay between two databases.
-This structure can be guaranteed using previously the function <code>merge_dbs</code>.
-Nevertheless, it is also possible to apply directly the function <code>transfo_dist</code> on a row database provided that a specific structure is respected in input.
+This structure can be guaranteed using the specific outputs of the functions <code>merge_dbs</code> or <code>select_pred</code>.
+Nevertheless, it is also possible to apply directly the function <code>transfo_dist</code> on a raw database provided that a specific structure is respected in input.
 The database must count at least four columns (in an a unspecified order of appearance in the database):</p><ul>
 <li><p>A column indicating the database identifiers (two classes: A and B, 1 and 2, ...)</p></li>
-<li><p>A categorical (nominal or ordinal factor) variable corresponding to the outcome of the 1st database (on top) with its specific encoding (called \(Y\) by example).</p></li>
-<li><p>A second categorical (nominal or ordinal) variable corresponding to the outcome of the 2nd database (called \(Z\) by example).</p></li>
-<li><p>At least one covariate shared in the two bases (same encoding in the 2 bases). Incomplete information is possible on shared covariates if you have more than one covariate.</p></li>
-</ul><p>In this context, the information related to Y in the second database must be missing as the information related to \(Z\) in the first one.
-The indexes of columns related to the database identifier, \(Y\) and \(Z\) must be specified in this order in the argument <code>index_DB_Y_Z</code>.
+<li><p>A categorical (nominal or ordinal factor) variable corresponding to the outcome of the first database (on top) with its specific encoding (called \(Y\) by example).</p></li>
+<li><p>A second categorical (nominal or ordinal) variable corresponding to the outcome of the second database (called \(Z\) by example).</p></li>
+<li><p>At least one covariate shared in the two bases (same encoding in the two databases). Incomplete information is possible on shared covariates if you have more than one covariate.</p></li>
+</ul><p>In this context, the information related to \(Y\) in the second database must be missing as the information related to \(Z\) in the first one.
+The column indexes related to the database identifier, \(Y\) and \(Z\) must be specified in this order in the argument <code>index_DB_Y_Z</code>.
 Moreover, all column indexes (including those related to identifier and target variables \(Y\) and \(Z\)) of the overlayed database (DB) must be declared once (and only once), among the arguments <code>quanti</code>, <code>nominal</code>, <code>ordinal</code>, and <code>logic</code>.
 If the outcomes are of numeric types, they could be declared as quantitative, but they will be automatically convert in ordered factors.</p>
 
 <p>B. TRANSFORMATIONS OF CONTINUOUS COVARIATES</p>
 <p>Because some algorithms dedicated to solving recoding problems like <code>JOINT</code> and <code>R-JOINT</code>  must run actually without continuous covariates (It is the case of the function <code>OT_joint</code> of this package), the function <code>transfo_dist</code> integrates in is syntax
-a process dedicated to the discretization of this type of variables. For this, it is necessary to rigorously fill in the arguments <code>convert_num</code> and <code>convert_clss</code>. The first one specifies the indexes of continuous variables that need to be transformed
-in ordered factors while the second one assigns the corresponding number of levels desired.
+a process dedicated to the categorization of continuous variables. For this, it is necessary to rigorously fill in the arguments <code>convert_num</code> and <code>convert_clss</code>. The first one specifies the indexes of continuous variables to transform
+in ordered factors while the second one assigns the corresponding desired number of levels.
 Only covariates can be transformed (not outcomes) and missing informations are not taken into account for the transformations.
-Finally, all the indexes informed in the argument <code>convert_num</code> must also be informed in the argument <code>quanti</code>.</p>
+Notice that all the indexes informed in the argument <code>convert_num</code> must also be informed in the argument <code>quanti</code>.</p>
 
 <p>C. TRANSFORMATIONS ON THE DATABASE ACCORDING TO THE CHOSEN DISTANCE FUNCTION</p>
 
-<p>These necessary transformations are related to the type of each of the covariates.
-It depends on the choice of the distance function chooses by user in the <code>prep_choice</code> option.</p>
+<p>These necessary transformations are related to the type of each covariate.
+It depends on the distance function chosen by user in the <code>prep_choice</code> argument.</p>
 <p>1. For the Euclidean ("E") and Manhattan ("M") distances ((1) and (2)):
 all the remaining continuous variables are standardized.
 The related recoding to a boolean variable is 1 for <code>TRUE</code> and 0 for <code>FALSE</code>.
-The recoding for a nominal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
+The recoding of a nominal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
 The ordinal variables are all converted to numeric variables (please take care that the order of the classes of each of these variables is well specified at the beginning).</p>
 <p>2. For the Hamming ("H") distance ((1) and (2)):
-all the numeric variables must be transformed beforehand in categorical forms using the internal process described in section B or via another external approach.
+all the continuous variables must be transformed beforehand in categorical forms using the internal process described in section B or via another external approach.
 The boolean variables are all converted in ordinal forms and then turned into binaries.
 The recoding for nominal or ordinal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).</p>
 <p>3. For the Gower ("G") distance (3):
 all covariates remain unchanged</p>
 <p>4. Using the principal components from a factor analysis for mixed data (FAMD(4)):
-a factor analysis for mixed data is done on the covariates of the database and a specific number of the related principal components is remained (depending on the minimal part of variability explained by the covariates that the user wishes to keep by varying the <code>info</code> option).
+a factor analysis for mixed data is applied on the covariates of the database and a specific number of the related principal components is remained (depending on the minimal part of variability explained by the covariates that the user wishes to keep by varying the <code>info</code> option).
 The function integrates in its syntax the function <code><a href='https://rdrr.io/pkg/FactoMineR/man/FAMD.html'>FAMD</a></code> of the package <span class="pkg">FactoMiner</span> (5) using default parameters.
-After this step, the covariates are replaced by the remaining principal components of the FAMD, and each value corresponds to coordinates linked to each components.
+After this step, the covariates are replaced by the remaining principal components of the FAMD, and each value corresponds to coordinates linked to each component.
 Please notice that this method supposed complete covariates in input, nevertheless in presence of incomplete covariates, each corresponding rows will be dropped from the study, a warning will appear and the number of remaining rows will be indicated.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 

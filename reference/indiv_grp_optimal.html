@@ -130,12 +130,12 @@
     <tr>
       <th>jointprobaA</th>
       <td><p>A matrix whose number of columns is equal to the number of modalities of the target variable \(Y\) in database A, and which number of rows is equal to the number of modalities of \(Z\) in database B. It gives an estimation of the joint probability \((Y,Z)\) in the database A.
-The sum of cells of this matrix must be equal to 1</p></td>
+The sum of cells of this matrix must be equal to 1.</p></td>
     </tr>
     <tr>
       <th>jointprobaB</th>
       <td><p>A matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and which number of rows is equal to the number of modalities of \(Z\) in database B. It gives an estimation of the joint probability \((Y,Z)\) in the database B.
-The sum of cells of this matrix must be equal to 1</p></td>
+The sum of cells of this matrix must be equal to 1.</p></td>
     </tr>
     <tr>
       <th>percent_closest</th>
@@ -143,7 +143,7 @@ The sum of cells of this matrix must be equal to 1</p></td>
     </tr>
     <tr>
       <th>which.DB</th>
-      <td><p>A character string (with quotes) that indicates which individual predictions compute: only the individual predictions of \(Y\) in B ("B"), only those of \(Z\) in A ("A") or the both ("BOTH" by default)</p></td>
+      <td><p>A character string (with quotes) that indicates which individual predictions compute: only the individual predictions of \(Y\) in B ("B"), only those of \(Z\) in A ("A") or the both ("BOTH" by default).</p></td>
     </tr>
     </table>
 
@@ -156,10 +156,10 @@ The sum of cells of this matrix must be equal to 1</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>A. THE RECODING PROBLEM IN DATA FUSION</p>
-<p>Assuming that \(Y\) and \(Z\) are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
-so that \(Y\) and \(Z\) are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (but same encodings in A and B)
-completed or not. Integrating these two databases often requires to solve the recoding problem observed between \(Y\) and \(Z\) by creating an unique database where
-the missing information of \(Y\) and \(Z\) is completed.</p>
+<p>Assuming that \(Y\) and \(Z\) are two variables which refered to a same target population in two separate (no overlapping rows) databases A and B respectively,
+so that \(Y\) and \(Z\) are never jointly observed. Assuming also that A and B share a subset of common covariates \(X\) of any types (same encodings in A and B)
+completed or not. Integrating these two databases often requires to solve this observed recoding problem by creating an unique database where
+the missing information of \(Y\) and \(Z\) is fully completed.</p>
 
 <p>B. DESCRIPTION OF THE FUNCTION</p>
 <p>The function <code>indiv_grp_optimal</code> is an intermediate function used in the implementation of a model called <code>OUTCOME</code> (and its enrichment <code>R-OUTCOME</code>, see the reference (2) for more details) dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory.
