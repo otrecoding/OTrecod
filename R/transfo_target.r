@@ -3,9 +3,9 @@
 #'
 #' This function prepares the encoding of the target variable before running an algorithm using Optimal Transportation theory.
 #'
-#' @param z            A factor variable (ordered or not). A variable of another type will be, by default, convert to a factor
+#' @param z            A factor variable (ordered or not). A variable of another type will be, by default, convert to a factor.
 #' @param levels_order A vector corresponding to the values of the levels of z. When the target is ordinal, the levels can be sorted by ascending order.
-#'                     By default, the initial order is retained
+#'                     By default, the initial order is remained.
 #' @return The list returned is:
 #' \item{NEW}{An object of class factor of the same length as z}
 #' \item{LEVELS_NEW}{The levels (ordered or not) retained for z}

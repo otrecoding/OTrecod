@@ -46,7 +46,7 @@ each discretization will count the same number of levels.}
 \item{dist.choice}{A character (with quotes) corresponding to the distance function chosen between: the euclidean distance ("E", by default), the Manhattan distance ("M"),
 the Gower distance ("G"), and the Hamming distance ("H") for binary covariates only.}
 
-\item{percent.knn}{Percent of closest neighbors taken in the computation of the cost matrix.}
+\item{percent.knn}{The percentage of closest neighbors involved in the computations of the cost matrices.}
 
 \item{maxrelax}{The maximum percentage of deviation from expected probability masses. It must be equal to 0 (default value) for the \code{JOINT} model, and equal to a strictly positive value for the R-JOINT model}
 
@@ -60,18 +60,18 @@ If \code{prox.X = 1}, all profiles are considered as neighbors.}
 \item{which.DB}{A character indicating the database to complete ("BOTH" by default, for the prediction of \eqn{Y} and \eqn{Z} in the two databases), "A" only for the imputation of \eqn{Z} in A, "B" only for the imputation of \eqn{Y} in B.}
 }
 \value{
-A list of 7 elements containing:
+A list of 9 elements containing:
     \item{time_exe}{Running time of the function}
-    \item{gamma_A}{Estimation of \eqn{\gamma} for the completion of A. A cost matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in A}
-    \item{gamma_B}{Estimation of \eqn{\gamma} for the completion of B. A cost matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in B}
-    \item{profile}{A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results}
+    \item{gamma_A}{Estimation of \eqn{\gamma} for the completion of A. A matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in A}
+    \item{gamma_B}{Estimation of \eqn{\gamma} for the completion of B. A matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in B}
+    \item{profile}{A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results.}
     \item{res_prox}{The outputs of the function \code{proxim_dist}}
     \item{estimatorZA}{An array that corresponds to estimates of the probability distribution of \eqn{Z} conditional to \eqn{X} and \eqn{Y} in database A. The number of rows of each table corresponds to the total number of profiles of covariates.
-    The number of columns of each table corresponds to the number of levels of \eqn{Y}. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \eqn{Z}.}
+    The number of columns of each table corresponds to the number of levels of \eqn{Y}. The row names of each table correspond to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \eqn{Z}.}
     \item{estimatorYB}{An array that corresponds to estimates of the probability distribution of \eqn{Y} conditional to \eqn{X} and \eqn{Z} in database B. The number of rows of each table corresponds to the total number of profiles of covariates.
-    The number of columns of each table corresponds to the number of levels of \eqn{Z}. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \eqn{Y}.}
-    \item{DATA1_OT}{database A with imputed individual prediction on \eqn{Z} using OT}
-    \item{DATA2_OT}{database B with imputed individual prediction on \eqn{Y} using OT}
+    The number of columns of each table corresponds to the number of levels of \eqn{Z}. The row names of each table correspond to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \eqn{Y}.}
+    \item{DATA1_OT}{The database A with imputed individual prediction on \eqn{Z} using OT}
+    \item{DATA2_OT}{The database B with imputed individual prediction on \eqn{Y} using OT}
 }
 \description{
 The function \code{OT_joint} integrates two models called (\code{JOINT}) and (\code{R-JOINT}) dedicated to the solving of recoding problems in data integration
@@ -90,7 +90,7 @@ B. INFORMATIONS ABOUT THE ALGORITHM
 
 As with the function \code{\link{OT_outcome}}, the function \code{OT_joint} provides a solution to the recoding problem by proposing an
 application of optimal transportation which aims is to search for a bijective mapping between the joint distributions of \eqn{(Y,X)} and \eqn{(Z,X)} in A and B (see (2) for more details).
-The principle of the algorithm is also based on the resolution of an optimization problem, which provides a \eqn{\gamma} solution (as called in (1) and (2)) which is an estimation
+The principle of the algorithm is also based on the resolution of an optimization problem, which provides a \eqn{\gamma} solution (as called in (1) and (2)), estimation
 of the joint distribution of \eqn{(X,Y,Z)} according to the database to complete (see the argument \code{which.DB} for the choice of the database). While the models \code{OUTCOME} and \code{R_OUTCOME} integrated in
 the function \code{\link{OT_outcome}} require post-treatment steps to provide individual predictions, the algorithm \code{JOINT} directly uses estimations of the conditional distributions \eqn{(Y|Z,X)} in B and
 \eqn{(Z|Y,X)} in A to predict the corresponding incomplete individuals informations of \eqn{Y} and/or \eqn{Z} respectively.
@@ -98,7 +98,7 @@ This algorithm supposes that the conditional distribution \eqn{(Y|X)} must be id
 Estimations a posteriori of conditional probabilities \eqn{P[Y|X,Z]} and \eqn{P[Z|X,Y]} are available by profiles of covariates in output (See the objects \code{estimatorYB} and \code{estimatorZA}).
 Estimations of \eqn{\gamma} are also available according to the chosen transport distributions (See the arguments \code{gamma_A} and \code{gamma_B}).
 
-The model \code{R-JOINT} gathers enrichments of the model \code{JOINT} and is also available via the function \code{OT_joint} It allows users to add a relaxation term in the algorithm to relax distributional assumptions (\code{maxrelax}>0),
+The model \code{R-JOINT} gathers enrichments of the model \code{JOINT} and is also available via the function \code{OT_joint}. It allows users to add a relaxation term in the algorithm to relax distributional assumptions (\code{maxrelax}>0),
 and (or) add also a positive regularization term (\code{lamdba.reg}>0) expressing that the transportation map does not vary to quickly with respect of covariates \eqn{X}.
 Is is suggested to users to calibrate these two parameters a posteriori by studying the stability of the individual predictions in output.
 
@@ -107,13 +107,13 @@ C. TYPE OF REQUIRED INPUT DATABASE
 
 The input database is a data.frame that must be saved in a specific form by users:
 \itemize{
-\item Two overlayed databases containing a common column of databases' identifiers (A and B, 1 or 2, by examples, encoded in numeric or factor form)
+\item Two overlayed databases containing a common column of databases identifiers (A and B, 1 or 2, by examples, encoded in numeric or factor form)
 \item A column corresponding to the target variable with its specific encoding in A (For example a factor \eqn{Y} encoded in \eqn{n_Y} levels, ordered or not, with NAs in the corresponding rows of B)
 \item A column corresponding to another target outcome summarizing the same latent information with its specific endoded in B (By example a factor \eqn{Z} in \eqn{n_Z} levels, with NAs in rows of A)
-\item The order of the variables in the database have no importance but the indexes of the columns related to the 3rd columns previously described (ie ID, \eqn{Y} and \eqn{Z}) must be rigorously specified
+\item The order of the variables in the database have no importance but the column indexes related to the three columns previously described (ie ID, \eqn{Y} and \eqn{Z}) must be rigorously specified
 in the argument \code{index_DB_Y_Z}.
 \item A set of shared common categorical covariates (at least one but more is recommended) complete or not (provided that the number of covariates exceeds 1) is required. On the contrary to the
-function \code{OT_outcome}, please notice, that the function \code{OT_joint} does not accept continuous covariates therefore these latters will have to be categorized beforehand or using the provided input process (see \code{quanti}).
+function \code{OT_outcome}, please notice, that the function \code{OT_joint} does not accept continuous covariates therefore these latters will have to be categorized beforehand or using the provided input process (see \code{convert.num}).
 }
 The function \code{\link{merge_dbs}} is available in this package to assist user in the preparation of their databases, so please, do not hesitate to use it beforehand if necessary.
 
@@ -140,7 +140,7 @@ Finally, it is suggested to declare all discrete covariates as ordinal factors u
 
 E. INFORMATIONS ABOUT DISTANCE FUNCTIONS AND RELATED PARAMETERS
 
-Each individual (or row) of a given database is here characterized by his covariates, so the distance between 2 individuals or groups of individuals depends on similarities between covariates
+Each individual (or row) of a given database is here characterized by a vector of covariates, so the distance between two individuals or groups of individuals depends on similarities between covariates
 according to the distance function chosen by user (via the argument \code{dist.choice}). Actually four distance functions are implemented in \code{OT_joint} to take into account the most frequently encountered situation (see (3)):
 \itemize{
 \item the Manhattan distance ("M")
@@ -149,10 +149,10 @@ according to the distance function chosen by user (via the argument \code{dist.c
 \item the Hamming distance for binary data ("H")
 }
 
-Let two profiles of covariates \eqn{P_1} (\eqn{n_1} individuals) and \eqn{P_2} (\eqn{n_2} individuals) will be considered as neighbors if \eqn{dist(P_1,P_2) < prox.X \times max(dist(P_i,P_j))} where \eqn{prox.X} must be fixed by user (\eqn{i = 1,\dots,n_1} and \eqn{j = 1,\dots,n_2}). This choice is used in the calculation of the \code{JOINT} and \code{R_JOINT} algorithms.
+Finally, two profiles of covariates \eqn{P_1} (\eqn{n_1} individuals) and \eqn{P_2} (\eqn{n_2} individuals) will be considered as neighbors if \eqn{dist(P_1,P_2) < prox.X \times max(dist(P_i,P_j))} where \eqn{prox.X} must be fixed by user (\eqn{i = 1,\dots,n_1} and \eqn{j = 1,\dots,n_2}). This choice is used in the calculation of the \code{JOINT} and \code{R_JOINT} algorithms.
 In the same way, for a given profile of covariates \eqn{Pj}, an individual i will be considered as a neighbor of \eqn{Pj} if \eqn{dist(i,P_j) < prox.dist \times max(dist(i,P_j))} where \eqn{prox.dist} will be fixed by user.
 
-For more details about the related algorithms integrated in \code{OT_joint}, please consult (2).
+For more details about the algorithms integrated in \code{OT_joint}, please consult (2).
 }
 \examples{
 

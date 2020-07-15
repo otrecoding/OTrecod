@@ -42,10 +42,10 @@
 #'
 #' The input database is a data.frame that must be saved in a specific form by users:
 #' \itemize{
-#' \item Two overlayed databases containing a common column of databases' identifiers (A and B, 1 or 2, by examples, encoded in numeric or factor form)
+#' \item Two overlayed databases containing a common column of database identifiers (A and B, 1 or 2, by examples, encoded in numeric or factor form)
 #' \item A column corresponding to the target variable with its specific encoding in A (For example a factor \eqn{Y} encoded in \eqn{n_Y} levels, ordered or not, with NAs in the corresponding rows of B)
 #' \item A column corresponding to the second target outcome with its specific endoded in B (For example a factor \eqn{Z} in \eqn{n_Z} levels, with NAs in rows of A)
-#' \item The order of the variables in the database have no importance but the indexes of the columns related to the 3rd columns previously described (ie ID, \eqn{Y} and \eqn{Z}) must be rigorously specified
+#' \item The order of the variables in the database have no importance but the column indexes related to the three columns previously described (ie ID, \eqn{Y} and \eqn{Z}) must be rigorously specified
 #' in the argument \code{index_DB_Y_Z}.
 #' \item A set of shared common covariates (at least one but more is recommended) of any type, complete or not (provided that the number of covariates exceeds 1) is required.
 #' }
@@ -61,7 +61,7 @@
 #'
 #' D. TRANSFORMATIONS OF CONTINUOUS COVARIATES
 #'
-#' The function \code{OT_outcome} integrates in its syntax a process dedicated to the discretization of continuous covariates. For this, it is necessary to rigorously fill in the arguments \code{convert.num} and \code{convert.clss}.
+#' The function \code{OT_outcome} integrates in its syntax a process dedicated to the categorization of continuous covariates. For this, it is necessary to rigorously fill in the arguments \code{convert.num} and \code{convert.clss}.
 #' The first one informs about the indexes in database of the continuous variables to transform in ordered factor while the second one specifies the corresponding number of desired balanced levels (for unbalanced levels, users must do transformations by themselves).
 #' Therefore \code{convert.num} and \code{convert.clss} must be vectors of same length, but if the length of \code{convert.num} exceeds 1, while the length of \code{convert.clss} is 1, then, by default, all the covariates to convert will have the same number of classes,
 #' that corresponds to the value specified in the argument \code{convert.clss}.
@@ -79,7 +79,7 @@
 #' \item the Gower distance for mixed data (see (4): "G")
 #' \item the Hamming distance for binary data ("H")
 #' }
-#' Moreover, it is also possible to directly apply the first three distances mentioned on coordinates extracted from a multivariate analysis (Factor Analysis for Mixed Data, see (5)) applied on row covariates using the arguments \code{FAMD.coord} and \code{FAMD.perc}.
+#' Moreover, it is also possible to directly apply the first three distances mentioned on coordinates extracted from a multivariate analysis (Factor Analysis for Mixed Data, see (5)) applied on raw covariates using the arguments \code{FAMD.coord} and \code{FAMD.perc}.
 #' This method is used in the article (1).
 #'
 #' As a decision rule, for a given profile of covariates \eqn{P_j}, an individual i will be considered as a neighbor of \eqn{P_j} if \eqn{dist(i,P_j) < \mbox{prox.dist} \times max(dist(i,P_j))} where \eqn{prox.dist} must be fixed by user.
@@ -95,12 +95,12 @@
 #' has previously imputed the corresponding missing information, the OT algorithm will only run complete cases.
 #' @param index_DB_Y_Z A vector of three column indexes. The first index must correspond to the index of the databases identifier column (DB identifier). The second index must correspond
 #' to the index of the target variable in the first database (A) while the third index corresponds to the index of column related to the target variable in the second database (B).
-#' @param quanti A vector of indexes that corresponds to the indexes of columns of all the quantitative variables (DB identification and target variables included if it is the case for them).
-#' @param nominal A vector of indexes that corresponds to the indexes of columns of all the nominal (not ordered) variables (DB identification and target variables included if it is the case for them).
-#' @param ordinal A vector of indexes that corresponds to the indexes of columns of all the ordinal variables (DB identification and target variables included if it is the case for them).
-#' @param logic A vector of indexes that corresponds to the indexes of columns of all the boolean variables.
+#' @param quanti A vector of indexes that corresponds to the column indexes of all the quantitative variables (DB identification and target variables included if it is the case for them).
+#' @param nominal A vector of indexes that corresponds to the column indexes of all the nominal (not ordered) variables (DB identification and target variables included if it is the case for them).
+#' @param ordinal A vector of indexes that corresponds to the column indexes of all the ordinal variables (DB identification and target variables included if it is the case for them).
+#' @param logic A vector of indexes that corresponds to the column indexes of all the boolean variables.
 #' @param convert.num Indexes of the continuous (quantitative) variables to convert in ordered factors. All declared indexes in this argument must have been declared in the argument \code{quanti} (no conversion by default).
-#' @param convert.clss A vector indicating for each continuous variable to convert, the desired corresponding number of levels.If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} equals 1 (only one integer),
+#' @param convert.clss A vector indicating for each continuous variable to convert, the desired corresponding number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} equals 1 (only one integer),
 #' each discretization will count the same number of levels (quantiles).
 #' @param dist.choice A character (with quotes) corresponding to the distance function chosen between: The euclidean distance ("E", by default), The Manhattan distance ("M"),
 #' the Gower distance ("G"), the Hamming (also called binary) distance and the Euclidean or Manhattan distance, calculated from principal components of a factor analysis of mixed data ("FAMD").
@@ -116,9 +116,9 @@
 #'
 #' @return A list containing 9 elements:
 #' \item{time_exe}{The running time of the function}
-#' \item{gamma_A}{A cost matrix corresponding to an estimation of the joint distribution of \eqn{(Y,Z)} in A}
-#' \item{gamma_B}{A cost matrix corresponding to an estimation of the joint distribution of \eqn{(Y,Z)} in B}
-#' \item{profile}{A data.frame that gives all details about the remaining \eqn{P} profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results}
+#' \item{gamma_A}{A matrix corresponding to an estimation of the joint distribution of \eqn{(Y,Z)} in A}
+#' \item{gamma_B}{A matrix corresponding to an estimation of the joint distribution of \eqn{(Y,Z)} in B}
+#' \item{profile}{A data.frame that gives all details about the remaining \eqn{P} profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results.}
 #' \item{res_prox}{The outputs of the function \code{proxim_dist}}
 #' \item{estimatorZA}{An array that corresponds to estimates of the probability distribution of \eqn{Z} conditional to \eqn{X} and \eqn{Y} in database A. The number of rows of each table corresponds to the total number of the P profiles of covariates.
 #' The number of columns of each table corresponds to the number of levels of \eqn{Y}. The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \eqn{Z}}
