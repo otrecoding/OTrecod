@@ -203,6 +203,8 @@ try1$profile[1,]   # Details of P_1
 # ... And so on, the reasoning is the same for the estimatorYB object.
 
 
+\dontrun{
+
 ### An example of OUTCOME model with same conditions as the previous example, excepted that;
 # - Only the individual predictions of Y in B are required
 # - The continuous covariates "age" (related index = 8) will be converted in an ordinal factors
@@ -215,7 +217,6 @@ try2 = OT_outcome(simu_dat, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2
                   convert.num = 8, convert.clss = 3,
                   indiv.method = "sequential", which.DB = "B")
 
-\dontrun{
 
 ### An example of OUTCOME model with same conditions as the first example, excepted that;
 # - Only the individual predictions of Z in A are required
