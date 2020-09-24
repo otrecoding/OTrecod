@@ -22,6 +22,7 @@ OT_outcome(
   maxrelax = 0,
   indiv.method = "sequential",
   prox.dist = 0.8,
+  solvR = "glpk",
   which.DB = "BOTH"
 )
 }
@@ -65,6 +66,8 @@ the Gower distance ("G"), the Hamming (also called binary) distance and the Eucl
 
 \item{prox.dist}{A percentage (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates. This choice does not influence the estimate of \eqn{\gamma},
 but the estimates of the conditional posterior probabilities stored, in output, in the objects \code{estimatorZA} and \code{estimatorYB}.}
+
+\item{solvR}{A character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".}
 
 \item{which.DB}{A character string (with quotes) that indicates which individual predictions compute: Only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).}
 }
@@ -166,6 +169,12 @@ Moreover, it is also possible to directly apply the first three distances mentio
 This method is used in the article (1).
 
 As a decision rule, for a given profile of covariates \eqn{P_j}, an individual i will be considered as a neighbor of \eqn{P_j} if \eqn{dist(i,P_j) < \mbox{prox.dist} \times max(dist(i,P_j))} where \eqn{prox.dist} must be fixed by user.
+
+
+F. INFORMATIONS ABOUT THE SOLVER
+
+The argument \code{solvR} permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (6) for more details). The solver "clp" (see (7)) for Coin-or Linear Programming, convenient in linear and quadratic situations, is also directly integrated in the function.
+Moreover, the function actually uses the \code{R} optimization infrastructure of the package \pkg{ROI} which offers a wide choice of solver to users by easily loading the associated plugins of \pkg{ROI} (see (8)).
 }
 \examples{
 
@@ -278,6 +287,9 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb
 \item Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
 \item Gower J.C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637.
 \item Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.
+\item Makhorin A (2011). GNU Linear Programming Kit Reference Manual Version 4.47.\url{http://www.gnu.org/software/glpk}
+\item Forrest J, de la Nuez D, Lougee-Heimer R (2004). Clp User Guide. \url{http://www.coin-or.org/Clp/userguide/index.html}
+\item Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 \url{https://doi.org/10.18637/jss.v094.i15)}
 }
 }
 \seealso{

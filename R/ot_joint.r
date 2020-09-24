@@ -81,6 +81,13 @@
 #' For more details about the algorithms integrated in \code{OT_joint}, please consult (2).
 #'
 #'
+#' F. INFORMATIONS ABOUT THE SOLVER
+#'
+#' The argument \code{solvR} permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (5) for more details). The solver "clp" (see (6)) for Coin-or Linear Programming, convenient in linear and quadratic situations, is also directly integrated in the function.
+#' Moreover, the function actually uses the \code{R} optimization infrastructure of the package \pkg{ROI} which offers a wide choice of solver to users by easily loading the associated plugins of \pkg{ROI} (see (7)).
+#'
+#'
+#'
 #' @param datab A data.frame with at least four columns sorted in a non-specific order. One column must be a column of identifier for the two databases, where the names of the two databases
 #' must be ranked in ascending order (By example: 1 for the top database and 2 for the database from below, or more logically here A and B  ...But NOT B and A!). One column (\eqn{Y} here but other names are allowed)
 #' must correspond to the target variable related to the information of interest to merge with its specific encoding in the database A (corresponding encoding should be so missing in the database B). In the same way,
@@ -103,6 +110,7 @@
 #' @param prox.dist A percentage (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.
 #' @param prox.X A percentage (betwen 0 and 1) used to calculate the distance threshold below which two covariates' profiles are supposed as neighbors.
 #' If \code{prox.X = 1}, all profiles are considered as neighbors.
+#' @param solvR A character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".
 #' @param which.DB A character indicating the database to complete ("BOTH" by default, for the prediction of \eqn{Y} and \eqn{Z} in the two databases), "A" only for the imputation of \eqn{Z} in A, "B" only for the imputation of \eqn{Y} in B.
 #'
 #'
@@ -119,7 +127,7 @@
 #'     \item{DATA1_OT}{The database A with imputed individual prediction on \eqn{Z} using OT}
 #'     \item{DATA2_OT}{The database B with imputed individual prediction on \eqn{Y} using OT}
 #'
-#' @import ROI ROI.plugin.glpk
+#' @import ROI ROI.plugin.glpk ROI.plugin.clp
 #'
 #' @importFrom dplyr %>%
 #' @importFrom ompr MIPModel get_solution
@@ -140,7 +148,10 @@
 #' Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
 #' \item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
 #' \item Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
-#' \item Gower J.C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637.
+#' \item Gower J.C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637
+#' \item Makhorin A (2011). GNU Linear Programming Kit Reference Manual Version 4.47.\url{http://www.gnu.org/software/glpk}
+#' \item Forrest J, de la Nuez D, Lougee-Heimer R (2004). Clp User Guide. \url{http://www.coin-or.org/Clp/userguide/index.html}
+#' \item Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 \url{https://doi.org/10.18637/jss.v094.i15)}
 #' }
 #'
 #' @seealso \code{\link{merge_dbs}}, \code{\link{OT_outcome}}, \code{\link{proxim_dist}}, \code{\link{avg_dist_closest}}
@@ -235,7 +246,7 @@
 OT_joint = function(datab, index_DB_Y_Z = 1:3,
                     nominal = NULL, ordinal = NULL,logic = NULL,
                     convert.num = NULL, convert.clss = NULL, dist.choice = "E", percent.knn = 1,
-                    maxrelax = 0, lambda.reg = 0.0, prox.dist = 0.80, prox.X = 0.80, which.DB = "BOTH"){
+                    maxrelax = 0, lambda.reg = 0.0, prox.dist = 0.80, prox.X = 0.80, solvR = "glpk", which.DB = "BOTH"){
 
   if (dist.choice %in% c("M","Manhattan","manhattan")){
 
@@ -464,7 +475,7 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
           ompr::add_constraint(reg_absA[x1,x2,y,z] + gammaA[x1,y,z]/(max(1,length(indXA[[x1]]))/nA) >= gammaA[x2,y,z]/(max(1,length(indXA[[x2]]))/nA), x1 = 1:nbX, x2 = which(voisins_X[x1,]), y= Y, z = Z) %>%
 
           # SOLUTION -------------------------------------------------------
-        ompr::solve_model(with_ROI(solver = "glpk"))
+        ompr::solve_model(with_ROI(solver = solvR))
         solution  = ompr::get_solution(result, gammaA[x,y,z])
         gammaA_val= array(solution$value,dim = c(nbX,length(Y),length(Z)))
         #------------ END OPTIMIZATION STEP ------------------------------
@@ -591,7 +602,7 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
           ompr::add_constraint(reg_absB[x1,x2,y,z] + gammaB[x1,y,z]/(max(1,length(indXB[[x1]]))/nB) >= gammaB[x2,y,z]/(max(1,length(indXB[[x2]]))/nB), x1 = 1:nbX, x2 = ind_voisins[[x1]], y= Y, z = Z) %>%
 
           # SOLUTION -------------------------------------------------------
-        ompr::solve_model(with_ROI(solver = "glpk"))
+        ompr::solve_model(with_ROI(solver = solvR))
 
         solution  = get_solution(result, gammaB[x,y,z])
         gammaB_val= array(solution$value,dim = c(nbX,length(Y),length(Z)))
