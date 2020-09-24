@@ -85,6 +85,12 @@
 #' As a decision rule, for a given profile of covariates \eqn{P_j}, an individual i will be considered as a neighbor of \eqn{P_j} if \eqn{dist(i,P_j) < \mbox{prox.dist} \times max(dist(i,P_j))} where \eqn{prox.dist} must be fixed by user.
 #'
 #'
+#' F. INFORMATIONS ABOUT THE SOLVER
+#'
+#' The argument \code{solvR} permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (6) for more details). The solver "clp" (see (7)) for Coin-or Linear Programming, convenient in linear and quadratic situations, is also directly integrated in the function.
+#' Moreover, the function actually uses the \code{R} optimization infrastructure of the package \pkg{ROI} which offers a wide choice of solver to users by easily loading the associated plugins of \pkg{ROI} (see (8)).
+#'
+#'
 #' @aliases OT_outcome ot_outcome OT
 #'
 #' @param datab A data.frame with at least four columns sorted in a non-specific order. One column must be a column of identifier for the two databases, where the names of the two databases
@@ -112,6 +118,7 @@
 #' @param prox.dist A percentage (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates. This choice does not influence the estimate of \eqn{\gamma},
 #' but the estimates of the conditional posterior probabilities stored, in output, in the objects \code{estimatorZA} and \code{estimatorYB}.
 #' @param indiv.method A character string indicating the chosen method to get individual predictions from the joint probabilities assessed, "sequential" by default, or "optimal". Please consult the section \code{details} and the corresponding article 2 for more details.
+#' @param solvR A character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".
 #' @param which.DB A character string (with quotes) that indicates which individual predictions compute: Only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).
 #'
 #' @return A list containing 9 elements:
@@ -140,12 +147,15 @@
 #' \item Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
 #' \item Gower J.C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637.
 #' \item Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.
+#' \item Makhorin A (2011). GNU Linear Programming Kit Reference Manual Version 4.47.\url{http://www.gnu.org/software/glpk}
+#' \item Forrest J, de la Nuez D, Lougee-Heimer R (2004). Clp User Guide. \url{http://www.coin-or.org/Clp/userguide/index.html}
+#' \item Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 \url{https://doi.org/10.18637/jss.v094.i15)}
 #' }
 #'
 #'
 #' @seealso \code{\link{transfo_dist}},\code{\link{proxim_dist}}, \code{\link{avg_dist_closest}}, \code{\link{indiv_grp_closest}}, \code{\link{indiv_grp_optimal}}
 #'
-#' @import ROI ROI.plugin.glpk
+#' @import ROI ROI.plugin.glpk ROI.plugin.clp
 #' @importFrom ompr MIPModel sum_expr
 #' @importFrom ompr.roi with_ROI
 #' @importFrom plyr mapvalues
@@ -260,7 +270,7 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
                       convert.num = NULL, convert.clss = NULL, FAMD.coord = "NO", FAMD.perc = 0.8,
                       dist.choice = "E", percent.knn = 1,
                       maxrelax = 0, indiv.method = "sequential", prox.dist = 0.80,
-                      which.DB = "BOTH"){
+                      solvR = "glpk", which.DB = "BOTH"){
 
 
 
@@ -424,7 +434,7 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
       ompr::add_constraint(deviationA[y] >= -absdevA[y],y =Y) %>%
       ompr::add_constraint(sum_expr(absdevA[y],y = Y)<= maxrelax/2.0) %>%
 
-      ompr::solve_model(with_ROI(solver = "glpk"))
+      ompr::solve_model(with_ROI(solver = solvR))
 
     # Solve the problem
 
@@ -469,7 +479,7 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
       ompr::add_constraint(deviationB[z]>= -absdevB[z], z = Z) %>%
       ompr::add_constraint(sum_expr(absdevB[z],z=Z)<= maxrelax/2.0) %>%
 
-      ompr::solve_model(with_ROI(solver = "glpk"))
+      ompr::solve_model(with_ROI(solver = solvR))
 
     solution       = ompr::get_solution(result, transportA[y,z])
 
@@ -506,7 +516,7 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
       ompr::add_constraint(deviationA[y] >= -absdevA[y],y =Y) %>%
       ompr::add_constraint(sum_expr(absdevA[y],y = Y)<= maxrelax/2.0) %>%
 
-      ompr::solve_model(with_ROI(solver = "glpk"))
+      ompr::solve_model(with_ROI(solver = solvR))
 
 
     solution       = ompr::get_solution(result, transportB[y,z])
@@ -524,7 +534,7 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
 
   } else if (indiv.method == "optimal"){
 
-    indpred = indiv_grp_optimal(inst, transportA_val, transportB_val, percent_closest = percent.knn, which.DB = which.DB)
+    indpred = indiv_grp_optimal(inst, transportA_val, transportB_val, percent_closest = percent.knn, solvr = solvR, which.DB = which.DB)
 
   } else {}
 

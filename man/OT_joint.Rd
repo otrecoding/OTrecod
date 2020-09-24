@@ -18,6 +18,7 @@ OT_joint(
   lambda.reg = 0,
   prox.dist = 0.8,
   prox.X = 0.8,
+  solvR = "glpk",
   which.DB = "BOTH"
 )
 }
@@ -56,6 +57,8 @@ the Gower distance ("G"), and the Hamming distance ("H") for binary covariates o
 
 \item{prox.X}{A percentage (betwen 0 and 1) used to calculate the distance threshold below which two covariates' profiles are supposed as neighbors.
 If \code{prox.X = 1}, all profiles are considered as neighbors.}
+
+\item{solvR}{A character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".}
 
 \item{which.DB}{A character indicating the database to complete ("BOTH" by default, for the prediction of \eqn{Y} and \eqn{Z} in the two databases), "A" only for the imputation of \eqn{Z} in A, "B" only for the imputation of \eqn{Y} in B.}
 }
@@ -153,6 +156,12 @@ Finally, two profiles of covariates \eqn{P_1} (\eqn{n_1} individuals) and \eqn{P
 In the same way, for a given profile of covariates \eqn{Pj}, an individual i will be considered as a neighbor of \eqn{Pj} if \eqn{dist(i,P_j) < prox.dist \times max(dist(i,P_j))} where \eqn{prox.dist} will be fixed by user.
 
 For more details about the algorithms integrated in \code{OT_joint}, please consult (2).
+
+
+F. INFORMATIONS ABOUT THE SOLVER
+
+The argument \code{solvR} permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (5) for more details). The solver "clp" (see (6)) for Coin-or Linear Programming, convenient in linear and quadratic situations, is also directly integrated in the function.
+Moreover, the function actually uses the \code{R} optimization infrastructure of the package \pkg{ROI} which offers a wide choice of solver to users by easily loading the associated plugins of \pkg{ROI} (see (7)).
 }
 \examples{
 
@@ -245,7 +254,10 @@ try3J = OT_joint(simu_data3, convert.num = 6, convert.clss = 3,
 Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
 \item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
 \item Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
-\item Gower J.C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637.
+\item Gower J.C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637
+\item Makhorin A (2011). GNU Linear Programming Kit Reference Manual Version 4.47.\url{http://www.gnu.org/software/glpk}
+\item Forrest J, de la Nuez D, Lougee-Heimer R (2004). Clp User Guide. \url{http://www.coin-or.org/Clp/userguide/index.html}
+\item Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 \url{https://doi.org/10.18637/jss.v094.i15)}
 }
 }
 \seealso{

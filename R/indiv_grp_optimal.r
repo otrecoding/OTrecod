@@ -30,12 +30,17 @@
 #'
 #' The arguments \code{jointprobaA} and \code{jointprobaB} can be seen as estimations of \eqn{\gamma} (sum of cells must be equal to 1) that correspond to estimations of the joint distributions of \eqn{(Y,Z)} in A and B respectively.
 #'
+#' The argument \code{solvr} permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (3) for more details). The solver "clp" (see (4)) for Coin-or Linear Programming, convenient in linear and quadratic situations, is also directly integrated in the function.
+#' Moreover, the function actually uses the \code{R} optimization infrastructure of the package \pkg{ROI} which offers a wide choice of solver to users by easily loading the associated plugins of \pkg{ROI} (see (5)).
+#'
+#'
 #' @param proxim An object corresponding to the output of the function \code{\link{proxim_dist}}
 #' @param jointprobaA A matrix whose number of columns is equal to the number of modalities of the target variable \eqn{Y} in database A, and which number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database A.
 #' The sum of cells of this matrix must be equal to 1.
 #' @param jointprobaB A matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and which number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database B.
 #' The sum of cells of this matrix must be equal to 1.
 #' @param percent_closest A value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals used in the computation of the average distances
+#' @param solvr A character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".
 #' @param which.DB A character string (with quotes) that indicates which individual predictions compute: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).
 #'
 #' @return A list of two vectors of numeric values:
@@ -49,14 +54,17 @@
 #'
 #' @seealso \code{\link{proxim_dist}}, \code{\link{avg_dist_closest}}, \code{\link{indiv_grp_closest}}
 #'
-#' @import ompr ROI ROI.plugin.glpk
+#' @import ompr ROI ROI.plugin.glpk ROI.plugin.clp
 #' @importFrom ompr.roi with_ROI
 #' @importFrom dplyr %>%
 #'
 #' @references
 #' \enumerate{
 #' \item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics. Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
-#' \item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
+#' \item Gares V, Omer J (2020). Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
+#' \item Makhorin A (2011). GNU Linear Programming Kit Reference Manual Version 4.47.\url{http://www.gnu.org/software/glpk}
+#' \item Forrest J, de la Nuez D, Lougee-Heimer R (2004). Clp User Guide. \url{http://www.coin-or.org/Clp/userguide/index.html}
+#' \item Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 \url{https://doi.org/10.18637/jss.v094.i15)}
 #' }
 #'
 #' @aliases indiv_grp_optimal
@@ -138,7 +146,7 @@
 #' }
 #'
 
-indiv_grp_optimal =function(proxim, jointprobaA, jointprobaB, percent_closest = 1.0, which.DB = "BOTH"){
+indiv_grp_optimal =function(proxim, jointprobaA, jointprobaB, percent_closest = 1.0, solvr= "glpk", which.DB = "BOTH"){
 
 
   if (!is.list(proxim)){
@@ -260,7 +268,7 @@ indiv_grp_optimal =function(proxim, jointprobaA, jointprobaB, percent_closest = 
     add_constraint(sum_expr(assignB[j,y], j = indZ[[z]]) == jointprobaB[y,z], z = Z, y = Y) %>%
     add_constraint(sum_expr(assignA[i,z], z = Z) == 1/(length(A)),i = A) %>%
     add_constraint(sum_expr(assignB[j,y], y = Y) == 1/(length(B)),j = B) %>%
-    solve_model(with_ROI(solver = "glpk"))
+    solve_model(with_ROI(solver = solvr))
 
   solution = get_solution(result, assignA[i,z])
   assignA = matrix(solution$value, length(A),length(Z))

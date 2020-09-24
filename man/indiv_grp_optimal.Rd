@@ -9,6 +9,7 @@ indiv_grp_optimal(
   jointprobaA,
   jointprobaB,
   percent_closest = 1,
+  solvr = "glpk",
   which.DB = "BOTH"
 )
 }
@@ -22,6 +23,8 @@ The sum of cells of this matrix must be equal to 1.}
 The sum of cells of this matrix must be equal to 1.}
 
 \item{percent_closest}{A value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals used in the computation of the average distances}
+
+\item{solvr}{A character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".}
 
 \item{which.DB}{A character string (with quotes) that indicates which individual predictions compute: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).}
 }
@@ -59,6 +62,9 @@ The function \code{indiv_grp_optimal} integrates in its syntax the function \cod
 Thus, when computing average distances between an individual i and a subset of individuals assigned to a same level of \eqn{Y} or \eqn{Z} is required, user can decide if all individuals from the subset of interest can participate to the computation (\code{percent_closest = 1}) or only a fixed part p (<1) corresponding to the closest neighbors of i (in this case \code{percent_closest} = p).
 
 The arguments \code{jointprobaA} and \code{jointprobaB} can be seen as estimations of \eqn{\gamma} (sum of cells must be equal to 1) that correspond to estimations of the joint distributions of \eqn{(Y,Z)} in A and B respectively.
+
+The argument \code{solvr} permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (3) for more details). The solver "clp" (see (4)) for Coin-or Linear Programming, convenient in linear and quadratic situations, is also directly integrated in the function.
+Moreover, the function actually uses the \code{R} optimization infrastructure of the package \pkg{ROI} which offers a wide choice of solver to users by easily loading the associated plugins of \pkg{ROI} (see (5)).
 }
 \examples{
 
@@ -138,7 +144,10 @@ summary(res2)
 \references{
 \enumerate{
 \item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics. Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
-\item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
+\item Gares V, Omer J (2020). Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
+\item Makhorin A (2011). GNU Linear Programming Kit Reference Manual Version 4.47.\url{http://www.gnu.org/software/glpk}
+\item Forrest J, de la Nuez D, Lougee-Heimer R (2004). Clp User Guide. \url{http://www.coin-or.org/Clp/userguide/index.html}
+\item Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 \url{https://doi.org/10.18637/jss.v094.i15)}
 }
 }
 \seealso{
