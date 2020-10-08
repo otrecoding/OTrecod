@@ -12,7 +12,7 @@ ham(mat_1, mat_2)
 \item{mat_2}{A vector, a matrix or a data.frame of binary values with the same number of columns as \code{mat_1} that may contain missing data}
 }
 \value{
-A matrix distance
+A distance matrix
 }
 \description{
 This function computes a matrix distance using the Hamming distance as proximity measure.
@@ -25,11 +25,11 @@ The Hamming distance between the \eqn{i^{th}} row of A and the \eqn{k^{th}} row 
 
 \deqn{\mbox{ham}(A_i,B_k) = \frac{\sum_j 1_{\left\{A_{ij} \neq B_{kj}\right\}}}{\sum_j 1}\times\left(\frac{\sum_j 1}{\sum_j 1_{\left\{!\mbox{is.na}(A_{ij}) \& !\mbox{is.na}( B_{kj})\right\}}}\right)}
 
-where: \eqn{i = 1,\dots,\mbox{nrow}(A)} and  \eqn{k = 1,\dots,\mbox{nrow}(B)}; And the expression located to the right term of the multiplication corresponds to a specific weigh applied in presence of NAs in \eqn{A_i} and(or) \eqn{B_k}.
+where: \eqn{i = 1,\dots,\mbox{nrow}(A)} and  \eqn{k = 1,\dots,\mbox{nrow}(B)}; And the expression located to the right term of the multiplication corresponds to a specific weigh applied in presence of NAs in \eqn{A_i} and/or \eqn{B_k}.
 
-This option is not implemented in the \code{\link[rdist]{cdist}} function and the Hamming distance can not be computed using the \code{\link[proxy]{dist}} function either.
+This specificity is not implemented in the \code{\link[rdist]{cdist}} function and the Hamming distance can not be computed using the \code{\link[proxy]{dist}} function either.
 
-In only two situations the Hamming distance can not be calculated:
+The Hamming distance can not be calculated in only two situations:
 \enumerate{
 \item If a row of A or B has only missing values (ie for each of the columns of A or B respectively).
 \item The union of the indexes of the missing values in row i of A with the indexes of the missing values in row j of B concerns the indexes of all considered columns.
