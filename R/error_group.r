@@ -1,12 +1,12 @@
 #' error_group()
 #'
-#' This function studies the association between two categorical distributions by grouping modalities
+#' This function studies the association between two categorical distributions with different numbers of modalities
 #'
 #' Assuming that \eqn{Y} and \eqn{Z} are categorical variables summarizing a same information, and that one of the two related encodings is unknown by user
-#' because this latter is, by example, the result of predictions provided by a given model or algorithm, the function \code{error_group} searches for potential links between the modalities of \eqn{Y} to approach at best the distribution of \eqn{Z}.
+#' because this latter is, for example, the result of predictions provided by a given model or algorithm, the function \code{error_group} searches for potential links between the modalities of \eqn{Y} to approach at best the distribution of \eqn{Z}.
 #'
 #' Assuming that \eqn{Y} and \eqn{Z} have \eqn{n_Y} and \eqn{n_Z} modalities respectively so that \eqn{n_Y > n_Z}, in a first step, the
-#' function \code{error_group} groups combinations of modalities of \eqn{Y} to build all possible variables \eqn{Y'} verifying  \eqn{n_{Y'} = n_Z}.
+#' function \code{error_group} combines modalities of \eqn{Y} to build all possible variables \eqn{Y'} verifying  \eqn{n_{Y'} = n_Z}.
 #' In a second step, the association between \eqn{Z} and each new variable \eqn{Y'} generated is measured by studying the ratio of concordant pairs related to the confusion matrix but also using standard criterions:
 #' the Cramer's V (1), the Cohen's kappa coefficient (2) and the Spearman's rank correlation coefficient.
 #'
@@ -17,7 +17,7 @@
 #' }
 #'
 #' All the associations tested are listed in output as a data.frame object.
-#' The function \code{error_group} is directly integrated in the function \code{\link{verif_OT}} to evaluate the proximity of two multinomial distributions, when one of which is estimated from the predictions of an OT algorithm.
+#' The function \code{error_group} is directly integrated in the function \code{\link{verif_OT}} to evaluate the proximity of two multinomial distributions, when one of them is estimated from the predictions of an OT algorithm.
 #'
 #' Example:
 #' Assuming that \eqn{Y = (1,1,2,2,3,3,4,4)} and \eqn{Z = (1,1,1,1,2,2,2,2)}, so \eqn{n_Y = 4} and \eqn{n_Z = 2} and the related coefficient of correlation \eqn{cor(Y,Z)} is 0.89.
@@ -29,7 +29,7 @@
 #'
 #' @param REF A factor with a reference number of levels.
 #' @param Z A factor with a number of levels greater than the number of levels of the reference.
-#' @param ord A boolean. If TRUE, only the subsequent levels of \eqn{Z} can be grouped together.
+#' @param ord A boolean. If TRUE, only neighboring levels of \eqn{Z} will be grouped and tested together.
 #'
 #' @return A data.frame with five columns:
 #'         \item{combi}{The first column enumerates all possible groups of modalities of \eqn{Y} to obtain the same number of levels as the reference.}

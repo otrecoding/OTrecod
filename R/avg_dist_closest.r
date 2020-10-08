@@ -1,12 +1,12 @@
 
 #' avg_dist_closest()
 #'
-#' This function computes average distances between levels of two categorical outcomes located in two distinct databases
+#' This function computes average distances between levels of two categorical variables located in two distinct databases
 #'
 #'
 #' The function \code{avg_dist_closest} is an intermediate function for the implementation of original algorithms dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory (for more details, consult the corresponding algorithms called
 #' \code{OUTCOME}, \code{R_OUTCOME}, \code{JOINT} and \code{R_JOINT}, in the reference (2)). The function \code{avg_dist_closest} is so directly implemented in the \code{OT_outcome} and \code{OT_joint} functions but can also be used separately.
-#' The function \code{avg_dist_closest} uses, in particular, the D distance matrix (that stores distances between rows of A and B) from the function \code{\link{proxim_dist}} to produce three distinct matrices saved in a list object.
+#' The function \code{avg_dist_closest} uses, in particular, the distance matrix D (that stores distances between rows of A and B) from the function \code{\link{proxim_dist}} to produce three distinct matrices saved in a list object.
 #' Therefore, the function requires in input, the specific output of the function \code{\link{proxim_dist}} which is available in the package and so must be used beforehand.
 #' In consequence, do not use this function directly on your database, and do not hesitate to consult the provided examples provided for a better understanding.
 #'
@@ -20,13 +20,13 @@
 #' When \code{percent_closest} < 1, the average distance between an individual i and a given level of factor z only uses the corresponding part of individuals related to z that are the closest to i.
 #' Therefore, this choice influences the estimations of average distances between levels of factors but also permits to reduce time computation when necessary.
 #'
-#' The average distance between each individual of \eqn{Y} (\eqn{Z}) and each levels of \eqn{Z} (\eqn{Y}) are returned in output, in the object \code{DindivA} (\code{DindivB} respectively).
+#' The average distance between each individual of \eqn{Y} (resp. \eqn{Z}) and each levels of \eqn{Z} (resp. \eqn{Y}) are returned in output, in the object \code{DindivA} (\code{DindivB} respectively).
 #' The average distance between each levels of \eqn{Y} and each levels of \eqn{Z} are returned in a matrix saved in output (the object \code{Davg}).
 #' \code{Davg} returns the computation of the cost matrix D, whose dimensions (\eqn{n_Y \times n_Z}) correspond to the number of levels of \eqn{Y} (rows) and \eqn{Z} (columns).
 #' This matrix can be seen as the ability for an individual (row) to move from a given level of the target variable (\eqn{Y}) in A to a given level of \eqn{Z} in the database B (or vice versa).
 #'
 #'
-#' @param proxim An object corresponding to the output of the \code{proxim_dist} function
+#' @param proxim A \code{proxim_dist} object
 #' @param percent_closest A value between 0 and 1 corresponding to the desired percent of rows (or individuals) that will be taken into acccount for the computation of the average distances between levels of factors or
 #' between individuals and levels of only one factor (the value 1 is taken by default, therefore, all individuals with a same level of \eqn{Y} or a same level of \eqn{Z} will be remained for the average computations).
 #'
