@@ -13,7 +13,7 @@ indiv_grp_closest(
 )
 }
 \arguments{
-\item{proxim}{An object corresponding to the output of the function \code{\link{proxim_dist}}}
+\item{proxim}{A \code{\link{proxim_dist}} object or an object of similar structure}
 
 \item{jointprobaA}{A matrix whose number of columns corresponds to the number of modalities of the target variable \eqn{Y} in database A, and which number of rows corresponds to the number of modalities of Z in database B. It gives an estimation of the joint probability of \eqn{(Y,Z)} in A.
 The sum of cells of this matrix must be equal to 1}
@@ -31,36 +31,36 @@ A list of two vectors of numeric values:
 \item{ZBtrans}{A vector corresponding to the individual predictions of \eqn{Z} (numeric form) in  the database A using the Optimal Transportation algorithm}
 }
 \description{
-This function sequentially assigns individual predictions using a nearest neighbor procedure to solve recoding problems of data fusion
+This function sequentially assigns individual predictions using a nearest neighbors procedure to solve recoding problems of data fusion
 }
 \details{
 A. THE RECODING PROBLEM IN DATA FUSION
 
-Assuming that \eqn{Y} and \eqn{Z} are two variables which refered to a same target population in two separate (no overlapping rows) databases A and B respectively,
+Assuming that \eqn{Y} and \eqn{Z} are two variables which refered to the same target population in two separate databases A and B respectively (no overlapping rows),
 so that \eqn{Y} and \eqn{Z} are never jointly observed. Assuming also that A and B share a subset of common covariates \eqn{X} of any types (same encodings in A and B)
-completed or not. Integrating these two databases often requires to solve this observed recoding problem by creating an unique database where
+completed or not. Integrating these two databases often requires to solve the recoding problem by creating an unique database where
 the missing information of \eqn{Y} and \eqn{Z} is fully completed.
 
 
 B. DESCRIPTION OF THE FUNCTION
 
-The function \code{indiv_grp_closest} is an intermediate function used in the implementation of a model called {OUTCOME} (and its enrichment {R-OUTCOME}, see the reference (2) for more details) dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory.
+The function \code{indiv_grp_closest} is an intermediate function used in the implementation of an algorithm called {OUTCOME} (and its enrichment {R-OUTCOME}, see the reference (2) for more details) dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory.
 The model is implemented in the function \code{\link{OT_outcome}} which integrates the function \code{indiv_grp_closest} in its syntax as a possible second step of the algorithm.
 The function \code{indiv_grp_closest} can also be used separately provided that the argument \code{proxim} receives an output object of the function \code{\link{proxim_dist}}.
 This latter is available in the package and is so directly usable beforehand.
 
-The algorithm related to \code{OUTCOME} (and \code{R-OUTCOME}) is made of two independent parts. Assuming that the objective consists in the prediction of \eqn{Z} in the database A:
+The algorithms \code{OUTCOME} (and \code{R-OUTCOME}) are made of two independent parts. Assuming that the objective consists in the prediction of \eqn{Z} in the database A:
 \itemize{
-\item The first part of the algorithm provides an estimate of \eqn{\gamma} which can be interpreted as an estimation of the joint distribution \eqn{(Y,Z)} in A.
-\item From the result of the first part, the second part executes a nearest neighbor procedure to provide the individual predictions of \eqn{Z} in A: and this procedure is taken over by the function \code{indiv_group_closest}.
+\item The first part of the algorithm solves the optimization problem by providing a solution called \eqn{\gamma} that corresponds here to an estimation of the joint distribution \eqn{(Y,Z)} in A.
+\item From the first part, a nearest neighbor procedure is carried out as a second part to provide the individual predictions of \eqn{Z} in A: this procedure is implemented in the function \code{indiv_group_closest}.
 In other words, this function sequentially assigns to each individual of A the modality of \eqn{Z} that is closest.
 }
 Obviously, this algorithm  runs in the same way for the prediction of \eqn{Y} in the database B.
-The function \code{indiv_grp_closest} integrates in its syntax the function \code{\link{avg_dist_closest}} and the related argument \code{percent_closest} is identical in the two functions.
-Thus, when computing average distances between an individual i and a subset of individuals assigned to a same level of \eqn{Y} or \eqn{Z} is required, user can decide if all individuals from the subset of interest can participate to the computation (\code{percent_closest}=1) or only a fixed part p (<1) corresponding to the closest neighbors of i (in this case \code{percent_closest} = p).
+The function \code{indiv_grp_closest} integrates in its syntax the function \code{\link{avg_dist_closest}}. Therefore, the related argument \code{percent_closest} is identical in the two functions.
+Thus, when computing average distances between an individual \eqn{i} and a subset of individuals assigned to a same level of \eqn{Y} or \eqn{Z} is required, user can decide if all individuals from the subset of interest can participate to the computation (\code{percent_closest}=1) or only a fixed part p (<1) corresponding to the closest neighbors of \eqn{i} (in this case \code{percent_closest} = p).
 
-The arguments \code{jointprobaA} and \code{jointprobaB} correspond to the estimations of \eqn{\gamma} (sum of cells must be equal to 1) in A and B respectively.
-For example, assuming that nY1 individuals are assigned to the first modality of \eqn{Y} in A and the objective consists in the individual predictions of \eqn{Z} in A. Then, if \code{jointprobaA}[1,2] = 0.10,
+The arguments \code{jointprobaA} and \code{jointprobaB} correspond to the estimations of \eqn{\gamma} (sum of cells must be equal to 1) in A and/or B respectively, according to the \code{which.DB} argument.
+For example, assuming that \eqn{n_{Y_1}} individuals are assigned to the first modality of \eqn{Y} in A, the objective consists in the individual predictions of \eqn{Z} in A. Then, if \code{jointprobaA}[1,2] = 0.10,
 the maximum number of individuals that can be assigned to the second modality of \eqn{Z} in A, can not exceed \eqn{0.10 \times n_A}.
 If \eqn{n_{Y_1} \leq 0.10 \times n_A} then all individuals assigned to the first modality of \eqn{Y} will be assigned to the second modality of \eqn{Z}.
 At the end of the process, each individual with still no affectation  will receive the same modality of \eqn{Z} as those of his nearest neighbor in B.
@@ -114,7 +114,7 @@ percent_closest= 0.90,which.DB="A")
 \references{
 \enumerate{
 \item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics. Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
-\item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
+\item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 | \url{https://doi.org/10.1080/01621459.2020.1775615}
 }
 }
 \seealso{

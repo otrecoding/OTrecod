@@ -1,26 +1,26 @@
 
 #' indiv_grp_optimal()
 #'
-#' This function assigns individual predictions related to recoding problems of data fusion by solving a linear optimization problem
+#' This function assigns individual predictions to the incomplete information of two integrated datasources by solving a linear optimization problem
 #'
 #'
 #' A. THE RECODING PROBLEM IN DATA FUSION
 #'
-#' Assuming that \eqn{Y} and \eqn{Z} are two variables which refered to a same target population in two separate (no overlapping rows) databases A and B respectively,
+#' Assuming that \eqn{Y} and \eqn{Z} are two variables which refered to the same target population in two separate databases A and B respectively (no overlapping rows),
 #' so that \eqn{Y} and \eqn{Z} are never jointly observed. Assuming also that A and B share a subset of common covariates \eqn{X} of any types (same encodings in A and B)
-#' completed or not. Integrating these two databases often requires to solve this observed recoding problem by creating an unique database where
+#' completed or not. Integrating these two databases often requires to solve the recoding problem by creating an unique database where
 #' the missing information of \eqn{Y} and \eqn{Z} is fully completed.
 #'
 #'
 #' B. DESCRIPTION OF THE FUNCTION
 #'
-#' The function \code{indiv_grp_optimal} is an intermediate function used in the implementation of a model called \code{OUTCOME} (and its enrichment \code{R-OUTCOME}, see the reference (2) for more details) dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory.
+#' The function \code{indiv_grp_optimal} is an intermediate function used in the implementation of an algorithm called \code{OUTCOME} (and its enrichment \code{R-OUTCOME} (2)) dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory.
 #' The model is implemented in the function \code{\link{OT_outcome}} which integrates the function \code{indiv_grp_optimal} in its syntax as a possible second step of the algorithm.
-#' The function \code{indiv_grp_optimal} can nevertheless be used separately provided that the argument \code{proxim} receives an output object of the function \code{\link{proxim_dist}}.
+#' The function \code{indiv_grp_optimal} can nevertheless be used separately providing that the argument \code{proxim} receives an output object of the function \code{\link{proxim_dist}}.
 #' This latter is available in the package and is so directly usable beforehand.
 #'
 #' The function \code{indiv_grp_optimal} constitutes an alternative method to the nearest neighbor procedure implemented in the function \code{\link{indiv_grp_closest}}.
-#' As for the function \code{\link{indiv_grp_closest}}, assuming that the objective consists in the prediction of \eqn{Z} in the database A, the first step of the algorithm related to \code{OUTCOME} provides an estimate of \eqn{\gamma} which can is an estimation of the joint distribution \eqn{(Y,Z)} in A.
+#' As for the function \code{\link{indiv_grp_closest}}, assuming that the objective consists in the prediction of \eqn{Z} in the database A, the first step of the algorithm related to \code{OUTCOME} provides an estimate of \eqn{\gamma}, the solution of the optimization problem, which can be seen, in this case as an estimation of the joint distribution \eqn{(Y,Z)} in A.
 #' Rather than using a nearest neighbor approach to provide individual predictions, the function \code{indiv_grp_optimal} solves an optimization problem using the simplex algorithm which searches for the individual predictions of \eqn{Z} that minimize the computed total distance satisfying the joint probability distribution estimated in the first part.
 #' More details about the theory related to the solving of this optimization problem is described in the section 5.3 of (2).
 #'
@@ -34,18 +34,18 @@
 #' Moreover, the function actually uses the \code{R} optimization infrastructure of the package \pkg{ROI} which offers a wide choice of solver to users by easily loading the associated plugins of \pkg{ROI} (see (5)).
 #'
 #'
-#' @param proxim An object corresponding to the output of the function \code{\link{proxim_dist}}
-#' @param jointprobaA A matrix whose number of columns is equal to the number of modalities of the target variable \eqn{Y} in database A, and which number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database A.
+#' @param proxim A \code{\link{proxim_dist}} object or an object of similar structure
+#' @param jointprobaA A matrix whose number of columns is equal to the number of modalities of the target variable \eqn{Y} in database A, and whose number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database A.
 #' The sum of cells of this matrix must be equal to 1.
-#' @param jointprobaB A matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and which number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database B.
+#' @param jointprobaB A matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and whose number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database B.
 #' The sum of cells of this matrix must be equal to 1.
 #' @param percent_closest A value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals used in the computation of the average distances
 #' @param solvr A character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".
-#' @param which.DB A character string (with quotes) that indicates which individual predictions compute: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).
+#' @param which.DB A character string (with quotes) that indicates which individual predictions are computed: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).
 #'
 #' @return A list of two vectors of numeric values:
-#' \item{YAtrans}{A vector corresponding to the predicted values of \eqn{Y} in database B (numeric form) using the Optimal Transportation theory}
-#' \item{ZBtrans}{A vector corresponding to the predicted values of \eqn{Z} in database A (numeric form) using the Optimal Transportation theory}
+#' \item{YAtrans}{A vector corresponding to the predicted values of \eqn{Y} in database B (numeric form) according to the \code{which.DB} argument}
+#' \item{ZBtrans}{A vector corresponding to the predicted values of \eqn{Z} in database A (numeric form) according to the \code{which.DB} argument}
 #'
 #'
 #' @author Gregory Guernec, Valerie Gares, Jeremy Omer
@@ -61,10 +61,10 @@
 #' @references
 #' \enumerate{
 #' \item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics. Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
-#' \item Gares V, Omer J (2020). Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
+#' \item Gares V, Omer J (2020). Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 | \url{https://doi.org/10.1080/01621459.2020.1775615}
 #' \item Makhorin A (2011). GNU Linear Programming Kit Reference Manual Version 4.47.\url{http://www.gnu.org/software/glpk}
 #' \item Forrest J, de la Nuez D, Lougee-Heimer R (2004). Clp User Guide. \url{http://www.coin-or.org/Clp/userguide/index.html}
-#' \item Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 \url{https://doi.org/10.18637/jss.v094.i15)}
+#' \item Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 \url{https://doi.org/10.18637/jss.v094.i15}
 #' }
 #'
 #' @aliases indiv_grp_optimal
