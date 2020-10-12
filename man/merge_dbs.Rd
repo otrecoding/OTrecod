@@ -26,23 +26,23 @@ merge_dbs(
 
 \item{DB2}{A data.frame corresponding to the 2nd database to merge (bottom database)}
 
-\item{row_ID1}{The column index of the row identifier of DB1 if DB1 has one (no identifier by default)}
+\item{row_ID1}{The column index of the row identifier of DB1 if it exists (no identifier by default)}
 
-\item{row_ID2}{The column index of the row identifier of DB2 if DB2 has one (no identifier by default)}
+\item{row_ID2}{The column index of the row identifier of DB2 if it exists (no identifier by default)}
 
 \item{NAME_Y}{The name of the outcome (with quotes) in its specific scale/encoding from the 1st database (DB1)}
 
 \item{NAME_Z}{The name of the outcome (with quotes) in its specific scale/encoding from the 2nd database (DB2)}
 
-\item{order_levels_Y}{A vector of classes (with quotes) sorted in ascending order that permits to reorder the levels of \eqn{Y} in the 1st database (DB1) if necessary, when \eqn{Y} is stored as an ordinal factor (scale).}
+\item{order_levels_Y}{The levels of \eqn{Y} stored in a vector and sorted in ascending order in the case of ordered factors. This option permits to reorder the levels in the 1st database (DB1) if necessary.}
 
-\item{order_levels_Z}{A vector of classes (with quotes) sorted in ascending order that permits to reorder the levels of \eqn{Z} in the 2nd database (DB2) if necessary, when \eqn{Z} is stored as an ordinal factor (scale).}
+\item{order_levels_Z}{The levels of \eqn{Z} stored in a vector and sorted in ascending order in the case of ordered factors. This option permits to reorder the levels in the 2nd database (DB2) if necessary.}
 
 \item{ordinal_DB1}{A vector of index of columns corresponding to ordinal variables in the 1st database (no ordinal variable by default)}
 
 \item{ordinal_DB2}{A vector of index of columns corresponding to ordinal variables in the 2nd database (no ordinal variable by default)}
 
-\item{impute}{A character (with quotes) equals to "NO" when missing data on covariates are kept (By default), "CC" for Complete Case by keeping only covariates with no missing information , "MICE" for MICE multiple imputation approach, "FAMD" for single imputation approach using Factorial Analysis for Mixed Data}
+\item{impute}{A character equals to "NO" when missing data on covariates are kept (Default option), "CC" for Complete Case by keeping only covariates with no missing information , "MICE" for MICE multiple imputation approach, "FAMD" for single imputation approach using Factorial Analysis for Mixed Data}
 
 \item{R_MICE}{The chosen number of multiple imputations required for the  MICE approach (5 by default)}
 
@@ -65,14 +65,15 @@ A list containing 10 elements (11 when \code{impute} equals "MICE"):
 \item{SEED}{An integer used as argument by the \code{set.seed} function for offsetting the random number generator (random selection by default)}
 }
 \description{
-Overlay of two databases with specific outcome variables and shared covariates
+Harmonization of two databases with specific outcome variables and shared covariates before data fusion
 }
 \details{
-Assuming that DB1 and DB2 are two databases (two separate data.frames with no overlapping part) to merge vertically, the function \code{merge_dbs} performs this overlay by checking the compatibility of the variables between the databases.
-Each database must contain a target variable (whose label must be filled in the argument \code{Y} for DB1 and in the argument \code{Z} for DB2 respectively, so that the final database in output will contain a target \code{Y} whose values will be missing in DB2 and another target \code{Z} whose values will be missing in DB1), a subset of shared covariates (by example, the best predictors of \eqn{Y} in DB1, and \eqn{Z} in DB2),
+Assuming that DB1 and DB2 are two databases (two separate data.frames with no overlapping rows) to be merged vertically, the function \code{merge_dbs} performs this fusion by checking the harmonization of the variables between the two databases.
+Firslty, the two databases declared as input to the function (via the argument \code{DB1} and \code{DB2}) must have a same specific structure.
+Each database must contain a target variable (whose label must be filled in the argument \code{Y} for DB1 and in \code{Z} for DB2 respectively, so that the final synthetic database in output will contain an incomplete variable \code{Y} whose corresponding values will be missing in DB2 and another incomplete target \code{Z} whose values will be missing in DB1), a subset of shared covariates (by example, the best predictors of \eqn{Y} in DB1, and \eqn{Z} in DB2),
 and another possible subset of variables specific to each database.
-Each database can have a row identifier whose corresponding index of column must be assigned in the arguments \code{row_ID1} for DB1 and \code{row_ID2} for DB2. Nevertheless, by default, DB1 and DB2 have no row identifiers and the merging remains unchanged the order of rows in the two databases provided that \eqn{Y} and \eqn{Z} have no missing values.
-A rule for the overlay is that the declared first database (in the argument \code{DB1}) will be placed above the second one (declared in the argument \code{DB2}).
+Each database can have a row identifier whose label must be assigned in the argument \code{row_ID1} for DB1 and \code{row_ID2} for DB2. Nevertheless, by default DB1 and DB2 are supposed with no row identifiers while, in the other way, the merging remains unchanged the order of rows in the two databases provided that \eqn{Y} and \eqn{Z} have no missing values.
+A rule for the fusion is that the declared first declared database (in the argument \code{DB1}) will be placed above the second one (declared in the argument \code{DB2}).
 
 The function \code{merge_dbs} is dedicated to the harmonization of databases in data fusion projects.
 This function notably detects heterogenity between variables from one database to another and so, can be useful as a preliminary step of data fusion using Optimal Transportation theory.
