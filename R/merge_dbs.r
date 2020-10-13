@@ -1,18 +1,33 @@
 #' merge_dbs()
 #'
-#' Harmonization of two databases with specific outcome variables and shared covariates before data fusion
+#' Harmonization and merging before data fusion of two databases with specific outcome variables and shared covariates
 #'
-#' Assuming that DB1 and DB2 are two databases (two separate data.frames with no overlapping rows) to be merged vertically, the function \code{merge_dbs} performs this fusion by checking the harmonization of the variables between the two databases.
-#' Firslty, the two databases declared as input to the function (via the argument \code{DB1} and \code{DB2}) must have a same specific structure.
-#' Each database must contain a target variable (whose label must be filled in the argument \code{Y} for DB1 and in \code{Z} for DB2 respectively, so that the final synthetic database in output will contain an incomplete variable \code{Y} whose corresponding values will be missing in DB2 and another incomplete target \code{Z} whose values will be missing in DB1), a subset of shared covariates (by example, the best predictors of \eqn{Y} in DB1, and \eqn{Z} in DB2),
-#' and another possible subset of variables specific to each database.
-#' Each database can have a row identifier whose label must be assigned in the argument \code{row_ID1} for DB1 and \code{row_ID2} for DB2. Nevertheless, by default DB1 and DB2 are supposed with no row identifiers while, in the other way, the merging remains unchanged the order of rows in the two databases provided that \eqn{Y} and \eqn{Z} have no missing values.
-#' A rule for the fusion is that the declared first declared database (in the argument \code{DB1}) will be placed above the second one (declared in the argument \code{DB2}).
+#' Assuming that DB1 and DB2 are two databases (two separate data.frames with no overlapping rows) to be merged vertically before data fusion, the function \code{merge_dbs} performs this merging and checks the harmonization of the shared variables.
+#' Firslty, the two databases declared as input to the function (via the argument \code{DB1} and \code{DB2}) must have the same specific structure.
+#' Each database must contain a target variable (whose label must be filled in the argument \code{Y} for DB1 and in \code{Z} for DB2 respectively, so that the final synthetic database in output will contain an incomplete variable \code{Y} whose corresponding values will be missing in DB2 and another incomplete target \code{Z} whose values will be missing in DB1), a subset of shared covariates (by example, the best predictors of \eqn{Y} in DB1, and \eqn{Z} in DB2).
+#' Each database can have a row identifier whose label must be assigned in the argument \code{row_ID1} for DB1 and \code{row_ID2} for DB2. Nevertheless, by default DB1 and DB2 are supposed with no row identifiers. The merging remains unchanged the order of rows in the two databases provided that \eqn{Y} and \eqn{Z} have no missing values.
+#' By building, the first declared database (in the argument \code{DB1}) will be placed automatically above the second one (declared in the argument \code{DB2}) in the final database.
 #'
-#' The function \code{merge_dbs} is dedicated to the harmonization of databases in data fusion projects.
-#' This function notably detects heterogenity between variables from one database to another and so, can be useful as a preliminary step of data fusion using Optimal Transportation theory.
+#' Firstly, by default, a variable with the same name in the two databases is abusively considered as shared. This condition is obviously insufficient to be kept in the final subset of shared variables,
+#' and the function \code{merge_dbs} so performs checks before merging described below.
 #'
-#' A. The function \code{merge_dbs} handles incomplete information, by respecting the following rules:
+#' A. Discrepancies between shared variables
+#' \itemize{
+#' \item Shared variables with discrepancies of types between the two databases (for example, a variable with a common name in the two databases but stored as numeric in DB1, and stored as character in DB2) will be removed from the merging and the variable name will be saved in output (\code{REMOVE1}).
+#' \item Shared factors with discrepancies of levels (or number of levels) will be also removed from the merging and the variable name will be saved in output (\code{REMOVE2}).
+#' \item covariates whose names are specific to each database will be also deleted from the merging.
+#' \item If some important predictors have been improperly excluded from the merging due to the above-mentioned checks, it is possible for user to transform these variables a posteriori, and re-run the function.
+#' }
+#'
+#' B. Rules for the two outcomes (target variables)
+#'
+#' The types of \code{Y} and \code{Z} must be suitable:
+#' \itemize{
+#' \item Categorical (ordered or not) factors are allowed.
+#' \item Numeric and discrete outcomes with a finite number of values are allowed but will be automatically converted as ordered factors using the function \code{transfo_target} integrated in the function \code{merge_dbs}.
+#' }
+#'
+#' C. The function \code{merge_dbs} handles incomplete information of shared variables, by respecting the following rules:
 #' \itemize{
 #' \item If \code{Y} or \code{Z} have missing values in DB1 or DB2, corresponding rows are excluded from the database before merging. Moreover, in the case of incomplete outcomes,
 #' if A and B have row identifiers, the corresponding identifiers are removed and these latters are stored in the objects \code{DB1_ID} and \code{DB2_ID} of the output.
@@ -20,19 +35,10 @@
 #' Users can decide to work with complete case only ("CC"), to keep ("NO") or impute incomplete information ("MICE","FAMD").
 #' \item The function \code{imput_cov}, integrated in the syntax of \code{merge_dbs} deals with imputations. Two approaches are actually available:
 #' the multivariate imputation by chained equation approach (MICE, see (3) for more details about the approach or the corresponding package \pkg{mice}),
-#' and an imputation approach from the package \pkg{missMDA} that uses a dimensionality reduction method (here a factor analysis for mixed data called FAMD (4), to provide single imputations.
-#' If multiple imputation is required (\code{impute} = "MICE"), the default imputation methods are applied according to the type of the variables. The average of the plausible values will be remained for a continuous variable, while the most frequent candidate will be remained as a consensus value for a categorical variable or factor (ordinal or not).
+#' and an imputation approach from the package \pkg{missMDA} that uses a dimensionality reduction method (here a factor analysis for mixed data called FAMD (4)), to provide single imputations.
+#' If multiple imputation is required (\code{impute} = "MICE"), the default imputation methods are applied according to the type of the variables. The average of the plausible values will be kept for a continuous variable, while the most frequent candidate will be kept as a consensus value for a categorical variable or factor (ordinal or not).
 #' }
 #'
-#' B. The function \code{merge_dbs} studies the compatibilities between A and B, of each shared covariate, by respecting the following rules:
-#' \itemize{
-#' \item The formats of \code{Y} and \code{Z} must be suitable. Categorical (ordered or not) factors are allowed. Numeric and discrete outcomes with a finite number of values are allowed but will be automatically converted as ordered factors
-#' using the function \code{transfo_target} integrated in the function \code{merge_dbs}.
-#' \item Shared variables with incompatible formats between the two databases will be removed from the merging and the related label will be saved in output (\code{REMOVE1}).
-#' \item Shared factors with incompatible levels (or number of levels) will be removed from the merging and the related label will be saved in output (\code{REMOVE2}).
-#' \item Covariates whose names are specific to each database will be also deleted from the merging.
-#' }
-#' Notice that if certain important predictors have been improperly excluded from the merging, users can transform these variables a posteriori, and re-run the function.
 #' As a finally step, the function checks that all values related to \eqn{Y} in B are missing and inversely for \eqn{Z} in A.
 #'
 #' @param DB1 A data.frame corresponding to the 1st database to merge (top database)
@@ -116,7 +122,7 @@
 #' summary(soluc1$DB_READY)
 #'
 #'
-#' # Ex 2: The two databases are merged and missing values are remained
+#' # Ex 2: The two databases are merged and missing values are kept
 #' soluc2  = merge_dbs(data_A,data_B,
 #'                     NAME_Y = "Yb1",NAME_Z = "Yb2",
 #'                     ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
