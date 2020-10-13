@@ -1,51 +1,51 @@
 #' OT_joint()
 #'
-#' The function \code{OT_joint} integrates two models called (\code{JOINT}) and (\code{R-JOINT}) dedicated to the solving of recoding problems in data integration
+#' The function \code{OT_joint} integrates two algorithms called (\code{JOINT}) and (\code{R-JOINT}) dedicated to the solving of recoding problems in data integration
 #' using optimal transportation of the joint distribution of outcomes and covariates.
 #'
 #'
 #' A. THE RECODING PROBLEM IN DATA FUSION
 #'
-#' Assuming that \eqn{Y} and \eqn{Z} are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
-#' so that \eqn{Y} and \eqn{Z} are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (with same encodings in A and B)
-#' completed or not. Integrating these two databases often requires to solve the recoding problem observed between \eqn{Y} and \eqn{Z} by creating an unique database where
-#' the missing information of \eqn{Y} and/or \eqn{Z} is fully completed.
+#' Assuming that \eqn{Y} and \eqn{Z} are two variables which refered to the same target population in two separate databases A and B respectively (no overlapping rows),
+#' so that \eqn{Y} and \eqn{Z} are never jointly observed. Assuming also that A and B share a subset of common covariates \eqn{X} of any types (same encodings in A and B)
+#' completed or not. Integrating these two databases often requires to solve the recoding problem by creating an unique database where
+#' the missing information of \eqn{Y} and \eqn{Z} is fully completed.
 #'
 #'
 #' B. INFORMATIONS ABOUT THE ALGORITHM
 #'
 #' As with the function \code{\link{OT_outcome}}, the function \code{OT_joint} provides a solution to the recoding problem by proposing an
 #' application of optimal transportation which aims is to search for a bijective mapping between the joint distributions of \eqn{(Y,X)} and \eqn{(Z,X)} in A and B (see (2) for more details).
-#' The principle of the algorithm is also based on the resolution of an optimization problem, which provides a \eqn{\gamma} solution (as called in (1) and (2)), estimation
+#' The principle of the algorithm is also based on the resolution of an optimization problem, which provides a solution \eqn{\gamma} (as called in (1) and (2)), estimate
 #' of the joint distribution of \eqn{(X,Y,Z)} according to the database to complete (see the argument \code{which.DB} for the choice of the database). While the models \code{OUTCOME} and \code{R_OUTCOME} integrated in
 #' the function \code{\link{OT_outcome}} require post-treatment steps to provide individual predictions, the algorithm \code{JOINT} directly uses estimations of the conditional distributions \eqn{(Y|Z,X)} in B and
 #' \eqn{(Z|Y,X)} in A to predict the corresponding incomplete individuals informations of \eqn{Y} and/or \eqn{Z} respectively.
 #' This algorithm supposes that the conditional distribution \eqn{(Y|X)} must be identical in A and B. Respectively, \eqn{(Z|X)} is supposed identical in A and B.
-#' Estimations a posteriori of conditional probabilities \eqn{P[Y|X,Z]} and \eqn{P[Z|X,Y]} are available by profiles of covariates in output (See the objects \code{estimatorYB} and \code{estimatorZA}).
+#' Estimations a posteriori of conditional probabilities \eqn{P[Y|X,Z]} and \eqn{P[Z|X,Y]} are available for each profiles of covariates in output (See the objects \code{estimatorYB} and \code{estimatorZA}).
 #' Estimations of \eqn{\gamma} are also available according to the chosen transport distributions (See the arguments \code{gamma_A} and \code{gamma_B}).
 #'
-#' The model \code{R-JOINT} gathers enrichments of the model \code{JOINT} and is also available via the function \code{OT_joint}. It allows users to add a relaxation term in the algorithm to relax distributional assumptions (\code{maxrelax}>0),
+#' The algorithm \code{R-JOINT} gathers enrichments of the algorithm \code{JOINT} and is also available via the function \code{OT_joint}. It allows users to add a relaxation term in the algorithm to relax distributional assumptions (\code{maxrelax}>0),
 #' and (or) add also a positive regularization term (\code{lamdba.reg}>0) expressing that the transportation map does not vary to quickly with respect of covariates \eqn{X}.
 #' Is is suggested to users to calibrate these two parameters a posteriori by studying the stability of the individual predictions in output.
 #'
 #'
 #' C. TYPE OF REQUIRED INPUT DATABASE
 #'
-#' The input database is a data.frame that must be saved in a specific form by users:
+#' The input database is a data.frame that must satisfy a specific form:
 #' \itemize{
-#' \item Two overlayed databases containing a common column of databases identifiers (A and B, 1 or 2, by examples, encoded in numeric or factor form)
+#' \item Two superimposed databases containing a common column of databases identifiers (A and B, 1 or 2, by examples, encoded in numeric or factor form)
 #' \item A column corresponding to the target variable with its specific encoding in A (For example a factor \eqn{Y} encoded in \eqn{n_Y} levels, ordered or not, with NAs in the corresponding rows of B)
-#' \item A column corresponding to another target outcome summarizing the same latent information with its specific endoded in B (By example a factor \eqn{Z} in \eqn{n_Z} levels, with NAs in rows of A)
+#' \item A column corresponding to another target outcome summarizing the same latent information with its specific encoding in B (By example a factor \eqn{Z} with \eqn{n_Z} levels, with NAs in rows of A)
 #' \item The order of the variables in the database have no importance but the column indexes related to the three columns previously described (ie ID, \eqn{Y} and \eqn{Z}) must be rigorously specified
 #' in the argument \code{index_DB_Y_Z}.
-#' \item A set of shared common categorical covariates (at least one but more is recommended) complete or not (provided that the number of covariates exceeds 1) is required. On the contrary to the
+#' \item A set of shared common categorical covariates (at least one but more is recommended) with or without missing values (provided that the number of covariates exceeds 1) is required. On the contrary to the
 #' function \code{OT_outcome}, please notice, that the function \code{OT_joint} does not accept continuous covariates therefore these latters will have to be categorized beforehand or using the provided input process (see \code{convert.num}).
 #' }
-#' The function \code{\link{merge_dbs}} is available in this package to assist user in the preparation of their databases, so please, do not hesitate to use it beforehand if necessary.
+#' The function \code{\link{merge_dbs}} is available in this package to assist user in the preparation of their databases.
 #'
-#' Remarks about the outcomes:
+#' Remarks about the target variables:
 #' \itemize{
-#' \item A target outcome can be categorical, in factor, ordered or not, discrete (with a finite number of values ONLY) but, notice that, if they are stored in numeric they will be automatically converted in ordered factors.
+#' \item A target outcome can be a categorical variable, but also continuous or discrete (but with a finite number of values only), stored in factor, ordered or not. Nevertheless, notice that, if the variable is stored in numeric it will be automatically converted in ordered factors.
 #' \item If a target outcome is incomplete, the corresponding rows will be automatically dropped during the execution of the function.
 #' }
 #' The type of each variables (including \eqn{ID}, \eqn{Y} and \eqn{Z}) of the database must be rigorously specified, in one of the four arguments \code{quanti}, \code{nominal}, \code{ordinal} and \code{logic}.
@@ -53,13 +53,13 @@
 #'
 #' D. TRANSFORMATIONS OF CONTINUOUS COVARIATES
 #'
-#' Continuous covariates with infinite numbers of values will have to be categorized beforehand their inclusions in the function.
+#' Continuous covariates with infinite numbers of values have to be categorized beforehand their inclusions in the function.
 #' To assist users in this task, the function \code{OT_joint} integrates in its syntax a process dedicated to the categorization of continuous covariates. For this, it is necessary to rigorously fill in
 #' the arguments \code{quanti} and \code{convert.clss}.
-#' The first one informs about the indexes in database of the continuous variables to transform in ordered factor while the second one specifies the corresponding number of desired balanced levels (for unbalanced levels, users must do transformations by themselves).
+#' The first one informs about the column indexes of the continuous variables to transform in ordered factor while the second one specifies the corresponding number of desired balanced levels (for unbalanced levels, users must do transformations by themselves).
 #' Therefore \code{convert.num} and \code{convert.clss} must be vectors of same length, but if the length of \code{quanti} exceeds 1, while the length of \code{convert.clss} is 1, then, by default, all the covariates to convert will have the same number of classes (transformation by quantiles),
 #' that corresponds to the value specified in the argument \code{convert.clss}.
-#' Please notice that only covariates can be transformed (not outcomes) and missing informations are not taken into account for the transformations.
+#' Notice that only covariates can be transformed (not target variables) and missing informations are not taken into account for the transformations.
 #' Moreover, all the indexes informed in the argument \code{convert.num} must also be informed in the argument \code{quanti}.
 #' Finally, it is suggested to declare all discrete covariates as ordinal factors using the argument \code{ordinal}.
 #'
@@ -88,26 +88,26 @@
 #'
 #'
 #'
-#' @param datab A data.frame with at least four columns sorted in a non-specific order. One column must be a column of identifier for the two databases, where the names of the two databases
-#' must be ranked in ascending order (By example: 1 for the top database and 2 for the database from below, or more logically here A and B  ...But NOT B and A!). One column (\eqn{Y} here but other names are allowed)
-#' must correspond to the target variable related to the information of interest to merge with its specific encoding in the database A (corresponding encoding should be so missing in the database B). In the same way,
-#' one column (\eqn{Z} here) corresponds to the second target variable with its specific encoding in the database B (corresponding encoding should be so missing in the database A).
-#' Finally, the input database must have at least one shared covariate with same encoding in A and B. Please notice that, if your data.frame has only four columns, that is to say with only one covariate, if this latter has NA, and unless user
-#' has previously imputed the corresponding missing information, the OT algorithm will only run complete cases.
-#' @param index_DB_Y_Z A vector of three column indexes. The first index must correspond to the index of the databases identifier column (DB identifier). The second index must correspond
+#' @param datab A data.frame made up of two superimposed databases with at least four columns sorted in random order. One column must be a column dedicated to the identification of the two databases ranked in ascending order
+#' (For example: 1 for the top database and 2 for the database from below, or more logically here A and B  ...But not B and A!). One column (\eqn{Y} here but other names are allowed)
+#' must correspond to the target variable related to the information of interest to merge with its specific encoding in the database A (corresponding encoding should be missing in the database B). In the same way,
+#' one column (\eqn{Z} here) corresponds to the second target variable with its specific encoding in the database B (corresponding encoding should be missing in the database A).
+#' Finally, the input database must have at least one shared covariate with same encoding in A and B. Please notice that, if your data.frame has only one shared covariate (four columns) with missing values (because no imputation is desired)
+#' then a warning will appear and the algorithm will only run with complete cases.
+#' @param index_DB_Y_Z A vector of three indexes of variables. The first index must correspond to the index of the databases identifier column. The second index corresponds
 #' to the index of the target variable in the first database (A) while the third index corresponds to the index of column related to the target variable in the second database (B).
-#' @param nominal A vector of indexes that corresponds to the column indexes of all the nominal (not ordered) variables (DB identification and target variables included if it is the case for them).
-#' @param ordinal A vector of indexes that corresponds to the column indexes of all the ordinal variables (DB identification and target variables included if it is the case for them).
-#' @param logic A vector of indexes that corresponds to the column indexes of all the boolean variables of the data.frame.
+#' @param nominal A vector of column indexes of all the nominal (not ordered) variables (DB identification and target variables included if it is the case for them).
+#' @param ordinal A vector of column indexes of all the ordinal variables (database identifier and target variables included if it is the case for them).
+#' @param logic A vector of column indexes of all the boolean variables of the data.frame.
 #' @param convert.num Indexes of the continuous (quantitative) variables. They will be automatically converted in ordered factors. By default, no continuous variables is assumed in the database.
 #' @param convert.clss A vector indicating for each continuous variable to convert, the corresponding desired number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} equals 1 (only one integer),
 #' each discretization will count the same number of levels.
 #' @param dist.choice A character (with quotes) corresponding to the distance function chosen between: the euclidean distance ("E", by default), the Manhattan distance ("M"),
 #' the Gower distance ("G"), and the Hamming distance ("H") for binary covariates only.
 #' @param percent.knn The percentage of closest neighbors involved in the computations of the cost matrices.
-#' @param maxrelax The maximum percentage of deviation from expected probability masses. It must be equal to 0 (default value) for the \code{JOINT} model, and equal to a strictly positive value for the R-JOINT model
-#' @param lambda.reg A coefficient measuring the importance of the regularization term. In the related reference (2), it corresponds to the \code{R-JOINT} model for a value other than 0 (default value))
-#' @param prox.dist A percentage (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.
+#' @param maxrelax The maximum percentage of deviation from expected probability masses. It must be equal to 0 (default value) for the \code{JOINT} model, and equal to a strictly positive value for the R-JOINT algorithm.
+#' @param lambda.reg A coefficient measuring the importance of the regularization term. It corresponds to the \code{R-JOINT} algorithm for a value other than 0 (default value).
+#' @param prox.dist A probability (between 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.
 #' @param prox.X A percentage (betwen 0 and 1) used to calculate the distance threshold below which two covariates' profiles are supposed as neighbors.
 #' If \code{prox.X = 1}, all profiles are considered as neighbors.
 #' @param solvR A character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".
