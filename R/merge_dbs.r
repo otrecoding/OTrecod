@@ -5,7 +5,7 @@
 #' Assuming that DB1 and DB2 are two databases (two separate data.frames with no overlapping rows) to be merged vertically before data fusion, the function \code{merge_dbs} performs this merging and checks the harmonization of the shared variables.
 #' Firslty, the two databases declared as input to the function (via the argument \code{DB1} and \code{DB2}) must have the same specific structure.
 #' Each database must contain a target variable (whose label must be filled in the argument \code{Y} for DB1 and in \code{Z} for DB2 respectively, so that the final synthetic database in output will contain an incomplete variable \code{Y} whose corresponding values will be missing in DB2 and another incomplete target \code{Z} whose values will be missing in DB1), a subset of shared covariates (by example, the best predictors of \eqn{Y} in DB1, and \eqn{Z} in DB2).
-#' Each database can have a row identifier whose label must be assigned in the argument \code{row_ID1} for DB1 and \code{row_ID2} for DB2. Nevertheless, by default DB1 and DB2 are supposed with no row identifiers. The merging remains unchanged the order of rows in the two databases provided that \eqn{Y} and \eqn{Z} have no missing values.
+#' Each database can have a row identifier whose label must be assigned in the argument \code{row_ID1} for DB1 and \code{row_ID2} for DB2. Nevertheless, by default DB1 and DB2 are supposed with no row identifiers. The merging keeps unchanged the order of rows in the two databases provided that \eqn{Y} and \eqn{Z} have no missing values.
 #' By building, the first declared database (in the argument \code{DB1}) will be placed automatically above the second one (declared in the argument \code{DB2}) in the final database.
 #'
 #' Firstly, by default, a variable with the same name in the two databases is abusively considered as shared. This condition is obviously insufficient to be kept in the final subset of shared variables,
@@ -407,13 +407,13 @@ merge_dbs = function(DB1,
   DB2_new          = DB2_new[, order(names(DB2_new))]
 
 
-  # Names of the common covariates between the two DB
+  # Names of the shared variables between the two DB
 
   same_cov      = intersect(names(DB1_new), names(DB2_new))
   n_col         = length(same_cov)
 
 
-  # Remaining common covariates in each DB
+  # Remaining shared variables in each DB
 
   DB1_4FUS     = DB1_new[, same_cov]
   DB2_4FUS     = DB2_new[, same_cov]
