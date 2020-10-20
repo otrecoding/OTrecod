@@ -9,8 +9,8 @@ avg_dist_closest(proxim, percent_closest = 1)
 \arguments{
 \item{proxim}{A \code{proxim_dist} object}
 
-\item{percent_closest}{A value between 0 and 1 corresponding to the desired percent of rows (or individuals) that will be taken into acccount for the computation of the average distances between levels of factors or
-between individuals and levels of only one factor (the value 1 is taken by default, therefore, all individuals with a same level of \eqn{Y} or a same level of \eqn{Z} will be remained for the average computations).}
+\item{percent_closest}{A value between 0 and 1 corresponding to the desired percent of rows (or statistical units, or individuals) that will participate in the computation of the average distances between levels of factors or
+between individuals and levels of only one factor. The default value 1 means that all rows (individuals) with a same level of \eqn{Y} or a same level of \eqn{Z} will be kept for the average computations. See 'Details'.}
 }
 \value{
 A list of 3 matrices is returned:
@@ -72,7 +72,7 @@ res_new  = avg_dist_closest(res1,percent_closest = 0.80)
 \enumerate{
 \item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
 Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
-\item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
+\item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 | \url{https://doi.org/10.1080/01621459.2020.1775615}
 }
 }
 \seealso{
