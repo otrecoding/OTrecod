@@ -1,6 +1,6 @@
 #' select_pred()
 #'
-#' Selection of a subset of non collinear predictors having relevant relationships with a given target outcome.
+#' Selection of a subset of non collinear predictors having relevant relationships with a given target outcome using a random forest procedure.
 #'
 #' The \code{select_pred} function provides several tools to identify, on the one hand, the relationships between predictors, by detecting especially potential problems of collinearity, and, on the other hand, proposes a parcimonious subset of relevant predictors (of the outcome) using appropriate random forest procedures.
 #' The function which can be used as a preliminary step of prediction in regression areas is particularly adapted to the context of data fusion by providing relevant subsets of predictors (the matching variables) to algorithms dedicated to the solving of recoding problems.
@@ -10,11 +10,11 @@
 #'
 #' The expected input database is a data.frame that especially requires a specific column of row identifier and a target variable (or outcome) having a finite number of values or classes (ordinal, nominal or discrete type). Notice that if the chosen outcome is in numeric form, it will be automatically converted in ordinal type.
 #' The number of predictors is not a constraint for \code{select_pred} (even if, with less than three variables a process of variables selection has no real sense...), and can exceed the number of rows (no problem of high dimensionality here).
-#' The predictors can be continuous (quantitative), boolean, nominal or ordinal with or without missing values. Nevertheless, this function provides optimal performances with or without only a limited number of continuous variables and with complete information.
+#' The predictors can be continuous (quantitative), boolean, nominal or ordinal with or without missing values.
 #' In presence of numeric variables, users can decide to discretize them or a part of them by themselves beforehand. They can also choose to use the internal process directly integrated in the function. Indeed, to assist users in this task, two arguments called \code{convert_num} and \code{convert_clss} dedicated to these transformations are available in input of the function.
 #' These options make the function \code{select_pred} particularly adapted to the function \code{\link{OT_joint}} which only allows data.frame with categorical covariates.
 #' With the argument \code{convert_num}, users choose the continuous variables to convert and the related argument \code{convert_clss} specifies the corresponding number of classes chosen for each discretization.
-#' It is the reason why these two arguments must be two vectors of indexes of same length. Nevertheless, an unique exception exists when \code{convert_clss} is equalled to a scalar S. In this case, all the continuous predictors selected for conversion will be discretized with a same number of classes S.
+#' It is the reason why these two arguments must be two vectors of indexes of same length. Nevertheless, an unique exception exists when \code{convert_clss} is equalled to a scalar \eqn{S}. In this case, all the continuous predictors selected for conversion will be discretized with a same number of classes S.
 #' By example, if \code{convert_clss = 4}, all the continuous variables specified in the \code{convert_num} argument will be discretized by quartiles. Moreover, notice that missing values from incomplete predictors to convert are not taken into account during the conversion, and that each predictor specified in the argument \code{convert_num}
 #' must be also specified in the argument \code{quanti}.
 #' In this situation, the label of the outcome must be entered in the argument \code{Y}, and the arguments \code{Z} and \code{OUT} must keep their default values.
@@ -44,7 +44,7 @@
 #' In presence of a large number of numeric covariates and/or ordered factors, the approximate Farrar-Glauber test, based on the normal approximation of the null distribution is more adapted and its result is also provided in output.
 #' These two tests are highly sensitive and, by consequence, it suggested to consider these results as simple indicators of collinearity between predictors rather than an essential condition of acceptability.}
 #' }
-#' If the initial number of predictors is not too important, these informations can be sufficient to users for the visualization of the potential problems of collinearity and for the selection of a subset of predictors (\code{RF = FALSE}).
+#' If the initial number of predictors is not too important, these informations can be sufficient to the user for the visualization of potential problems of collinearity and for the selection of a subset of predictors (\code{RF = FALSE}).
 #' It is nevertheless often necessary to complete this visualization by an automatical process of selection like the Random Forest approach (see Breiman 2001, for a better understanding of the method) linked to the function \code{select_pred} (\code{RF = TRUE}).
 #'
 #'
@@ -89,12 +89,12 @@
 #' @param thresh_cat A threshold associated to the Cramer's V coefficient (= 0.30 by default)
 #' @param thresh_num A threshold associated to the Spearman's coefficient of correlation (= 0.70 by default)
 #' @param thresh_Y A threshold linked to the RF approach, that indicates the minimal percent of importance required for a variable to be considered as a reliable predictor of the outcome.
-#' @param RF A boolean equals to TRUE (default) if a random forest procedure must be used in the selecting of the best subset of predictors for the outcome.
+#' @param RF A boolean sets to TRUE (default) if a random forest procedure must be applied to select the best subset of predictors according to the outcome.Otherwise, only pairwise associations between predictors are used for the selection.
 #' @param RF_ntree The number of bootsrap samples required from the row datasource during the random forest procedure
 #' @param RF_condi A boolean specifying if the conditional importance measures must be assessed from the random forest procedure (\code{TRUE}) rather than the standard variable importance  measures (\code{FALSE} by default)
-#' @param RF_condi_thr A threshold linked to (1 - pvalue) of an association test between each predictor \eqn{X} and the other variables, given that a threshold value of zero wil include all variables in the computation of the conditional importance measure of \eqn{X} (0.20 is the default value).
-#' Conversely, a larger threshold will only keeps for the computation of the variable importance measure of \eqn{X}, the subset of variables that is strongly correlated to \eqn{X}.
-#' @param RF_SEED An integer used as argument by the set.seed() for offsetting the random number generator (random integer by default). This value is only used when a RF method is required.
+#' @param RF_condi_thr A threshold linked to (1 - pvalue) of an association test between each predictor \eqn{X} and the other variables, given that a threshold value of zero will include all variables in the computation of the conditional importance measure of \eqn{X} (0.20 is the default value).
+#' Conversely, a larger threshold will only keeps the subset of variables that is strongly correlated to \eqn{X} for the computation of the variable importance measure of \eqn{X}.
+#' @param RF_SEED An integer used as argument by the set.seed() for offsetting the random number generator (random integer by default). This value is only used for RF method.
 #'
 #'
 #' @return A list of 14 (if \code{RF = TRUE}) or 11 objects (Only the first ten objects if \code{RF = FALSE}) is returned:
@@ -109,7 +109,7 @@
 #' \item{cor_X_num}{Table of pairwise associations between the continuous predictors (Cramer's V)}
 #' \item{FG_test}{Results of the Farrar and Glauber tests, with and without approximation form}
 #' \item{collinear_PB}{Table of predictors with problem of collinearity according to the fixed thresholds}
-#' \item{drop_var}{Labels of predictors to drop after RF process (optional output: Only if \code{RF}=TRUE)}
+#' \item{drop_var}{Labels of predictors to drop after RF process (optional output: only if \code{RF}=TRUE)}
 #' \item{RF_PRED_Y}{Table of variable importance measurements, conditional or not, according to the argument \code{condi_RF} (optional output: Only if \code{RF}=TRUE)}
 #' \item{best_pred}{Labels of the best predictors selected (optional output: Only if \code{RF}=TRUE) according to the value of the argument \code{thresh_Y}}
 #'

@@ -1,7 +1,7 @@
 
 #' indiv_grp_closest()
 #'
-#' This function sequentially assigns individual predictions using a nearest neighbors procedure to solve recoding problems of data fusion
+#' This function sequentially assigns individual predictions using a nearest neighbors procedure to solve recoding problems of data fusion.
 #'
 #' A. THE RECODING PROBLEM IN DATA FUSION
 #'

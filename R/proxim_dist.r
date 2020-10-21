@@ -1,9 +1,9 @@
 #' proxim_dist()
 #'
-#' \code{proxim_dist} computes the pairwise distance matrix of a database and cross-distance matrix between two databases according to various distance functions in the context of data fusion.
+#' \code{proxim_dist} computes the pairwise distance matrix of a database and cross-distance matrix between two databases according to various distances used in the context of data fusion.
 #'
 #'
-#' This function is the first step of a family of algorithms that solve recoding problems of data fusion using Optimal Transportation theory (See the details of these corresponding models \code{OUTCOME}, \code{R_OUTCOME}, \code{JOINT} and \code{R_JOINT} in (1) and (2))
+#' This function is the first step of a family of algorithms that solve recoding problems of data fusion using optimal transportation theory (see the details of these corresponding models \code{OUTCOME}, \code{R_OUTCOME}, \code{JOINT} and \code{R_JOINT} in (1) and (2)).
 #' The function \code{proxim_dist} is directly implemented in the functions \code{\link{OT_outcome}} and \code{\link{OT_joint}} but can also be used separately as long as the input database has as suitable structure. Nevertheless, its preparation will have to be rigorously made in two steps detailled in the following sections.
 #'
 #' A. REQUIRED STRUCTURE FOR THE DATABASE
@@ -16,20 +16,19 @@
 #' The order of these variables in the database have no importance but the column indexes related to database identifier, \eqn{Y} and \eqn{Z}, must be specified in the \code{indx_DB_Y_Z} option.
 #' Users can refer to the structure of the table \code{\link{simu_data}} available in the package to adapt their databases to the inital format required.
 #'
-#' Missing values are allowed on covariates only (and in presence of more than one covariate), and are excluded from all computations involving the rows within which they occur.
+#' Missing values are allowed on covariates only, and are excluded from all computations involving the rows within which they occur.
 #' In the particular case where only one covariate with NAs is used, we recommend working with imputed or complete case only to avoid the presence of NA in the distance matrix that will be computed a posteriori.
-#'
 #' If the database counts many covariates and some of them have missing data, user can keep them or apply beforehand the \code{\link{imput_cov}} function on data.frame to deal with this problem.
 #'
 #'
 #' B. DISTANCE FUNCTIONS AND TYPES OF COVARIATES
 #'
-#' In a second step, before including the data.frame in the function, the shared variables of the merged database will have to be encoded according to the choice of the distance function fixed by user, knowing that it is also frequent that it is the type of the variables which fixes the distance function to choose.
+#' In a second step, the shared variables of the merged database will have to be encoded according to the choice of the distance function fixed by user, knowing that it is also frequent that it is the type of the variables which fixes the distance function to choose.
 #' The function \code{\link{transfo_dist}} is available in the package to assist users in this task but a user can also decide to make this preparation by themselves.
-#' Thus, with the Euclidean or Manhattan distance ((3), \code{norm} = "E" or "M"), if all types of variables will be allowed, logical variables will have to be previously transformed in binary variables, and categorical variables (factors ordered or not) will have to be transformed by their related disjunctive tables (the function \code{\link{transfo_quali}} can make these specific transformations).
+#' Thus, with the Euclidean or Manhattan distance ((3), \code{norm} = "E" or "M"), if all types of variables are allowed, logical variables are transformed in binary variables, and categorical variables (factors ordered or not) are replaced by their related disjunctive tables (the function \code{\link{transfo_quali}} can make these specific transformations).
 #' The Hamming distance (\code{norm} = "H") only requires binary variables (all other forms are not allowed). In this context, continuous variables could have been converted in factor of k levels (\eqn{k>2}) beforehand. The categorical covariates are then transformed in disjunctive tables (containing the (\eqn{k-1}) corresponding binary variables) before use. With this distance, categorical variables are also transformed in disjunctive tables.
-#' Notice that, using the Hamming distance could be quite long in presence NAs on covariates, so please be a little patient and let the function runs few minutes if necessary.
-#' Finally, the Gower distance ((4), \code{norm} = "G") uses the (\code{\link[StatMatch]{gower.dist}}) function (5) and so allows logical, categorical and numeric variables with no preliminary transformations.
+#' Notice that, using the Hamming distance could be quite long in presence of NAs on covariates.
+#' Finally, the Gower distance ((4), \code{norm} = "G") uses the (\code{\link[StatMatch]{gower.dist}}) function (5) and so allows logical, categorical and numeric variables without preliminary transformations.
 #'
 #' In conclusion, the structure of the data.frame required in input of the function \code{proxim_dist} corresponds to two overlayed databases with two target outcomes and a set of shared covariates whose encodings depend on the distance function choosen by user.
 #'
@@ -37,25 +36,26 @@
 #' If all pairs are excluded when computing a particular distance, instead of putting NA in the corresponding cell of the distance matrix, the process stops and an object listing the problematic rows is proposed in output.
 #' It suggests users to remove these rows before running the process again or impute NAs related to these rows (see (6) for more details).
 #'
+#'
 #' C. PROFILES OF COVARIATES AND OUTPUT DETAILS
 #'
 #' Whatever the type (mixed or not) and the number of covariates in the data.frame of interest, the function \code{proxim_dist} firstly detects all the possible profiles (or combinations) of covariates from the two databases, and saves them in the output \code{profile}.
-#' For example, assuming that a data.frame in input (composed of two overlayed data.frames A and B) have three shared binary covariates (ie identically encoded in A and B) so the sequences \code{011} and \code{101} will be considered as two distinct profiles of covariates.
+#' For example, assuming that a data.frame in input (composed of two overlayed data.frames A and B) have three shared binary covariates (identically encoded in A and B) so the sequences \code{011} and \code{101} will be considered as two distinct profiles of covariates.
 #' If each covariate is a factor of \eqn{n_1}, \eqn{n_2} and \eqn{n_3} levels respectively, so it exists at most \eqn{n_1 \times n_2 \times n_3} possible profiles of covariates.
 #' This number is considered as a maximum here because only the profiles of covariates met in at least one of the two databases will be kept for the study.
 #'
 #' \code{proxim_dist} classifies individuals from the two databases according to their proximities to each profile of covariates and saves the corresponding indexes of rows from A and B in two lists \code{indXA} and \code{indXB} respectively.
 #' \code{indXA} and \code{indXB} thus contain as many objects as covariates profiles and the proximity between a given profile and a given individual is defined as follows.
 #' The function also provides in output the list of all the encountered profiles of covariates.
-#' As a decision rule, for a given profile of covariates \eqn{P_j}, an individual i will be considered as a neighbor of \eqn{P_j} if \eqn{dist(i,P_j) < prox \times max(dist(i,P_j))} where \code{prox} will be fixed by user.
+#' As a decision rule, for a given profile of covariates \eqn{P_j}, an individual \eqn{i} will be considered as a neighbor of \eqn{P_j} if \eqn{dist(i,P_j) < prox \times max(dist(i,P_j))} where \code{prox} will be fixed by user.
 #'
 #'
-#' @param data_file A data.frame corresponding ideally to an output of the function \code{\link{transfo_dist}}. Otherwise this data.frame is the result of two overlayed databases with a column of database identifier ("A" and "B", 1 and 2, for example), a target variable (called \eqn{Y} by example) only known in the first database, a target variable (\eqn{Z}) only stored in the second database, such that \eqn{Y} and \eqn{Z} summarize a same information differently encoded in the two databases and set of common covariates (at least one) of any type.
+#' @param data_file A data.frame corresponding ideally to an output object of the function \code{\link{transfo_dist}}. Otherwise this data.frame is the result of two overlayed databases with a column of database identifier ("A" and "B", 1 and 2, for example), a target variable (called \eqn{Y} by example) only known in the first database, a target variable (\eqn{Z}) only stored in the second database, such that \eqn{Y} and \eqn{Z} summarize a same information differently encoded in the two databases and set of common covariates (at least one) of any type.
 #' The order of the variables in the data.frame have no importance. The type of the covariates must be in accordance with the chosen distance function in the \code{norm} option.
-#' @param indx_DB_Y_Z A vector of three column numbers corresponding to the colum indexes of the identifier, the target variable in the first database and the target variable in the second database. The indexes must be declared in this specific order.
-#' @param norm A character (with quotes) indicating the choice of the distance function. This latest depends on the type of the common covariates: the Hamming distance
+#' @param indx_DB_Y_Z A vector of three column indexes corresponding to the database identifier, the target variable of the above database and the target variable of the below database. The indexes must be declared in this specific order.
+#' @param norm A character string indicating the choice of the distance function. This latest depends on the type of the common covariates: the Hamming distance
 #' for binary covariates only (\code{norm} = "H"), the Manhattan distance ("M", by default) and the euclidean distance ("E") for continuous covariates only, or the Gower distance for mixed covariates ("G").
-#' @param prox A percentage (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.
+#' @param prox A ratio (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row or a given statistical unit) is considered as a neighbor of a given profile of covariates.
 #'
 #' @return A list of 16 elements (the first 16 detailed below) is returned containing various distance matrices and lists useful for the algorithms that used Optimal Transportation theory. Two more objects (the last two of the following list) will be returned if distance matrices contain NAs.
 #' \item{FILE_NAME}{A simple reminder of the name of the raw database}
