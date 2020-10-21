@@ -31,7 +31,7 @@ A list of two vectors of numeric values:
 \item{ZBtrans}{A vector corresponding to the individual predictions of \eqn{Z} (numeric form) in  the database A using the Optimal Transportation algorithm}
 }
 \description{
-This function sequentially assigns individual predictions using a nearest neighbors procedure to solve recoding problems of data fusion
+This function sequentially assigns individual predictions using a nearest neighbors procedure to solve recoding problems of data fusion.
 }
 \details{
 A. THE RECODING PROBLEM IN DATA FUSION

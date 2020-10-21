@@ -26,7 +26,7 @@ The sum of cells of this matrix must be equal to 1.}
 
 \item{solvr}{A character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".}
 
-\item{which.DB}{A character string (with quotes) that indicates which individual predictions are computed: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).}
+\item{which.DB}{A character string that indicates which individual predictions are computed: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).}
 }
 \value{
 A list of two vectors of numeric values:
@@ -34,14 +34,14 @@ A list of two vectors of numeric values:
 \item{ZBtrans}{A vector corresponding to the predicted values of \eqn{Z} in database A (numeric form) according to the \code{which.DB} argument}
 }
 \description{
-This function assigns individual predictions to the incomplete information of two integrated datasources by solving a linear optimization problem
+This function assigns individual predictions to the incomplete information of two integrated datasources by solving a linear optimization problem.
 }
 \details{
 A. THE RECODING PROBLEM IN DATA FUSION
 
 Assuming that \eqn{Y} and \eqn{Z} are two target variables which refered to the same target population in two separate databases A and B respectively (no overlapping rows),
 so that \eqn{Y} and \eqn{Z} are never jointly observed. Assuming also that A and B share a subset of common covariates \eqn{X} of any types (same encodings in A and B)
-completed or not. Integrating these two databases often requires to solve the recoding problem by creating an unique database where
+completed or not. Integrating these two databases often requires to solve a recoding problem by creating an unique database where
 the missing information of \eqn{Y} and \eqn{Z} is fully completed.
 
 

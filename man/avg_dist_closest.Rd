@@ -23,7 +23,7 @@ DindivA[i,Q] refers to the average distance between the \eqn{i^{th}} individual 
 DindivB[k,P] refers to the average distance between the \eqn{k^{th}} individual (or row) of the second database and a chosen proportion of individuals (depending on \code{percent_closest}) of the first database having the modality P of \eqn{Y}.}
 }
 \description{
-This function computes average distances between levels of two categorical variables located in two distinct databases
+This function computes average distances between levels of two categorical variables located in two distinct databases.
 }
 \details{
 The function \code{avg_dist_closest} is an intermediate function for the implementation of original algorithms dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory (for more details, consult the corresponding algorithms called

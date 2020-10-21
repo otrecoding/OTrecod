@@ -1,7 +1,7 @@
 
 #' avg_dist_closest()
 #'
-#' This function computes average distances between levels of two categorical variables located in two distinct databases
+#' This function computes average distances between levels of two categorical variables located in two distinct databases.
 #'
 #'
 #' The function \code{avg_dist_closest} is an intermediate function for the implementation of original algorithms dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory (for more details, consult the corresponding algorithms called
