@@ -1,7 +1,19 @@
 
 #' transfo_target()
 #'
-#' This function prepares the encoding of the target variable before running an algorithm using Optimal Transportation theory.
+#' This function prepares the encoding of the target variable before running an algorithm using optimal transportation theory.
+#'
+#' The function \code{transfo_target} is an intermediate function direcly implemented in the functions \code{\link{OT_outcome}} and \code{\link{OT_joint}},
+#' two functions dedicated to data fusion (see (1) and (2) for details). Nevertheless, this function can also be used separately to assist user in the conversion
+#' of a target variable (outcome) according to the following rules:
+#' \itemize{
+#' \item A character variable is converted in factor if the argument \code{levels_order} is set to NULL. In this case, the levels of the factor are assigned by order of appearance in the database.
+#' \item A character variable is converted in ordered factor if the argument \code{levels_order} differs from NULL. In this case, the levels of the factor correspond to those assigned in the argument.
+#' \item A factor stays unchanged if the argument \code{levels_order} is set to NULL. Otherwise the factor is converted in ordered factor and the levels are ordered according to the argument \code{levels_order}.
+#' \item A numeric variable, discrete or continuous is converted in factor if the argument \code{levels_order} is set to NULL, and the related levels are the values assigned in ascending order.
+#' \item A numeric variable, discrete or continuous is converted in ordered factor if the argument \code{levels_order} differed from NULL, and the related levels correspond to those assigned in the argument.
+#' }
+#'
 #'
 #' @param z            A factor variable (ordered or not). A variable of another type will be, by default, convert to a factor.
 #' @param levels_order A vector corresponding to the values of the levels of z. When the target is ordinal, the levels can be sorted by ascending order.
@@ -17,6 +29,13 @@
 #' @seealso \code{\link{compare_lists}}
 #'
 #' @aliases transfo_target
+#'
+#' @references
+#' \enumerate{
+#' \item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N. (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
+#' Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
+#' \item Gares V, Omer J (2020). Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 | \url{https://doi.org/10.1080/01621459.2020.1775615}
+#' }
 #'
 #' @export
 #'

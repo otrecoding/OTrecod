@@ -14,10 +14,10 @@
 #' DEFINITION OF THE COST MATRIX
 #'
 #' Assuming that A and B are two databases with a set of shared variables and that a same information (referred to a same target population) is stored as a variable \eqn{Y} in A and \eqn{Z} in B, such that \eqn{Y} is unknown in B and \eqn{Z} is unknown in A, whose encoding depends on the database (\eqn{n_Y} levels in A and \eqn{n_Z} levels in B).
-#' A distance between one given level y of \eqn{Y} and one given level z of Z is estimated by averaging the distances between the two subsets of individuals (units or rows) assigned to y in A and z in B, characterized by their vectors of covariates.
+#' A distance between one given level y of \eqn{Y} and one given level z of \eqn{Z} is estimated by averaging the distances between the two subsets of individuals (units or rows) assigned to y in A and z in B, characterized by their vectors of covariates.
 #' The distance between two individuals depends on the variations between the shared covariates, and so depends on the chosen distance function using the function \code{proxim_dist}.
 #' For these computations, all the individuals concerned by these two levels can be taken into account, or only a part of them, depending on the argument \code{percent_closest}.
-#' When \code{percent_closest} < 1, the average distance between an individual i and a given level of factor z only uses the corresponding part of individuals related to z that are the closest to i.
+#' When \code{percent_closest} < 1, the average distance between an individual \eqn{i} and a given level of factor z only uses the corresponding part of individuals related to z that are the closest to \eqn{i}.
 #' Therefore, this choice influences the estimations of average distances between levels of factors but also permits to reduce time computation when necessary.
 #'
 #' The average distance between each individual of \eqn{Y} (resp. \eqn{Z}) and each levels of \eqn{Z} (resp. \eqn{Y}) are returned in output, in the object \code{DindivA} (\code{DindivB} respectively).
@@ -27,8 +27,10 @@
 #'
 #'
 #' @param proxim A \code{proxim_dist} object
-#' @param percent_closest A value between 0 and 1 corresponding to the desired percent of rows (or statistical units, or individuals) that will participate in the computation of the average distances between levels of factors or
-#' between individuals and levels of only one factor. The default value 1 means that all rows (individuals) with a same level of \eqn{Y} or a same level of \eqn{Z} will be kept for the average computations. See 'Details'.
+#' @param percent_closest A ratio between 0 and 1 corresponding to the desired part of rows (or statistical units, or individuals) that will participate to the computation of the average distances between levels of factors or
+#' between an individual (a row) and levels of only one factor. Indeed, target variables are factors and each level of factor is characterized by a subset of rows, themselves characterized by their covariate profiles.
+#' These rows can be ordered according to their distances at their factor level. When this ratio is set to 1 (default setting), all rows participate to the computation, nevertheless when this ratio is less than 1, only rows with
+#' the smallest factor level distances will be kept for the computation (see 'Details').
 #'
 #' @return A list of 3 matrices is returned:
 #' \item{Davg}{The cost matrix whose number of rows corresponds to \eqn{n_Y}, the number of levels of the target variable \eqn{Y} in the database A, and whose number of columns corresponds to \eqn{n_Z}: the number of levels of the target variable in B.
