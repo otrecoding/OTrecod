@@ -24,24 +24,24 @@ differently encoded in the two databases and covariates. The order of the variab
 \item{index_DB_Y_Z}{A vector of exactly three integers. The first integer must correspond to the column index of the database identifier. The second integer corresponds
 to the index of the target variable in the first database while the third integer corresponds to the index of column related to the target variable in the second database.}
 
-\item{quanti}{A vector of integers that corresponds to the column indexes of all the quantitative variables (DB identification and target variables included).}
+\item{quanti}{The column indexes of all the quantitative variables (database identificatier and target variables included) stored in a vector.}
 
-\item{nominal}{A vector of integers that corresponds to the column indexes of all the nominal (not ordered) variables (DB identification and target variables included).}
+\item{nominal}{The column indexes of all the nominal (not ordered) variables (DB identification and target variables included) stored in a vector.}
 
-\item{ordinal}{A vector of integers that corresponds to the column indexes of all the ordinal variables (DB identification and target variables included).}
+\item{ordinal}{The column indexes of all the ordinal variables (DB identification and target variables included) stored in a vector.}
 
-\item{logic}{A vector of integers that corresponds to the column indexes of all the boolean variables.}
+\item{logic}{The column indexes of all the boolean variables stored in a vector.}
 
-\item{convert_num}{Indexes of the continuous (quantitative) variables to convert in ordered factors. All indexes declared in this argument must have been declared in the argument \code{quanti} (no conversion by default).}
+\item{convert_num}{Column indexes of the continuous (quantitative) variables to convert in ordered factors. All indexes declared in this argument must have been declared in the argument \code{quanti} (no conversion by default).}
 
-\item{convert_clss}{A vector indicating for each continuous variable to convert the corresponding desired number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} is equal to 1 (only one integer),
+\item{convert_clss}{According to the argument \code{convert_num}, a vector indicating for each continuous variable to convert the corresponding desired number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} is equal to 1 (only one integer),
 each discretization will count the same number of levels.}
 
-\item{prep_choice}{A character (with quotes) corresponding to the distance function chosen between: the euclidean distance ("E", by default), the Manhattan distance ("M"),
-the Gower distance ("G"), and the Hamming (also called binary) distance ("H"), calculated from principal components of a factor analysis of mixed data ("FAMD").}
+\item{prep_choice}{A character string corresponding to the distance function chosen between: the euclidean distance ("E", by default), the Manhattan distance ("M"),
+the Gower distance ("G"), the Hamming (also called binary) distance ("H"), and a distance computed from principal components of a factor analysis of mixed data ("FAMD").}
 
-\item{info}{A percent value (between 0 and 1, 0.8 is the default value) that corresponds to the minimal part of variability that must be taken into account by the remaining principal components of the FAMD when this approach is required.
-This ratio will fix the number of components that will be kept with this approach.}
+\item{info}{A ratio (between 0 and 1, 0.8 is the default value) that corresponds to the minimal part of variability that must be taken into account by the remaining principal components of the FAMD when this approach is required.
+This ratio will fix the number of components that will be kept with this approach. When the argument is set to 1, all the variability is considered.}
 }
 \value{
 A data.frame which covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the database identifier, \eqn{Y} and \eqn{Z} correspond to the first three columns respectively.
@@ -63,18 +63,18 @@ The database must count at least four columns (in an a unspecified order of appe
 \item A second categorical (nominal or ordinal) variable corresponding to the outcome of the second database (called \eqn{Z} by example).
 \item At least one covariate shared in the two bases (same encoding in the two databases). Incomplete information is possible on shared covariates if you have more than one covariate.
 }
-In this context, the information related to \eqn{Y} in the second database must be missing as the information related to \eqn{Z} in the first one.
+In this context, the information related to \eqn{Y} in the second database must be missing as well as the information related to \eqn{Z} in the first one.
 The column indexes related to the database identifier, \eqn{Y} and \eqn{Z} must be specified in this order in the argument \code{index_DB_Y_Z}.
 Moreover, all column indexes (including those related to identifier and target variables \eqn{Y} and \eqn{Z}) of the overlayed database (DB) must be declared once (and only once), among the arguments \code{quanti}, \code{nominal}, \code{ordinal}, and \code{logic}.
-If the outcomes are of numeric types, they could be declared as quantitative, but they will be automatically convert in ordered factors.
+If the outcomes are of numeric types, they could be declared as continuous, but they will be automatically converted in ordered factors as a prerequisite format of the database before using data fusion algorithms.
 
 
 B. TRANSFORMATIONS OF CONTINUOUS COVARIATES
 
-Because some algorithms dedicated to solving recoding problems like \code{JOINT} and \code{R-JOINT}  must run actually without continuous covariates (It is the case of the function \code{OT_joint} of this package), the function \code{transfo_dist} integrates in is syntax
+Because some algorithms dedicated to solving recoding problems like \code{JOINT} and \code{R-JOINT} (see (1) and/or the documentation of \code{\link{OT_joint}}) requires the use of no continuous covariates, the function \code{transfo_dist} integrates in is syntax
 a process dedicated to the categorization of continuous variables. For this, it is necessary to rigorously fill in the arguments \code{convert_num} and \code{convert_clss}. The first one specifies the indexes of continuous variables to transform
 in ordered factors while the second one assigns the corresponding desired number of levels.
-Only covariates can be transformed (not outcomes) and missing informations are not taken into account for the transformations.
+Only covariates should be transformed (not outcomes) and missing informations are not taken into account for the transformations.
 Notice that all the indexes informed in the argument \code{convert_num} must also be informed in the argument \code{quanti}.
 
 
@@ -84,23 +84,23 @@ C. TRANSFORMATIONS ON THE DATABASE ACCORDING TO THE CHOSEN DISTANCE FUNCTION
 These necessary transformations are related to the type of each covariate.
 It depends on the distance function chosen by user in the \code{prep_choice} argument.
 
-1. For the Euclidean ("E") and Manhattan ("M") distances ((1) and (2)):
+1. For the Euclidean ("E") and Manhattan ("M") distances (see (2) and (3)):
 all the remaining continuous variables are standardized.
 The related recoding to a boolean variable is 1 for \code{TRUE} and 0 for \code{FALSE}.
-The recoding of a nominal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
+The recoding of a nominal variable of k classes corresponds to its related disjunctive table (of (k-1) binary variables)).
 The ordinal variables are all converted to numeric variables (please take care that the order of the classes of each of these variables is well specified at the beginning).
 
-2. For the Hamming ("H") distance ((1) and (2)):
+2. For the Hamming ("H") distance (see (2) and (3)):
 all the continuous variables must be transformed beforehand in categorical forms using the internal process described in section B or via another external approach.
 The boolean variables are all converted in ordinal forms and then turned into binaries.
 The recoding for nominal or ordinal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
 
-3. For the Gower ("G") distance (3):
+3. For the Gower ("G") distance (4):
 all covariates remain unchanged
 
-4. Using the principal components from a factor analysis for mixed data (FAMD(4)):
+4. Using the principal components from a factor analysis for mixed data (FAMD (5)):
 a factor analysis for mixed data is applied on the covariates of the database and a specific number of the related principal components is remained (depending on the minimal part of variability explained by the covariates that the user wishes to keep by varying the \code{info} option).
-The function integrates in its syntax the function \code{\link[FactoMineR]{FAMD}} of the package \pkg{FactoMiner} (5) using default parameters.
+The function integrates in its syntax the function \code{\link[FactoMineR]{FAMD}} of the package \pkg{FactoMiner} (6) using default parameters.
 After this step, the covariates are replaced by the remaining principal components of the FAMD, and each value corresponds to coordinates linked to each component.
 Please notice that this method supposed complete covariates in input, nevertheless in presence of incomplete covariates, each corresponding rows will be dropped from the study, a warning will appear and the number of remaining rows will be indicated.
 }
@@ -164,9 +164,10 @@ try5 = transfo_dist(simu_data2,index_DB_Y_Z = c(8,1,6),quanti = 6:7, nominal = c
 }
 \references{
 \enumerate{
-\item Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
-\item Borg, I. and Groenen, P. (1997) Modern Multidimensional Scaling. Theory and Applications. Springer.
-\item Gower, J. C. (1971), “A general coefficient of similarity and some of its properties”. Biometrics, 27, 623--637.
+\item Gares V, Omer J (2020). Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 | \url{https://doi.org/10.1080/01621459.2020.1775615}
+\item Anderberg, M.R. (1973). Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
+\item Borg, I. and Groenen, P. (1997). Modern Multidimensional Scaling. Theory and Applications. Springer.
+\item Gower, J. C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623--637.
 \item Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.
 \item Lê S, Josse J, Husson, F. (2008). FactoMineR: An R Package for Multivariate Analysis. Journal of Statistical Software. 25(1). pp. 1-18.
 }

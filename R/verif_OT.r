@@ -1,6 +1,6 @@
 #' verif_OT()
 #'
-#' This function proposes post-process verifications after data fusion by Optimal Transportation algorithms.
+#' This function proposes post-process verifications after data fusion by optimal transportation algorithms.
 #'
 #' In a context of data fusion, where information from a same target population is summarized via two specific variables \eqn{Y} and \eqn{Z} (two ordinal or nominal factors with different number of levels \eqn{n_Y} and \eqn{n_Z}), never jointly observed and respectively stored in two distinct databases A and B,
 #' Optimal Transportation (OT) algorithms (see the models \code{OUTCOME}, \code{R_OUTCOME}, \code{JOINT}, and \code{R_JOINT} of the reference (2) for more details)
@@ -14,12 +14,12 @@
 #'
 #' A. PAIRWISE ASSOCIATION BETWEEN \eqn{Y} AND \eqn{Z}
 #'
-#' The first step uses standard criterions (Cramer's V, Spearman's rank correlation coefficient) to evaluate associations between two ordinal variables in both databases or only one.
-#' When the argument \code{group.clss = TRUE}, these informations can be completed by those provided by the function \code{\link{error_group}} (available in the package), which is directly integrate in the function \code{verif_OT}.
+#' The first step uses standard criterions (Cramer's V, and Spearman's rank correlation coefficient) to evaluate associations between two ordinal variables in both databases or in only one database.
+#' When the argument \code{group.clss = TRUE}, these informations can be completed by those provided by the function \code{\link{error_group}}, which is directly integrate in the function \code{verif_OT}.
 #' Assuming that \eqn{n_Y > n_Z}, and that one of the two scales of \eqn{Y} or \eqn{Z} is unknown, this function gives additional informations about the potential link between the levels of the unknown scale.
 #' The function proceeds to this result in two steps. Firsty, \code{\link{error_group}} groups combinations of modalities of \eqn{Y} to build all possible variables \eqn{Y'} verifying \eqn{n_{Y'} = n_Z}.
 #' Secondly, the function studies the fluctuations in the association of \eqn{Z} with each new variable \eqn{Y'} by using adapted comparisons criterions (see the documentation of \code{\link{error_group}} for more details).
-#' if grouping successive classes of \eqn{Y} leads to an improvement in the initial association between \eqn{Y} and \eqn{Z} then it is possible to conclude in favor of an ordinal coding for \eqn{Y} (rather than nominal)
+#' If grouping successive classes of \eqn{Y} leads to an improvement in the initial association between \eqn{Y} and \eqn{Z} then it is possible to conclude in favor of an ordinal coding for \eqn{Y} (rather than nominal)
 #' but also to emphasize the consistency in the predictions proposed by the algorithm of fusion.
 #'
 #' B. SIMILARITIES BETWEEN OBSERVED AND PREDICTED DISTRIBUTIONS
@@ -28,25 +28,25 @@
 #' This measure varies between 0 and 1: a value of 0 corresponds to a perfect similarity while a value close to 1 (the maximum) indicates a great dissimilarity.
 #' Using this distance, two distributions will be considered as close as soon as the observed measure will be less than 0.05.
 #'
-#' C.STABILITY OF THE PREDICTIONS
+#' C. STABILITY OF THE PREDICTIONS
 #'
-#' These optional results are based on the following decision rule which defines the stability of an algorithm in A (or B) as its average ability to assign a same prediction
-#' of \eqn{Z} (or \eqn{Y}) to individuals that have a same given profile of covariates x and a same given level of \eqn{Y} (\eqn{Z}).
+#' These optional results are based on the decision rule which defines the stability of an algorithm in A (or B) as its average ability to assign a same prediction
+#' of \eqn{Z} (or \eqn{Y}) to individuals that have a same given profile of covariates \eqn{X} and a same given level of \eqn{Y} (or \eqn{Z} respectively).
 #'
 #' Assuming that the missing information of \eqn{Z} in base A was predicted from an OT algorithm (the reasoning will be identical with the prediction of \eqn{Y} in B, see (2) and (3) for more details), the function \code{verif_OT} uses the conditional probabilities stored in the
-#' object \code{estimatorZA} (see outputs of the functions \code{\link{OT_outcome}} and \code{\link{OT_joint}}) which contains the estimates of all the conditional probabilities of \eqn{Z} in A, given a profile of covariates x and given a level of \eqn{Y = y}.
+#' object \code{estimatorZA} (see outputs of the functions \code{\link{OT_outcome}} and \code{\link{OT_joint}}) which contains the estimates of all the conditional probabilities of \eqn{Z} in A, given a profile of covariates \eqn{x} and given a level of \eqn{Y = y}.
 #' Indeed, each individual (or row) from A, is associated with a conditional probability \eqn{P(Z= z|Y= y, X= x)}.
 #'
 #' With the function \code{\link{OT_joint}}, the individual predictions for subject i: \eqn{\widehat{z}_i}, \eqn{i=1,\ldots,n_A} are given using the maximum a posteriori rule:
 #' \deqn{\widehat{z}_i= \mbox{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)}
-#' While the function \code{\link{OT_outcome}} directly gives the individual predictions and the probablities \eqn{P(Z= z|Y= y, X= x)} are computed in a second step (see (3)).
+#' While the function \code{\link{OT_outcome}} directly gives the individual predictions whereas the probablities \eqn{P(Z= z|Y= y, X= x)} are computed in a second step (see (3)).
 #'
-#' For each subject i in database A, a new variable \eqn{z_i'} is simulate such that: \deqn{z_i'\sim \mathcal{B}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))}
+#' For each subject i in database A, a new variable \eqn{z_i'} is simulate such that: \deqn{z_i'\sim \mathcal{Bernoulli}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))}
 #' The average stability criterium is so calculated as: \deqn{\mbox{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'}
 #' This criterion can be repeated with \code{R} samples and the related mean and variance are given in output.
 #'
 #' Nevertheless, it is possible that some of these conditional probabilities could be computed from only few individuals (because they are computed from a certain number of neighbor individuals for each covariates profile \eqn{x}) and lead to unreliable estimations.
-#' To avoid this problem, conditional probabilities can be removed from the stability criterion since they have been assessed from an insufficient number of subjects.
+#' To avoid this problem, such conditional probabilities can be removed from the stability criterion since they have been assessed from an insufficient number of subjects.
 #' In this way, the minimal number of subjects required for a conditional probability to participate to the stability estimation can be fixed a priori by filling in the argument \code{min.neigb}.
 #'
 #' Notice that, these results are optional and available only if the argument \code{stab.prob = TRUE}.
@@ -61,14 +61,14 @@
 #' @param R A positive integer indicating the number of desired repetitions for the bernoulli simulations in the stability study
 #' @param seed.stab An integer used as argument by the seed for offsetting the random number generator (Random integer by default). Only useful if the stability study is required.
 #'
-#' @return A list of seven objects is returned:
+#' @return A list of 7 objects is returned:
 #' \item{seed}{The list of used random number generator. The first one is fixed by user or randomly chosen}
 #' \item{nb.profil}{The number of profiles of covariates}
 #' \item{conf.mat}{The global confusion matrix between \eqn{Y} and \eqn{Z}}
 #' \item{res.prox}{A summary table related to the association measures between \eqn{Y} and \eqn{Z}}
 #' \item{res.grp}{A summary table related to the study of the proximity of \eqn{Y} and \eqn{Z} using group of levels}
 #' \item{hell}{Hellinger distances between observed and predicted distributions}
-#' \item{eff.neig}{A table which corresponds to a count of conditional probabilities according to the number of neighbors used in their computation (Only the first ten values)}
+#' \item{eff.neig}{A table which corresponds to a count of conditional probabilities according to the number of neighbors used in their computation (only the first ten values)}
 #' \item{res.stab}{A summary table related to the stability of the algorithm}
 #'
 #'
@@ -89,7 +89,7 @@
 #' \item Liese F, Miescke K-J. (2008). Statistical Decision Theory: Estimation, Testing, and Selection. Springer
 #' \item Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N. (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
 #' Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb-2018-0106}
-#' \item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615
+#' \item Gares V, Omer J (2020). Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 | \url{https://doi.org/10.1080/01621459.2020.1775615}
 #' }
 #'
 #' @export
