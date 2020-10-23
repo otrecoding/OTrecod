@@ -29,7 +29,7 @@
 #' Is is suggested to users to calibrate these two parameters a posteriori by studying the stability of the individual predictions in output.
 #'
 #'
-#' C. TYPE OF REQUIRED INPUT DATABASE
+#' C. EXPECTED STRUCTURE FOR THE INPUT DATABASE
 #'
 #' The input database is a data.frame that must satisfy a specific form:
 #' \itemize{
