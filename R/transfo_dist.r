@@ -3,22 +3,21 @@
 #' This function prepares an overlayed database for data fusion according to the distance function chosen to evaluate the proximities between units.
 #'
 #'
-#' A. REQUIRED STRUCTURE FOR THE DATABASE
+#' A. EXPECTED STRUCTURE FOR THE INPUT DATABASE
 #'
-#' In input of this function, the declared database can be the result of an overlay between two databases.
+#' In input of this function, the expected database is the result of an overlay between two databases A and B.
 #' This structure can be guaranteed using the specific outputs of the functions \code{\link{merge_dbs}} or \code{\link{select_pred}}.
 #' Nevertheless, it is also possible to apply directly the function \code{transfo_dist} on a raw database provided that a specific structure is respected in input.
-#' The database must count at least four columns (in an a unspecified order of appearance in the database):
+#' The overlayed database (A placed on top of B) must count at least four columns (in an a unspecified order of appearance in the database):
 #' \itemize{
-#' \item A column indicating the database identifiers (two classes: A and B, 1 and 2, ...)
-#' \item A categorical (nominal or ordinal factor) variable corresponding to the outcome of the first database (on top) with its specific encoding (called \eqn{Y} by example).
-#' \item A second categorical (nominal or ordinal) variable corresponding to the outcome of the second database (called \eqn{Z} by example).
-#' \item At least one covariate shared in the two bases (same encoding in the two databases). Incomplete information is possible on shared covariates if you have more than one covariate.
+#' \item A column indicating the database identifier (two classes or levels if factor: A and B, 1 and 2, ...)
+#' \item A column dedicated to the outcome (or target variable) of the first database and denoted \eqn{Y} for example. This variable can be of categorical (nominal or ordinal factor) or continuous type. Nevertheless, in this last case, a warning will appear and the variable will be automatically converted in ordered factors as a prerequisite format of the database before using data fusion algorithms.
+#' \item A column dedicated to the outcome (or target variable) of the second database and denoted \eqn{Z} for example. As before, this variable can be of categorical (nominal or ordinal factor) or continuous type, and the variable will be automatically converted in ordered factors as a prerequisite format of the database before using data fusion algorithms.
+#' \item At least one shared variable (same encoding in the two databases). Incomplete information is possible on shared covariates only with more than one shared covariate in the final database.
 #' }
-#' In this context, the information related to \eqn{Y} in the second database must be missing as well as the information related to \eqn{Z} in the first one.
+#' In this context, the two databases are overlayed and the information related to \eqn{Y} in the second database must be missing as well as the information related to \eqn{Z} in the first one.
 #' The column indexes related to the database identifier, \eqn{Y} and \eqn{Z} must be specified in this order in the argument \code{index_DB_Y_Z}.
 #' Moreover, all column indexes (including those related to identifier and target variables \eqn{Y} and \eqn{Z}) of the overlayed database (DB) must be declared once (and only once), among the arguments \code{quanti}, \code{nominal}, \code{ordinal}, and \code{logic}.
-#' If the outcomes are of numeric types, they could be declared as continuous, but they will be automatically converted in ordered factors as a prerequisite format of the database before using data fusion algorithms.
 #'
 #'
 #' B. TRANSFORMATIONS OF CONTINUOUS COVARIATES
@@ -47,7 +46,7 @@
 #' The boolean variables are all converted in ordinal forms and then turned into binaries.
 #' The recoding for nominal or ordinal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
 #'
-#' 3. For the Gower ("G") distance (4):
+#' 3. For the Gower ("G") distance (see (4)):
 #' all covariates remain unchanged
 #'
 #' 4. Using the principal components from a factor analysis for mixed data (FAMD (5)):

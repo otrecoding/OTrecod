@@ -45,7 +45,7 @@ A list of 16 elements (the first 16 detailed below) is returned containing vario
 This function is the first step of a family of algorithms that solve recoding problems of data fusion using optimal transportation theory (see the details of these corresponding models \code{OUTCOME}, \code{R_OUTCOME}, \code{JOINT} and \code{R_JOINT} in (1) and (2)).
 The function \code{proxim_dist} is directly implemented in the functions \code{\link{OT_outcome}} and \code{\link{OT_joint}} but can also be used separately as long as the input database has as suitable structure. Nevertheless, its preparation will have to be rigorously made in two steps detailled in the following sections.
 
-A. REQUIRED STRUCTURE FOR THE DATABASE
+A. EXPECTED STRUCTURE FOR THE INPUT DATABASE
 
 Firsly, the initial database required is a data.frame that must be prepared in a specific form by users. From two separate databases, the function \code{\link{merge_dbs}} available in this package can assist users in this initial merging, nevertheless notice that this preliminary transformation can also be made directly by following the imposed structure described below:
 two overlayed databases containing a common column of database identifiers (A and B for examples, encoded in numeric or factor form),

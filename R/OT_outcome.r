@@ -38,7 +38,7 @@
 #' Estimates of \eqn{\gamma} are also available according to the desired direction of the transport (from A to B and/or conversely. See \eqn{\gamma_A} and \eqn{\gamma_B}).
 #'
 #'
-#' C. TYPE OF REQUIRED INPUT DATABASE
+#' C. EXPECTED STRUCTURE FOR THE INPUT DATABASE
 #'
 #' The input database is a data.frame that must be saved in a specific form by users:
 #' \itemize{
