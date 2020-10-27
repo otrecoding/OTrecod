@@ -74,44 +74,44 @@
 #' Finally, because all random forest results are subjects to random variation, users can check whether the same importance ranking is achieved by varying the random seed parameter (\code{RF_SEED}) or by increasing the number of trees (\code{RF_ntree}).
 #'
 #'
-#' @param databa A data.frame with a column of identifiers (of row or of database in the case of two concatened databases), an outcome, and a set of predictors. The number of columns can exceed the number of rows.
-#' @param Y The label of a first target variable with quotes
-#' @param Z The label of a second target variable with quotes when \code{databa} is the result of two overlayed databases.
-#' @param ID The column index of the database identifier (The first column by default) in the case of two concatened databases, a row identifier otherwise
-#' @param OUT A character that indicates the outcome to predict in the context of overlayed databases. By default, the outcome declared in the argument \code{Y} is predicted. Another possible outcome to predict can be set with the related argument \code{Z}.
-#' @param quanti A vector of integers corresponding to the column indexes of all the numeric predictors.
-#' @param nominal A vector of integers which corresponds to the column indexes of all the categorical nominal predictors.
-#' @param ordinal A vector of integers which corresponds to the column indexes of all the categorical ordinal predictors.
-#' @param logic A vector of integers indicating the indexes of logical predictors. No index remained by default
-#' @param convert_num A vector of integers indicating the indexes of quantitative variables to convert in ordered factors. No index remained by default. Each index selected has to be defined as quantitative in the argument \code{quanti}.
-#' @param convert_clss A vector of integers indicating the number of classes related to each transformation of quantitative variable in ordered factor. The length of this vector can not exceed the length of the argument \code{convert_num}. Nevertheless, if length(\code{convert_num}) > 1 and length(\code{convert_clss}) = 1,
+#' @param databa a data.frame with a column of identifiers (of row or of database in the case of two concatened databases), an outcome, and a set of predictors. The number of columns can exceed the number of rows.
+#' @param Y the label of a first target variable with quotes
+#' @param Z the label of a second target variable with quotes when \code{databa} is the result of two overlayed databases.
+#' @param ID the column index of the database identifier (The first column by default) in the case of two concatened databases, a row identifier otherwise
+#' @param OUT a character that indicates the outcome to predict in the context of overlayed databases. By default, the outcome declared in the argument \code{Y} is predicted. Another possible outcome to predict can be set with the related argument \code{Z}.
+#' @param quanti a vector of integers corresponding to the column indexes of all the numeric predictors.
+#' @param nominal a vector of integers which corresponds to the column indexes of all the categorical nominal predictors.
+#' @param ordinal a vector of integers which corresponds to the column indexes of all the categorical ordinal predictors.
+#' @param logic a vector of integers indicating the indexes of logical predictors. No index remained by default
+#' @param convert_num a vector of integers indicating the indexes of quantitative variables to convert in ordered factors. No index remained by default. Each index selected has to be defined as quantitative in the argument \code{quanti}.
+#' @param convert_clss a vector of integers indicating the number of classes related to each transformation of quantitative variable in ordered factor. The length of this vector can not exceed the length of the argument \code{convert_num}. Nevertheless, if length(\code{convert_num}) > 1 and length(\code{convert_clss}) = 1,
 #' all quantitative predictors selected for discretization will have by default the same number of classes.
-#' @param thresh_cat A threshold associated to the Cramer's V coefficient (= 0.30 by default)
-#' @param thresh_num A threshold associated to the Spearman's coefficient of correlation (= 0.70 by default)
-#' @param thresh_Y A threshold linked to the RF approach, that indicates the minimal percent of importance required for a variable to be considered as a reliable predictor of the outcome.
-#' @param RF A boolean sets to TRUE (default) if a random forest procedure must be applied to select the best subset of predictors according to the outcome.Otherwise, only pairwise associations between predictors are used for the selection.
-#' @param RF_ntree The number of bootsrap samples required from the row datasource during the random forest procedure
-#' @param RF_condi A boolean specifying if the conditional importance measures must be assessed from the random forest procedure (\code{TRUE}) rather than the standard variable importance  measures (\code{FALSE} by default)
-#' @param RF_condi_thr A threshold linked to (1 - pvalue) of an association test between each predictor \eqn{X} and the other variables, given that a threshold value of zero will include all variables in the computation of the conditional importance measure of \eqn{X} (0.20 is the default value).
+#' @param thresh_cat a threshold associated to the Cramer's V coefficient (= 0.30 by default)
+#' @param thresh_num a threshold associated to the Spearman's coefficient of correlation (= 0.70 by default)
+#' @param thresh_Y a threshold linked to the RF approach, that indicates the minimal percent of importance required for a variable to be considered as a reliable predictor of the outcome.
+#' @param RF a boolean sets to TRUE (default) if a random forest procedure must be applied to select the best subset of predictors according to the outcome.Otherwise, only pairwise associations between predictors are used for the selection.
+#' @param RF_ntree the number of bootsrap samples required from the row datasource during the random forest procedure
+#' @param RF_condi a boolean specifying if the conditional importance measures must be assessed from the random forest procedure (\code{TRUE}) rather than the standard variable importance  measures (\code{FALSE} by default)
+#' @param RF_condi_thr a threshold linked to (1 - pvalue) of an association test between each predictor \eqn{X} and the other variables, given that a threshold value of zero will include all variables in the computation of the conditional importance measure of \eqn{X} (0.20 is the default value).
 #' Conversely, a larger threshold will only keeps the subset of variables that is strongly correlated to \eqn{X} for the computation of the variable importance measure of \eqn{X}.
-#' @param RF_SEED An integer used as argument by the set.seed() for offsetting the random number generator (random integer by default). This value is only used for RF method.
+#' @param RF_SEED an integer used as argument by the set.seed() for offsetting the random number generator (random integer by default). This value is only used for RF method.
 #'
 #'
 #' @return A list of 14 (if \code{RF = TRUE}) or 11 objects (Only the first ten objects if \code{RF = FALSE}) is returned:
-#' \item{seed}{The random number generator related to the study}
-#' \item{outc}{The identifier of the outcome to predict}
-#' \item{thresh}{A summarize of the different thresholds fixed for the study}
-#' \item{convert_num}{The labels of the continuous predictors transformed in categorical form}
-#' \item{DB_USED}{The final database used after potential transformations of predictors}
-#' \item{vcrm_Y_cat}{Table of pairwise associations between the outcome and the categorical predictors (Cramer's V)}
-#' \item{cor_Y_num}{Table of pairwise associations between the outcome and the continuous predictors (Rank correlation)}
-#' \item{vcrm_X_cat}{Table of pairwise associations between the categorical predictors (Cramer's V)}
-#' \item{cor_X_num}{Table of pairwise associations between the continuous predictors (Cramer's V)}
-#' \item{FG_test}{Results of the Farrar and Glauber tests, with and without approximation form}
-#' \item{collinear_PB}{Table of predictors with problem of collinearity according to the fixed thresholds}
-#' \item{drop_var}{Labels of predictors to drop after RF process (optional output: only if \code{RF}=TRUE)}
-#' \item{RF_PRED_Y}{Table of variable importance measurements, conditional or not, according to the argument \code{condi_RF} (optional output: Only if \code{RF}=TRUE)}
-#' \item{best_pred}{Labels of the best predictors selected (optional output: Only if \code{RF}=TRUE) according to the value of the argument \code{thresh_Y}}
+#' \item{seed}{the random number generator related to the study}
+#' \item{outc}{the identifier of the outcome to predict}
+#' \item{thresh}{a summarize of the different thresholds fixed for the study}
+#' \item{convert_num}{the labels of the continuous predictors transformed in categorical form}
+#' \item{DB_USED}{the final database used after potential transformations of predictors}
+#' \item{vcrm_Y_cat}{a table of pairwise associations between the outcome and the categorical predictors (Cramer's V)}
+#' \item{cor_Y_num}{a table of pairwise associations between the outcome and the continuous predictors (Rank correlation)}
+#' \item{vcrm_X_cat}{a table of pairwise associations between the categorical predictors (Cramer's V)}
+#' \item{cor_X_num}{a table of pairwise associations between the continuous predictors (Cramer's V)}
+#' \item{FG_test}{the results of the Farrar and Glauber tests, with and without approximation form}
+#' \item{collinear_PB}{a table of predictors with problem of collinearity according to the fixed thresholds}
+#' \item{drop_var}{the labels of predictors to drop after RF process (optional output: only if \code{RF}=TRUE)}
+#' \item{RF_PRED_Y}{the table of variable importance measurements, conditional or not, according to the argument \code{condi_RF} (optional output: Only if \code{RF}=TRUE)}
+#' \item{best_pred}{the labels of the best predictors selected (optional output: Only if \code{RF}=TRUE) according to the value of the argument \code{thresh_Y}}
 #'
 #' @export
 #'

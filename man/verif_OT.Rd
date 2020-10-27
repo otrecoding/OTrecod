@@ -15,30 +15,30 @@ verif_OT(
 )
 }
 \arguments{
-\item{ot_out}{An output object of the function \code{OT_outcome} or \code{OT_joint}}
+\item{ot_out}{an \code{\link{OT_outcome}} or \code{\link{OT_joint}} object}
 
-\item{group.clss}{A boolean indicating if the results related to the proximity between outcomes by grouping levels are requested in output (\code{FALSE} by default).}
+\item{group.clss}{a boolean indicating if the results related to the proximity between outcomes by grouping levels are requested in output (\code{FALSE} by default).}
 
-\item{ordinal}{A boolean that indicates if \eqn{Y} and \eqn{Z} are ordinal (\code{TRUE} by default) or not. This argument is only useful in the context of groups of levels (\code{group.clss}=TRUE).}
+\item{ordinal}{a boolean that indicates if \eqn{Y} and \eqn{Z} are ordinal (\code{TRUE} by default) or not. This argument is only useful in the context of groups of levels (\code{group.clss}=TRUE).}
 
-\item{stab.prob}{A boolean indicating if the results related to the stability of the algorithm are requested in output (\code{FALSE} by default).}
+\item{stab.prob}{a boolean indicating if the results related to the stability of the algorithm are requested in output (\code{FALSE} by default).}
 
-\item{min.neigb}{A value indicating the minimal required number of neighbors to consider in the estimation of stability (1 by default).}
+\item{min.neigb}{a value indicating the minimal required number of neighbors to consider in the estimation of stability (1 by default).}
 
-\item{R}{A positive integer indicating the number of desired repetitions for the bernoulli simulations in the stability study}
+\item{R}{a positive integer indicating the number of desired repetitions for the bernoulli simulations in the stability study}
 
-\item{seed.stab}{An integer used as argument by the seed for offsetting the random number generator (Random integer by default). Only useful if the stability study is required.}
+\item{seed.stab}{an integer used as argument by the seed for offsetting the random number generator (Random integer by default). Only useful if the stability study is required.}
 }
 \value{
 A list of 7 objects is returned:
-\item{seed}{The list of used random number generator. The first one is fixed by user or randomly chosen}
-\item{nb.profil}{The number of profiles of covariates}
-\item{conf.mat}{The global confusion matrix between \eqn{Y} and \eqn{Z}}
-\item{res.prox}{A summary table related to the association measures between \eqn{Y} and \eqn{Z}}
-\item{res.grp}{A summary table related to the study of the proximity of \eqn{Y} and \eqn{Z} using group of levels}
+\item{seed}{the list of used random number generator. The first one is fixed by user or randomly chosen}
+\item{nb.profil}{the number of profiles of covariates}
+\item{conf.mat}{the global confusion matrix between \eqn{Y} and \eqn{Z}}
+\item{res.prox}{a summary table related to the association measures between \eqn{Y} and \eqn{Z}}
+\item{res.grp}{a summary table related to the study of the proximity of \eqn{Y} and \eqn{Z} using group of levels}
 \item{hell}{Hellinger distances between observed and predicted distributions}
-\item{eff.neig}{A table which corresponds to a count of conditional probabilities according to the number of neighbors used in their computation (only the first ten values)}
-\item{res.stab}{A summary table related to the stability of the algorithm}
+\item{eff.neig}{a table which corresponds to a count of conditional probabilities according to the number of neighbors used in their computation (only the first ten values)}
+\item{res.stab}{a summary table related to the stability of the algorithm}
 }
 \description{
 This function proposes post-process verifications after data fusion by optimal transportation algorithms.

@@ -1,11 +1,11 @@
 #' transfo_quali()
 #'
-#' A function that transforms a factor of n(>1) levels in (n-1) binary variables
+#' A function that transforms a factor of n(>1) levels in (n-1) binary variables.
 #'
 #' @aliases transfo_quali
 #'
-#' @param x A factor
-#' @param labx A new label for the generated binary variables (By default the name of the factor is conserved)
+#' @param x a factor
+#' @param labx a new label for the generated binary variables (By default the name of the factor is conserved)
 #'
 #' @return A matrix of (n-1) binary variables
 #'

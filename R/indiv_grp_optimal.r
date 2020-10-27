@@ -34,18 +34,18 @@
 #' Moreover, the function actually uses the \code{R} optimization infrastructure of the package \pkg{ROI} which offers a wide choice of solver to users by easily loading the associated plugins of \pkg{ROI} (see (5)).
 #'
 #'
-#' @param proxim A \code{\link{proxim_dist}} object or an object of similar structure
-#' @param jointprobaA A matrix whose number of columns is equal to the number of modalities of the target variable \eqn{Y} in database A, and whose number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database A.
+#' @param proxim a \code{\link{proxim_dist}} object or an object of similar structure
+#' @param jointprobaA a matrix whose number of columns is equal to the number of modalities of the target variable \eqn{Y} in database A, and whose number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database A.
 #' The sum of cells of this matrix must be equal to 1.
-#' @param jointprobaB A matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and whose number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database B.
+#' @param jointprobaB a matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and whose number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database B.
 #' The sum of cells of this matrix must be equal to 1.
-#' @param percent_closest A value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals used in the computation of the average distances
-#' @param solvr A character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".
-#' @param which.DB A character string that indicates which individual predictions are computed: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).
+#' @param percent_closest a value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals used in the computation of the average distances
+#' @param solvr a character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".
+#' @param which.DB a character string that indicates which individual predictions are computed: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).
 #'
 #' @return A list of two vectors of numeric values:
-#' \item{YAtrans}{A vector corresponding to the predicted values of \eqn{Y} in database B (numeric form) according to the \code{which.DB} argument}
-#' \item{ZBtrans}{A vector corresponding to the predicted values of \eqn{Z} in database A (numeric form) according to the \code{which.DB} argument}
+#' \item{YAtrans}{a vector corresponding to the predicted values of \eqn{Y} in database B (numeric form) according to the \code{which.DB} argument}
+#' \item{ZBtrans}{a vector corresponding to the predicted values of \eqn{Z} in database A (numeric form) according to the \code{which.DB} argument}
 #'
 #'
 #' @author Gregory Guernec, Valerie Gares, Jeremy Omer

@@ -7,9 +7,9 @@
 compare_lists(listA, listB)
 }
 \arguments{
-\item{listA}{A first list}
+\item{listA}{a first list}
 
-\item{listB}{A second list}
+\item{listB}{a second list}
 }
 \value{
 A boolean vector of same length as the two lists,
@@ -17,7 +17,7 @@ which ith element is \code{TRUE} if the ith element is different
 between the 2 lists, or \code{FALSE} otherwise
 }
 \description{
-This function compares the elements of two lists of same length
+This function compares the elements of two lists of same length.
 }
 \examples{
 data1 = data.frame(Gender = rep(c("m","f"),5),Age = rnorm(5,20,4))
