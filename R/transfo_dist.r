@@ -55,23 +55,23 @@
 #' After this step, the covariates are replaced by the remaining principal components of the FAMD, and each value corresponds to coordinates linked to each component.
 #' Please notice that this method supposed complete covariates in input, nevertheless in presence of incomplete covariates, each corresponding rows will be dropped from the study, a warning will appear and the number of remaining rows will be indicated.
 #'
-#' @param DB A data.frame composed of exactly two overlayed databases with a column of database identifier, two columns corresponding to a same information
+#' @param DB a data.frame composed of exactly two overlayed databases with a column of database identifier, two columns corresponding to a same information
 #' differently encoded in the two databases and covariates. The order of the variables have no importance.
-#' @param index_DB_Y_Z A vector of exactly three integers. The first integer must correspond to the column index of the database identifier. The second integer corresponds
+#' @param index_DB_Y_Z a vector of exactly three integers. The first integer must correspond to the column index of the database identifier. The second integer corresponds
 #' to the index of the target variable in the first database while the third integer corresponds to the index of column related to the target variable in the second database.
-#' @param quanti The column indexes of all the quantitative variables (database identificatier and target variables included) stored in a vector.
-#' @param nominal The column indexes of all the nominal (not ordered) variables (DB identification and target variables included) stored in a vector.
-#' @param ordinal The column indexes of all the ordinal variables (DB identification and target variables included) stored in a vector.
-#' @param logic The column indexes of all the boolean variables stored in a vector.
-#' @param convert_num Column indexes of the continuous (quantitative) variables to convert in ordered factors. All indexes declared in this argument must have been declared in the argument \code{quanti} (no conversion by default).
-#' @param convert_clss According to the argument \code{convert_num}, a vector indicating for each continuous variable to convert the corresponding desired number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} is equal to 1 (only one integer),
+#' @param quanti the column indexes of all the quantitative variables (database identificatier and target variables included) stored in a vector.
+#' @param nominal the column indexes of all the nominal (not ordered) variables (DB identification and target variables included) stored in a vector.
+#' @param ordinal the column indexes of all the ordinal variables (DB identification and target variables included) stored in a vector.
+#' @param logic the column indexes of all the boolean variables stored in a vector.
+#' @param convert_num the column indexes of the continuous (quantitative) variables to convert in ordered factors. All indexes declared in this argument must have been declared in the argument \code{quanti} (no conversion by default).
+#' @param convert_clss according to the argument \code{convert_num}, a vector indicating for each continuous variable to convert the corresponding desired number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} is equal to 1 (only one integer),
 #' each discretization will count the same number of levels.
-#' @param prep_choice A character string corresponding to the distance function chosen between: the euclidean distance ("E", by default), the Manhattan distance ("M"),
+#' @param prep_choice a character string corresponding to the distance function chosen between: the euclidean distance ("E", by default), the Manhattan distance ("M"),
 #' the Gower distance ("G"), the Hamming (also called binary) distance ("H"), and a distance computed from principal components of a factor analysis of mixed data ("FAMD").
-#' @param info A ratio (between 0 and 1, 0.8 is the default value) that corresponds to the minimal part of variability that must be taken into account by the remaining principal components of the FAMD when this approach is required.
+#' @param info a ratio (between 0 and 1, 0.8 is the default value) that corresponds to the minimal part of variability that must be taken into account by the remaining principal components of the FAMD when this approach is required.
 #' This ratio will fix the number of components that will be kept with this approach. When the argument is set to 1, all the variability is considered.
 #'
-#' @return A data.frame which covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the database identifier, \eqn{Y} and \eqn{Z} correspond to the first three columns respectively.
+#' @return A data.frame whose covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the database identifier, \eqn{Y} and \eqn{Z} correspond to the first three columns respectively.
 #' Moreover the order of rows remains unchanged during the process.
 #'
 #' @export

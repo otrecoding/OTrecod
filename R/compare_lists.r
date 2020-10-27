@@ -1,10 +1,10 @@
 
 #' compare_lists()
 #'
-#'    This function compares the elements of two lists of same length
+#'    This function compares the elements of two lists of same length.
 #'
-#' @param listA A first list
-#' @param listB A second list
+#' @param listA a first list
+#' @param listB a second list
 #'
 #' @return A boolean vector of same length as the two lists,
 #' which ith element is \code{TRUE} if the ith element is different

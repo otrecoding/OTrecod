@@ -50,32 +50,32 @@
 #' As a decision rule, for a given profile of covariates \eqn{P_j}, an individual \eqn{i} will be considered as a neighbor of \eqn{P_j} if \eqn{dist(i,P_j) < prox \times max(dist(i,P_j))} where \code{prox} will be fixed by user.
 #'
 #'
-#' @param data_file A data.frame corresponding ideally to an output object of the function \code{\link{transfo_dist}}. Otherwise this data.frame is the result of two overlayed databases with a column of database identifier ("A" and "B", 1 and 2, for example), a target variable (called \eqn{Y} by example) only known in the first database, a target variable (\eqn{Z}) only stored in the second database, such that \eqn{Y} and \eqn{Z} summarize a same information differently encoded in the two databases and set of common covariates (at least one) of any type.
+#' @param data_file a data.frame corresponding ideally to an output object of the function \code{\link{transfo_dist}}. Otherwise this data.frame is the result of two overlayed databases with a column of database identifier ("A" and "B", 1 and 2, for example), a target variable (called \eqn{Y} by example) only known in the first database, a target variable (\eqn{Z}) only stored in the second database, such that \eqn{Y} and \eqn{Z} summarize a same information differently encoded in the two databases and set of common covariates (at least one) of any type.
 #' The order of the variables in the data.frame have no importance. The type of the covariates must be in accordance with the chosen distance function in the \code{norm} option.
-#' @param indx_DB_Y_Z A vector of three column indexes corresponding to the database identifier, the target variable of the above database and the target variable of the below database. The indexes must be declared in this specific order.
-#' @param norm A character string indicating the choice of the distance function. This latest depends on the type of the common covariates: the Hamming distance
+#' @param indx_DB_Y_Z a vector of three column indexes corresponding to the database identifier, the target variable of the above database and the target variable of the below database. The indexes must be declared in this specific order.
+#' @param norm a character string indicating the choice of the distance function. This latest depends on the type of the common covariates: the Hamming distance
 #' for binary covariates only (\code{norm} = "H"), the Manhattan distance ("M", by default) and the euclidean distance ("E") for continuous covariates only, or the Gower distance for mixed covariates ("G").
-#' @param prox A ratio (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row or a given statistical unit) is considered as a neighbor of a given profile of covariates.
+#' @param prox a ratio (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row or a given statistical unit) is considered as a neighbor of a given profile of covariates.
 #'
 #' @return A list of 16 elements (the first 16 detailed below) is returned containing various distance matrices and lists useful for the algorithms that used Optimal Transportation theory. Two more objects (the last two of the following list) will be returned if distance matrices contain NAs.
-#' \item{FILE_NAME}{A simple reminder of the name of the raw database}
-#' \item{nA}{The row numbers of the first database (A)}
-#' \item{nB}{The row numbers of the second database (B)}
-#' \item{Xobserv}{The subset of the two merged databases composed of the common variables only}
-#' \item{profile}{The different encountered profiles of covariates according to the data.frame}
-#' \item{Yobserv}{The values of the target variable in the first database}
-#' \item{Zobserv}{The values of the target variable in the second database}
-#' \item{D}{A distance matrix corresponding to the computed distances between individuals of the two databases}
-#' \item{Y}{The \eqn{n_Y} levels of the target variable in numeric form, in the first database}
-#' \item{Z}{The \eqn{n_Z} levels of the target variable in numeric form, in the second database}
-#' \item{indY}{A list of \eqn{n_Y} groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of \eqn{Y} in the first database}
-#' \item{indZ}{A list of \eqn{n_Z} groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of \eqn{Z} in the second database}
-#' \item{indXA}{A list of individual (row) indexes from the first database, sorted by profiles of covariates according to their proximities. See the \code{Details} part for more information}
-#' \item{indXB}{A list of individual (row) indexes from the second database, sorted by profiles of covariates according to their proximities. See the \code{Details} part for more information}
-#' \item{DA}{A distance matrix corresponding to the pairwise distances between individuals of the first database}
-#' \item{DB}{A distance matrix corresponding to the pairwise distances between individuals of the second database}
-#' \item{ROWS_TABLE}{Combinations of row numbers of the two databases that generate NAs in D}
-#' \item{ROWS_TO_RM}{Number of times a row of the first or second database is involved in the NA process of D}
+#' \item{FILE_NAME}{a simple reminder of the name of the raw database}
+#' \item{nA}{the row numbers of the first database (A)}
+#' \item{nB}{the row numbers of the second database (B)}
+#' \item{Xobserv}{the subset of the two merged databases composed of the common variables only}
+#' \item{profile}{the different encountered profiles of covariates according to the data.frame}
+#' \item{Yobserv}{the values of the target variable in the first database}
+#' \item{Zobserv}{the values of the target variable in the second database}
+#' \item{D}{a distance matrix corresponding to the computed distances between individuals of the two databases}
+#' \item{Y}{the \eqn{n_Y} levels of the target variable in numeric form, in the first database}
+#' \item{Z}{the \eqn{n_Z} levels of the target variable in numeric form, in the second database}
+#' \item{indY}{a list of \eqn{n_Y} groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of \eqn{Y} in the first database}
+#' \item{indZ}{a list of \eqn{n_Z} groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of \eqn{Z} in the second database}
+#' \item{indXA}{a list of individual (row) indexes from the first database, sorted by profiles of covariates according to their proximities. See the \code{Details} part for more information}
+#' \item{indXB}{a list of individual (row) indexes from the second database, sorted by profiles of covariates according to their proximities. See the \code{Details} part for more information}
+#' \item{DA}{a distance matrix corresponding to the pairwise distances between individuals of the first database}
+#' \item{DB}{a distance matrix corresponding to the pairwise distances between individuals of the second database}
+#' \item{ROWS_TABLE}{combinations of row numbers of the two databases that generate NAs in D}
+#' \item{ROWS_TO_RM}{number of times a row of the first or second database is involved in the NA process of D}
 #'
 #'
 #'

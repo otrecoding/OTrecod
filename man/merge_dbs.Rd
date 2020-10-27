@@ -22,50 +22,50 @@ merge_dbs(
 )
 }
 \arguments{
-\item{DB1}{A data.frame corresponding to the 1st database to merge (top database)}
+\item{DB1}{a data.frame corresponding to the 1st database to merge (top database)}
 
-\item{DB2}{A data.frame corresponding to the 2nd database to merge (bottom database)}
+\item{DB2}{a data.frame corresponding to the 2nd database to merge (bottom database)}
 
-\item{row_ID1}{The column index of the row identifier of DB1 if it exists (no identifier by default)}
+\item{row_ID1}{the column index of the row identifier of DB1 if it exists (no identifier by default)}
 
-\item{row_ID2}{The column index of the row identifier of DB2 if it exists (no identifier by default)}
+\item{row_ID2}{the column index of the row identifier of DB2 if it exists (no identifier by default)}
 
-\item{NAME_Y}{The name of the outcome (with quotes) in its specific scale/encoding from the 1st database (DB1)}
+\item{NAME_Y}{the name of the outcome (with quotes) in its specific scale/encoding from the 1st database (DB1)}
 
-\item{NAME_Z}{The name of the outcome (with quotes) in its specific scale/encoding from the 2nd database (DB2)}
+\item{NAME_Z}{the name of the outcome (with quotes) in its specific scale/encoding from the 2nd database (DB2)}
 
-\item{order_levels_Y}{The levels of \eqn{Y} stored in a vector and sorted in ascending order in the case of ordered factors. This option permits to reorder the levels in the 1st database (DB1) if necessary.}
+\item{order_levels_Y}{the levels of \eqn{Y} stored in a vector and sorted in ascending order in the case of ordered factors. This option permits to reorder the levels in the 1st database (DB1) if necessary.}
 
-\item{order_levels_Z}{The levels of \eqn{Z} stored in a vector and sorted in ascending order in the case of ordered factors. This option permits to reorder the levels in the 2nd database (DB2) if necessary.}
+\item{order_levels_Z}{the levels of \eqn{Z} stored in a vector and sorted in ascending order in the case of ordered factors. This option permits to reorder the levels in the 2nd database (DB2) if necessary.}
 
-\item{ordinal_DB1}{A vector of index of columns corresponding to ordinal variables in the 1st database (no ordinal variable by default)}
+\item{ordinal_DB1}{a vector of index of columns corresponding to ordinal variables in the 1st database (no ordinal variable by default)}
 
-\item{ordinal_DB2}{A vector of index of columns corresponding to ordinal variables in the 2nd database (no ordinal variable by default)}
+\item{ordinal_DB2}{a vector of index of columns corresponding to ordinal variables in the 2nd database (no ordinal variable by default)}
 
-\item{impute}{A character equals to "NO" when missing data on covariates are kept (Default option), "CC" for Complete Case by keeping only covariates with no missing information , "MICE" for MICE multiple imputation approach, "FAMD" for single imputation approach using Factorial Analysis for Mixed Data}
+\item{impute}{a character equals to "NO" when missing data on covariates are kept (Default option), "CC" for Complete Case by keeping only covariates with no missing information , "MICE" for MICE multiple imputation approach, "FAMD" for single imputation approach using Factorial Analysis for Mixed Data}
 
-\item{R_MICE}{The chosen number of multiple imputations required for the  MICE approach (5 by default)}
+\item{R_MICE}{the chosen number of multiple imputations required for the  MICE approach (5 by default)}
 
-\item{NCP_FAMD}{An integer corresponding to the number of components used to predict missing values in FAMD imputation (3 by default)}
+\item{NCP_FAMD}{an integer corresponding to the number of components used to predict missing values in FAMD imputation (3 by default)}
 
-\item{seed_func}{An integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default, only useful with MICE)}
+\item{seed_func}{an integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default, only useful with MICE)}
 }
 \value{
 A list containing 10 elements (11 when \code{impute} equals "MICE"):
-\item{DB_READY}{The database matched from the two initial databases with common covariates and imputed or not according to the impute option}
-\item{Y_LEVELS}{The remaining levels of the target variable \eqn{Y} in the DB1}
-\item{Z_LEVELS}{The remaining Levels of the target variable \eqn{Z} in the DB2}
-\item{REMOVE1}{The labels of the deleted covariates because of type incompatibilies of type from DB1 to DB2}
-\item{REMOVE2}{The removed factor(s) because of levels incompatibilities from DB1 to DB2}
-\item{REMAINING_VAR}{Labels of the remained covariates for data fusion}
-\item{IMPUTE_TYPE}{A character with quotes that specify the method eventually chosen to handle missing data in covariates}
-\item{MICE_DETAILS}{A list containing the details of the imputed datasets using \code{MICE} when this option is enabled. Databases imputed for DB1 and DB2 according to the number of mutliple imputation selected (Only if impute = "MICE")}
-\item{DB1_ID}{A data.frame corresponding to the row identifier of DB1 after merging}
-\item{DB2_ID}{A data.frame corresponding to the row identifier of DB2 after merging}
-\item{SEED}{An integer used as argument by the \code{set.seed} function for offsetting the random number generator (random selection by default)}
+\item{DB_READY}{the database matched from the two initial databases with common covariates and imputed or not according to the impute option}
+\item{Y_LEVELS}{the remaining levels of the target variable \eqn{Y} in the DB1}
+\item{Z_LEVELS}{the remaining Levels of the target variable \eqn{Z} in the DB2}
+\item{REMOVE1}{the labels of the deleted covariates because of type incompatibilies of type from DB1 to DB2}
+\item{REMOVE2}{the removed factor(s) because of levels incompatibilities from DB1 to DB2}
+\item{REMAINING_VAR}{labels of the remained covariates for data fusion}
+\item{IMPUTE_TYPE}{a character with quotes that specify the method eventually chosen to handle missing data in covariates}
+\item{MICE_DETAILS}{a list containing the details of the imputed datasets using \code{MICE} when this option is enabled. Databases imputed for DB1 and DB2 according to the number of mutliple imputation selected (Only if impute = "MICE")}
+\item{DB1_ID}{a data.frame corresponding to the row identifier of DB1 after merging}
+\item{DB2_ID}{a data.frame corresponding to the row identifier of DB2 after merging}
+\item{SEED}{an integer used as argument by the \code{set.seed} function for offsetting the random number generator (random selection by default)}
 }
 \description{
-Harmonization and merging before data fusion of two databases with specific outcome variables and shared covariates
+Harmonization and merging before data fusion of two databases with specific outcome variables and shared covariates.
 }
 \details{
 Assuming that DB1 and DB2 are two databases (two separate data.frames with no overlapping rows) to be merged vertically before data fusion, the function \code{merge_dbs} performs this merging and checks the harmonization of the shared variables.

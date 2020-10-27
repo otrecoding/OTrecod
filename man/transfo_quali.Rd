@@ -7,15 +7,15 @@
 transfo_quali(x, labx = NULL)
 }
 \arguments{
-\item{x}{A factor}
+\item{x}{a factor}
 
-\item{labx}{A new label for the generated binary variables (By default the name of the factor is conserved)}
+\item{labx}{a new label for the generated binary variables (By default the name of the factor is conserved)}
 }
 \value{
 A matrix of (n-1) binary variables
 }
 \description{
-A function that transforms a factor of n(>1) levels in (n-1) binary variables
+A function that transforms a factor of n(>1) levels in (n-1) binary variables.
 }
 \examples{
 

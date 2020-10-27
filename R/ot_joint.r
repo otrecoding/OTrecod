@@ -87,44 +87,44 @@
 #' For more details about the algorithms integrated in \code{OT_joint}, please consult (2).
 #'
 #'
-#' @param datab A data.frame made up of two overlayed databases with at least four columns sorted in a random order. One column must be a column dedicated to the identification of the two databases ranked in ascending order
+#' @param datab a data.frame made up of two overlayed databases with at least four columns sorted in a random order. One column must be a column dedicated to the identification of the two databases ranked in ascending order
 #' (For example: 1 for the top database and 2 for the database from below, or more logically here A and B  ...But not B and A!). One column (\eqn{Y} here but other names are allowed)
 #' must correspond to the target variable related to the information of interest to merge with its specific encoding in the database A (corresponding encoding should be missing in the database B). In the same way,
 #' one column (\eqn{Z} here) corresponds to the second target variable with its specific encoding in the database B (corresponding encoding should be missing in the database A).
 #' Finally, the input database must have at least one shared covariate with same encoding in A and B. Please notice that, if your data.frame has only one shared covariate (four columns) with missing values (because no imputation is desired)
 #' then a warning will appear and the algorithm will only run with complete cases.
-#' @param index_DB_Y_Z A vector of three indexes of variables. The first index must correspond to the index of the databases identifier column. The second index corresponds
+#' @param index_DB_Y_Z a vector of three indexes of variables. The first index must correspond to the index of the databases identifier column. The second index corresponds
 #' to the index of the target variable in the first database (A) while the third index corresponds to the column index related to the target variable in the second database (B).
-#' @param nominal A vector of column indexes of all the nominal (not ordered) variables (database identifier and target variables included if it is the case for them).
-#' @param ordinal A vector of column indexes of all the ordinal variables (database identifier and target variables included if it is the case for them).
-#' @param logic A vector of column indexes of all the boolean variables of the data.frame.
-#' @param convert.num Indexes of the continuous (quantitative) variables. They will be automatically converted in ordered factors. By default, no continuous variables is assumed in the database.
-#' @param convert.clss A vector indicating for each continuous variable to convert, the corresponding desired number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} equals 1 (only one integer),
+#' @param nominal a vector of column indexes of all the nominal (not ordered) variables (database identifier and target variables included if it is the case for them).
+#' @param ordinal a vector of column indexes of all the ordinal variables (database identifier and target variables included if it is the case for them).
+#' @param logic a vector of column indexes of all the boolean variables of the data.frame.
+#' @param convert.num indexes of the continuous (quantitative) variables. They will be automatically converted in ordered factors. By default, no continuous variables is assumed in the database.
+#' @param convert.clss a vector indicating for each continuous variable to convert, the corresponding desired number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} equals 1 (only one integer),
 #' each discretization will count the same number of levels (quantiles).
-#' @param dist.choice A character string (with quotes) corresponding to the distance function chosen between: the euclidean distance ("E", by default), the Manhattan distance ("M"),
+#' @param dist.choice a character string (with quotes) corresponding to the distance function chosen between: the euclidean distance ("E", by default), the Manhattan distance ("M"),
 #' the Gower distance ("G"), and the Hamming distance ("H") for binary covariates only.
-#' @param percent.knn The ratio of closest neighbors involved in the computations of the cost matrices. 1 is the default value that includes all rows in the computation.
-#' @param maxrelax The maximum percentage of deviation from expected probability masses. It must be equal to 0 (default value) for the \code{JOINT} algorithm, and equal to a strictly positive value for the R-JOINT algorithm.
-#' @param lambda.reg A coefficient measuring the importance of the regularization term. It corresponds to the \code{R-JOINT} algorithm for a value other than 0 (default value).
-#' @param prox.dist A probability (between 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.
-#' @param prox.X A probability (betwen 0 and 1) used to calculate the distance threshold below which two covariates' profiles are supposed as neighbors.
+#' @param percent.knn the ratio of closest neighbors involved in the computations of the cost matrices. 1 is the default value that includes all rows in the computation.
+#' @param maxrelax the maximum percentage of deviation from expected probability masses. It must be equal to 0 (default value) for the \code{JOINT} algorithm, and equal to a strictly positive value for the R-JOINT algorithm.
+#' @param lambda.reg a coefficient measuring the importance of the regularization term. It corresponds to the \code{R-JOINT} algorithm for a value other than 0 (default value).
+#' @param prox.dist a probability (between 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.
+#' @param prox.X a probability (betwen 0 and 1) used to calculate the distance threshold below which two covariates' profiles are supposed as neighbors.
 #' If \code{prox.X = 1}, all profiles are considered as neighbors.
-#' @param solvR A character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".
-#' @param which.DB A character string indicating the database to complete ("BOTH" by default, for the prediction of \eqn{Y} and \eqn{Z} in the two databases), "A" only for the imputation of \eqn{Z} in A, "B" only for the imputation of \eqn{Y} in B.
+#' @param solvR a character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".
+#' @param which.DB a character string indicating the database to complete ("BOTH" by default, for the prediction of \eqn{Y} and \eqn{Z} in the two databases), "A" only for the imputation of \eqn{Z} in A, "B" only for the imputation of \eqn{Y} in B.
 #'
 #'
 #' @return A list of 9 elements containing:
-#'     \item{time_exe}{Running time of the function}
-#'     \item{gamma_A}{Estimation of \eqn{\gamma} for the completion of A. A matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in A}
-#'     \item{gamma_B}{Estimation of \eqn{\gamma} for the completion of B. A matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in B}
-#'     \item{profile}{A data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results.}
-#'     \item{res_prox}{A \code{proxim_dist} object}
-#'     \item{estimatorZA}{An array that corresponds to estimates of the probability distribution of \eqn{Z} conditional to \eqn{X} and \eqn{Y} in database A. The number of rows of each table corresponds to the total number of profiles of covariates.
+#'     \item{time_exe}{running time of the function}
+#'     \item{gamma_A}{estimate of \eqn{\gamma} for the completion of A. A matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in A}
+#'     \item{gamma_B}{estimate of \eqn{\gamma} for the completion of B. A matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in B}
+#'     \item{profile}{a data.frame that gives all details about the remaining P profiles of covariates. These informations can be linked to the \code{estimatorZA} and the \code{estimatorYB} objects for a better interpretation of the results.}
+#'     \item{res_prox}{a \code{proxim_dist} object}
+#'     \item{estimatorZA}{an array that corresponds to estimates of the probability distribution of \eqn{Z} conditional to \eqn{X} and \eqn{Y} in database A. The number of rows of each table corresponds to the total number of profiles of covariates.
 #'     The first dimension of each table (rownames) correspond to the profiles of covariates sorted by order of appearance in the merged database. The second dimension of the array (columns of the tables) corresponds to the levels of \eqn{Y} while the third element corresponds to the levels of \eqn{Z}.}
-#'     \item{estimatorYB}{An array that corresponds to estimates of the probability distribution of \eqn{Y} conditional to \eqn{X} and \eqn{Z} in database B. The number of rows of each table corresponds to the total number of profiles of covariates.
+#'     \item{estimatorYB}{an array that corresponds to estimates of the probability distribution of \eqn{Y} conditional to \eqn{X} and \eqn{Z} in database B. The number of rows of each table corresponds to the total number of profiles of covariates.
 #'     The first dimension of each table (rownames) correspond to the profiles of covariates sorted by order of appearance in the merged database. The second dimension of the array (columns of the tables) corresponds to the levels of \eqn{Z} while the third element corresponds to the levels of \eqn{Y}.}
-#'     \item{DATA1_OT}{The database A with the individual predictions of \eqn{Z} using an optimal transportation algorithm (\code{JOINT}) or \code{R-JOINT}}
-#'     \item{DATA2_OT}{The database B with the individual predictions of \eqn{Y} using an optimal transportation algorithm (\code{JOINT}) or \code{R-JOINT}}
+#'     \item{DATA1_OT}{the database A with the individual predictions of \eqn{Z} using an optimal transportation algorithm (\code{JOINT}) or \code{R-JOINT}}
+#'     \item{DATA2_OT}{the database B with the individual predictions of \eqn{Y} using an optimal transportation algorithm (\code{JOINT}) or \code{R-JOINT}}
 #'
 #' @import ROI ROI.plugin.glpk ROI.plugin.clp
 #'

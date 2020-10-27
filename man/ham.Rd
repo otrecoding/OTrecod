@@ -7,9 +7,9 @@
 ham(mat_1, mat_2)
 }
 \arguments{
-\item{mat_1}{A vector, a matrix or a data.frame of binary values that may contain missing data}
+\item{mat_1}{a vector, a matrix or a data.frame of binary values that may contain missing data}
 
-\item{mat_2}{A vector, a matrix or a data.frame of binary values with the same number of columns as \code{mat_1} that may contain missing data}
+\item{mat_2}{a vector, a matrix or a data.frame of binary values with the same number of columns as \code{mat_1} that may contain missing data}
 }
 \value{
 A distance matrix

@@ -14,24 +14,24 @@ indiv_grp_optimal(
 )
 }
 \arguments{
-\item{proxim}{A \code{\link{proxim_dist}} object or an object of similar structure}
+\item{proxim}{a \code{\link{proxim_dist}} object or an object of similar structure}
 
-\item{jointprobaA}{A matrix whose number of columns is equal to the number of modalities of the target variable \eqn{Y} in database A, and whose number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database A.
+\item{jointprobaA}{a matrix whose number of columns is equal to the number of modalities of the target variable \eqn{Y} in database A, and whose number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database A.
 The sum of cells of this matrix must be equal to 1.}
 
-\item{jointprobaB}{A matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and whose number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database B.
+\item{jointprobaB}{a matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and whose number of rows is equal to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability \eqn{(Y,Z)} in the database B.
 The sum of cells of this matrix must be equal to 1.}
 
-\item{percent_closest}{A value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals used in the computation of the average distances}
+\item{percent_closest}{a value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals used in the computation of the average distances}
 
-\item{solvr}{A character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".}
+\item{solvr}{a character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".}
 
-\item{which.DB}{A character string that indicates which individual predictions are computed: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).}
+\item{which.DB}{a character string that indicates which individual predictions are computed: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default).}
 }
 \value{
 A list of two vectors of numeric values:
-\item{YAtrans}{A vector corresponding to the predicted values of \eqn{Y} in database B (numeric form) according to the \code{which.DB} argument}
-\item{ZBtrans}{A vector corresponding to the predicted values of \eqn{Z} in database A (numeric form) according to the \code{which.DB} argument}
+\item{YAtrans}{a vector corresponding to the predicted values of \eqn{Y} in database B (numeric form) according to the \code{which.DB} argument}
+\item{ZBtrans}{a vector corresponding to the predicted values of \eqn{Z} in database A (numeric form) according to the \code{which.DB} argument}
 }
 \description{
 This function assigns individual predictions to the incomplete information of two integrated datasources by solving a linear optimization problem.

@@ -24,8 +24,8 @@
 #'
 #' If \code{mat_1} is a vector and \code{mat_2} is a matrix (or data.frame) or vice versa, the length of \code{mat_1} must be equal to the number of columns of \code{mat_2}.
 #'
-#' @param mat_1 A vector, a matrix or a data.frame of binary values that may contain missing data
-#' @param mat_2 A vector, a matrix or a data.frame of binary values with the same number of columns as \code{mat_1} that may contain missing data
+#' @param mat_1 a vector, a matrix or a data.frame of binary values that may contain missing data
+#' @param mat_2 a vector, a matrix or a data.frame of binary values with the same number of columns as \code{mat_1} that may contain missing data
 #'
 #' @return A distance matrix
 #' @export

@@ -1,6 +1,6 @@
 #' error_group()
 #'
-#' This function studies the association between two categorical distributions with different numbers of modalities
+#' This function studies the association between two categorical distributions with different numbers of modalities.
 #'
 #' Assuming that \eqn{Y} and \eqn{Z} are categorical variables summarizing a same information, and that one of the two related encodings is unknown by user
 #' because this latter is, for example, the result of predictions provided by a given model or algorithm, the function \code{error_group} searches for potential links between the modalities of \eqn{Y} to approach at best the distribution of \eqn{Z}.
@@ -27,16 +27,16 @@
 #' Here, the tests permit to conclude that the difference of encodings between \eqn{Y} and \eqn{Z} resulted in fact in a simple grouping of modalities.
 #'
 #'
-#' @param REF A factor with a reference number of levels.
-#' @param Z A factor with a number of levels greater than the number of levels of the reference.
-#' @param ord A boolean. If TRUE, only neighboring levels of \eqn{Z} will be grouped and tested together.
+#' @param REF a factor with a reference number of levels.
+#' @param Z a factor with a number of levels greater than the number of levels of the reference.
+#' @param ord a boolean. If TRUE, only neighboring levels of \eqn{Z} will be grouped and tested together.
 #'
 #' @return A data.frame with five columns:
-#'         \item{combi}{The first column enumerates all possible groups of modalities of \eqn{Y} to obtain the same number of levels as the reference.}
-#'         \item{error_rate}{The second column gives the corresponding rate error from the confusion matrix (ratio of non-diagonal elements)}
-#'         \item{Kappa}{This column indicates the result of the Cohen's kappa coefficient related to each combination of \eqn{Y}}
-#'         \item{Vcramer}{This column indicates the result of the Cramer's V criterion related to each combination of \eqn{Y}}
-#'         \item{RankCor}{This column indicates the result of the Spearman's coefficient of correlation related to each combination of \eqn{Y}}
+#'         \item{combi}{the first column enumerates all possible groups of modalities of \eqn{Y} to obtain the same number of levels as the reference.}
+#'         \item{error_rate}{the second column gives the corresponding rate error from the confusion matrix (ratio of non-diagonal elements)}
+#'         \item{Kappa}{this column indicates the result of the Cohen's kappa coefficient related to each combination of \eqn{Y}}
+#'         \item{Vcramer}{this column indicates the result of the Cramer's V criterion related to each combination of \eqn{Y}}
+#'         \item{RankCor}{this column indicates the result of the Spearman's coefficient of correlation related to each combination of \eqn{Y}}
 #'
 #'
 #' @author Gregory Guernec

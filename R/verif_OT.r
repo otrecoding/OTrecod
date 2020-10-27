@@ -53,23 +53,23 @@
 #' Finally, when the predictions of \eqn{Z} in A and \eqn{Y} in B are available, the function \code{verif_OT} provides in output, global results and results by database.
 #'
 #'
-#' @param ot_out An output object of the function \code{OT_outcome} or \code{OT_joint}
-#' @param group.clss A boolean indicating if the results related to the proximity between outcomes by grouping levels are requested in output (\code{FALSE} by default).
-#' @param ordinal A boolean that indicates if \eqn{Y} and \eqn{Z} are ordinal (\code{TRUE} by default) or not. This argument is only useful in the context of groups of levels (\code{group.clss}=TRUE).
-#' @param stab.prob A boolean indicating if the results related to the stability of the algorithm are requested in output (\code{FALSE} by default).
-#' @param min.neigb A value indicating the minimal required number of neighbors to consider in the estimation of stability (1 by default).
-#' @param R A positive integer indicating the number of desired repetitions for the bernoulli simulations in the stability study
-#' @param seed.stab An integer used as argument by the seed for offsetting the random number generator (Random integer by default). Only useful if the stability study is required.
+#' @param ot_out an \code{\link{OT_outcome}} or \code{\link{OT_joint}} object
+#' @param group.clss a boolean indicating if the results related to the proximity between outcomes by grouping levels are requested in output (\code{FALSE} by default).
+#' @param ordinal a boolean that indicates if \eqn{Y} and \eqn{Z} are ordinal (\code{TRUE} by default) or not. This argument is only useful in the context of groups of levels (\code{group.clss}=TRUE).
+#' @param stab.prob a boolean indicating if the results related to the stability of the algorithm are requested in output (\code{FALSE} by default).
+#' @param min.neigb a value indicating the minimal required number of neighbors to consider in the estimation of stability (1 by default).
+#' @param R a positive integer indicating the number of desired repetitions for the bernoulli simulations in the stability study
+#' @param seed.stab an integer used as argument by the seed for offsetting the random number generator (Random integer by default). Only useful if the stability study is required.
 #'
 #' @return A list of 7 objects is returned:
-#' \item{seed}{The list of used random number generator. The first one is fixed by user or randomly chosen}
-#' \item{nb.profil}{The number of profiles of covariates}
-#' \item{conf.mat}{The global confusion matrix between \eqn{Y} and \eqn{Z}}
-#' \item{res.prox}{A summary table related to the association measures between \eqn{Y} and \eqn{Z}}
-#' \item{res.grp}{A summary table related to the study of the proximity of \eqn{Y} and \eqn{Z} using group of levels}
+#' \item{seed}{the list of used random number generator. The first one is fixed by user or randomly chosen}
+#' \item{nb.profil}{the number of profiles of covariates}
+#' \item{conf.mat}{the global confusion matrix between \eqn{Y} and \eqn{Z}}
+#' \item{res.prox}{a summary table related to the association measures between \eqn{Y} and \eqn{Z}}
+#' \item{res.grp}{a summary table related to the study of the proximity of \eqn{Y} and \eqn{Z} using group of levels}
 #' \item{hell}{Hellinger distances between observed and predicted distributions}
-#' \item{eff.neig}{A table which corresponds to a count of conditional probabilities according to the number of neighbors used in their computation (only the first ten values)}
-#' \item{res.stab}{A summary table related to the stability of the algorithm}
+#' \item{eff.neig}{a table which corresponds to a count of conditional probabilities according to the number of neighbors used in their computation (only the first ten values)}
+#' \item{res.stab}{a summary table related to the stability of the algorithm}
 #'
 #'
 #' @importFrom stats cor rbinom sd addmargins

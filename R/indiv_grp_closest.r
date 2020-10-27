@@ -34,13 +34,13 @@
 #' If \eqn{n_{Y_1} \leq 0.10 \times n_A} then all individuals assigned to the first modality of \eqn{Y} will be assigned to the second modality of \eqn{Z}.
 #' At the end of the process, each individual with still no affectation  will receive the same modality of \eqn{Z} as those of his nearest neighbor in B.
 #'
-#' @param proxim A \code{\link{proxim_dist}} object or an object of similar structure
-#' @param jointprobaA A matrix whose number of columns corresponds to the number of modalities of the target variable \eqn{Y} in database A, and which number of rows corresponds to the number of modalities of Z in database B. It gives an estimation of the joint probability of \eqn{(Y,Z)} in A.
+#' @param proxim a \code{\link{proxim_dist}} object or an object of similar structure
+#' @param jointprobaA a matrix whose number of columns corresponds to the number of modalities of the target variable \eqn{Y} in database A, and which number of rows corresponds to the number of modalities of Z in database B. It gives an estimation of the joint probability of \eqn{(Y,Z)} in A.
 #' The sum of cells of this matrix must be equal to 1
-#' @param jointprobaB A matrix whose number of columns equals to the number of modalities of the target variable \eqn{Y} in database A, and which number of rows corresponds to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability of \eqn{(Y,Z)} in B.
+#' @param jointprobaB a matrix whose number of columns equals to the number of modalities of the target variable \eqn{Y} in database A, and which number of rows corresponds to the number of modalities of \eqn{Z} in database B. It gives an estimation of the joint probability of \eqn{(Y,Z)} in B.
 #' The sum of cells of this matrix must be equal to 1
-#' @param percent_closest A value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals remained in the computation of the average distances
-#' @param which.DB A character string (with quotes) that indicates which individual predictions need to be computed: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default)
+#' @param percent_closest a value between 0 and 1 (by default) corresponding to the fixed \code{percent closest} of individuals remained in the computation of the average distances
+#' @param which.DB a character string (with quotes) that indicates which individual predictions need to be computed: only the individual predictions of \eqn{Y} in B ("B"), only those of \eqn{Z} in A ("A") or the both ("BOTH" by default)
 #'
 #' @author Gregory Guernec, Valerie Gares, Jeremy Omer
 #'
@@ -49,8 +49,8 @@
 #' @seealso \code{\link{proxim_dist}},\code{\link{avg_dist_closest}}, ,\code{\link{OT_outcome}}
 #'
 #' @return A list of two vectors of numeric values:
-#' \item{YAtrans}{A vector corresponding to the individual predictions of \eqn{Y} (numeric form) in the database B using the Optimal Transportation algorithm}
-#' \item{ZBtrans}{A vector corresponding to the individual predictions of \eqn{Z} (numeric form) in  the database A using the Optimal Transportation algorithm}
+#' \item{YAtrans}{a vector corresponding to the individual predictions of \eqn{Y} (numeric form) in the database B using the Optimal Transportation algorithm}
+#' \item{ZBtrans}{a vector corresponding to the individual predictions of \eqn{Z} (numeric form) in  the database A using the Optimal Transportation algorithm}
 #'
 #' @references
 #' \enumerate{
