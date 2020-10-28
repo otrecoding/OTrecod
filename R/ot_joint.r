@@ -233,6 +233,7 @@
 #' # Predictions are assessed for Y1 and Y2 in A and B respectively
 #' #-----
 #'
+#' data(simu_data)
 #' simu_data2 = simu_data[c(1:100,401:500),c(1:4,7:8)]
 #' simu_data3 = simu_data2[!is.na(simu_data2$Age),]
 #'
