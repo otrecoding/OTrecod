@@ -12,6 +12,9 @@ status](https://www.r-pkg.org/badges/version/OTrecod)](https://cran.r-project.or
 binder](http://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/otrecoding/OTrecod/master)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fotrecoding.github.io%2FOTrecod%2F)](https://otrecoding.github.io/OTrecod/)
 [![pkkgdown action status](https://github.com/otrecoding/OTrecod/workflows/pkgdown/badge.svg)](https://github.com/otrecoding/OTrecod/actions)
+
+## R CMD check
+
 [![masOS check](https://github.com/otrecoding/OTrecod/workflows/R-CMD-check-macOS/badge.svg)](https://github.com/otrecoding/OTrecod/actions)
 <!-- badges: end -->
 
