@@ -128,7 +128,7 @@
 #'
 #' \email{gregory.guernec@@inserm.fr}
 #'
-#' @importFrom stats cor cor.test pnorm pchisq na.omit
+#' @importFrom stats cor cor.test pnorm pchisq na.omit formula
 #' @importFrom StatMatch pw.assoc
 #' @importFrom party varimp cforest cforest_unbiased
 #'
@@ -502,9 +502,9 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
         datacov2        = na.omit(data.frame(XX, vars))
         datacov2$vars   = as.factor(as.character(datacov2$vars))
         datacov2$XX     = as.factor(as.character(datacov2$XX))
-        regression      = paste(colnames(datacov2)[1], " ~ ", colnames(datacov2)[2])
-        tab_cor[k-kk,3] = round(suppressWarnings(StatMatch::pw.assoc(regression, data = datacov2)$V),4)
-        tab_cor[k-kk,4] = round(suppressWarnings(StatMatch::pw.assoc(regression, data = datacov2)$bcV),4)
+        regression      = paste(colnames(datacov2)[1], "~", colnames(datacov2)[2],sep="")
+        tab_cor[k-kk,3] = round(suppressWarnings(StatMatch::pw.assoc(formula(regression), data = datacov2)$V),4)
+        tab_cor[k-kk,4] = round(suppressWarnings(StatMatch::pw.assoc(formula(regression), data = datacov2)$bcV),4)
         tab_cor[k-kk,5] = nrow(datacov2)
 
       }
