@@ -31,7 +31,6 @@ Imports:
     ompr,
     ompr.roi,
     party,
-    vcd,
-    ROI.plugin.clp
+    vcd
 Suggests: 
     testthat

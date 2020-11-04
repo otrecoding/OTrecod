@@ -54,7 +54,7 @@
 #'
 #' @seealso \code{\link{proxim_dist}}, \code{\link{avg_dist_closest}}, \code{\link{indiv_grp_closest}}
 #'
-#' @import ompr ROI ROI.plugin.glpk ROI.plugin.clp
+#' @import ompr ROI ROI.plugin.glpk
 #' @importFrom ompr.roi with_ROI
 #' @importFrom dplyr %>%
 #'
