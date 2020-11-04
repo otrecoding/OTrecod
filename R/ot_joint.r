@@ -126,7 +126,7 @@
 #'     \item{DATA1_OT}{the database A with the individual predictions of \eqn{Z} using an optimal transportation algorithm (\code{JOINT}) or \code{R-JOINT}}
 #'     \item{DATA2_OT}{the database B with the individual predictions of \eqn{Y} using an optimal transportation algorithm (\code{JOINT}) or \code{R-JOINT}}
 #'
-#' @import ROI ROI.plugin.glpk ROI.plugin.clp
+#' @import ROI ROI.plugin.glpk
 #'
 #' @importFrom dplyr %>%
 #' @importFrom ompr MIPModel get_solution

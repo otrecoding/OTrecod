@@ -155,7 +155,7 @@
 #'
 #' @seealso \code{\link{transfo_dist}},\code{\link{proxim_dist}}, \code{\link{avg_dist_closest}}, \code{\link{indiv_grp_closest}}, \code{\link{indiv_grp_optimal}}
 #'
-#' @import ROI ROI.plugin.glpk ROI.plugin.clp
+#' @import ROI ROI.plugin.glpk
 #' @importFrom ompr MIPModel sum_expr
 #' @importFrom ompr.roi with_ROI
 #' @importFrom plyr mapvalues
