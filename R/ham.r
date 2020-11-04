@@ -87,6 +87,14 @@ ham = function(mat_1,mat_2){
   d_fun = function(x_1, x_2) (sum(x_1 != x_2,na.rm=TRUE)/length(x_1))*length(x_1)/sum(is.na(x_1)+is.na(x_2)==0)
   matr  = apply(mat_2,1,function(x) sapply(1:nrow(mat_1),function(j) d_fun(x,mat_1[j,])))
 
+  if (sum(is.na(matr))!=0){
+
+    vec1 = as.vector(matr)
+    vec1[which(is.na(vec1))] = NA
+    matr = matrix(vec1, ncol = ncol(matr))
+
+  } else{}
+
   return(matr)
 
 }
