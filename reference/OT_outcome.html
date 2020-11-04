@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="OT_outcome() — OT_outcome" />
-<meta property="og:description" content="The function OT_outcome integrates two models called (OUTCOME) and R-OUTCOME dedicated to the solving of recoding problems in data integration
-using optimal transportation of outcomes." />
+<meta property="og:description" content="The function OT_outcome integrates two algorithms called (OUTCOME) and (R-OUTCOME) dedicated to the solving of recoding problems in data fusion
+using optimal transportation (OT) of the joint distribution of outcomes." />
 
 
 
@@ -80,12 +80,6 @@ using optimal transportation of outcomes." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -110,152 +104,156 @@ using optimal transportation of outcomes." />
     </div>
 
     <div class="ref-description">
-    <p>The function <code>OT_outcome</code> integrates two models called (<code>OUTCOME</code>) and <code>R-OUTCOME</code> dedicated to the solving of recoding problems in data integration
-using optimal transportation of outcomes.</p>
+    <p>The function <code>OT_outcome</code> integrates two algorithms called (<code>OUTCOME</code>) and (<code>R-OUTCOME</code>) dedicated to the solving of recoding problems in data fusion
+using optimal transportation (OT) of the joint distribution of outcomes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>OT_outcome</span>(
-  <span class='kw'>datab</span>,
-  index_DB_Y_Z = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,
-  quanti = <span class='kw'>NULL</span>,
-  nominal = <span class='kw'>NULL</span>,
-  ordinal = <span class='kw'>NULL</span>,
-  logic = <span class='kw'>NULL</span>,
-  convert.num = <span class='kw'>NULL</span>,
-  convert.clss = <span class='kw'>NULL</span>,
-  FAMD.coord = <span class='st'>"NO"</span>,
-  FAMD.perc = <span class='fl'>0.8</span>,
-  dist.choice = <span class='st'>"E"</span>,
-  percent.knn = <span class='fl'>1</span>,
-  maxrelax = <span class='fl'>0</span>,
-  indiv.method = <span class='st'>"sequential"</span>,
-  prox.dist = <span class='fl'>0.8</span>,
-  which.DB = <span class='st'>"BOTH"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>OT_outcome</span><span class='op'>(</span>
+  <span class='va'>datab</span>,
+  index_DB_Y_Z <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,
+  quanti <span class='op'>=</span> <span class='cn'>NULL</span>,
+  nominal <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ordinal <span class='op'>=</span> <span class='cn'>NULL</span>,
+  logic <span class='op'>=</span> <span class='cn'>NULL</span>,
+  convert.num <span class='op'>=</span> <span class='cn'>NULL</span>,
+  convert.clss <span class='op'>=</span> <span class='cn'>NULL</span>,
+  FAMD.coord <span class='op'>=</span> <span class='st'>"NO"</span>,
+  FAMD.perc <span class='op'>=</span> <span class='fl'>0.8</span>,
+  dist.choice <span class='op'>=</span> <span class='st'>"E"</span>,
+  percent.knn <span class='op'>=</span> <span class='fl'>1</span>,
+  maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
+  indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>,
+  prox.dist <span class='op'>=</span> <span class='fl'>0.8</span>,
+  solvR <span class='op'>=</span> <span class='st'>"glpk"</span>,
+  which.DB <span class='op'>=</span> <span class='st'>"BOTH"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>datab</th>
-      <td><p>A data.frame with at least four columns sorted in a non-specific order. One column must be a column of identifier for the two databases, where the names of the two databases
-must be alphanumerically ranked in ascending order (for example: 1 for the top database and 2 for the database from below, or more logically here A and B  ...But NOT B and A!). One column (\(Y\) here but other names are allowed)
-must correspond to the target variable related to the information of interest to merge with its specific encoding in the database A (corresponding encoding should be so missing in the database B). In the same way,
-one column (\(Z\) here) corresponds to the second target variable with its specific encoding in the database B (corresponding encoding should be so missing in the database A).
-Finally, the input database must have at least one shared covariate with same encoding in A and B. Please notice that, if your data.frame has only four columns, that is to say, only one covariate, if this latter has NA, and unless user
-has previously imputed the corresponding missing information, the OT algorithm will only run complete cases.</p></td>
+      <td><p>a data.frame made up of two overlayed databases with at least four columns sorted in a random order. One column must be a column dedicated to the identification of the two databases ranked in ascending order
+(For example: 1 for the top database and 2 for the database from below, or more logically here A and B  ...But not B and A!). One column (\(Y\) here but other names are allowed)
+must correspond to the target variable related to the information of interest to merge with its specific encoding in the database A (corresponding encoding should be missing in the database B). In the same way,
+one column (\(Z\) here) corresponds to the second target variable with its specific encoding in the database B (corresponding encoding should be missing in the database A).
+Finally, the input database must have at least one shared covariate with same encoding in A and B. Please notice that, if your data.frame has only one shared covariate (four columns) with missing values (because no imputation is desired)
+then a warning will appear and the algorithm will only run with complete cases.</p></td>
     </tr>
     <tr>
       <th>index_DB_Y_Z</th>
-      <td><p>A vector of three column indexes. The first index must correspond to the index of the databases identifier column (DB identifier). The second index must correspond
-to the index of the target variable in the first database (A) while the third index corresponds to the index of column related to the target variable in the second database (B).</p></td>
+      <td><p>a vector of three indexes of variables. The first index must correspond to the index of the databases identifier column. The second index corresponds
+to the index of the target variable in the first database (A) while the third index corresponds to the column index related to the target variable in the second database (B).</p></td>
     </tr>
     <tr>
       <th>quanti</th>
-      <td><p>A vector of indexes that corresponds to the column indexes of all the quantitative variables (DB identification and target variables included if it is the case for them).</p></td>
+      <td><p>a vector of column indexes of all the quantitative variables (database identifier and target variables included if it is the case for them).</p></td>
     </tr>
     <tr>
       <th>nominal</th>
-      <td><p>A vector of indexes that corresponds to the column indexes of all the nominal (not ordered) variables (DB identification and target variables included if it is the case for them).</p></td>
+      <td><p>a vector of column indexes of all the nominal (not ordered) variables (database identifier and target variables included if it is the case for them).</p></td>
     </tr>
     <tr>
       <th>ordinal</th>
-      <td><p>A vector of indexes that corresponds to the column indexes of all the ordinal variables (DB identification and target variables included if it is the case for them).</p></td>
+      <td><p>a vector of column indexes of all the ordinal variables (database identifier and target variables included if it is the case for them).</p></td>
     </tr>
     <tr>
       <th>logic</th>
-      <td><p>A vector of indexes that corresponds to the column indexes of all the boolean variables.</p></td>
+      <td><p>a vector of column indexes of all the boolean variables of the data.frame.</p></td>
     </tr>
     <tr>
       <th>convert.num</th>
-      <td><p>Indexes of the continuous (quantitative) variables to convert in ordered factors. All declared indexes in this argument must have been declared in the argument <code>quanti</code> (no conversion by default).</p></td>
+      <td><p>indexes of the continuous (quantitative) variables to convert in ordered factors if necessary. All declared indexes in this argument must have been declared in the argument <code>quanti</code> (no conversion by default).</p></td>
     </tr>
     <tr>
       <th>convert.clss</th>
-      <td><p>A vector indicating for each continuous variable to convert, the desired corresponding number of levels. If the length of the argument <code>convert_num</code> exceeds 1 while the length of <code>convert_clss</code> equals 1 (only one integer),
+      <td><p>a vector indicating for each continuous variable to convert, the corresponding desired number of levels. If the length of the argument <code>convert_num</code> exceeds 1 while the length of <code>convert_clss</code> equals 1 (only one integer),
 each discretization will count the same number of levels (quantiles).</p></td>
     </tr>
     <tr>
       <th>FAMD.coord</th>
-      <td><p>A logical that must be equal to TRUE when user decides to work with principal components of a factor analysis for mixed data (FAMD) instead of the set of raw covariates (FALSE is the default value).</p></td>
+      <td><p>a logical that must be set to TRUE when user decides to work with principal components of a factor analysis for mixed data (FAMD) instead of the set of raw covariates (FALSE is the default value).</p></td>
     </tr>
     <tr>
       <th>FAMD.perc</th>
-      <td><p>A percent value (between 0 and 100) linked to the <code>FAMD.coord</code> argument. When this latter equals TRUE, this argument corresponds to the minimum part of variability that must be taken into account by the principal components of the FAMD method.
+      <td><p>a percent (between 0 and 1) linked to the <code>FAMD.coord</code> argument (0.8 is the default value). When this latter equals TRUE, this argument corresponds to the minimum part of variability that must be taken into account by the principal components of the FAMD method.
 This option fixes the remaining number of principal components for the rest of the study.</p></td>
     </tr>
     <tr>
       <th>dist.choice</th>
-      <td><p>A character (with quotes) corresponding to the distance function chosen between: The euclidean distance ("E", by default), The Manhattan distance ("M"),
-the Gower distance ("G"), the Hamming (also called binary) distance and the Euclidean or Manhattan distance, calculated from principal components of a factor analysis of mixed data ("FAMD").</p></td>
+      <td><p>a character string (with quotes) corresponding to the distance function chosen between: the euclidean distance ("E", by default), The Manhattan distance ("M"),
+the Gower distance ("G"), the Hamming distance ("H") for binary covariates only, and the Euclidean or Manhattan distance computed from principal components of a factor analysis of mixed data ("FAMD"). See (1) for details.</p></td>
     </tr>
     <tr>
       <th>percent.knn</th>
-      <td><p>Percent of closest neighbors taken in the computation of the cost matrices.</p></td>
+      <td><p>the ratio of closest neighbors involved in the computations of the cost matrices. 1 is the default value that includes all rows in the computation.</p></td>
     </tr>
     <tr>
       <th>maxrelax</th>
-      <td><p>The maximum percentage of deviation from expected probability masses (0 for the <code>OUTCOME</code> model, a non-zero value otherwise). Please consult (2) for more details.</p></td>
+      <td><p>the maximum percentage of deviation from expected probability masses. It must be equal to 0 (default value) for the <code>OUTCOME</code> algorithm, and equal to a strictly positive value for the R-OUTCOME algorithm. See (2) for details.</p></td>
     </tr>
     <tr>
       <th>indiv.method</th>
-      <td><p>A character string indicating the chosen method to get individual predictions from the joint probabilities assessed, "sequential" by default, or "optimal". Please consult the section <code>details</code> and the corresponding article 2 for more details.</p></td>
+      <td><p>a character string indicating the chosen method to get individual predictions from the joint probabilities assessed, "sequential" by default, or "optimal". See the <code>details</code> section and (2) for details.</p></td>
     </tr>
     <tr>
       <th>prox.dist</th>
-      <td><p>A percentage (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates. This choice does not influence the estimate of \(\gamma\),
-but the estimates of the conditional posterior probabilities stored, in output, in the objects <code>estimatorZA</code> and <code>estimatorYB</code>.</p></td>
+      <td><p>a probability (between 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.</p></td>
+    </tr>
+    <tr>
+      <th>solvR</th>
+      <td><p>a character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".</p></td>
     </tr>
     <tr>
       <th>which.DB</th>
-      <td><p>A character string (with quotes) that indicates which individual predictions compute: Only the individual predictions of \(Y\) in B ("B"), only those of \(Z\) in A ("A") or the both ("BOTH" by default).</p></td>
+      <td><p>a character string indicating the database to complete ("BOTH" by default, for the prediction of \(Y\) and \(Z\) in the two databases), "A" only for the imputation of \(Z\) in A, "B" only for the imputation of \(Y\) in B.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list containing 9 elements:</p>
-<dt>time_exe</dt><dd><p>The running time of the function</p></dd>
-<dt>gamma_A</dt><dd><p>A matrix corresponding to an estimation of the joint distribution of \((Y,Z)\) in A</p></dd>
-<dt>gamma_B</dt><dd><p>A matrix corresponding to an estimation of the joint distribution of \((Y,Z)\) in B</p></dd>
-<dt>profile</dt><dd><p>A data.frame that gives all details about the remaining \(P\) profiles of covariates. These informations can be linked to the <code>estimatorZA</code> and the <code>estimatorYB</code> objects for a better interpretation of the results.</p></dd>
-<dt>res_prox</dt><dd><p>The outputs of the function <code>proxim_dist</code></p></dd>
-<dt>estimatorZA</dt><dd><p>An array that corresponds to estimates of the probability distribution of \(Z\) conditional to \(X\) and \(Y\) in database A. The number of rows of each table corresponds to the total number of the P profiles of covariates.
-The number of columns of each table corresponds to the number of levels of \(Y\). The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \(Z\)</p></dd>
-<dt>estimatorYB</dt><dd><p>An array that corresponds to estimates of the probability distribution of \(Y\) conditional to \(X\) and \(Z\) in database B. The number of rows of each table corresponds to the total number of profiles of covariates.
-The number of columns of each table corresponds to the number of levels of \(Z\). The row names of each table corresponds to the values of the covariates sorted by order of appearance in the merged database. The third element of the array is the possible level of \(Y\)</p></dd>
-<dt>DATA1_OT</dt><dd><p>The database A with imputed individual prediction on \(Z\) using OT</p></dd>
-<dt>DATA2_OT</dt><dd><p>The database B with imputed individual prediction on \(Y\) using OT</p></dd>
+<dt>time_exe</dt><dd><p>the running time of the function</p></dd>
+<dt>gamma_A</dt><dd><p>a matrix corresponding to an estimation of the joint distribution of \((Y,Z)\) in A</p></dd>
+<dt>gamma_B</dt><dd><p>a matrix corresponding to an estimation of the joint distribution of \((Y,Z)\) in B</p></dd>
+<dt>profile</dt><dd><p>a data.frame that gives all details about the remaining \(P\) profiles of covariates. These informations can be linked to the <code>estimatorZA</code> and the <code>estimatorYB</code> objects for a better interpretation of the results.</p></dd>
+<dt>res_prox</dt><dd><p>the outputs of the function <code>proxim_dist</code></p></dd>
+<dt>estimatorZA</dt><dd><p>an array that corresponds to estimates of the probability distribution of \(Z\) conditional to \(X\) and \(Y\) in database A. The number of rows of each table corresponds to the total number of profiles of covariates.
+The first dimension of each table (rownames) correspond to the profiles of covariates sorted by order of appearance in the merged database. The second dimension of the array (columns of the tables) corresponds to the levels of \(Y\) while the third element corresponds to the levels of \(Z\).</p></dd>
+<dt>estimatorYB</dt><dd><p>an array that corresponds to estimates of the probability distribution of \(Y\) conditional to \(X\) and \(Z\) in database B. The number of rows of each table corresponds to the total number of profiles of covariates.
+The first dimension of each table (rownames) correspond to the profiles of covariates sorted by order of appearance in the merged database. The second dimension of the array (columns of the tables) corresponds to the levels of \(Z\) while the third element corresponds to the levels of \(Y\).</p></dd>
+<dt>DATA1_OT</dt><dd><p>the database A with the individual predictions of \(Z\) using an optimal transportation algorithm (<code>OUTCOME</code>) or <code>R-OUTCOME</code></p></dd>
+<dt>DATA2_OT</dt><dd><p>the database B with the individual predictions of \(Y\) using an optimal transportation algorithm (<code>OUTCOME</code>) or <code>R-OUTCOME</code></p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>A. THE RECODING PROBLEM IN DATA FUSION</p>
-<p>Assuming that \(Y\) and \(Z\) are two variables that summarize a same latent information in two separate (no overlapping rows) databases A and B respectively,
-so that \(Y\) and \(Z\) are never jointly observed in A and B. Assuming also that A and B share a subset of common covariates X of any types (with same encodings in A and B)
-completed or not. Integrating these two databases often requires to solve the recoding problem observed between \(Y\) and \(Z\) by creating an unique database where
-the missing information of \(Y\) and/or \(Z\) is fully completed.</p>
+<p>Assuming that \(Y\) and \(Z\) are two target variables which refered to the same target population in two separate databases A and B respectively (no overlapping rows),
+so that \(Y\) and \(Z\) are never jointly observed. Assuming also that A and B share a subset of common covariates \(X\) of any types (same encodings in A and B)
+completed or not. Merging these two databases often requires to solve a recoding problem by creating an unique database where
+the missing information of \(Y\) and \(Z\) is fully completed.</p>
 
 <p>B. INFORMATIONS ABOUT THE ALGORITHM</p>
 <p>The algorithm integrated in the function <code>OT_outcome</code> provides a solution to the recoding problem previously described by proposing an
 application of optimal transportation which aims is to search for a bijective mapping between the distributions of of \(Y\) in A and \(Z\) in B.
-Mathematically, the principle of the algorithm is based on the resolution of an optimization problem which provides a \(\gamma\) solution (as called in the related articles)
-that pushes the distribution of \(Y\) forward to the distribution of \(Z\) and can be so interpreted as an estimator of the joint distribution
-\((Y,Z)\) in A (or B respetively). According to this result, a second step of the algorithm provides individual predictions of \(Y\) in B (of \(Z\) in A, or both, depending on the choice
-specified by user in the argument <code>which.DB</code>) two possible approaches are available depending on the argument <code>indiv.method</code>:</p><ul>
-<li><p>When <code>indiv.method = "sequential"</code>, a nearest neighbor procedure is applied. This corresponds to the use of the function <code>indiv_grp_closest</code> directly
+Mathematically, the principle of the algorithm is based on the resolution of an optimization problem which provides an optimal solution \(\gamma\) (as called in the related articles)
+that transfers the distribution of \(Y\) in A to the distribution of \(Z\) in B (or conversely, according to the sense of the transport)and can be so interpreted as an estimator of the joint distribution
+\((Y,Z)\) in A (or B respetively). According to this result, a second step of the algorithm provides individual predictions of \(Y\) in B (resp. of \(Z\) in A, or both, depending on the choice
+specified by user in the argument <code>which.DB</code>). Two possible approaches are available depending on the argument <code>indiv.method</code>:</p><ul>
+<li><p>When <code>indiv.method = "sequential"</code>, a nearest neighbor procedure is applied. This corresponds to the use of the function <code><a href='indiv_grp_closest.html'>indiv_grp_closest</a></code>
 implemented in the function <code>OT_outcome</code>.</p></li>
 <li><p>When <code>indiv.method = "optimal"</code>, a linear optimization problem is solved to determine the individual predictions that minimize the sum of the individual distances
-in A (B) with the modalities of \(Z\) in B (\(Y\) in A). This uses directly the function <code>indiv_grp_optimal</code> in the function <code>OT_outcome</code>.</p></li>
+in A (resp. in B) with the modalities of \(Z\) in B (resp. \(Y\) in A). This approach is applied via the function <code><a href='indiv_grp_optimal.html'>indiv_grp_optimal</a></code> implemented in the function <code>OT_outcome</code>.</p></li>
 </ul><p>This algorithm supposes the respect of the two following assumptions:</p><ol>
-<li><p>\(Y\) must follow the same distribution in A and B. In the same way \(Z\) follows the same distribution in the two databases.</p></li>
+<li><p>\(Y\) must follow the same distribution in A and B. In the same way, \(Z\) follows the same distribution in the two databases.</p></li>
 <li><p>The conditional distribution \((Y|X)\) must be identical in A and B. Respectively, \((Z|X)\) is supposed identical in A and B.</p></li>
-</ol><p>Because the first assumption can appear too strong in some situations, a relaxation of the constraints of marginal distribution is possible using the argument <code>maxrelax</code>.
-When <code>indiv.method = "sequential"</code> and <code>maxrelax = 0</code>, the first version of the algorithm (called <code>OUTCOME</code> in (2) and used in all the article (1))
-is applied. In all other situations, the algorithm applied corresponds to a model called <code>R_OUTCOME</code> (only described in (2)).
-Estimations a posteriori of conditional probabilities \(P[Y|X,Z]\) and \(P[Z|X,Y]\) are available by profiles of covariates in output (See the objects <code>estimatorYB</code> and <code>estimatorZA</code>).
-Estimations of \(\gamma\) are also available according to the direction of the distributions transport chosen (See \(\gamma_A\) and \(\gamma_B\)).</p>
+</ol><p>Because the first assumption can be too strong in some situations, a relaxation of the constraints of marginal distribution is possible using the argument <code>maxrelax</code>.
+When <code>indiv.method = "sequential"</code> and <code>maxrelax = 0</code>, the algorithm called <code>OUTCOME</code> (see (1) and (2))
+is applied. In all other situations, the algorithm applied corresponds to an algorithm called <code>R_OUTCOME</code> (see (2)).
+A posteriori estimates of conditional probabilities \(P[Y|X,Z]\) and \(P[Z|X,Y]\) are available for each profile of covariates (see the output objects <code>estimatorYB</code> and <code>estimatorZA</code>).
+Estimates of \(\gamma\) are also available according to the desired direction of the transport (from A to B and/or conversely. See \(\gamma_A\) and \(\gamma_B\)).</p>
 
-<p>C. TYPE OF REQUIRED INPUT DATABASE</p>
+<p>C. EXPECTED STRUCTURE FOR THE INPUT DATABASE</p>
 <p>The input database is a data.frame that must be saved in a specific form by users:</p><ul>
 <li><p>Two overlayed databases containing a common column of database identifiers (A and B, 1 or 2, by examples, encoded in numeric or factor form)</p></li>
 <li><p>A column corresponding to the target variable with its specific encoding in A (For example a factor \(Y\) encoded in \(n_Y\) levels, ordered or not, with NAs in the corresponding rows of B)</p></li>
@@ -263,9 +261,9 @@ Estimations of \(\gamma\) are also available according to the direction of the d
 <li><p>The order of the variables in the database have no importance but the column indexes related to the three columns previously described (ie ID, \(Y\) and \(Z\)) must be rigorously specified
 in the argument <code>index_DB_Y_Z</code>.</p></li>
 <li><p>A set of shared common covariates (at least one but more is recommended) of any type, complete or not (provided that the number of covariates exceeds 1) is required.</p></li>
-</ul><p>The function <code>merge_dbs</code> is available in this package to assist user in the preparation of their databases, so please, do not hesitate to use it beforehand if necessary.</p>
-<p>Remarks about the outcomes:</p><ul>
-<li><p>A target outcome can be categorical, in factor, ordered or not, discrete (with a finite number of values ONLY) but, notice that, if they are stored in numeric they will be automatically converted in ordered factors.</p></li>
+</ul><p>The function <code><a href='merge_dbs.html'>merge_dbs</a></code> is available in this package to assist user in the preparation of their databases, so please, do not hesitate to use it beforehand if necessary.</p>
+<p>Remarks about the target variables:</p><ul>
+<li><p>A target variable can be of categorical type, but also discrete, stored in factor, ordered or not. Nevertheless, notice that, if the variable is stored in numeric it will be automatically converted in ordered factors.</p></li>
 <li><p>If a target outcome is incomplete, the corresponding rows will be automatically dropped during the execution of the function.</p></li>
 </ul><p>The type of each variables (including \(ID\), \(Y\) and \(Z\)) of the database must be rigorously specified once, in one of the four arguments <code>quanti</code>,<code>nominal</code>, <code>ordinal</code> and <code>logic</code>.</p>
 
@@ -285,23 +283,31 @@ according to the distance function chosen by user (via the argument <code>dist.c
 <li><p>the Gower distance for mixed data (see (4): "G")</p></li>
 <li><p>the Hamming distance for binary data ("H")</p></li>
 </ul><p>Moreover, it is also possible to directly apply the first three distances mentioned on coordinates extracted from a multivariate analysis (Factor Analysis for Mixed Data, see (5)) applied on raw covariates using the arguments <code>FAMD.coord</code> and <code>FAMD.perc</code>.
-This method is used in the article (1).</p>
-<p>As a decision rule, for a given profile of covariates \(P_j\), an individual i will be considered as a neighbor of \(P_j\) if \(dist(i,P_j) &lt; \mbox{prox.dist} \times max(dist(i,P_j))\) where \(prox.dist\) must be fixed by user.</p>
+This method is used (1).</p>
+<p>As a decision rule, for a given profile of covariates \(P_j\), an individual \(i\) will be considered as a neighbor of \(P_j\) if \(dist(i,P_j) &lt; \mbox{prox.dist} \times max(dist(i,P_j))\) where \(prox.dist\) must be fixed by user.</p>
+
+<p>F. INFORMATIONS ABOUT THE SOLVER</p>
+<p>The argument <code>solvR</code> permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (6) for more details). The solver "clp" (see (7)) for Coin-or Linear Programming, convenient in linear and quadratic situations, is also directly integrated in the function.
+Moreover, the function actually uses the <code>R</code> optimization infrastructure of the package <span class="pkg">ROI</span> which offers a wide choice of solver to users by easily loading the associated plugins of <span class="pkg">ROI</span> (see (8)).</p>
+<p>For more details about the algorithms integrated in <code>OT_outcome</code>, please consult (1) and (2).</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
 <ol>
 <li><p>Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N. (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
 Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515/ijb-2018-0106'>https://doi.org/10.1515/ijb-2018-0106</a></p></li>
-<li><p>Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615</p></li>
+<li><p>Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 | <a href='https://doi.org/10.1080/01621459.2020.1775615'>https://doi.org/10.1080/01621459.2020.1775615</a></p></li>
 <li><p>Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.</p></li>
 <li><p>Gower J.C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637.</p></li>
 <li><p>Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.</p></li>
+<li><p>Makhorin A (2011). GNU Linear Programming Kit Reference Manual Version 4.47.<a href='http://www.gnu.org/software/glpk'>http://www.gnu.org/software/glpk</a></p></li>
+<li><p>Forrest J, de la Nuez D, Lougee-Heimer R (2004). Clp User Guide. <a href='http://www.coin-or.org/Clp/userguide/index.html'>http://www.coin-or.org/Clp/userguide/index.html</a></p></li>
+<li><p>Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 <a href='https://doi.org/10.18637/jss.v094.i15'>https://doi.org/10.18637/jss.v094.i15</a></p></li>
 </ol>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>transfo_dist</code>,<code>proxim_dist</code>, <code>avg_dist_closest</code>, <code>indiv_grp_closest</code>, <code>indiv_grp_optimal</code></p></div>
+    <div class='dont-index'><p><code><a href='transfo_dist.html'>transfo_dist</a></code>,<code><a href='proxim_dist.html'>proxim_dist</a></code>, <code><a href='avg_dist_closest.html'>avg_dist_closest</a></code>, <code><a href='indiv_grp_closest.html'>indiv_grp_closest</a></code>, <code><a href='indiv_grp_optimal.html'>indiv_grp_optimal</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Gregory Guernec, Valerie Gares, Jeremy Omer</p>
@@ -313,10 +319,10 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 <span class='co'>### Y and Z are a same variable encoded in 2 different forms:</span>
 <span class='co'>### (3 levels for Y and 5 levels for Z)</span>
 <span class='co'>#--------</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>simu_data</span>)
-<span class='kw'>simu_dat</span>  <span class='op'>=</span> <span class='kw'>simu_data</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>200</span>,<span class='fl'>301</span><span class='op'>:</span><span class='fl'>500</span>),]
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span>
+<span class='va'>simu_dat</span>  <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>200</span>,<span class='fl'>301</span><span class='op'>:</span><span class='fl'>500</span><span class='op'>)</span>,<span class='op'>]</span>
 
-<span class='co'>### An example of OUTCOME model that uses:</span>
+<span class='co'>### An example of OUTCOME algorithm that uses:</span>
 <span class='co'>#-----</span>
 <span class='co'># - A nearest neighbor procedure for the estimation of individual predictions</span>
 <span class='co'># - The Manhattan distance function</span>
@@ -325,9 +331,10 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 <span class='co'># Predictions are assessed for Y in B and Z in A</span>
 <span class='co'>#-----</span>
 
-<span class='kw'>try1</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span>(<span class='kw'>simu_dat</span>, quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>), ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>),
-                  dist.choice = <span class='st'>"M"</span>,percent.knn = <span class='fl'>0.90</span>, maxrelax = <span class='fl'>0</span>,
-                  indiv.method = <span class='st'>"sequential"</span>)</div><div class='output co'>#&gt; --------------------------------------- 
+<span class='va'>try1</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_dat</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
+                  dist.choice <span class='op'>=</span> <span class='st'>"M"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
+                  indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; --------------------------------------- 
 #&gt; OT PROCEDURE in progress ... 
 #&gt; --------------------------------------- 
 #&gt; Type                     =  OUTCOME 
@@ -337,7 +344,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 #&gt; Relaxation value         =  0 
 #&gt; Individual pred process  =  Sequential 
 #&gt; DB imputed               =  BOTH 
-#&gt; --------------------------------------- </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>try1</span><span class='op'>$</span><span class='kw'>DATA1_OT</span>)  <span class='co'># Part of the completed database A</span></div><div class='output co'>#&gt;   DB       Y    Z Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage     Age
+#&gt; --------------------------------------- </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>DATA1_OT</span><span class='op'>)</span>  <span class='co'># Part of the completed database A</span>
+</div><div class='output co'>#&gt;   DB       Y    Z Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage     Age
 #&gt; 1  A [40-60[ &lt;NA&gt;        0           1           0         1      3  3.0342
 #&gt; 2  A [20-40] &lt;NA&gt;        1          NA          NA         0      2  0.3472
 #&gt; 3  A [40-60[ &lt;NA&gt;        0           0           0         1      2 -0.1796
@@ -350,14 +358,16 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 #&gt; 3      2
 #&gt; 4      5
 #&gt; 5      5
-#&gt; 6      1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>try1</span><span class='op'>$</span><span class='kw'>DATA2_OT</span>)  <span class='co'># Part of the completed database B</span></div><div class='output co'>#&gt;     DB    Y Z Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage     Age  OTpred
+#&gt; 6      1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>DATA2_OT</span><span class='op'>)</span>  <span class='co'># Part of the completed database B</span>
+</div><div class='output co'>#&gt;     DB    Y Z Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage     Age  OTpred
 #&gt; 301  B &lt;NA&gt; 5        0           0           0         1      2 -1.0701 [40-60[
 #&gt; 302  B &lt;NA&gt; 1        0           0           1        NA      4  2.9942 [20-40]
 #&gt; 303  B &lt;NA&gt; 2        0           0           0         0     NA  0.3189 [20-40]
 #&gt; 304  B &lt;NA&gt; 2        0           1           0         0     NA  0.0256 [20-40]
 #&gt; 305  B &lt;NA&gt; 1        0           0           1         1      4  2.2648 [20-40]
 #&gt; 306  B &lt;NA&gt; 1        0           0           1        NA      3  2.0712 [20-40]</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>try1</span><span class='op'>$</span><span class='kw'>estimatorZA</span>[,,<span class='fl'>1</span>])</div><div class='output co'>#&gt;       [20-40]    [40-60[    [60-80]
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>estimatorZA</span><span class='op'>[</span>,,<span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;       [20-40]    [40-60[    [60-80]
 #&gt; P_1 0.9000000 0.01176471 0.03703704
 #&gt; P_2 0.8390805 0.00000000 0.03703704
 #&gt; P_3 0.8390805 0.01219512 0.03846154
@@ -365,7 +375,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 #&gt; P_5 0.8470588 0.01176471 0.03703704
 #&gt; P_6 0.8390805 0.01176471 0.03703704</div><div class='input'><span class='co'># ... Corresponds to P[Z = 1|Y,P1] when P1 corresponds to the 1st profile of covariates (P_1)</span>
 <span class='co'># detailed in the 1st row of the profile object:</span>
-<span class='kw'>try1</span><span class='op'>$</span><span class='kw'>profile</span>[<span class='fl'>1</span>,]   <span class='co'># Details of P_1</span></div><div class='output co'>#&gt;    ID Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage    Age
+<span class='va'>try1</span><span class='op'>$</span><span class='va'>profile</span><span class='op'>[</span><span class='fl'>1</span>,<span class='op'>]</span>   <span class='co'># Details of P_1</span>
+</div><div class='output co'>#&gt;    ID Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage    Age
 #&gt; 1 P_1        0           1           0         1      3 3.0342</div><div class='input'>
 <span class='co'># So estimatorZA[1,1,1]= 0.2 corresponds to an estimation of:</span>
 <span class='co'># P[Z = 1|Y=[20-40],Gender_2=0,Treatment_2=1,Treatment_3=0,Smoking_2=1,Dosage=3,Age=65.44]</span>
@@ -374,22 +385,22 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 <span class='co'># ... And so on, the reasoning is the same for the estimatorYB object.</span>
 
 
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 
-<span class='co'>### An example of OUTCOME model with same conditions as the previous example, excepted that;</span>
+<span class='co'>### An example of OUTCOME algorithm with same conditions as the previous example, excepted that;</span>
 <span class='co'># - Only the individual predictions of Y in B are required</span>
 <span class='co'># - The continuous covariates "age" (related index = 8) will be converted in an ordinal factors</span>
 <span class='co'>#   of 3 balanced classes (tertiles)</span>
 <span class='co'># - The Gower distance is now used</span>
 <span class='co'>###-----</span>
 
-<span class='kw'>try2</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span>(<span class='kw'>simu_dat</span>, quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>), ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>),
-                  dist.choice = <span class='st'>"G"</span>,percent.knn = <span class='fl'>0.90</span>, maxrelax = <span class='fl'>0</span>,
-                  convert.num = <span class='fl'>8</span>, convert.clss = <span class='fl'>3</span>,
-                  indiv.method = <span class='st'>"sequential"</span>, which.DB = <span class='st'>"B"</span>)
+<span class='va'>try2</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_dat</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
+                  dist.choice <span class='op'>=</span> <span class='st'>"G"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
+                  convert.num <span class='op'>=</span> <span class='fl'>8</span>, convert.clss <span class='op'>=</span> <span class='fl'>3</span>,
+                  indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>, which.DB <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span>
 
 
-<span class='co'>### An example of OUTCOME model with same conditions as the first example, excepted that;</span>
+<span class='co'>### An example of OUTCOME algorithm with same conditions as the first example, excepted that;</span>
 <span class='co'># - Only the individual predictions of Z in A are required</span>
 <span class='co'># - The continuous covariates "age" (related index = 8) will be converted in an ordinal factors</span>
 <span class='co'>#   of 3 balanced classes (tertiles)</span>
@@ -398,47 +409,48 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 <span class='co'>#   variables.</span>
 <span class='co'>###-----</span>
 
-<span class='kw'>try3</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span>(<span class='kw'>simu_data</span>, quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>), ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>),
-                  dist.choice = <span class='st'>"H"</span>,percent.knn = <span class='fl'>0.90</span>, maxrelax = <span class='fl'>0</span>,
-                  convert.num = <span class='fl'>8</span>, convert.clss = <span class='fl'>3</span>,
-                  indiv.method = <span class='st'>"sequential"</span>,which.DB = <span class='st'>"B"</span>)
+<span class='va'>try3</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
+                  dist.choice <span class='op'>=</span> <span class='st'>"H"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
+                  convert.num <span class='op'>=</span> <span class='fl'>8</span>, convert.clss <span class='op'>=</span> <span class='fl'>3</span>,
+                  indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>,which.DB <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span>
 
 
-<span class='co'>### An example of R-OUTCOME model using:</span>
+<span class='co'>### An example of R-OUTCOME algorithm using:</span>
 <span class='co'># - An optimization procedure for individual predictions on the 2 databases</span>
 <span class='co'># - The Manhattan distance</span>
 <span class='co'># - Raw covariates</span>
 <span class='co'>###-----</span>
-<span class='kw'>try4</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span>(<span class='kw'>simu_data</span>, quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>), ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>),
-                  dist.choice = <span class='st'>"M"</span>, percent.knn = <span class='fl'>0.90</span>, maxrelax = <span class='fl'>0</span>,
-                  indiv.method = <span class='st'>"optimal"</span>)
+<span class='va'>try4</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
+                  dist.choice <span class='op'>=</span> <span class='st'>"M"</span>, percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
+                  indiv.method <span class='op'>=</span> <span class='st'>"optimal"</span><span class='op'>)</span>
 
 
-<span class='co'>### An example of R-OUTCOME model with:</span>
+<span class='co'>### An example of R-OUTCOME algorithm with:</span>
 <span class='co'># - An optimization procedure for individual predictions on the 2 databases</span>
 <span class='co'># - The use of Euclidean distance on coordinates from FAMD</span>
 <span class='co'># - Raw covariates</span>
 <span class='co'>###-----</span>
 
-<span class='kw'>try5</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span>(<span class='kw'>simu_data</span>, quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>), ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>),
-                  dist.choice = <span class='st'>"E"</span>, percent.knn = <span class='fl'>0.90</span>,
-                  FAMD.coord = <span class='st'>"YES"</span>, FAMD.perc = <span class='fl'>0.8</span>,
-                  indiv.method = <span class='st'>"optimal"</span>)
+<span class='va'>try5</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
+                  dist.choice <span class='op'>=</span> <span class='st'>"E"</span>, percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>,
+                  FAMD.coord <span class='op'>=</span> <span class='st'>"YES"</span>, FAMD.perc <span class='op'>=</span> <span class='fl'>0.8</span>,
+                  indiv.method <span class='op'>=</span> <span class='st'>"optimal"</span><span class='op'>)</span>
 
 
-<span class='co'>### An example of R-OUTCOME model with relaxation on marginal distributions and:</span>
+<span class='co'>### An example of R-OUTCOME algorithm with relaxation on marginal distributions and:</span>
 <span class='co'># - An optimization procedure for individual predictions on the 2 databases</span>
 <span class='co'># - The use of the euclidean distance</span>
 <span class='co'># - An arbitrary coefficient of relaxation</span>
 <span class='co'># - Raw covariates</span>
 <span class='co'>#-----</span>
 
-<span class='kw'>try6</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span>(<span class='kw'>simu_data</span>, quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>), ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>),
-                  dist.choice = <span class='st'>"E"</span>, percent.knn = <span class='fl'>0.90</span>,
-                  maxrelax = <span class='fl'>0.4</span>, indiv.method = <span class='st'>"optimal"</span>)
+<span class='va'>try6</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
+                  dist.choice <span class='op'>=</span> <span class='st'>"E"</span>, percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>,
+                  maxrelax <span class='op'>=</span> <span class='fl'>0.4</span>, indiv.method <span class='op'>=</span> <span class='st'>"optimal"</span><span class='op'>)</span>
 
 
-}
+<span class='op'>}</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -455,7 +467,7 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

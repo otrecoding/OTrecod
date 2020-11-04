@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="indiv_grp_closest() — indiv_grp_closest" />
-<meta property="og:description" content="This function sequentially assigns individual predictions using a nearest neighbor procedure to solve recoding problems of data fusion" />
+<meta property="og:description" content="This function sequentially assigns individual predictions using a nearest neighbors procedure to solve recoding problems of data fusion." />
 
 
 
@@ -79,12 +79,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -109,72 +103,72 @@
     </div>
 
     <div class="ref-description">
-    <p>This function sequentially assigns individual predictions using a nearest neighbor procedure to solve recoding problems of data fusion</p>
+    <p>This function sequentially assigns individual predictions using a nearest neighbors procedure to solve recoding problems of data fusion.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>indiv_grp_closest</span>(
-  <span class='kw'>proxim</span>,
-  jointprobaA = <span class='kw'>NULL</span>,
-  jointprobaB = <span class='kw'>NULL</span>,
-  percent_closest = <span class='fl'>1</span>,
-  which.DB = <span class='st'>"BOTH"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>indiv_grp_closest</span><span class='op'>(</span>
+  <span class='va'>proxim</span>,
+  jointprobaA <span class='op'>=</span> <span class='cn'>NULL</span>,
+  jointprobaB <span class='op'>=</span> <span class='cn'>NULL</span>,
+  percent_closest <span class='op'>=</span> <span class='fl'>1</span>,
+  which.DB <span class='op'>=</span> <span class='st'>"BOTH"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>proxim</th>
-      <td><p>An object corresponding to the output of the function <code>proxim_dist</code></p></td>
+      <td><p>a <code><a href='proxim_dist.html'>proxim_dist</a></code> object or an object of similar structure</p></td>
     </tr>
     <tr>
       <th>jointprobaA</th>
-      <td><p>A matrix whose number of columns corresponds to the number of modalities of the target variable \(Y\) in database A, and which number of rows corresponds to the number of modalities of Z in database B. It gives an estimation of the joint probability of \((Y,Z)\) in A.
+      <td><p>a matrix whose number of columns corresponds to the number of modalities of the target variable \(Y\) in database A, and which number of rows corresponds to the number of modalities of Z in database B. It gives an estimation of the joint probability of \((Y,Z)\) in A.
 The sum of cells of this matrix must be equal to 1</p></td>
     </tr>
     <tr>
       <th>jointprobaB</th>
-      <td><p>A matrix whose number of columns equals to the number of modalities of the target variable \(Y\) in database A, and which number of rows corresponds to the number of modalities of \(Z\) in database B. It gives an estimation of the joint probability of \((Y,Z)\) in B.
+      <td><p>a matrix whose number of columns equals to the number of modalities of the target variable \(Y\) in database A, and which number of rows corresponds to the number of modalities of \(Z\) in database B. It gives an estimation of the joint probability of \((Y,Z)\) in B.
 The sum of cells of this matrix must be equal to 1</p></td>
     </tr>
     <tr>
       <th>percent_closest</th>
-      <td><p>A value between 0 and 1 (by default) corresponding to the fixed <code>percent closest</code> of individuals remained in the computation of the average distances</p></td>
+      <td><p>a value between 0 and 1 (by default) corresponding to the fixed <code>percent closest</code> of individuals remained in the computation of the average distances</p></td>
     </tr>
     <tr>
       <th>which.DB</th>
-      <td><p>A character string (with quotes) that indicates which individual predictions need to be computed: only the individual predictions of \(Y\) in B ("B"), only those of \(Z\) in A ("A") or the both ("BOTH" by default)</p></td>
+      <td><p>a character string (with quotes) that indicates which individual predictions need to be computed: only the individual predictions of \(Y\) in B ("B"), only those of \(Z\) in A ("A") or the both ("BOTH" by default)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list of two vectors of numeric values:</p>
-<dt>YAtrans</dt><dd><p>A vector corresponding to the individual predictions of \(Y\) (numeric form) in the database B using the Optimal Transportation algorithm</p></dd>
-<dt>ZBtrans</dt><dd><p>A vector corresponding to the individual predictions of \(Z\) (numeric form) in  the database A using the Optimal Transportation algorithm</p></dd>
+<dt>YAtrans</dt><dd><p>a vector corresponding to the individual predictions of \(Y\) (numeric form) in the database B using the Optimal Transportation algorithm</p></dd>
+<dt>ZBtrans</dt><dd><p>a vector corresponding to the individual predictions of \(Z\) (numeric form) in  the database A using the Optimal Transportation algorithm</p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>A. THE RECODING PROBLEM IN DATA FUSION</p>
-<p>Assuming that \(Y\) and \(Z\) are two variables which refered to a same target population in two separate (no overlapping rows) databases A and B respectively,
+<p>Assuming that \(Y\) and \(Z\) are two variables which refered to the same target population in two separate databases A and B respectively (no overlapping rows),
 so that \(Y\) and \(Z\) are never jointly observed. Assuming also that A and B share a subset of common covariates \(X\) of any types (same encodings in A and B)
-completed or not. Integrating these two databases often requires to solve this observed recoding problem by creating an unique database where
+completed or not. Integrating these two databases often requires to solve the recoding problem by creating an unique database where
 the missing information of \(Y\) and \(Z\) is fully completed.</p>
 
 <p>B. DESCRIPTION OF THE FUNCTION</p>
-<p>The function <code>indiv_grp_closest</code> is an intermediate function used in the implementation of a model called OUTCOME (and its enrichment R-OUTCOME, see the reference (2) for more details) dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory.
-The model is implemented in the function <code>OT_outcome</code> which integrates the function <code>indiv_grp_closest</code> in its syntax as a possible second step of the algorithm.
-The function <code>indiv_grp_closest</code> can also be used separately provided that the argument <code>proxim</code> receives an output object of the function <code>proxim_dist</code>.
+<p>The function <code>indiv_grp_closest</code> is an intermediate function used in the implementation of an algorithm called OUTCOME (and its enrichment R-OUTCOME, see the reference (2) for more details) dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory.
+The model is implemented in the function <code><a href='OT_outcome.html'>OT_outcome</a></code> which integrates the function <code>indiv_grp_closest</code> in its syntax as a possible second step of the algorithm.
+The function <code>indiv_grp_closest</code> can also be used separately provided that the argument <code>proxim</code> receives an output object of the function <code><a href='proxim_dist.html'>proxim_dist</a></code>.
 This latter is available in the package and is so directly usable beforehand.</p>
-<p>The algorithm related to <code>OUTCOME</code> (and <code>R-OUTCOME</code>) is made of two independent parts. Assuming that the objective consists in the prediction of \(Z\) in the database A:</p><ul>
-<li><p>The first part of the algorithm provides an estimate of \(\gamma\) which can be interpreted as an estimation of the joint distribution \((Y,Z)\) in A.</p></li>
-<li><p>From the result of the first part, the second part executes a nearest neighbor procedure to provide the individual predictions of \(Z\) in A: and this procedure is taken over by the function <code>indiv_group_closest</code>.
+<p>The algorithms <code>OUTCOME</code> (and <code>R-OUTCOME</code>) are made of two independent parts. Assuming that the objective consists in the prediction of \(Z\) in the database A:</p><ul>
+<li><p>The first part of the algorithm solves the optimization problem by providing a solution called \(\gamma\) that corresponds here to an estimation of the joint distribution \((Y,Z)\) in A.</p></li>
+<li><p>From the first part, a nearest neighbor procedure is carried out as a second part to provide the individual predictions of \(Z\) in A: this procedure is implemented in the function <code>indiv_group_closest</code>.
 In other words, this function sequentially assigns to each individual of A the modality of \(Z\) that is closest.</p></li>
 </ul><p>Obviously, this algorithm  runs in the same way for the prediction of \(Y\) in the database B.
-The function <code>indiv_grp_closest</code> integrates in its syntax the function <code>avg_dist_closest</code> and the related argument <code>percent_closest</code> is identical in the two functions.
-Thus, when computing average distances between an individual i and a subset of individuals assigned to a same level of \(Y\) or \(Z\) is required, user can decide if all individuals from the subset of interest can participate to the computation (<code>percent_closest</code>=1) or only a fixed part p (&lt;1) corresponding to the closest neighbors of i (in this case <code>percent_closest</code> = p).</p>
-<p>The arguments <code>jointprobaA</code> and <code>jointprobaB</code> correspond to the estimations of \(\gamma\) (sum of cells must be equal to 1) in A and B respectively.
-For example, assuming that nY1 individuals are assigned to the first modality of \(Y\) in A and the objective consists in the individual predictions of \(Z\) in A. Then, if <code>jointprobaA</code>[1,2] = 0.10,
+The function <code>indiv_grp_closest</code> integrates in its syntax the function <code><a href='avg_dist_closest.html'>avg_dist_closest</a></code>. Therefore, the related argument <code>percent_closest</code> is identical in the two functions.
+Thus, when computing average distances between an individual \(i\) and a subset of individuals assigned to a same level of \(Y\) or \(Z\) is required, user can decide if all individuals from the subset of interest can participate to the computation (<code>percent_closest</code>=1) or only a fixed part p (&lt;1) corresponding to the closest neighbors of \(i\) (in this case <code>percent_closest</code> = p).</p>
+<p>The arguments <code>jointprobaA</code> and <code>jointprobaB</code> correspond to the estimations of \(\gamma\) (sum of cells must be equal to 1) in A and/or B respectively, according to the <code>which.DB</code> argument.
+For example, assuming that \(n_{Y_1}\) individuals are assigned to the first modality of \(Y\) in A, the objective consists in the individual predictions of \(Z\) in A. Then, if <code>jointprobaA</code>[1,2] = 0.10,
 the maximum number of individuals that can be assigned to the second modality of \(Z\) in A, can not exceed \(0.10 \times n_A\).
 If \(n_{Y_1} \leq 0.10 \times n_A\) then all individuals assigned to the first modality of \(Y\) will be assigned to the second modality of \(Z\).
 At the end of the process, each individual with still no affectation  will receive the same modality of \(Z\) as those of his nearest neighbor in B.</p>
@@ -183,25 +177,26 @@ At the end of the process, each individual with still no affectation  will recei
     
 <ol>
 <li><p>Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics. Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515/ijb-2018-0106'>https://doi.org/10.1515/ijb-2018-0106</a></p></li>
-<li><p>Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615</p></li>
+<li><p>Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 | <a href='https://doi.org/10.1080/01621459.2020.1775615'>https://doi.org/10.1080/01621459.2020.1775615</a></p></li>
 </ol>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>proxim_dist</code>,<code>avg_dist_closest</code>, ,<code>OT_outcome</code></p></div>
+    <div class='dont-index'><p><code><a href='proxim_dist.html'>proxim_dist</a></code>,<code><a href='avg_dist_closest.html'>avg_dist_closest</a></code>, ,<code><a href='OT_outcome.html'>OT_outcome</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Gregory Guernec, Valerie Gares, Jeremy Omer</p>
 <p><a href='mailto:otrecod.pkg@gmail.com'>otrecod.pkg@gmail.com</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>simu_data</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span>
 
 <span class='co'>### Example with the Manhattan distance</span>
 
-<span class='kw'>try1</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span>(<span class='kw'>simu_data</span>,quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>),
-                    ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>), logic = <span class='kw'>NULL</span>, prep_choice = <span class='st'>"M"</span>)</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
-#&gt; 5 remaining levels </div><div class='input'><span class='kw'>res1</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span>(<span class='kw'>try1</span>,norm = <span class='st'>"M"</span>)
+<span class='va'>try1</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
+                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
+#&gt; 5 remaining levels </div><div class='input'><span class='va'>res1</span> <span class='op'>=</span> <span class='fu'><a href='proxim_dist.html'>proxim_dist</a></span><span class='op'>(</span><span class='va'>try1</span>,norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>
 
 <span class='co'>### Y(Yb1) and Z(Yb2) are a same information encoded in 2 different forms:</span>
 <span class='co'>### (3 levels for Y and 5 levels for Z)</span>
@@ -210,11 +205,13 @@ At the end of the process, each individual with still no affectation  will recei
 <span class='co'>### as the marginal distribution of Z in A ...</span>
 
 <span class='co'># Empirical distribution of Y in database A:</span>
-<span class='kw'>freqY</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/proportions.html'>prop.table</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='kw'>try1</span><span class='op'>$</span><span class='kw'>Y</span>)); <span class='kw'>freqY</span></div><div class='output co'>#&gt; 
+<span class='va'>freqY</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/proportions.html'>prop.table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>Y</span><span class='op'>)</span><span class='op'>)</span>; <span class='va'>freqY</span>
+</div><div class='output co'>#&gt; 
 #&gt;   [20-40]   [40-60[   [60-80] 
 #&gt; 0.4333333 0.4233333 0.1433333 </div><div class='input'>
 <span class='co'># Empirical distribution of Z in database B</span>
-<span class='kw'>freqZ</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/proportions.html'>prop.table</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span>(<span class='kw'>try1</span><span class='op'>$</span><span class='kw'>Z</span>)); <span class='kw'>freqZ</span></div><div class='output co'>#&gt; 
+<span class='va'>freqZ</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/proportions.html'>prop.table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>Z</span><span class='op'>)</span><span class='op'>)</span>; <span class='va'>freqZ</span>
+</div><div class='output co'>#&gt; 
 #&gt;      1      2      3      4      5 
 #&gt; 0.3625 0.1275 0.0875 0.1075 0.3150 </div><div class='input'>
 <span class='co'># By supposing that the following matrix called transport symbolizes</span>
@@ -222,23 +219,27 @@ At the end of the process, each individual with still no affectation  will recei
 <span class='co'># Note that, in reality this distribution is UNKNOWN and is</span>
 <span class='co'># estimated in the OT function by resolving an optimisation problem.</span>
 
-<span class='kw'>transport1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>0.35285714</span>,<span class='fl'>0</span>,<span class='fl'>0.09142857</span>,<span class='fl'>0</span>,<span class='fl'>0.03571429</span>,
+<span class='va'>transport1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>0.35285714</span>,<span class='fl'>0</span>,<span class='fl'>0.09142857</span>,<span class='fl'>0</span>,<span class='fl'>0.03571429</span>,
                       <span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0.08285714</span>,<span class='fl'>0</span>,<span class='fl'>0.07857143</span>,<span class='fl'>0.03142857</span>,
-                      <span class='fl'>0.32714286</span>,<span class='fl'>0</span>,<span class='fl'>0</span>),ncol = <span class='fl'>5</span>,byrow = <span class='fl'>FALSE</span>)
+                      <span class='fl'>0.32714286</span>,<span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span>,ncol <span class='op'>=</span> <span class='fl'>5</span>,byrow <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='co'># ... So that the marginal distributions of this object corresponds to freqY and freqZ:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='kw'>transport1</span>,<span class='fl'>1</span>,<span class='kw'>sum</span>)  <span class='co'># = freqY</span></div><div class='output co'>#&gt; [1] 0.4185714 0.4314286 0.1500000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span>(<span class='kw'>transport1</span>,<span class='fl'>2</span>,<span class='kw'>sum</span>)  <span class='co'># = freqZ</span></div><div class='output co'>#&gt; [1] 0.35285714 0.12714286 0.08285714 0.11000000 0.32714286</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>transport1</span>,<span class='fl'>1</span>,<span class='va'>sum</span><span class='op'>)</span>  <span class='co'># = freqY</span>
+</div><div class='output co'>#&gt; [1] 0.4185714 0.4314286 0.1500000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>transport1</span>,<span class='fl'>2</span>,<span class='va'>sum</span><span class='op'>)</span>  <span class='co'># = freqZ</span>
+</div><div class='output co'>#&gt; [1] 0.35285714 0.12714286 0.08285714 0.11000000 0.32714286</div><div class='input'>
 <span class='co'># The affectation of the predicted values of Y in database B and Z in database A</span>
 <span class='co'># are stored in the following object:</span>
 
-<span class='kw'>res2</span>      <span class='op'>=</span> <span class='fu'>indiv_grp_closest</span>(<span class='kw'>res1</span>,jointprobaA = <span class='kw'>transport1</span>, jointprobaB = <span class='kw'>transport1</span>,
-                              percent_closest= <span class='fl'>0.90</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>res2</span>)</div><div class='output co'>#&gt;         Length Class  Mode   
+<span class='va'>res2</span>      <span class='op'>=</span> <span class='fu'>indiv_grp_closest</span><span class='op'>(</span><span class='va'>res1</span>,jointprobaA <span class='op'>=</span> <span class='va'>transport1</span>, jointprobaB <span class='op'>=</span> <span class='va'>transport1</span>,
+                              percent_closest<span class='op'>=</span> <span class='fl'>0.90</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>res2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;         Length Class  Mode   
 #&gt; YAtrans 400    -none- numeric
 #&gt; ZBtrans 300    -none- numeric</div><div class='input'>
 <span class='co'># For the prediction of Z in A only, add the corresponding argument:</span>
-<span class='kw'>res3</span> <span class='op'>=</span> <span class='fu'>indiv_grp_closest</span>(<span class='kw'>res1</span>,jointprobaA = <span class='kw'>transport1</span>, jointprobaB = <span class='kw'>transport1</span>,
-percent_closest= <span class='fl'>0.90</span>,which.DB=<span class='st'>"A"</span>)
+<span class='va'>res3</span> <span class='op'>=</span> <span class='fu'>indiv_grp_closest</span><span class='op'>(</span><span class='va'>res1</span>,jointprobaA <span class='op'>=</span> <span class='va'>transport1</span>, jointprobaB <span class='op'>=</span> <span class='va'>transport1</span>,
+percent_closest<span class='op'>=</span> <span class='fl'>0.90</span>,which.DB<span class='op'>=</span><span class='st'>"A"</span><span class='op'>)</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -255,7 +256,7 @@ percent_closest= <span class='fl'>0.90</span>,which.DB=<span class='st'>"A"</spa
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

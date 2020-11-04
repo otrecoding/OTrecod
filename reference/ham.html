@@ -79,12 +79,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -112,24 +106,24 @@
     <p>This function computes a matrix distance using the Hamming distance as proximity measure.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ham</span>(<span class='kw'>mat_1</span>, <span class='kw'>mat_2</span>)</pre>
+    <pre class="usage"><span class='fu'>ham</span><span class='op'>(</span><span class='va'>mat_1</span>, <span class='va'>mat_2</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>mat_1</th>
-      <td><p>A vector, a matrix or a data.frame of binary values that may contain missing data</p></td>
+      <td><p>a vector, a matrix or a data.frame of binary values that may contain missing data</p></td>
     </tr>
     <tr>
       <th>mat_2</th>
-      <td><p>A vector, a matrix or a data.frame of binary values with the same number of columns as <code>mat_1</code> that may contain missing data</p></td>
+      <td><p>a vector, a matrix or a data.frame of binary values with the same number of columns as <code>mat_1</code> that may contain missing data</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A matrix distance</p>
+    <p>A distance matrix</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>ham</code> returns the pairwise distances between rows (observations) of a single matrix if <code>mat_1</code> equals <code>mat_2</code>.
@@ -137,9 +131,9 @@ Otherwise <code>ham</code> returns the matrix distance between rows of the two m
 Computing the Hamming distance stays possible despite the presence of missing data by applying the following formula. Assuming that A and B are 2 matrices such as <code>ncol(A) = ncol(B)</code>.
 The Hamming distance between the \(i^{th}\) row of A and the \(k^{th}\) row of B equals:</p>
 <p>$$\mbox{ham}(A_i,B_k) = \frac{\sum_j 1_{\left\{A_{ij} \neq B_{kj}\right\}}}{\sum_j 1}\times\left(\frac{\sum_j 1}{\sum_j 1_{\left\{!\mbox{is.na}(A_{ij}) \&amp; !\mbox{is.na}( B_{kj})\right\}}}\right)$$</p>
-<p>where: \(i = 1,\dots,\mbox{nrow}(A)\) and  \(k = 1,\dots,\mbox{nrow}(B)\); And the expression located to the right term of the multiplication corresponds to a specific weigh applied in presence of NAs in \(A_i\) and(or) \(B_k\).</p>
-<p>This option is not implemented in the <code><a href='https://rdrr.io/pkg/rdist/man/rdist.html'>cdist</a></code> function and the Hamming distance can not be computed using the <code><a href='https://rdrr.io/pkg/proxy/man/dist.html'>dist</a></code> function either.</p>
-<p>In only two situations the Hamming distance can not be calculated:</p><ol>
+<p>where: \(i = 1,\dots,\mbox{nrow}(A)\) and  \(k = 1,\dots,\mbox{nrow}(B)\); And the expression located to the right term of the multiplication corresponds to a specific weigh applied in presence of NAs in \(A_i\) and/or \(B_k\).</p>
+<p>This specificity is not implemented in the <code><a href='https://rdrr.io/pkg/rdist/man/rdist.html'>cdist</a></code> function and the Hamming distance can not be computed using the <code><a href='https://rdrr.io/pkg/proxy/man/dist.html'>dist</a></code> function either.</p>
+<p>The Hamming distance can not be calculated in only two situations:</p><ol>
 <li><p>If a row of A or B has only missing values (ie for each of the columns of A or B respectively).</p></li>
 <li><p>The union of the indexes of the missing values in row i of A with the indexes of the missing values in row j of B concerns the indexes of all considered columns.</p></li>
 </ol><p>Example: Assuming that \(\mbox{ncol}(A) = \mbox{ncol}(B) = 3\), if \(A_i = (1,\mbox{NA},0)\) and \(B_j = (\mbox{NA},1,\mbox{NA})\), for each column, either the information in row i is missing in A,
@@ -154,41 +148,46 @@ or the information is missing in B, which induces: \(\mbox{ham}(A_i,B_k) = \mbox
 <p><a href='mailto:otrecod.pkg@gmail.com'>otrecod.pkg@gmail.com</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>3010</span>); <span class='kw'>aaa</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>1</span>),<span class='fl'>12</span>,replace = <span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>3007</span>); <span class='kw'>bbb</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>1</span>),<span class='fl'>15</span>,replace = <span class='fl'>TRUE</span>)
-<span class='kw'>A</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='kw'>aaa</span>, ncol = <span class='fl'>3</span>)
-<span class='kw'>B</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='kw'>bbb</span>, ncol = <span class='fl'>3</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>3010</span><span class='op'>)</span>; <span class='va'>aaa</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>,<span class='fl'>12</span>,replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>3007</span><span class='op'>)</span>; <span class='va'>bbb</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>,<span class='fl'>15</span>,replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>A</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='va'>aaa</span>, ncol <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
+<span class='va'>B</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='va'>bbb</span>, ncol <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 
 <span class='co'># These 2 matrices have no missing values</span>
 
 <span class='co'># Matrix of pairwise distances with A:</span>
-<span class='fu'>ham</span>(<span class='kw'>A</span>,<span class='kw'>A</span>)</div><div class='output co'>#&gt;           [,1]      [,2]      [,3]      [,4]
+<span class='fu'>ham</span><span class='op'>(</span><span class='va'>A</span>,<span class='va'>A</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;           [,1]      [,2]      [,3]      [,4]
 #&gt; [1,] 0.0000000 0.6666667 0.6666667 1.0000000
 #&gt; [2,] 0.6666667 0.0000000 0.6666667 0.3333333
 #&gt; [3,] 0.6666667 0.6666667 0.0000000 0.3333333
 #&gt; [4,] 1.0000000 0.3333333 0.3333333 0.0000000</div><div class='input'>
 <span class='co'># Matrix of distances between the rows of A and the rows of B:</span>
-<span class='fu'>ham</span>(<span class='kw'>A</span>,<span class='kw'>B</span>)</div><div class='output co'>#&gt;           [,1]      [,2]      [,3]      [,4]      [,5]
+<span class='fu'>ham</span><span class='op'>(</span><span class='va'>A</span>,<span class='va'>B</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;           [,1]      [,2]      [,3]      [,4]      [,5]
 #&gt; [1,] 1.0000000 0.0000000 0.3333333 0.6666667 0.6666667
 #&gt; [2,] 0.3333333 0.6666667 1.0000000 0.6666667 0.6666667
 #&gt; [3,] 0.3333333 0.6666667 0.3333333 0.0000000 0.6666667
 #&gt; [4,] 0.0000000 1.0000000 0.6666667 0.3333333 0.3333333</div><div class='input'>
 <span class='co'># If mat_1 is a vector of binary values:</span>
-<span class='fu'>ham</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span>),<span class='kw'>B</span>)</div><div class='output co'>#&gt; [1] 0.6666667 0.3333333 0.6666667 0.3333333 1.0000000</div><div class='input'>
+<span class='fu'>ham</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>,<span class='va'>B</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.6666667 0.3333333 0.6666667 0.3333333 1.0000000</div><div class='input'>
 <span class='co'># Now by considering A_NA and B_NA two matrices built from A and B respectively,</span>
 <span class='co'># where missing values have been manually added:</span>
-<span class='kw'>A_NA</span>        <span class='op'>=</span> <span class='kw'>A</span>
-<span class='kw'>A_NA</span>[<span class='fl'>3</span>,<span class='fl'>1</span>]   <span class='op'>=</span> <span class='fl'>NA</span>
-<span class='kw'>A_NA</span>[<span class='fl'>2</span>,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>] <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>NA</span>,<span class='fl'>2</span>)
+<span class='va'>A_NA</span>        <span class='op'>=</span> <span class='va'>A</span>
+<span class='va'>A_NA</span><span class='op'>[</span><span class='fl'>3</span>,<span class='fl'>1</span><span class='op'>]</span>   <span class='op'>=</span> <span class='cn'>NA</span>
+<span class='va'>A_NA</span><span class='op'>[</span><span class='fl'>2</span>,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='fl'>2</span><span class='op'>)</span>
 
-<span class='kw'>B_NA</span> <span class='op'>=</span> <span class='kw'>B</span>
-<span class='kw'>B_NA</span>[<span class='fl'>2</span>,<span class='fl'>2</span>] <span class='op'>=</span> <span class='fl'>NA</span>
+<span class='va'>B_NA</span> <span class='op'>=</span> <span class='va'>B</span>
+<span class='va'>B_NA</span><span class='op'>[</span><span class='fl'>2</span>,<span class='fl'>2</span><span class='op'>]</span> <span class='op'>=</span> <span class='cn'>NA</span>
 
-<span class='fu'>ham</span>(<span class='kw'>A_NA</span>,<span class='kw'>B_NA</span>)</div><div class='output co'>#&gt;      [,1] [,2]      [,3]      [,4]      [,5]
+<span class='fu'>ham</span><span class='op'>(</span><span class='va'>A_NA</span>,<span class='va'>B_NA</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;      [,1] [,2]      [,3]      [,4]      [,5]
 #&gt; [1,]  1.0    0 0.3333333 0.6666667 0.6666667
 #&gt; [2,]  0.0    1 1.0000000 0.0000000 1.0000000
 #&gt; [3,]  0.5    0 0.0000000 0.0000000 0.5000000
-#&gt; [4,]  0.0    1 0.6666667 0.3333333 0.3333333</div><div class='input'></div></pre>
+#&gt; [4,]  0.0    1 0.6666667 0.3333333 0.3333333</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -204,7 +203,7 @@ or the information is missing in B, which induces: \(\mbox{ham}(A_i,B_k) = \mbox
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

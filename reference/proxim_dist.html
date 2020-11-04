@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="proxim_dist() — proxim_dist" />
-<meta property="og:description" content="proxim_dist computes the pairwise distance matrix of a database and cross-distance matrix between two databases according to various distance functions in the context of data fusion." />
+<meta property="og:description" content="proxim_dist computes the pairwise distance matrix of a database and cross-distance matrix between two databases according to various distances used in the context of data fusion." />
 
 
 
@@ -79,12 +79,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -109,98 +103,99 @@
     </div>
 
     <div class="ref-description">
-    <p><code>proxim_dist</code> computes the pairwise distance matrix of a database and cross-distance matrix between two databases according to various distance functions in the context of data fusion.</p>
+    <p><code>proxim_dist</code> computes the pairwise distance matrix of a database and cross-distance matrix between two databases according to various distances used in the context of data fusion.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>proxim_dist</span>(<span class='kw'>data_file</span>, indx_DB_Y_Z = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, norm = <span class='st'>"E"</span>, prox = <span class='fl'>0.8</span>)</pre>
+    <pre class="usage"><span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>data_file</span>, indx_DB_Y_Z <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, norm <span class='op'>=</span> <span class='st'>"E"</span>, prox <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data_file</th>
-      <td><p>A data.frame corresponding ideally to an output of the function <code>transfo_dist</code>. Otherwise this data.frame is the result of two overlayed databases with a column of database identifier ("A" and "B", 1 and 2, for example), a target variable (called \(Y\) by example) only known in the first database, a target variable (\(Z\)) only stored in the second database, such that \(Y\) and \(Z\) summarize a same information differently encoded in the two databases and set of common covariates (at least one) of any type.
+      <td><p>a data.frame corresponding ideally to an output object of the function <code><a href='transfo_dist.html'>transfo_dist</a></code>. Otherwise this data.frame is the result of two overlayed databases with a column of database identifier ("A" and "B", 1 and 2, for example), a target variable (called \(Y\) by example) only known in the first database, a target variable (\(Z\)) only stored in the second database, such that \(Y\) and \(Z\) summarize a same information differently encoded in the two databases and set of common covariates (at least one) of any type.
 The order of the variables in the data.frame have no importance. The type of the covariates must be in accordance with the chosen distance function in the <code>norm</code> option.</p></td>
     </tr>
     <tr>
       <th>indx_DB_Y_Z</th>
-      <td><p>A vector of three column numbers corresponding to the colum indexes of the identifier, the target variable in the first database and the target variable in the second database. The indexes must be declared in this specific order.</p></td>
+      <td><p>a vector of three column indexes corresponding to the database identifier, the target variable of the above database and the target variable of the below database. The indexes must be declared in this specific order.</p></td>
     </tr>
     <tr>
       <th>norm</th>
-      <td><p>A character (with quotes) indicating the choice of the distance function. This latest depends on the type of the common covariates: the Hamming distance
+      <td><p>a character string indicating the choice of the distance function. This latest depends on the type of the common covariates: the Hamming distance
 for binary covariates only (<code>norm</code> = "H"), the Manhattan distance ("M", by default) and the euclidean distance ("E") for continuous covariates only, or the Gower distance for mixed covariates ("G").</p></td>
     </tr>
     <tr>
       <th>prox</th>
-      <td><p>A percentage (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.</p></td>
+      <td><p>a ratio (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row or a given statistical unit) is considered as a neighbor of a given profile of covariates.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list of 16 elements (the first 16 detailed below) is returned containing various distance matrices and lists useful for the algorithms that used Optimal Transportation theory. Two more objects (the last two of the following list) will be returned if distance matrices contain NAs.</p>
-<dt>FILE_NAME</dt><dd><p>A simple reminder of the name of the raw database</p></dd>
-<dt>nA</dt><dd><p>The row numbers of the first database (A)</p></dd>
-<dt>nB</dt><dd><p>The row numbers of the second database (B)</p></dd>
-<dt>Xobserv</dt><dd><p>The subset of the two merged databases composed of the common variables only</p></dd>
-<dt>profile</dt><dd><p>The different encountered profiles of covariates according to the data.frame</p></dd>
-<dt>Yobserv</dt><dd><p>The values of the target variable in the first database</p></dd>
-<dt>Zobserv</dt><dd><p>The values of the target variable in the second database</p></dd>
-<dt>D</dt><dd><p>A distance matrix corresponding to the computed distances between individuals of the two databases</p></dd>
-<dt>Y</dt><dd><p>The \(n_Y\) levels of the target variable in numeric form, in the first database</p></dd>
-<dt>Z</dt><dd><p>The \(n_Z\) levels of the target variable in numeric form, in the second database</p></dd>
-<dt>indY</dt><dd><p>A list of \(n_Y\) groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of \(Y\) in the first database</p></dd>
-<dt>indZ</dt><dd><p>A list of \(n_Z\) groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of \(Z\) in the second database</p></dd>
-<dt>indXA</dt><dd><p>A list of individual (row) indexes from the first database, sorted by profiles of covariates according to their proximities. See the <code>Details</code> part for more information</p></dd>
-<dt>indXB</dt><dd><p>A list of individual (row) indexes from the second database, sorted by profiles of covariates according to their proximities. See the <code>Details</code> part for more information</p></dd>
-<dt>DA</dt><dd><p>A distance matrix corresponding to the pairwise distances between individuals of the first database</p></dd>
-<dt>DB</dt><dd><p>A distance matrix corresponding to the pairwise distances between individuals of the second database</p></dd>
-<dt>ROWS_TABLE</dt><dd><p>Combinations of row numbers of the two databases that generate NAs in D</p></dd>
-<dt>ROWS_TO_RM</dt><dd><p>Number of times a row of the first or second database is involved in the NA process of D</p></dd>
+<dt>FILE_NAME</dt><dd><p>a simple reminder of the name of the raw database</p></dd>
+<dt>nA</dt><dd><p>the row numbers of the first database (A)</p></dd>
+<dt>nB</dt><dd><p>the row numbers of the second database (B)</p></dd>
+<dt>Xobserv</dt><dd><p>the subset of the two merged databases composed of the common variables only</p></dd>
+<dt>profile</dt><dd><p>the different encountered profiles of covariates according to the data.frame</p></dd>
+<dt>Yobserv</dt><dd><p>the values of the target variable in the first database</p></dd>
+<dt>Zobserv</dt><dd><p>the values of the target variable in the second database</p></dd>
+<dt>D</dt><dd><p>a distance matrix corresponding to the computed distances between individuals of the two databases</p></dd>
+<dt>Y</dt><dd><p>the \(n_Y\) levels of the target variable in numeric form, in the first database</p></dd>
+<dt>Z</dt><dd><p>the \(n_Z\) levels of the target variable in numeric form, in the second database</p></dd>
+<dt>indY</dt><dd><p>a list of \(n_Y\) groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of \(Y\) in the first database</p></dd>
+<dt>indZ</dt><dd><p>a list of \(n_Z\) groups of individual (or row) numbers where each group corresponds to the individuals indexes related to a given level of \(Z\) in the second database</p></dd>
+<dt>indXA</dt><dd><p>a list of individual (row) indexes from the first database, sorted by profiles of covariates according to their proximities. See the <code>Details</code> part for more information</p></dd>
+<dt>indXB</dt><dd><p>a list of individual (row) indexes from the second database, sorted by profiles of covariates according to their proximities. See the <code>Details</code> part for more information</p></dd>
+<dt>DA</dt><dd><p>a distance matrix corresponding to the pairwise distances between individuals of the first database</p></dd>
+<dt>DB</dt><dd><p>a distance matrix corresponding to the pairwise distances between individuals of the second database</p></dd>
+<dt>ROWS_TABLE</dt><dd><p>combinations of row numbers of the two databases that generate NAs in D</p></dd>
+<dt>ROWS_TO_RM</dt><dd><p>number of times a row of the first or second database is involved in the NA process of D</p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function is the first step of a family of algorithms that solve recoding problems of data fusion using Optimal Transportation theory (See the details of these corresponding models <code>OUTCOME</code>, <code>R_OUTCOME</code>, <code>JOINT</code> and <code>R_JOINT</code> in (1) and (2))
-The function <code>proxim_dist</code> is directly implemented in the functions <code>OT_outcome</code> and <code>OT_joint</code> but can also be used separately as long as the input database has as suitable structure. Nevertheless, its preparation will have to be rigorously made in two steps detailled in the following sections.</p>
-<p>A. REQUIRED STRUCTURE FOR THE DATABASE</p>
-<p>Firsly, the initial database required is a data.frame that must be prepared in a specific form by users. From two separate databases, the function <code>merge_dbs</code> available in this package can assist users in this initial merging, nevertheless notice that this preliminary transformation can also be made directly by following the imposed structure described below:
+    <p>This function is the first step of a family of algorithms that solve recoding problems of data fusion using optimal transportation theory (see the details of these corresponding models <code>OUTCOME</code>, <code>R_OUTCOME</code>, <code>JOINT</code> and <code>R_JOINT</code> in (1) and (2)).
+The function <code>proxim_dist</code> is directly implemented in the functions <code><a href='OT_outcome.html'>OT_outcome</a></code> and <code><a href='OT_joint.html'>OT_joint</a></code> but can also be used separately as long as the input database has as suitable structure. Nevertheless, its preparation will have to be rigorously made in two steps detailled in the following sections.</p>
+<p>A. EXPECTED STRUCTURE FOR THE INPUT DATABASE</p>
+<p>Firsly, the initial database required is a data.frame that must be prepared in a specific form by users. From two separate databases, the function <code><a href='merge_dbs.html'>merge_dbs</a></code> available in this package can assist users in this initial merging, nevertheless notice that this preliminary transformation can also be made directly by following the imposed structure described below:
 two overlayed databases containing a common column of database identifiers (A and B for examples, encoded in numeric or factor form),
 a column corresponding to the target variable with its specific encoding in A (for example a factor \(Y\) encoded in \(n_Y\) levels, ordered or not, with NAs in the corresponding rows of B), a column corresponding to the same variable with its specific endoded in B (for example a factor \(Z\) in \(n_Z\) levels,
 with NAs in database A), and a set of shared covariates (at least one) between the two databases.</p>
 <p>The order of these variables in the database have no importance but the column indexes related to database identifier, \(Y\) and \(Z\), must be specified in the <code>indx_DB_Y_Z</code> option.
-Users can refer to the structure of the table <code>simu_data</code> available in the package to adapt their databases to the inital format required.</p>
-<p>Missing values are allowed on covariates only (and in presence of more than one covariate), and are excluded from all computations involving the rows within which they occur.
-In the particular case where only one covariate with NAs is used, we recommend working with imputed or complete case only to avoid the presence of NA in the distance matrix that will be computed a posteriori.</p>
-<p>If the database counts many covariates and some of them have missing data, user can keep them or apply beforehand the <code>imput_cov</code> function on data.frame to deal with this problem.</p>
+Users can refer to the structure of the table <code><a href='simu_data.html'>simu_data</a></code> available in the package to adapt their databases to the inital format required.</p>
+<p>Missing values are allowed on covariates only, and are excluded from all computations involving the rows within which they occur.
+In the particular case where only one covariate with NAs is used, we recommend working with imputed or complete case only to avoid the presence of NA in the distance matrix that will be computed a posteriori.
+If the database counts many covariates and some of them have missing data, user can keep them or apply beforehand the <code><a href='imput_cov.html'>imput_cov</a></code> function on data.frame to deal with this problem.</p>
 
 <p>B. DISTANCE FUNCTIONS AND TYPES OF COVARIATES</p>
-<p>In a second step, before including the data.frame in the function, the shared variables of the merged database will have to be encoded according to the choice of the distance function fixed by user, knowing that it is also frequent that it is the type of the variables which fixes the distance function to choose.
-The function <code>transfo_dist</code> is available in the package to assist users in this task but a user can also decide to make this preparation by themselves.
-Thus, with the Euclidean or Manhattan distance ((3), <code>norm</code> = "E" or "M"), if all types of variables will be allowed, logical variables will have to be previously transformed in binary variables, and categorical variables (factors ordered or not) will have to be transformed by their related disjunctive tables (the function <code>transfo_quali</code> can make these specific transformations).
+<p>In a second step, the shared variables of the merged database will have to be encoded according to the choice of the distance function fixed by user, knowing that it is also frequent that it is the type of the variables which fixes the distance function to choose.
+The function <code><a href='transfo_dist.html'>transfo_dist</a></code> is available in the package to assist users in this task but a user can also decide to make this preparation by themselves.
+Thus, with the Euclidean or Manhattan distance ((3), <code>norm</code> = "E" or "M"), if all types of variables are allowed, logical variables are transformed in binary variables, and categorical variables (factors ordered or not) are replaced by their related disjunctive tables (the function <code><a href='transfo_quali.html'>transfo_quali</a></code> can make these specific transformations).
 The Hamming distance (<code>norm</code> = "H") only requires binary variables (all other forms are not allowed). In this context, continuous variables could have been converted in factor of k levels (\(k&gt;2\)) beforehand. The categorical covariates are then transformed in disjunctive tables (containing the (\(k-1\)) corresponding binary variables) before use. With this distance, categorical variables are also transformed in disjunctive tables.
-Notice that, using the Hamming distance could be quite long in presence NAs on covariates, so please be a little patient and let the function runs few minutes if necessary.
-Finally, the Gower distance ((4), <code>norm</code> = "G") uses the (<code><a href='https://rdrr.io/pkg/StatMatch/man/gower.dist.html'>gower.dist</a></code>) function (5) and so allows logical, categorical and numeric variables with no preliminary transformations.</p>
+Notice that, using the Hamming distance could be quite long in presence of NAs on covariates.
+Finally, the Gower distance ((4), <code>norm</code> = "G") uses the (<code><a href='https://rdrr.io/pkg/StatMatch/man/gower.dist.html'>gower.dist</a></code>) function (5) and so allows logical, categorical and numeric variables without preliminary transformations.</p>
 <p>In conclusion, the structure of the data.frame required in input of the function <code>proxim_dist</code> corresponds to two overlayed databases with two target outcomes and a set of shared covariates whose encodings depend on the distance function choosen by user.</p>
 <p>If some columns are excluded when computing an Euclidean, Manhattan, or Hamming distance between two rows, the sum is scaled up proportionally to the number of columns used in the computation as proposed by the standard (<code><a href='https://rdrr.io/r/stats/dist.html'>dist</a></code>) function.
 If all pairs are excluded when computing a particular distance, instead of putting NA in the corresponding cell of the distance matrix, the process stops and an object listing the problematic rows is proposed in output.
 It suggests users to remove these rows before running the process again or impute NAs related to these rows (see (6) for more details).</p>
+
 <p>C. PROFILES OF COVARIATES AND OUTPUT DETAILS</p>
 <p>Whatever the type (mixed or not) and the number of covariates in the data.frame of interest, the function <code>proxim_dist</code> firstly detects all the possible profiles (or combinations) of covariates from the two databases, and saves them in the output <code>profile</code>.
-For example, assuming that a data.frame in input (composed of two overlayed data.frames A and B) have three shared binary covariates (ie identically encoded in A and B) so the sequences <code>011</code> and <code>101</code> will be considered as two distinct profiles of covariates.
+For example, assuming that a data.frame in input (composed of two overlayed data.frames A and B) have three shared binary covariates (identically encoded in A and B) so the sequences <code>011</code> and <code>101</code> will be considered as two distinct profiles of covariates.
 If each covariate is a factor of \(n_1\), \(n_2\) and \(n_3\) levels respectively, so it exists at most \(n_1 \times n_2 \times n_3\) possible profiles of covariates.
 This number is considered as a maximum here because only the profiles of covariates met in at least one of the two databases will be kept for the study.</p>
 <p><code>proxim_dist</code> classifies individuals from the two databases according to their proximities to each profile of covariates and saves the corresponding indexes of rows from A and B in two lists <code>indXA</code> and <code>indXB</code> respectively.
 <code>indXA</code> and <code>indXB</code> thus contain as many objects as covariates profiles and the proximity between a given profile and a given individual is defined as follows.
 The function also provides in output the list of all the encountered profiles of covariates.
-As a decision rule, for a given profile of covariates \(P_j\), an individual i will be considered as a neighbor of \(P_j\) if \(dist(i,P_j) &lt; prox \times max(dist(i,P_j))\) where <code>prox</code> will be fixed by user.</p>
+As a decision rule, for a given profile of covariates \(P_j\), an individual \(i\) will be considered as a neighbor of \(P_j\) if \(dist(i,P_j) &lt; prox \times max(dist(i,P_j))\) where <code>prox</code> will be fixed by user.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
 <ol>
 <li><p>Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.
 Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515/ijb-2018-0106'>https://doi.org/10.1515/ijb-2018-0106</a></p></li>
-<li><p>Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615</p></li>
+<li><p>Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 | <a href='https://doi.org/10.1080/01621459.2020.1775615'>https://doi.org/10.1080/01621459.2020.1775615</a></p></li>
 <li><p>Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.</p></li>
 <li><p>Gower, J. C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623--637.</p></li>
 <li><p>D'Orazio M. (2015). Integration and imputation of survey data in R: the StatMatch package. Romanian Statistical Review, vol. 63(2)</p></li>
@@ -209,7 +204,7 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>transfo_dist</code>, <code>imput_cov</code>, <code>merge_dbs</code>, <code>simu_data</code></p></div>
+    <div class='dont-index'><p><code><a href='transfo_dist.html'>transfo_dist</a></code>, <code><a href='imput_cov.html'>imput_cov</a></code>, <code><a href='merge_dbs.html'>merge_dbs</a></code>, <code><a href='simu_data.html'>simu_data</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Gregory Guernec, Valerie Gares, Jeremy Omer</p>
@@ -217,74 +212,78 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>simu_data</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span>
 <span class='co'>### The covariates of the data are prepared according to the chosen distance</span>
 <span class='co'>### using the transfo_dist function</span>
 
 <span class='co'>### Ex 1: The Manhattan distance</span>
 
-<span class='kw'>try1</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span>(<span class='kw'>simu_data</span>,quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>),
-                    ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>), logic = <span class='kw'>NULL</span>, prep_choice = <span class='st'>"M"</span>)</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
-#&gt; 5 remaining levels </div><div class='input'><span class='kw'>res1</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span>(<span class='kw'>try1</span>,norm = <span class='st'>"M"</span>)  <span class='co'># try1 compatible with norm = "E" for Euclidean</span>
+<span class='va'>try1</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
+                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
+#&gt; 5 remaining levels </div><div class='input'><span class='va'>res1</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try1</span>,norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>  <span class='co'># try1 compatible with norm = "E" for Euclidean</span>
 
 
 <span class='co'>### Ex 2: The Euclidean and Manhattan distance applied on coordinates from FAMD</span>
 
-<span class='kw'>try2</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span>(<span class='kw'>simu_data</span>,quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>),
-                    ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>), logic = <span class='kw'>NULL</span>, prep_choice = <span class='st'>"FAMD"</span>,info = <span class='fl'>0.80</span>)</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
+<span class='va'>try2</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
+                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"FAMD"</span>,info <span class='op'>=</span> <span class='fl'>0.80</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
 #&gt; 5 remaining levels </div><div class='output co'>#&gt; <span class='warning'>Warning: Presence of NA on covariates. You should work with complete or imputed DB before using this method.</span>
-#&gt; <span class='warning'>              By default, only rows with no NA on covariates have been kept.</span></div><div class='output co'>#&gt; Only 528 rows ( 75 %) are kept here corresponding to complete cases </div><div class='input'><span class='kw'>res2_E</span>  <span class='op'>=</span> <span class='fu'>proxim_dist</span>(<span class='kw'>try2</span>,norm = <span class='st'>"E"</span>)
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>res2_M</span>  <span class='op'>=</span> <span class='fu'>proxim_dist</span>(<span class='kw'>try2</span>,norm = <span class='st'>"M"</span>)
-}
+#&gt; <span class='warning'>              By default, only rows with no NA on covariates have been kept.</span></div><div class='output co'>#&gt; Only 528 rows ( 75 %) are kept here corresponding to complete cases </div><div class='input'><span class='va'>res2_E</span>  <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try2</span>,norm <span class='op'>=</span> <span class='st'>"E"</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>res2_M</span>  <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try2</span>,norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 <span class='co'>### Ex 3: The Gower distance with mixed covariates</span>
 
-<span class='kw'>try3</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span>(<span class='kw'>simu_data</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span>,<span class='fl'>301</span><span class='op'>:</span><span class='fl'>400</span>),],quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>),
-                    ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>), logic = <span class='kw'>NULL</span>, prep_choice = <span class='st'>"G"</span>)</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
-#&gt; 5 remaining levels </div><div class='input'><span class='kw'>res3</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span>(<span class='kw'>try3</span>,norm = <span class='st'>"G"</span>)
+<span class='va'>try3</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span>,<span class='fl'>301</span><span class='op'>:</span><span class='fl'>400</span><span class='op'>)</span>,<span class='op'>]</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
+                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"G"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
+#&gt; 5 remaining levels </div><div class='input'><span class='va'>res3</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try3</span>,norm <span class='op'>=</span> <span class='st'>"G"</span><span class='op'>)</span>
 
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'>### Ex 4a: The Hamming distance with binary (but incomplete) covariates only</span>
 
 <span class='co'># categorization of the continuous covariates age by tertiles</span>
-<span class='kw'>try4</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span>(<span class='kw'>simu_data</span>,quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>),ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>),
-                    convert_num = <span class='fl'>8</span>, convert_clss = <span class='fl'>3</span>, prep_choice = <span class='st'>"H"</span>)
-<span class='kw'>res4</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span>(<span class='kw'>try4</span>,norm = <span class='st'>"H"</span>)
+<span class='va'>try4</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
+                    convert_num <span class='op'>=</span> <span class='fl'>8</span>, convert_clss <span class='op'>=</span> <span class='fl'>3</span>, prep_choice <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span>
+<span class='va'>res4</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try4</span>,norm <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span>
 <span class='co'># Be patient ... It could take few minutes</span>
 
 <span class='co'>### Ex 4b: The Hamming distance with complete cases on nominal and ordinal covariates only</span>
-<span class='kw'>simu_data_CC</span> <span class='op'>=</span> <span class='kw'>simu_data</span>[(<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='kw'>simu_data</span>[,<span class='fl'>5</span>]))<span class='op'>&amp;</span>(<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='kw'>simu_data</span>[,<span class='fl'>6</span>]))
-                          <span class='op'>&amp;</span>(<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='kw'>simu_data</span>[,<span class='fl'>7</span>])),<span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span>]
-<span class='kw'>try4b</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span>(<span class='kw'>simu_data_CC</span>,quanti = <span class='fl'>3</span>, nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>),ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>),
-                     prep_choice = <span class='st'>"H"</span>)
-<span class='kw'>res4b</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span>(<span class='kw'>try4b</span>,norm = <span class='st'>"H"</span>)
-}
+<span class='va'>simu_data_CC</span> <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>[</span>,<span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span><span class='op'>&amp;</span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>[</span>,<span class='fl'>6</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+                          <span class='op'>&amp;</span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>[</span>,<span class='fl'>7</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span><span class='op'>]</span>
+<span class='va'>try4b</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data_CC</span>,quanti <span class='op'>=</span> <span class='fl'>3</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
+                     prep_choice <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span>
+<span class='va'>res4b</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try4b</span>,norm <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 <span class='co'>### Ex 5: PARTICULAR CASE, If only one covariate with no NAs</span>
 
-<span class='kw'>try5</span> <span class='op'>=</span> <span class='kw'>try1</span>[,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fl'>7</span>)]           <span class='co'># Only Smoking variable</span>
-<span class='kw'>try6</span> <span class='op'>=</span> <span class='kw'>try5</span>[<span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='kw'>try5</span>[,<span class='fl'>4</span>]),]   <span class='co'># Keep complete case</span>
-<span class='kw'>res6_M</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span>(<span class='kw'>try6</span>,norm = <span class='st'>"M"</span>,prox = <span class='fl'>0.01</span>)
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>res7_H</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span>(<span class='kw'>try6</span>,norm = <span class='st'>"H"</span>) <span class='co'># Hamming</span>
-}
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='va'>try5</span> <span class='op'>=</span> <span class='va'>try1</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fl'>7</span><span class='op'>)</span><span class='op'>]</span>           <span class='co'># Only Smoking variable</span>
+<span class='va'>try6</span> <span class='op'>=</span> <span class='va'>try5</span><span class='op'>[</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>try5</span><span class='op'>[</span>,<span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>,<span class='op'>]</span>   <span class='co'># Keep complete case</span>
+<span class='va'>res6_M</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try6</span>,norm <span class='op'>=</span> <span class='st'>"M"</span>,prox <span class='op'>=</span> <span class='fl'>0.01</span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>res7_H</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try6</span>,norm <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span> <span class='co'># Hamming</span>
+<span class='op'>}</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'>### Ex 6: PARTICULAR CASE, many covariates but NAs in distance matrix</span>
 
 <span class='co'># We generated NAs in the try1 object so that:</span>
 <span class='co'># dist(A4,B102) and dist(A122,B102) returns NA whatever the norm chosen:</span>
-<span class='kw'>try7</span> <span class='op'>=</span> <span class='kw'>try1</span>
-<span class='kw'>try7</span>[<span class='fl'>4</span>,<span class='fl'>7</span><span class='op'>:</span><span class='fl'>9</span>]   <span class='op'>=</span> <span class='fl'>NA</span>
-<span class='kw'>try7</span>[<span class='fl'>122</span>,<span class='fl'>6</span><span class='op'>:</span><span class='fl'>9</span>] <span class='op'>=</span> <span class='fl'>NA</span>
-<span class='kw'>try7</span>[<span class='fl'>300</span><span class='op'>+</span><span class='fl'>102</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>6</span>] <span class='op'>=</span> <span class='fl'>NA</span>
-<span class='kw'>res7</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span>(<span class='kw'>try7</span>,norm = <span class='st'>"M"</span>)
+<span class='va'>try7</span> <span class='op'>=</span> <span class='va'>try1</span>
+<span class='va'>try7</span><span class='op'>[</span><span class='fl'>4</span>,<span class='fl'>7</span><span class='op'>:</span><span class='fl'>9</span><span class='op'>]</span>   <span class='op'>=</span> <span class='cn'>NA</span>
+<span class='va'>try7</span><span class='op'>[</span><span class='fl'>122</span>,<span class='fl'>6</span><span class='op'>:</span><span class='fl'>9</span><span class='op'>]</span> <span class='op'>=</span> <span class='cn'>NA</span>
+<span class='va'>try7</span><span class='op'>[</span><span class='fl'>300</span><span class='op'>+</span><span class='fl'>102</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span> <span class='op'>=</span> <span class='cn'>NA</span>
+<span class='va'>res7</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try7</span>,norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>
 <span class='co'># The process stopped indicates 2 NAs and the corresponding row numbers</span>
 <span class='co'># The 2nd output of res7 indicates that removing first the 102th row of the database</span>
 <span class='co'># B is enough to solve the pb:</span>
-<span class='kw'>try8</span> <span class='op'>=</span> <span class='kw'>try7</span>[<span class='op'>-</span><span class='fl'>402</span>,]
-<span class='kw'>res8</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span>(<span class='kw'>try8</span>,norm = <span class='st'>"M"</span>)
-}
+<span class='va'>try8</span> <span class='op'>=</span> <span class='va'>try7</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>402</span>,<span class='op'>]</span>
+<span class='va'>res8</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try8</span>,norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>
+<span class='op'>}</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -301,7 +300,7 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

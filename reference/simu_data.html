@@ -42,8 +42,8 @@
 <meta property="og:title" content="A simulated dataset to test the functions of the OTrecod package — simu_data" />
 <meta property="og:description" content="The first 300 rows belong to the database A, while the next 400 rows belong to the database B.
 Five covariates: Gender, Treatment, Dosage, Smoking and Age are
-common to both databases (same encodings).
-The variables Yb1 and Yb2 are the target variables
+common to both databases (same encodings). Gender is the only complete covariate.
+The variables Yb1 and Yb2 are the target variables of A and B respectively, summarizing a same information encoded in two different scales.
 that summarize a same information saved in two distinct encodings, that is why, Yb1 is
 missing in the database B and Yb2 is missing in the database A." />
 
@@ -84,12 +84,6 @@ missing in the database B and Yb2 is missing in the database A." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -116,26 +110,26 @@ missing in the database B and Yb2 is missing in the database A." />
     <div class="ref-description">
     <p>The first 300 rows belong to the database A, while the next 400 rows belong to the database B.
 Five covariates: <code>Gender</code>, <code>Treatment</code>, <code>Dosage</code>, <code>Smoking</code> and <code>Age</code> are
-common to both databases (same encodings).
-The variables <code>Yb1</code> and <code>Yb2</code> are the target variables
+common to both databases (same encodings). <code>Gender</code> is the only complete covariate.
+The variables <code>Yb1</code> and <code>Yb2</code> are the target variables of A and B respectively, summarizing a same information encoded in two different scales.
 that summarize a same information saved in two distinct encodings, that is why, <code>Yb1</code> is
 missing in the database B and <code>Yb2</code> is missing in the database A.</p>
     </div>
 
-    <pre class="usage"><span class='kw'>simu_data</span></pre>
+    <pre class="usage"><span class='va'>simu_data</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A data frame with 700 observations on the following 8 variables.</p><dl>
-  <dt>DB</dt><dd><p>database identification, a character with 2 possible classes: A or B</p></dd>
-  <dt>Yb1</dt><dd><p>the target variable encoded in 3 ordered classes in DB A, missing in database B, stored as factor</p></dd>
-  <dt>Yb2</dt><dd><p>the target variable encoded in 5 ordered classes in DB B, missing in database A, stored as integer</p></dd>
-  <dt>Gender</dt><dd><p>a complete 2 class covariate saved as factor</p></dd>
-  <dt>Treatment</dt><dd><p>a 3 class covariates stored as a character with 2% of missing information</p></dd>
-  <dt>Dosage</dt><dd><p>a 4-levels factor, with 5% of missing information</p></dd>
-  <dt>Smoking</dt><dd><p>a 2 classes covariate stored as a character: NO for non smoker, YES otherwise. 10% of missing information</p></dd>
-  <dt>Age</dt><dd><p>a double corresponding to the age of participants in years. The last covariate of the database counts 5% of missing information</p></dd>
+    <p>A data.frame made of 2 overlayed databases (A and B) with 700 observations on the following 8 variables.</p><dl>
+  <dt>DB</dt><dd><p>the database identifier, a character with 2 possible classes: <code>A</code> or <code>B</code></p></dd>
+  <dt>Yb1</dt><dd><p>the target variable of the database A, stored as factor and encoded in 3 ordered levels: <code>[20-40]</code>, <code>[40-60[</code>,<code>[60-80]</code> (the values related to the database B are missing)</p></dd>
+  <dt>Yb2</dt><dd><p>the target variable of the database B, stored as integer (an unknown scale from 1 to 5) in the database B (the values related to A are missing)</p></dd>
+  <dt>Gender</dt><dd><p>a factor with 2 levels (<code>Female</code> or <code>Male</code>) and no missing values</p></dd>
+  <dt>Treatment</dt><dd><p>a covariate of 3 classes stored as a character with 2% of missing values: <code>Placebo</code>, <code>Trt A</code>, <code>Trt B</code></p></dd>
+  <dt>Dosage</dt><dd><p>a factor with 4 levels and 5% of missing values: from <code>Dos 1</code> to <code>dos 4</code></p></dd>
+  <dt>Smoking</dt><dd><p>a covariate of 2 classes stored as a character and 10% of missing values: <code>NO</code> for non smoker, <code>YES</code> otherwise</p></dd>
+  <dt>Age</dt><dd><p>a numeric corresponding to the age of participants in years. This variable counts 5% of missing values</p></dd>
 
 </dl>
 
@@ -163,7 +157,7 @@ in database A and database B using the Optimal Transportation Theory.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

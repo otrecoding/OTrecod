@@ -1,8 +1,8 @@
 pandoc: 2.7.3
-pkgdown: 1.5.1.9000
-pkgdown_sha: e38950d5d22babc2a245cb95b1e0480f073f2b80
-articles: []
-last_built: 2020-07-15T14:57Z
+pkgdown: 1.6.1.9000
+pkgdown_sha: e5847476d79f08b4cdca0ed5cc55bf55fc18a161
+articles: {}
+last_built: 2020-11-04T09:45Z
 urls:
   reference: https://otrecoding.github.io/OTrecod/reference
   article: https://otrecoding.github.io/OTrecod/articles

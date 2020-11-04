@@ -79,12 +79,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -112,130 +106,130 @@
     <p>This function prepares an overlayed database for data fusion according to the distance function chosen to evaluate the proximities between units.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>transfo_dist</span>(
-  <span class='kw'>DB</span>,
-  index_DB_Y_Z = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,
-  quanti = <span class='kw'>NULL</span>,
-  nominal = <span class='kw'>NULL</span>,
-  ordinal = <span class='kw'>NULL</span>,
-  logic = <span class='kw'>NULL</span>,
-  convert_num = <span class='kw'>NULL</span>,
-  convert_clss = <span class='kw'>NULL</span>,
-  prep_choice = <span class='st'>"E"</span>,
-  info = <span class='fl'>0.8</span>
-)</pre>
+    <pre class="usage"><span class='fu'>transfo_dist</span><span class='op'>(</span>
+  <span class='va'>DB</span>,
+  index_DB_Y_Z <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,
+  quanti <span class='op'>=</span> <span class='cn'>NULL</span>,
+  nominal <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ordinal <span class='op'>=</span> <span class='cn'>NULL</span>,
+  logic <span class='op'>=</span> <span class='cn'>NULL</span>,
+  convert_num <span class='op'>=</span> <span class='cn'>NULL</span>,
+  convert_clss <span class='op'>=</span> <span class='cn'>NULL</span>,
+  prep_choice <span class='op'>=</span> <span class='st'>"E"</span>,
+  info <span class='op'>=</span> <span class='fl'>0.8</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>DB</th>
-      <td><p>A data.frame composed of exactly two overlayed databases with a column of database identifier, two columns corresponding to a same information
+      <td><p>a data.frame composed of exactly two overlayed databases with a column of database identifier, two columns corresponding to a same information
 differently encoded in the two databases and covariates. The order of the variables have no importance.</p></td>
     </tr>
     <tr>
       <th>index_DB_Y_Z</th>
-      <td><p>A vector of exactly three integers. The first integer must correspond to the column index of the database identifier. The second integer corresponds
+      <td><p>a vector of exactly three integers. The first integer must correspond to the column index of the database identifier. The second integer corresponds
 to the index of the target variable in the first database while the third integer corresponds to the index of column related to the target variable in the second database.</p></td>
     </tr>
     <tr>
       <th>quanti</th>
-      <td><p>A vector of integers that corresponds to the column indexes of all the quantitative variables (DB identification and target variables included).</p></td>
+      <td><p>the column indexes of all the quantitative variables (database identificatier and target variables included) stored in a vector.</p></td>
     </tr>
     <tr>
       <th>nominal</th>
-      <td><p>A vector of integers that corresponds to the column indexes of all the nominal (not ordered) variables (DB identification and target variables included).</p></td>
+      <td><p>the column indexes of all the nominal (not ordered) variables (DB identification and target variables included) stored in a vector.</p></td>
     </tr>
     <tr>
       <th>ordinal</th>
-      <td><p>A vector of integers that corresponds to the column indexes of all the ordinal variables (DB identification and target variables included).</p></td>
+      <td><p>the column indexes of all the ordinal variables (DB identification and target variables included) stored in a vector.</p></td>
     </tr>
     <tr>
       <th>logic</th>
-      <td><p>A vector of integers that corresponds to the column indexes of all the boolean variables.</p></td>
+      <td><p>the column indexes of all the boolean variables stored in a vector.</p></td>
     </tr>
     <tr>
       <th>convert_num</th>
-      <td><p>Indexes of the continuous (quantitative) variables to convert in ordered factors. All indexes declared in this argument must have been declared in the argument <code>quanti</code> (no conversion by default).</p></td>
+      <td><p>the column indexes of the continuous (quantitative) variables to convert in ordered factors. All indexes declared in this argument must have been declared in the argument <code>quanti</code> (no conversion by default).</p></td>
     </tr>
     <tr>
       <th>convert_clss</th>
-      <td><p>A vector indicating for each continuous variable to convert the corresponding desired number of levels. If the length of the argument <code>convert_num</code> exceeds 1 while the length of <code>convert_clss</code> is equal to 1 (only one integer),
+      <td><p>according to the argument <code>convert_num</code>, a vector indicating for each continuous variable to convert the corresponding desired number of levels. If the length of the argument <code>convert_num</code> exceeds 1 while the length of <code>convert_clss</code> is equal to 1 (only one integer),
 each discretization will count the same number of levels.</p></td>
     </tr>
     <tr>
       <th>prep_choice</th>
-      <td><p>A character (with quotes) corresponding to the distance function chosen between: the euclidean distance ("E", by default), the Manhattan distance ("M"),
-the Gower distance ("G"), and the Hamming (also called binary) distance ("H"), calculated from principal components of a factor analysis of mixed data ("FAMD").</p></td>
+      <td><p>a character string corresponding to the distance function chosen between: the euclidean distance ("E", by default), the Manhattan distance ("M"),
+the Gower distance ("G"), the Hamming (also called binary) distance ("H"), and a distance computed from principal components of a factor analysis of mixed data ("FAMD").</p></td>
     </tr>
     <tr>
       <th>info</th>
-      <td><p>A percent value (between 0 and 1, 0.8 is the default value) that corresponds to the minimal part of variability that must be taken into account by the remaining principal components of the FAMD when this approach is required.
-This ratio will fix the number of components that will be kept with this approach.</p></td>
+      <td><p>a ratio (between 0 and 1, 0.8 is the default value) that corresponds to the minimal part of variability that must be taken into account by the remaining principal components of the FAMD when this approach is required.
+This ratio will fix the number of components that will be kept with this approach. When the argument is set to 1, all the variability is considered.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.frame which covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the database identifier, \(Y\) and \(Z\) correspond to the first three columns respectively.
+    <p>A data.frame whose covariates have been transformed according to the distance function or approach (for FAMD) chosen. The columns of the data.frame could have been reordered so that the database identifier, \(Y\) and \(Z\) correspond to the first three columns respectively.
 Moreover the order of rows remains unchanged during the process.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A. REQUIRED STRUCTURE FOR THE DATABASE</p>
-<p>In input of this function, the declared database can be the result of an overlay between two databases.
-This structure can be guaranteed using the specific outputs of the functions <code>merge_dbs</code> or <code>select_pred</code>.
+    <p>A. EXPECTED STRUCTURE FOR THE INPUT DATABASE</p>
+<p>In input of this function, the expected database is the result of an overlay between two databases A and B.
+This structure can be guaranteed using the specific outputs of the functions <code><a href='merge_dbs.html'>merge_dbs</a></code> or <code><a href='select_pred.html'>select_pred</a></code>.
 Nevertheless, it is also possible to apply directly the function <code>transfo_dist</code> on a raw database provided that a specific structure is respected in input.
-The database must count at least four columns (in an a unspecified order of appearance in the database):</p><ul>
-<li><p>A column indicating the database identifiers (two classes: A and B, 1 and 2, ...)</p></li>
-<li><p>A categorical (nominal or ordinal factor) variable corresponding to the outcome of the first database (on top) with its specific encoding (called \(Y\) by example).</p></li>
-<li><p>A second categorical (nominal or ordinal) variable corresponding to the outcome of the second database (called \(Z\) by example).</p></li>
-<li><p>At least one covariate shared in the two bases (same encoding in the two databases). Incomplete information is possible on shared covariates if you have more than one covariate.</p></li>
-</ul><p>In this context, the information related to \(Y\) in the second database must be missing as the information related to \(Z\) in the first one.
+The overlayed database (A placed on top of B) must count at least four columns (in an a unspecified order of appearance in the database):</p><ul>
+<li><p>A column indicating the database identifier (two classes or levels if factor: A and B, 1 and 2, ...)</p></li>
+<li><p>A column dedicated to the outcome (or target variable) of the first database and denoted \(Y\) for example. This variable can be of categorical (nominal or ordinal factor) or continuous type. Nevertheless, in this last case, a warning will appear and the variable will be automatically converted in ordered factors as a prerequisite format of the database before using data fusion algorithms.</p></li>
+<li><p>A column dedicated to the outcome (or target variable) of the second database and denoted \(Z\) for example. As before, this variable can be of categorical (nominal or ordinal factor) or continuous type, and the variable will be automatically converted in ordered factors as a prerequisite format of the database before using data fusion algorithms.</p></li>
+<li><p>At least one shared variable (same encoding in the two databases). Incomplete information is possible on shared covariates only with more than one shared covariate in the final database.</p></li>
+</ul><p>In this context, the two databases are overlayed and the information related to \(Y\) in the second database must be missing as well as the information related to \(Z\) in the first one.
 The column indexes related to the database identifier, \(Y\) and \(Z\) must be specified in this order in the argument <code>index_DB_Y_Z</code>.
-Moreover, all column indexes (including those related to identifier and target variables \(Y\) and \(Z\)) of the overlayed database (DB) must be declared once (and only once), among the arguments <code>quanti</code>, <code>nominal</code>, <code>ordinal</code>, and <code>logic</code>.
-If the outcomes are of numeric types, they could be declared as quantitative, but they will be automatically convert in ordered factors.</p>
+Moreover, all column indexes (including those related to identifier and target variables \(Y\) and \(Z\)) of the overlayed database (DB) must be declared once (and only once), among the arguments <code>quanti</code>, <code>nominal</code>, <code>ordinal</code>, and <code>logic</code>.</p>
 
 <p>B. TRANSFORMATIONS OF CONTINUOUS COVARIATES</p>
-<p>Because some algorithms dedicated to solving recoding problems like <code>JOINT</code> and <code>R-JOINT</code>  must run actually without continuous covariates (It is the case of the function <code>OT_joint</code> of this package), the function <code>transfo_dist</code> integrates in is syntax
+<p>Because some algorithms dedicated to solving recoding problems like <code>JOINT</code> and <code>R-JOINT</code> (see (1) and/or the documentation of <code><a href='OT_joint.html'>OT_joint</a></code>) requires the use of no continuous covariates, the function <code>transfo_dist</code> integrates in is syntax
 a process dedicated to the categorization of continuous variables. For this, it is necessary to rigorously fill in the arguments <code>convert_num</code> and <code>convert_clss</code>. The first one specifies the indexes of continuous variables to transform
 in ordered factors while the second one assigns the corresponding desired number of levels.
-Only covariates can be transformed (not outcomes) and missing informations are not taken into account for the transformations.
+Only covariates should be transformed (not outcomes) and missing informations are not taken into account for the transformations.
 Notice that all the indexes informed in the argument <code>convert_num</code> must also be informed in the argument <code>quanti</code>.</p>
 
 <p>C. TRANSFORMATIONS ON THE DATABASE ACCORDING TO THE CHOSEN DISTANCE FUNCTION</p>
 
 <p>These necessary transformations are related to the type of each covariate.
 It depends on the distance function chosen by user in the <code>prep_choice</code> argument.</p>
-<p>1. For the Euclidean ("E") and Manhattan ("M") distances ((1) and (2)):
+<p>1. For the Euclidean ("E") and Manhattan ("M") distances (see (2) and (3)):
 all the remaining continuous variables are standardized.
 The related recoding to a boolean variable is 1 for <code>TRUE</code> and 0 for <code>FALSE</code>.
-The recoding of a nominal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).
+The recoding of a nominal variable of k classes corresponds to its related disjunctive table (of (k-1) binary variables)).
 The ordinal variables are all converted to numeric variables (please take care that the order of the classes of each of these variables is well specified at the beginning).</p>
-<p>2. For the Hamming ("H") distance ((1) and (2)):
+<p>2. For the Hamming ("H") distance (see (2) and (3)):
 all the continuous variables must be transformed beforehand in categorical forms using the internal process described in section B or via another external approach.
 The boolean variables are all converted in ordinal forms and then turned into binaries.
 The recoding for nominal or ordinal variable of k classes corresponds to its related disjunctive table (i.e (k-1) binary variables)).</p>
-<p>3. For the Gower ("G") distance (3):
+<p>3. For the Gower ("G") distance (see (4)):
 all covariates remain unchanged</p>
-<p>4. Using the principal components from a factor analysis for mixed data (FAMD(4)):
+<p>4. Using the principal components from a factor analysis for mixed data (FAMD (5)):
 a factor analysis for mixed data is applied on the covariates of the database and a specific number of the related principal components is remained (depending on the minimal part of variability explained by the covariates that the user wishes to keep by varying the <code>info</code> option).
-The function integrates in its syntax the function <code><a href='https://rdrr.io/pkg/FactoMineR/man/FAMD.html'>FAMD</a></code> of the package <span class="pkg">FactoMiner</span> (5) using default parameters.
+The function integrates in its syntax the function <code><a href='https://rdrr.io/pkg/FactoMineR/man/FAMD.html'>FAMD</a></code> of the package <span class="pkg">FactoMiner</span> (6) using default parameters.
 After this step, the covariates are replaced by the remaining principal components of the FAMD, and each value corresponds to coordinates linked to each component.
 Please notice that this method supposed complete covariates in input, nevertheless in presence of incomplete covariates, each corresponding rows will be dropped from the study, a warning will appear and the number of remaining rows will be indicated.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
 <ol>
-<li><p>Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.</p></li>
-<li><p>Borg, I. and Groenen, P. (1997) Modern Multidimensional Scaling. Theory and Applications. Springer.</p></li>
-<li><p>Gower, J. C. (1971), “A general coefficient of similarity and some of its properties”. Biometrics, 27, 623--637.</p></li>
+<li><p>Gares V, Omer J (2020). Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 | <a href='https://doi.org/10.1080/01621459.2020.1775615'>https://doi.org/10.1080/01621459.2020.1775615</a></p></li>
+<li><p>Anderberg, M.R. (1973). Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.</p></li>
+<li><p>Borg, I. and Groenen, P. (1997). Modern Multidimensional Scaling. Theory and Applications. Springer.</p></li>
+<li><p>Gower, J. C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623--637.</p></li>
 <li><p>Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.</p></li>
 <li><p>Lê S, Josse J, Husson, F. (2008). FactoMineR: An R Package for Multivariate Analysis. Journal of Statistical Software. 25(1). pp. 1-18.</p></li>
 </ol>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>transfo_quali</code>,<code>merge_dbs</code></p></div>
+    <div class='dont-index'><p><code><a href='transfo_quali.html'>transfo_quali</a></code>,<code><a href='merge_dbs.html'>merge_dbs</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Gregory Guernec</p>
@@ -245,31 +239,34 @@ Please notice that this method supposed complete covariates in input, neverthele
     <pre class="examples"><div class='input'>
 <span class='co'>### Using the table simu_data:</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>simu_data</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span>
 
 <span class='co'># 1. the Euclidean distance (same output with Manhattan distance),</span>
-<span class='kw'>try1</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span>(<span class='kw'>simu_data</span>,quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>),
-                    ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>), logic = <span class='kw'>NULL</span>, prep_choice = <span class='st'>"E"</span>)</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
+<span class='va'>try1</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
+                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"E"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
 #&gt; 5 remaining levels </div><div class='input'><span class='co'># Here Yb2 was stored in numeric: It has been automatically converted in factor</span>
 
 <span class='co'># You can also convert beforehand Yb2 in ordered factor by example:</span>
-<span class='kw'>sim_data</span>     <span class='op'>=</span> <span class='kw'>simu_data</span>
-<span class='kw'>sim_data</span><span class='op'>$</span><span class='kw'>Yb2</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.ordered</a></span>(<span class='kw'>sim_data</span><span class='op'>$</span><span class='kw'>Yb2</span>)
-<span class='kw'>try1</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span>(<span class='kw'>sim_data</span>,quanti = <span class='fl'>8</span>, nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>),
-                    ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>6</span>), logic = <span class='kw'>NULL</span>, prep_choice = <span class='st'>"E"</span>)
+<span class='va'>sim_data</span>     <span class='op'>=</span> <span class='va'>simu_data</span>
+<span class='va'>sim_data</span><span class='op'>$</span><span class='va'>Yb2</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.ordered</a></span><span class='op'>(</span><span class='va'>sim_data</span><span class='op'>$</span><span class='va'>Yb2</span><span class='op'>)</span>
+<span class='va'>try1</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>sim_data</span>,quanti <span class='op'>=</span> <span class='fl'>8</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
+                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"E"</span><span class='op'>)</span>
 
 <span class='co'># 2. The Euclidean distance generated on principal components</span>
 <span class='co'>#    by a factor analysis for mixed data (FAMD):</span>
-<span class='kw'>try2</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span>(<span class='kw'>simu_data</span>,quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>),
-                    ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>), logic = <span class='kw'>NULL</span>, prep_choice = <span class='st'>"FAMD"</span>)</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
+<span class='va'>try2</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
+                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"FAMD"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
 #&gt; 5 remaining levels </div><div class='output co'>#&gt; <span class='warning'>Warning: Presence of NA on covariates. You should work with complete or imputed DB before using this method.</span>
 #&gt; <span class='warning'>              By default, only rows with no NA on covariates have been kept.</span></div><div class='output co'>#&gt; Only 528 rows ( 75 %) are kept here corresponding to complete cases </div><div class='input'>
 <span class='co'># Please notice that this method works only with rows that have complete</span>
 <span class='co'># information on covariates.</span>
 
 <span class='co'># 3. The Gower distance for mixed data:</span>
-<span class='kw'>try3</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span>(<span class='kw'>simu_data</span>,quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>),
-                    ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>), logic = <span class='kw'>NULL</span>, prep_choice = <span class='st'>"G"</span>)</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
+<span class='va'>try3</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
+                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"G"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
 #&gt; 5 remaining levels </div><div class='input'>
 <span class='co'># 4. The Hamming distance:</span>
 <span class='co'># Here the quanti option could only contain indexes related to targets.</span>
@@ -278,27 +275,30 @@ Please notice that this method supposed complete covariates in input, neverthele
 <span class='co'># So in simu_data, the discretization of the variable age is required (index=8),</span>
 <span class='co'># using the convert_num and convert_clss arguments (for tertiles = 3):</span>
 
-<span class='kw'>try4</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span>(<span class='kw'>simu_data</span>,quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>),ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>),
-convert_num = <span class='fl'>8</span>, convert_clss = <span class='fl'>3</span>, prep_choice = <span class='st'>"H"</span>)</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
+<span class='va'>try4</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
+convert_num <span class='op'>=</span> <span class='fl'>8</span>, convert_clss <span class='op'>=</span> <span class='fl'>3</span>, prep_choice <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
 #&gt; 5 remaining levels </div><div class='input'>
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># Other situation with a new numeric covariate with a finite number of values</span>
-<span class='kw'>simu_dat</span> <span class='op'>=</span> <span class='kw'>simu_data</span>[,<span class='op'>-</span><span class='fl'>8</span>]
-<span class='kw'>simu_dat</span><span class='op'>$</span><span class='kw'>new</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='kw'>simu_data</span>),replace = <span class='fl'>TRUE</span>)
-<span class='kw'>try5</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span>(<span class='kw'>simu_dat</span>,quanti = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>8</span>), nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span>),ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>6</span>),
-prep_choice = <span class='st'>"H"</span>)
+<span class='va'>simu_dat</span> <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span>,<span class='op'>-</span><span class='fl'>8</span><span class='op'>]</span>
+<span class='va'>simu_dat</span><span class='op'>$</span><span class='va'>new</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span>,replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>try5</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_dat</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
+prep_choice <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span>
 <span class='co'># Return Error because a continuous variable remains</span>
-}
+<span class='op'>}</span>
 
 <span class='co'>### This function works whatever the order of your columns in your database:</span>
 <span class='co'># Suppose that we re-order columns in simu_data:</span>
-<span class='kw'>simu_data2</span> <span class='op'>=</span> <span class='kw'>simu_data</span>[,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>7</span>,<span class='fl'>3</span>,<span class='fl'>8</span>,<span class='fl'>1</span>)]
+<span class='va'>simu_data2</span> <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>7</span>,<span class='fl'>3</span>,<span class='fl'>8</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>]</span>
 
 <span class='co'># By changing the corresponding indexes in the index_DB_Y_Z option,</span>
 <span class='co'># we observe the desired output:</span>
-<span class='kw'>try5</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span>(<span class='kw'>simu_data2</span>,index_DB_Y_Z = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>8</span>,<span class='fl'>1</span>,<span class='fl'>6</span>),quanti = <span class='fl'>6</span><span class='op'>:</span><span class='fl'>7</span>, nominal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fl'>5</span>,<span class='fl'>8</span>),
-                     ordinal = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span>), logic = <span class='kw'>NULL</span>, prep_choice = <span class='st'>"E"</span>)</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
-#&gt; 5 remaining levels </div><div class='input'></div></pre>
+<span class='va'>try5</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data2</span>,index_DB_Y_Z <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>8</span>,<span class='fl'>1</span>,<span class='fl'>6</span><span class='op'>)</span>,quanti <span class='op'>=</span> <span class='fl'>6</span><span class='op'>:</span><span class='fl'>7</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fl'>5</span>,<span class='fl'>8</span><span class='op'>)</span>,
+                     ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"E"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers 
+#&gt; 5 remaining levels </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -314,7 +314,7 @@ prep_choice = <span class='st'>"H"</span>)
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

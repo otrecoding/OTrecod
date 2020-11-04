@@ -79,12 +79,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -112,18 +106,18 @@
     <p>A function that gives the power set \(P(S)\) of any non empty set S.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>power_set</span>(<span class='kw'>n</span>, ordinal = <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>power_set</span><span class='op'>(</span><span class='va'>n</span>, ordinal <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>n</th>
-      <td><p>An integer. The cardinal of the set</p></td>
+      <td><p>an integer. The cardinal of the set</p></td>
     </tr>
     <tr>
       <th>ordinal</th>
-      <td><p>A boolean. If TRUE the power set is only composed of subsets of consecutive elements, FALSE (by default) otherwise.</p></td>
+      <td><p>a boolean. If TRUE the power set is only composed of subsets of consecutive elements, FALSE (by default) otherwise.</p></td>
     </tr>
     </table>
 
@@ -140,11 +134,12 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Powerset of set of 4 elements</span>
-<span class='kw'>fam</span>  <span class='op'>=</span>  <span class='fu'>power_set</span>(<span class='fl'>4</span>)
+<span class='va'>fam</span>  <span class='op'>=</span>  <span class='fu'>power_set</span><span class='op'>(</span><span class='fl'>4</span><span class='op'>)</span>
 
 <span class='co'># Powerset of set of 4 elements by only keeping</span>
 <span class='co'># subsets of consecutive elements</span>
-<span class='kw'>fam2</span> <span class='op'>=</span>  <span class='fu'>power_set</span>(<span class='fl'>4</span>,ordinal = <span class='fl'>TRUE</span>)</div></pre>
+<span class='va'>fam2</span> <span class='op'>=</span>  <span class='fu'>power_set</span><span class='op'>(</span><span class='fl'>4</span>,ordinal <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -160,7 +155,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

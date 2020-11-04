@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="indiv_grp_optimal() — indiv_grp_optimal" />
-<meta property="og:description" content="This function assigns individual predictions related to recoding problems of data fusion by solving a linear optimization problem" />
+<meta property="og:description" content="This function assigns individual predictions to the incomplete information of two integrated datasources by solving a linear optimization problem." />
 
 
 
@@ -79,12 +79,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -109,82 +103,92 @@
     </div>
 
     <div class="ref-description">
-    <p>This function assigns individual predictions related to recoding problems of data fusion by solving a linear optimization problem</p>
+    <p>This function assigns individual predictions to the incomplete information of two integrated datasources by solving a linear optimization problem.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>indiv_grp_optimal</span>(
-  <span class='kw'>proxim</span>,
-  <span class='kw'>jointprobaA</span>,
-  <span class='kw'>jointprobaB</span>,
-  percent_closest = <span class='fl'>1</span>,
-  which.DB = <span class='st'>"BOTH"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>indiv_grp_optimal</span><span class='op'>(</span>
+  <span class='va'>proxim</span>,
+  <span class='va'>jointprobaA</span>,
+  <span class='va'>jointprobaB</span>,
+  percent_closest <span class='op'>=</span> <span class='fl'>1</span>,
+  solvr <span class='op'>=</span> <span class='st'>"glpk"</span>,
+  which.DB <span class='op'>=</span> <span class='st'>"BOTH"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>proxim</th>
-      <td><p>An object corresponding to the output of the function <code>proxim_dist</code></p></td>
+      <td><p>a <code><a href='proxim_dist.html'>proxim_dist</a></code> object or an object of similar structure</p></td>
     </tr>
     <tr>
       <th>jointprobaA</th>
-      <td><p>A matrix whose number of columns is equal to the number of modalities of the target variable \(Y\) in database A, and which number of rows is equal to the number of modalities of \(Z\) in database B. It gives an estimation of the joint probability \((Y,Z)\) in the database A.
+      <td><p>a matrix whose number of columns is equal to the number of modalities of the target variable \(Y\) in database A, and whose number of rows is equal to the number of modalities of \(Z\) in database B. It gives an estimation of the joint probability \((Y,Z)\) in the database A.
 The sum of cells of this matrix must be equal to 1.</p></td>
     </tr>
     <tr>
       <th>jointprobaB</th>
-      <td><p>A matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and which number of rows is equal to the number of modalities of \(Z\) in database B. It gives an estimation of the joint probability \((Y,Z)\) in the database B.
+      <td><p>a matrix whose number of columns is equal to the number of modalities of the target variable Y in database A, and whose number of rows is equal to the number of modalities of \(Z\) in database B. It gives an estimation of the joint probability \((Y,Z)\) in the database B.
 The sum of cells of this matrix must be equal to 1.</p></td>
     </tr>
     <tr>
       <th>percent_closest</th>
-      <td><p>A value between 0 and 1 (by default) corresponding to the fixed <code>percent closest</code> of individuals used in the computation of the average distances</p></td>
+      <td><p>a value between 0 and 1 (by default) corresponding to the fixed <code>percent closest</code> of individuals used in the computation of the average distances</p></td>
+    </tr>
+    <tr>
+      <th>solvr</th>
+      <td><p>a character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".</p></td>
     </tr>
     <tr>
       <th>which.DB</th>
-      <td><p>A character string (with quotes) that indicates which individual predictions compute: only the individual predictions of \(Y\) in B ("B"), only those of \(Z\) in A ("A") or the both ("BOTH" by default).</p></td>
+      <td><p>a character string that indicates which individual predictions are computed: only the individual predictions of \(Y\) in B ("B"), only those of \(Z\) in A ("A") or the both ("BOTH" by default).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list of two vectors of numeric values:</p>
-<dt>YAtrans</dt><dd><p>A vector corresponding to the predicted values of \(Y\) in database B (numeric form) using the Optimal Transportation theory</p></dd>
-<dt>ZBtrans</dt><dd><p>A vector corresponding to the predicted values of \(Z\) in database A (numeric form) using the Optimal Transportation theory</p></dd>
+<dt>YAtrans</dt><dd><p>a vector corresponding to the predicted values of \(Y\) in database B (numeric form) according to the <code>which.DB</code> argument</p></dd>
+<dt>ZBtrans</dt><dd><p>a vector corresponding to the predicted values of \(Z\) in database A (numeric form) according to the <code>which.DB</code> argument</p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>A. THE RECODING PROBLEM IN DATA FUSION</p>
-<p>Assuming that \(Y\) and \(Z\) are two variables which refered to a same target population in two separate (no overlapping rows) databases A and B respectively,
+<p>Assuming that \(Y\) and \(Z\) are two target variables which refered to the same target population in two separate databases A and B respectively (no overlapping rows),
 so that \(Y\) and \(Z\) are never jointly observed. Assuming also that A and B share a subset of common covariates \(X\) of any types (same encodings in A and B)
-completed or not. Integrating these two databases often requires to solve this observed recoding problem by creating an unique database where
+completed or not. Merging these two databases often requires to solve a recoding problem by creating an unique database where
 the missing information of \(Y\) and \(Z\) is fully completed.</p>
 
 <p>B. DESCRIPTION OF THE FUNCTION</p>
-<p>The function <code>indiv_grp_optimal</code> is an intermediate function used in the implementation of a model called <code>OUTCOME</code> (and its enrichment <code>R-OUTCOME</code>, see the reference (2) for more details) dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory.
-The model is implemented in the function <code>OT_outcome</code> which integrates the function <code>indiv_grp_optimal</code> in its syntax as a possible second step of the algorithm.
-The function <code>indiv_grp_optimal</code> can nevertheless be used separately provided that the argument <code>proxim</code> receives an output object of the function <code>proxim_dist</code>.
+<p>The function <code>indiv_grp_optimal</code> is an intermediate function used in the implementation of an algorithm called <code>OUTCOME</code> (and its enrichment <code>R-OUTCOME</code> (2)) dedicated to the solving of recoding problems in data fusion using Optimal Transportation theory.
+The model is implemented in the function <code><a href='OT_outcome.html'>OT_outcome</a></code> which integrates the function <code>indiv_grp_optimal</code> in its syntax as a possible second step of the algorithm.
+The function <code>indiv_grp_optimal</code> can nevertheless be used separately providing that the argument <code>proxim</code> receives an output object of the function <code><a href='proxim_dist.html'>proxim_dist</a></code>.
 This latter is available in the package and is so directly usable beforehand.</p>
-<p>The function <code>indiv_grp_optimal</code> constitutes an alternative method to the nearest neighbor procedure implemented in the function <code>indiv_grp_closest</code>.
-As for the function <code>indiv_grp_closest</code>, assuming that the objective consists in the prediction of \(Z\) in the database A, the first step of the algorithm related to <code>OUTCOME</code> provides an estimate of \(\gamma\) which can is an estimation of the joint distribution \((Y,Z)\) in A.
+<p>The function <code>indiv_grp_optimal</code> constitutes an alternative method to the nearest neighbor procedure implemented in the function <code><a href='indiv_grp_closest.html'>indiv_grp_closest</a></code>.
+As for the function <code><a href='indiv_grp_closest.html'>indiv_grp_closest</a></code>, assuming that the objective consists in the prediction of \(Z\) in the database A, the first step of the algorithm related to <code>OUTCOME</code> provides an estimate of \(\gamma\), the solution of the optimization problem, which can be seen, in this case as an estimation of the joint distribution \((Y,Z)\) in A.
 Rather than using a nearest neighbor approach to provide individual predictions, the function <code>indiv_grp_optimal</code> solves an optimization problem using the simplex algorithm which searches for the individual predictions of \(Z\) that minimize the computed total distance satisfying the joint probability distribution estimated in the first part.
 More details about the theory related to the solving of this optimization problem is described in the section 5.3 of (2).</p>
 <p>Obviously, this algorithm  runs in the same way for the prediction of \(Y\) in the database B.
-The function <code>indiv_grp_optimal</code> integrates in its syntax the function <code>avg_dist_closest</code> and the related argument <code>percent_closest</code> is identical in the two functions.
+The function <code>indiv_grp_optimal</code> integrates in its syntax the function <code><a href='avg_dist_closest.html'>avg_dist_closest</a></code> and the related argument <code>percent_closest</code> is identical in the two functions.
 Thus, when computing average distances between an individual i and a subset of individuals assigned to a same level of \(Y\) or \(Z\) is required, user can decide if all individuals from the subset of interest can participate to the computation (<code>percent_closest = 1</code>) or only a fixed part p (&lt;1) corresponding to the closest neighbors of i (in this case <code>percent_closest</code> = p).</p>
 <p>The arguments <code>jointprobaA</code> and <code>jointprobaB</code> can be seen as estimations of \(\gamma\) (sum of cells must be equal to 1) that correspond to estimations of the joint distributions of \((Y,Z)\) in A and B respectively.</p>
+<p>The argument <code>solvr</code> permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (3) for more details). The solver "clp" (see (4)) for Coin-or Linear Programming, convenient in linear and quadratic situations, is also directly integrated in the function.
+Moreover, the function actually uses the <code>R</code> optimization infrastructure of the package <span class="pkg">ROI</span> which offers a wide choice of solver to users by easily loading the associated plugins of <span class="pkg">ROI</span> (see (5)).</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
 <ol>
 <li><p>Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics. Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515/ijb-2018-0106'>https://doi.org/10.1515/ijb-2018-0106</a></p></li>
-<li><p>Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, DOI: 10.1080/01621459.2020.1775615</p></li>
+<li><p>Gares V, Omer J (2020). Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 | <a href='https://doi.org/10.1080/01621459.2020.1775615'>https://doi.org/10.1080/01621459.2020.1775615</a></p></li>
+<li><p>Makhorin A (2011). GNU Linear Programming Kit Reference Manual Version 4.47.<a href='http://www.gnu.org/software/glpk'>http://www.gnu.org/software/glpk</a></p></li>
+<li><p>Forrest J, de la Nuez D, Lougee-Heimer R (2004). Clp User Guide. <a href='http://www.coin-or.org/Clp/userguide/index.html'>http://www.coin-or.org/Clp/userguide/index.html</a></p></li>
+<li><p>Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 <a href='https://doi.org/10.18637/jss.v094.i15'>https://doi.org/10.18637/jss.v094.i15</a></p></li>
 </ol>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>proxim_dist</code>, <code>avg_dist_closest</code>, <code>indiv_grp_closest</code></p></div>
+    <div class='dont-index'><p><code><a href='proxim_dist.html'>proxim_dist</a></code>, <code><a href='avg_dist_closest.html'>avg_dist_closest</a></code>, <code><a href='indiv_grp_closest.html'>indiv_grp_closest</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Gregory Guernec, Valerie Gares, Jeremy Omer</p>
@@ -207,7 +211,7 @@ Thus, when computing average distances between an individual i and a subset of i
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="merge_dbs() — merge_dbs" />
-<meta property="og:description" content="Overlay of two databases with specific outcome variables and shared covariates" />
+<meta property="og:description" content="Harmonization and merging before data fusion of two databases with specific outcome variables and shared covariates." />
 
 
 
@@ -79,12 +79,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -109,130 +103,136 @@
     </div>
 
     <div class="ref-description">
-    <p>Overlay of two databases with specific outcome variables and shared covariates</p>
+    <p>Harmonization and merging before data fusion of two databases with specific outcome variables and shared covariates.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>merge_dbs</span>(
-  <span class='kw'>DB1</span>,
-  <span class='kw'>DB2</span>,
-  row_ID1 = <span class='kw'>NULL</span>,
-  row_ID2 = <span class='kw'>NULL</span>,
-  <span class='kw'>NAME_Y</span>,
-  <span class='kw'>NAME_Z</span>,
-  order_levels_Y = <span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span>(<span class='kw'>DB1</span>[, <span class='kw'>NAME_Y</span>]),
-  order_levels_Z = <span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span>(<span class='kw'>DB2</span>[, <span class='kw'>NAME_Z</span>]),
-  ordinal_DB1 = <span class='kw'>NULL</span>,
-  ordinal_DB2 = <span class='kw'>NULL</span>,
-  impute = <span class='st'>"NO"</span>,
-  R_MICE = <span class='fl'>5</span>,
-  NCP_FAMD = <span class='fl'>3</span>,
-  seed_func = <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>1e+06</span>, <span class='fl'>1</span>)
-)</pre>
+    <pre class="usage"><span class='fu'>merge_dbs</span><span class='op'>(</span>
+  <span class='va'>DB1</span>,
+  <span class='va'>DB2</span>,
+  row_ID1 <span class='op'>=</span> <span class='cn'>NULL</span>,
+  row_ID2 <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>NAME_Y</span>,
+  <span class='va'>NAME_Z</span>,
+  order_levels_Y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>DB1</span><span class='op'>[</span>, <span class='va'>NAME_Y</span><span class='op'>]</span><span class='op'>)</span>,
+  order_levels_Z <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/levels.html'>levels</a></span><span class='op'>(</span><span class='va'>DB2</span><span class='op'>[</span>, <span class='va'>NAME_Z</span><span class='op'>]</span><span class='op'>)</span>,
+  ordinal_DB1 <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ordinal_DB2 <span class='op'>=</span> <span class='cn'>NULL</span>,
+  impute <span class='op'>=</span> <span class='st'>"NO"</span>,
+  R_MICE <span class='op'>=</span> <span class='fl'>5</span>,
+  NCP_FAMD <span class='op'>=</span> <span class='fl'>3</span>,
+  seed_func <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>1e+06</span>, <span class='fl'>1</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>DB1</th>
-      <td><p>A data.frame corresponding to the 1st database to merge (top database)</p></td>
+      <td><p>a data.frame corresponding to the 1st database to merge (top database)</p></td>
     </tr>
     <tr>
       <th>DB2</th>
-      <td><p>A data.frame corresponding to the 2nd database to merge (bottom database)</p></td>
+      <td><p>a data.frame corresponding to the 2nd database to merge (bottom database)</p></td>
     </tr>
     <tr>
       <th>row_ID1</th>
-      <td><p>The column index of the row identifier of DB1 if DB1 has one (no identifier by default)</p></td>
+      <td><p>the column index of the row identifier of DB1 if it exists (no identifier by default)</p></td>
     </tr>
     <tr>
       <th>row_ID2</th>
-      <td><p>The column index of the row identifier of DB2 if DB2 has one (no identifier by default)</p></td>
+      <td><p>the column index of the row identifier of DB2 if it exists (no identifier by default)</p></td>
     </tr>
     <tr>
       <th>NAME_Y</th>
-      <td><p>The name of the outcome (with quotes) in its specific scale/encoding from the 1st database (DB1)</p></td>
+      <td><p>the name of the outcome (with quotes) in its specific scale/encoding from the 1st database (DB1)</p></td>
     </tr>
     <tr>
       <th>NAME_Z</th>
-      <td><p>The name of the outcome (with quotes) in its specific scale/encoding from the 2nd database (DB2)</p></td>
+      <td><p>the name of the outcome (with quotes) in its specific scale/encoding from the 2nd database (DB2)</p></td>
     </tr>
     <tr>
       <th>order_levels_Y</th>
-      <td><p>A vector of classes (with quotes) sorted in ascending order that permits to reorder the levels of \(Y\) in the 1st database (DB1) if necessary, when \(Y\) is stored as an ordinal factor (scale).</p></td>
+      <td><p>the levels of \(Y\) stored in a vector and sorted in ascending order in the case of ordered factors. This option permits to reorder the levels in the 1st database (DB1) if necessary.</p></td>
     </tr>
     <tr>
       <th>order_levels_Z</th>
-      <td><p>A vector of classes (with quotes) sorted in ascending order that permits to reorder the levels of \(Z\) in the 2nd database (DB2) if necessary, when \(Z\) is stored as an ordinal factor (scale).</p></td>
+      <td><p>the levels of \(Z\) stored in a vector and sorted in ascending order in the case of ordered factors. This option permits to reorder the levels in the 2nd database (DB2) if necessary.</p></td>
     </tr>
     <tr>
       <th>ordinal_DB1</th>
-      <td><p>A vector of index of columns corresponding to ordinal variables in the 1st database (no ordinal variable by default)</p></td>
+      <td><p>a vector of index of columns corresponding to ordinal variables in the 1st database (no ordinal variable by default)</p></td>
     </tr>
     <tr>
       <th>ordinal_DB2</th>
-      <td><p>A vector of index of columns corresponding to ordinal variables in the 2nd database (no ordinal variable by default)</p></td>
+      <td><p>a vector of index of columns corresponding to ordinal variables in the 2nd database (no ordinal variable by default)</p></td>
     </tr>
     <tr>
       <th>impute</th>
-      <td><p>A character (with quotes) equals to "NO" when missing data on covariates are kept (By default), "CC" for Complete Case by keeping only covariates with no missing information , "MICE" for MICE multiple imputation approach, "FAMD" for single imputation approach using Factorial Analysis for Mixed Data</p></td>
+      <td><p>a character equals to "NO" when missing data on covariates are kept (Default option), "CC" for Complete Case by keeping only covariates with no missing information , "MICE" for MICE multiple imputation approach, "FAMD" for single imputation approach using Factorial Analysis for Mixed Data</p></td>
     </tr>
     <tr>
       <th>R_MICE</th>
-      <td><p>The chosen number of multiple imputations required for the  MICE approach (5 by default)</p></td>
+      <td><p>the chosen number of multiple imputations required for the  MICE approach (5 by default)</p></td>
     </tr>
     <tr>
       <th>NCP_FAMD</th>
-      <td><p>An integer corresponding to the number of components used to predict missing values in FAMD imputation (3 by default)</p></td>
+      <td><p>an integer corresponding to the number of components used to predict missing values in FAMD imputation (3 by default)</p></td>
     </tr>
     <tr>
       <th>seed_func</th>
-      <td><p>An integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default, only useful with MICE)</p></td>
+      <td><p>an integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default, only useful with MICE)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list containing 10 elements (11 when <code>impute</code> equals "MICE"):</p>
-<dt>DB_READY</dt><dd><p>The database matched from the two initial databases with common covariates and imputed or not according to the impute option</p></dd>
-<dt>Y_LEVELS</dt><dd><p>The remaining levels of the target variable \(Y\) in the DB1</p></dd>
-<dt>Z_LEVELS</dt><dd><p>The remaining Levels of the target variable \(Z\) in the DB2</p></dd>
-<dt>REMOVE1</dt><dd><p>The labels of the deleted covariates because of type incompatibilies of type from DB1 to DB2</p></dd>
-<dt>REMOVE2</dt><dd><p>The removed factor(s) because of levels incompatibilities from DB1 to DB2</p></dd>
-<dt>REMAINING_VAR</dt><dd><p>Labels of the remained covariates for data fusion</p></dd>
-<dt>IMPUTE_TYPE</dt><dd><p>A character with quotes that specify the method eventually chosen to handle missing data in covariates</p></dd>
-<dt>MICE_DETAILS</dt><dd><p>A list containing the details of the imputed datasets using <code>MICE</code> when this option is enabled. Databases imputed for DB1 and DB2 according to the number of mutliple imputation selected (Only if impute = "MICE")</p></dd>
-<dt>DB1_ID</dt><dd><p>A data.frame corresponding to the row identifier of DB1 after merging</p></dd>
-<dt>DB2_ID</dt><dd><p>A data.frame corresponding to the row identifier of DB2 after merging</p></dd>
-<dt>SEED</dt><dd><p>An integer used as argument by the <code>set.seed</code> function for offsetting the random number generator (random selection by default)</p></dd>
+<dt>DB_READY</dt><dd><p>the database matched from the two initial databases with common covariates and imputed or not according to the impute option</p></dd>
+<dt>Y_LEVELS</dt><dd><p>the remaining levels of the target variable \(Y\) in the DB1</p></dd>
+<dt>Z_LEVELS</dt><dd><p>the remaining Levels of the target variable \(Z\) in the DB2</p></dd>
+<dt>REMOVE1</dt><dd><p>the labels of the deleted covariates because of type incompatibilies of type from DB1 to DB2</p></dd>
+<dt>REMOVE2</dt><dd><p>the removed factor(s) because of levels incompatibilities from DB1 to DB2</p></dd>
+<dt>REMAINING_VAR</dt><dd><p>labels of the remained covariates for data fusion</p></dd>
+<dt>IMPUTE_TYPE</dt><dd><p>a character with quotes that specify the method eventually chosen to handle missing data in covariates</p></dd>
+<dt>MICE_DETAILS</dt><dd><p>a list containing the details of the imputed datasets using <code>MICE</code> when this option is enabled. Databases imputed for DB1 and DB2 according to the number of mutliple imputation selected (Only if impute = "MICE")</p></dd>
+<dt>DB1_ID</dt><dd><p>a data.frame corresponding to the row identifier of DB1 after merging</p></dd>
+<dt>DB2_ID</dt><dd><p>a data.frame corresponding to the row identifier of DB2 after merging</p></dd>
+<dt>SEED</dt><dd><p>an integer used as argument by the <code>set.seed</code> function for offsetting the random number generator (random selection by default)</p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Assuming that DB1 and DB2 are two databases (two separate data.frames with no overlapping part) to merge vertically, the function <code>merge_dbs</code> performs this overlay by checking the compatibility of the variables between the databases.
-Each database must contain a target variable (whose label must be filled in the argument <code>Y</code> for DB1 and in the argument <code>Z</code> for DB2 respectively, so that the final database in output will contain a target <code>Y</code> whose values will be missing in DB2 and another target <code>Z</code> whose values will be missing in DB1), a subset of shared covariates (by example, the best predictors of \(Y\) in DB1, and \(Z\) in DB2),
-and another possible subset of variables specific to each database.
-Each database can have a row identifier whose corresponding index of column must be assigned in the arguments <code>row_ID1</code> for DB1 and <code>row_ID2</code> for DB2. Nevertheless, by default, DB1 and DB2 have no row identifiers and the merging remains unchanged the order of rows in the two databases provided that \(Y\) and \(Z\) have no missing values.
-A rule for the overlay is that the declared first database (in the argument <code>DB1</code>) will be placed above the second one (declared in the argument <code>DB2</code>).</p>
-<p>The function <code>merge_dbs</code> is dedicated to the harmonization of databases in data fusion projects.
-This function notably detects heterogenity between variables from one database to another and so, can be useful as a preliminary step of data fusion using Optimal Transportation theory.</p>
-<p>A. The function <code>merge_dbs</code> handles incomplete information, by respecting the following rules:</p><ul>
+    <p>Assuming that DB1 and DB2 are two databases (two separate data.frames with no overlapping rows) to be merged vertically before data fusion, the function <code>merge_dbs</code> performs this merging and checks the harmonization of the shared variables.
+Firslty, the two databases declared as input to the function (via the argument <code>DB1</code> and <code>DB2</code>) must have the same specific structure.
+Each database must contain a target variable (whose label must be filled in the argument <code>Y</code> for DB1 and in <code>Z</code> for DB2 respectively, so that the final synthetic database in output will contain an incomplete variable <code>Y</code> whose corresponding values will be missing in DB2 and another incomplete target <code>Z</code> whose values will be missing in DB1), a subset of shared covariates (by example, the best predictors of \(Y\) in DB1, and \(Z\) in DB2).
+Each database can have a row identifier whose label must be assigned in the argument <code>row_ID1</code> for DB1 and <code>row_ID2</code> for DB2. Nevertheless, by default DB1 and DB2 are supposed with no row identifiers. The merging keeps unchanged the order of rows in the two databases provided that \(Y\) and \(Z\) have no missing values.
+By building, the first declared database (in the argument <code>DB1</code>) will be placed automatically above the second one (declared in the argument <code>DB2</code>) in the final database.</p>
+<p>Firstly, by default, a variable with the same name in the two databases is abusively considered as shared. This condition is obviously insufficient to be kept in the final subset of shared variables,
+and the function <code>merge_dbs</code> so performs checks before merging described below.</p>
+<p>A. Discrepancies between shared variables</p><ul>
+<li><p>Shared variables with discrepancies of types between the two databases (for example, a variable with a common name in the two databases but stored as numeric in DB1, and stored as character in DB2) will be removed from the merging and the variable name will be saved in output (<code>REMOVE1</code>).</p></li>
+<li><p>Shared factors with discrepancies of levels (or number of levels) will be also removed from the merging and the variable name will be saved in output (<code>REMOVE2</code>).</p></li>
+<li><p>covariates whose names are specific to each database will be also deleted from the merging.</p></li>
+<li><p>If some important predictors have been improperly excluded from the merging due to the above-mentioned checks, it is possible for user to transform these variables a posteriori, and re-run the function.</p></li>
+</ul>
+
+<p>B. Rules for the two outcomes (target variables)</p>
+<p>The types of <code>Y</code> and <code>Z</code> must be suitable:</p><ul>
+<li><p>Categorical (ordered or not) factors are allowed.</p></li>
+<li><p>Numeric and discrete outcomes with a finite number of values are allowed but will be automatically converted as ordered factors using the function <code>transfo_target</code> integrated in the function <code>merge_dbs</code>.</p></li>
+</ul>
+
+<p>C. The function <code>merge_dbs</code> handles incomplete information of shared variables, by respecting the following rules:</p><ul>
 <li><p>If <code>Y</code> or <code>Z</code> have missing values in DB1 or DB2, corresponding rows are excluded from the database before merging. Moreover, in the case of incomplete outcomes,
 if A and B have row identifiers, the corresponding identifiers are removed and these latters are stored in the objects <code>DB1_ID</code> and <code>DB2_ID</code> of the output.</p></li>
 <li><p>Before overlay, the function deals with incomplete covariates according to the argument <code>impute</code>.
 Users can decide to work with complete case only ("CC"), to keep ("NO") or impute incomplete information ("MICE","FAMD").</p></li>
 <li><p>The function <code>imput_cov</code>, integrated in the syntax of <code>merge_dbs</code> deals with imputations. Two approaches are actually available:
 the multivariate imputation by chained equation approach (MICE, see (3) for more details about the approach or the corresponding package <span class="pkg">mice</span>),
-and an imputation approach from the package <span class="pkg">missMDA</span> that uses a dimensionality reduction method (here a factor analysis for mixed data called FAMD (4), to provide single imputations.
-If multiple imputation is required (<code>impute</code> = "MICE"), the default imputation methods are applied according to the type of the variables. The average of the plausible values will be remained for a continuous variable, while the most frequent candidate will be remained as a consensus value for a categorical variable or factor (ordinal or not).</p></li>
+and an imputation approach from the package <span class="pkg">missMDA</span> that uses a dimensionality reduction method (here a factor analysis for mixed data called FAMD (4)), to provide single imputations.
+If multiple imputation is required (<code>impute</code> = "MICE"), the default imputation methods are applied according to the type of the variables. The average of the plausible values will be kept for a continuous variable, while the most frequent candidate will be kept as a consensus value for a categorical variable or factor (ordinal or not).</p></li>
 </ul>
 
-<p>B. The function <code>merge_dbs</code> studies the compatibilities between A and B, of each shared covariate, by respecting the following rules:</p><ul>
-<li><p>The formats of <code>Y</code> and <code>Z</code> must be suitable. Categorical (ordered or not) factors are allowed. Numeric and discrete outcomes with a finite number of values are allowed but will be automatically converted as ordered factors
-using the function <code>transfo_target</code> integrated in the function <code>merge_dbs</code>.</p></li>
-<li><p>Shared variables with incompatible formats between the two databases will be removed from the merging and the related label will be saved in output (<code>REMOVE1</code>).</p></li>
-<li><p>Shared factors with incompatible levels (or number of levels) will be removed from the merging and the related label will be saved in output (<code>REMOVE2</code>).</p></li>
-<li><p>Covariates whose names are specific to each database will be also deleted from the merging.</p></li>
-</ul><p>Notice that if certain important predictors have been improperly excluded from the merging, users can transform these variables a posteriori, and re-run the function.
-As a finally step, the function checks that all values related to \(Y\) in B are missing and inversely for \(Z\) in A.</p>
+<p>As a finally step, the function checks that all values related to \(Y\) in B are missing and inversely for \(Z\) in A.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
@@ -245,7 +245,7 @@ As a finally step, the function checks that all values related to \(Y\) in B are
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>imput_cov</code>, <code>transfo_target</code>, <code>select_pred</code></p></div>
+    <div class='dont-index'><p><code><a href='imput_cov.html'>imput_cov</a></code>, <code><a href='transfo_target.html'>transfo_target</a></code>, <code><a href='select_pred.html'>select_pred</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Gregory Guernec</p>
@@ -256,14 +256,16 @@ As a finally step, the function checks that all values related to \(Y\) in B are
 <span class='co'>### Assuming two distinct databases from simu_data: data_A and data_B</span>
 <span class='co'>### Some transformations will be made beforehand on variables to generate</span>
 <span class='co'>### heterogeneities between the two bases.</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>simu_data</span>)
-<span class='kw'>data_A</span> <span class='op'>=</span> <span class='kw'>simu_data</span>[<span class='kw'>simu_data</span><span class='op'>$</span><span class='kw'>DB</span> <span class='op'>==</span> <span class='st'>"A"</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>8</span>)]; <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>data_A</span>)</div><div class='output co'>#&gt;       Yb1 Gender Treatment Dosage Smoking      Age
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span>
+<span class='va'>data_A</span> <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span><span class='va'>simu_data</span><span class='op'>$</span><span class='va'>DB</span> <span class='op'>==</span> <span class='st'>"A"</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>)</span><span class='op'>]</span>; <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>data_A</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;       Yb1 Gender Treatment Dosage Smoking      Age
 #&gt; 1 [40-60[ Female     Trt A  Dos 3     YES 65.44273
 #&gt; 2 [20-40]   Male      &lt;NA&gt;  Dos 2      NO 51.78596
 #&gt; 3 [40-60[ Female   Placebo  Dos 2     YES 49.10844
 #&gt; 4 [40-60[ Female     Trt B  Dos 4    &lt;NA&gt; 56.43524
 #&gt; 5 [40-60[ Female     Trt A  Dos 4     YES 44.77365
-#&gt; 6 [20-40] Female     Trt A  Dos 1    &lt;NA&gt;       NA</div><div class='input'><span class='kw'>data_B</span> <span class='op'>=</span> <span class='kw'>simu_data</span>[<span class='kw'>simu_data</span><span class='op'>$</span><span class='kw'>DB</span> <span class='op'>==</span> <span class='st'>"B"</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>8</span>)]; <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>data_B</span>)</div><div class='output co'>#&gt;     Yb2 Gender Treatment Dosage Smoking      Age
+#&gt; 6 [20-40] Female     Trt A  Dos 1    &lt;NA&gt;       NA</div><div class='input'><span class='va'>data_B</span> <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span><span class='va'>simu_data</span><span class='op'>$</span><span class='va'>DB</span> <span class='op'>==</span> <span class='st'>"B"</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>8</span><span class='op'>)</span><span class='op'>]</span>; <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>data_B</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;     Yb2 Gender Treatment Dosage Smoking      Age
 #&gt; 301   5 Female   Placebo  Dos 2     YES 44.58233
 #&gt; 302   1 Female     Trt B  Dos 4    &lt;NA&gt; 65.23921
 #&gt; 303   2 Female   Placebo   &lt;NA&gt;      NO 51.64228
@@ -271,26 +273,27 @@ As a finally step, the function checks that all values related to \(Y\) in B are
 #&gt; 305   1 Female     Trt B  Dos 4     YES 61.53242
 #&gt; 306   1 Female     Trt B  Dos 3    &lt;NA&gt; 60.54819</div><div class='input'>
 <span class='co'># For the example, a covariate is added (Weight) only in data_A</span>
-<span class='kw'>data_A</span><span class='op'>$</span><span class='kw'>Weight</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>300</span>,<span class='fl'>70</span>,<span class='fl'>5</span>)
+<span class='va'>data_A</span><span class='op'>$</span><span class='va'>Weight</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>300</span>,<span class='fl'>70</span>,<span class='fl'>5</span><span class='op'>)</span>
 
 <span class='co'># Be careful: your target variables must be in factor (or ordered) in your 2 databases</span>
 <span class='co'># Because it is not the case for Yb2 in data_B, we convert it.</span>
-<span class='kw'>data_B</span><span class='op'>$</span><span class='kw'>Yb2</span>    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='kw'>data_B</span><span class='op'>$</span><span class='kw'>Yb2</span>)
+<span class='va'>data_B</span><span class='op'>$</span><span class='va'>Yb2</span>    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>data_B</span><span class='op'>$</span><span class='va'>Yb2</span><span class='op'>)</span>
 
 <span class='co'># Moreover, we store the Dosage covariate in 3 classes in data_B (instead of 4 classes in data_B)</span>
 <span class='co'># to make the encoding of this covariate specific to each database.</span>
-<span class='kw'>data_B</span><span class='op'>$</span><span class='kw'>Dosage</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='kw'>data_B</span><span class='op'>$</span><span class='kw'>Dosage</span>)
-<span class='kw'>data_B</span><span class='op'>$</span><span class='kw'>Dosage</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='kw'>data_B</span><span class='op'>$</span><span class='kw'>Dosage</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Dos 1"</span>,<span class='st'>"Dos 2"</span>),<span class='st'>"D1"</span>,
-                          <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='kw'>data_B</span><span class='op'>$</span><span class='kw'>Dosage</span> <span class='op'>==</span> <span class='st'>"Dos 3"</span>,<span class='st'>"D3"</span>,<span class='st'>"D4"</span>)))
+<span class='va'>data_B</span><span class='op'>$</span><span class='va'>Dosage</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>data_B</span><span class='op'>$</span><span class='va'>Dosage</span><span class='op'>)</span>
+<span class='va'>data_B</span><span class='op'>$</span><span class='va'>Dosage</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>data_B</span><span class='op'>$</span><span class='va'>Dosage</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Dos 1"</span>,<span class='st'>"Dos 2"</span><span class='op'>)</span>,<span class='st'>"D1"</span>,
+                          <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>data_B</span><span class='op'>$</span><span class='va'>Dosage</span> <span class='op'>==</span> <span class='st'>"Dos 3"</span>,<span class='st'>"D3"</span>,<span class='st'>"D4"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># For more diversity, we put this covariate at the last column of the data_B</span>
-<span class='kw'>data_B</span>        <span class='op'>=</span> <span class='kw'>data_B</span>[,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>4</span>)]
+<span class='va'>data_B</span>        <span class='op'>=</span> <span class='va'>data_B</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>4</span><span class='op'>)</span><span class='op'>]</span>
 
 <span class='co'># Ex 1: The two databases are merged and incomplete covariates are imputed using MICE</span>
-<span class='kw'>soluc1</span>  <span class='op'>=</span> <span class='fu'>merge_dbs</span>(<span class='kw'>data_A</span>,<span class='kw'>data_B</span>,
-                    NAME_Y = <span class='st'>"Yb1"</span>,NAME_Z = <span class='st'>"Yb2"</span>,
-                    ordinal_DB1 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span>), ordinal_DB2 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>6</span>),
-                    impute = <span class='st'>"MICE"</span>,R_MICE = <span class='fl'>2</span>, seed_func = <span class='fl'>3011</span>)</div><div class='output co'>#&gt; DBS MERGING in progress. Please wait ... 
+<span class='va'>soluc1</span>  <span class='op'>=</span> <span class='fu'>merge_dbs</span><span class='op'>(</span><span class='va'>data_A</span>,<span class='va'>data_B</span>,
+                    NAME_Y <span class='op'>=</span> <span class='st'>"Yb1"</span>,NAME_Z <span class='op'>=</span> <span class='st'>"Yb2"</span>,
+                    ordinal_DB1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>)</span>, ordinal_DB2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>6</span><span class='op'>)</span>,
+                    impute <span class='op'>=</span> <span class='st'>"MICE"</span>,R_MICE <span class='op'>=</span> <span class='fl'>2</span>, seed_func <span class='op'>=</span> <span class='fl'>3011</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; DBS MERGING in progress. Please wait ... 
 #&gt; Y 
 #&gt; Z 
 #&gt; DBS MERGING OK 
@@ -299,7 +302,8 @@ As a finally step, the function checks that all values related to \(Y\) in B are
 #&gt; Nb of removed subjects because of NA on targets: 0 ( 0 %) 
 #&gt; Nb of covariates removed because of differences between the 2 bases: 1 
 #&gt; Nb of covariates remained: 4 
-#&gt; Imputation on incomplete covariates: MICE </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>soluc1</span><span class='op'>$</span><span class='kw'>DB_READY</span>)</div><div class='output co'>#&gt;        DB              Y          Z            Age           Gender   
+#&gt; Imputation on incomplete covariates: MICE </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>soluc1</span><span class='op'>$</span><span class='va'>DB_READY</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;        DB              Y          Z            Age           Gender   
 #&gt;  Min.   :1.000   [20-40]:130   1   :145   Min.   :34.37   Female:414  
 #&gt;  1st Qu.:1.000   [40-60[:127   2   : 51   1st Qu.:46.83   Male  :286  
 #&gt;  Median :2.000   [60-80]: 43   3   : 35   Median :50.12               
@@ -314,11 +318,12 @@ As a finally step, the function checks that all values related to \(Y\) in B are
 #&gt;                         
 #&gt;                         </div><div class='input'>
 
-<span class='co'># Ex 2: The two databases are merged and missing values are remained</span>
-<span class='kw'>soluc2</span>  <span class='op'>=</span> <span class='fu'>merge_dbs</span>(<span class='kw'>data_A</span>,<span class='kw'>data_B</span>,
-                    NAME_Y = <span class='st'>"Yb1"</span>,NAME_Z = <span class='st'>"Yb2"</span>,
-                    ordinal_DB1 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span>), ordinal_DB2 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>6</span>),
-                    impute = <span class='st'>"NO"</span>,seed_func = <span class='fl'>3011</span>)</div><div class='output co'>#&gt; DBS MERGING in progress. Please wait ... 
+<span class='co'># Ex 2: The two databases are merged and missing values are kept</span>
+<span class='va'>soluc2</span>  <span class='op'>=</span> <span class='fu'>merge_dbs</span><span class='op'>(</span><span class='va'>data_A</span>,<span class='va'>data_B</span>,
+                    NAME_Y <span class='op'>=</span> <span class='st'>"Yb1"</span>,NAME_Z <span class='op'>=</span> <span class='st'>"Yb2"</span>,
+                    ordinal_DB1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>)</span>, ordinal_DB2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>6</span><span class='op'>)</span>,
+                    impute <span class='op'>=</span> <span class='st'>"NO"</span>,seed_func <span class='op'>=</span> <span class='fl'>3011</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; DBS MERGING in progress. Please wait ... 
 #&gt; Y 
 #&gt; Z 
 #&gt; DBS MERGING OK 
@@ -329,10 +334,11 @@ As a finally step, the function checks that all values related to \(Y\) in B are
 #&gt; Nb of covariates remained: 4 
 #&gt; Imputation on incomplete covariates: NO </div><div class='input'>
 <span class='co'># Ex 3: The two databases are merged by only keeping the complete cases</span>
-<span class='kw'>soluc3</span>  <span class='op'>=</span> <span class='fu'>merge_dbs</span>(<span class='kw'>data_A</span>,<span class='kw'>data_B</span>,
-                    NAME_Y = <span class='st'>"Yb1"</span>,NAME_Z = <span class='st'>"Yb2"</span>,
-                    ordinal_DB1 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span>), ordinal_DB2 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>6</span>),
-                    impute = <span class='st'>"CC"</span>,seed_func = <span class='fl'>3011</span>)</div><div class='output co'>#&gt; DBS MERGING in progress. Please wait ... 
+<span class='va'>soluc3</span>  <span class='op'>=</span> <span class='fu'>merge_dbs</span><span class='op'>(</span><span class='va'>data_A</span>,<span class='va'>data_B</span>,
+                    NAME_Y <span class='op'>=</span> <span class='st'>"Yb1"</span>,NAME_Z <span class='op'>=</span> <span class='st'>"Yb2"</span>,
+                    ordinal_DB1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>)</span>, ordinal_DB2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>6</span><span class='op'>)</span>,
+                    impute <span class='op'>=</span> <span class='st'>"CC"</span>,seed_func <span class='op'>=</span> <span class='fl'>3011</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; DBS MERGING in progress. Please wait ... 
 #&gt; Y 
 #&gt; Z 
 #&gt; DBS MERGING OK 
@@ -343,10 +349,11 @@ As a finally step, the function checks that all values related to \(Y\) in B are
 #&gt; Nb of covariates remained: 4 
 #&gt; Imputation on incomplete covariates: CC </div><div class='input'>
 <span class='co'># Ex 4: The two databases are merged and incomplete covariates are imputed using FAMD</span>
-<span class='kw'>soluc4</span>  <span class='op'>=</span> <span class='fu'>merge_dbs</span>(<span class='kw'>data_A</span>,<span class='kw'>data_B</span>,
-                    NAME_Y = <span class='st'>"Yb1"</span>,NAME_Z = <span class='st'>"Yb2"</span>,
-                    ordinal_DB1 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span>), ordinal_DB2 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>6</span>),
-                    impute = <span class='st'>"FAMD"</span>,NCP_FAMD = <span class='fl'>4</span>,seed_func = <span class='fl'>2096</span>)</div><div class='output co'>#&gt; DBS MERGING in progress. Please wait ... 
+<span class='va'>soluc4</span>  <span class='op'>=</span> <span class='fu'>merge_dbs</span><span class='op'>(</span><span class='va'>data_A</span>,<span class='va'>data_B</span>,
+                    NAME_Y <span class='op'>=</span> <span class='st'>"Yb1"</span>,NAME_Z <span class='op'>=</span> <span class='st'>"Yb2"</span>,
+                    ordinal_DB1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>)</span>, ordinal_DB2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>6</span><span class='op'>)</span>,
+                    impute <span class='op'>=</span> <span class='st'>"FAMD"</span>,NCP_FAMD <span class='op'>=</span> <span class='fl'>4</span>,seed_func <span class='op'>=</span> <span class='fl'>2096</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; DBS MERGING in progress. Please wait ... 
 #&gt; Y 
 #&gt; Z 
 #&gt; DBS MERGING OK 
@@ -360,6 +367,7 @@ As a finally step, the function checks that all values related to \(Y\) in B are
 <span class='co'># The data fusion is successful in each situation.</span>
 <span class='co'># The Dosage and Weight covariates have been normally excluded from the fusion.</span>
 <span class='co'># The covariates have been imputed when required.</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -376,7 +384,7 @@ As a finally step, the function checks that all values related to \(Y\) in B are
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
