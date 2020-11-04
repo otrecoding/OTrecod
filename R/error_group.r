@@ -65,7 +65,7 @@
 #' Z2 = as.factor(sample(c("A","B","C","D"),50, replace = TRUE)); length(Z2)
 #' Z4 = as.factor(sample(c("A","B","C","D","E"),50, replace = TRUE)); length(Z4)
 #'
-#'  # By only grouping consecutive levels of Z1:
+#' # By only grouping consecutive levels of Z1:
 #' error_group(Z1,Z4)
 #' # By only all possible levels of Z1, consecutive or not:
 #' error_group(Z3,Z1,FALSE)
