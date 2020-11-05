@@ -160,11 +160,11 @@
     </tr>
     <tr>
       <th>ordinal_DB1</th>
-      <td><p>a vector of index of columns corresponding to ordinal variables in the 1st database (no ordinal variable by default)</p></td>
+      <td><p>a vector of column indexes corresponding to ordinal variables in the 1st database (no ordinal variable by default)</p></td>
     </tr>
     <tr>
       <th>ordinal_DB2</th>
-      <td><p>a vector of index of columns corresponding to ordinal variables in the 2nd database (no ordinal variable by default)</p></td>
+      <td><p>a vector of column indexes corresponding to ordinal variables in the 2nd database (no ordinal variable by default)</p></td>
     </tr>
     <tr>
       <th>impute</th>
@@ -186,8 +186,10 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list containing 10 elements (11 when <code>impute</code> equals "MICE"):</p>
+    <p>A list containing 12 elements (13 when <code>impute</code> equals "MICE"):</p>
 <dt>DB_READY</dt><dd><p>the database matched from the two initial databases with common covariates and imputed or not according to the impute option</p></dd>
+<dt>ID1</dt><dd><p>the row identifier of DB1 after merging when it exists</p></dd>
+<dt>ID2</dt><dd><p>the row identifier of DB2 after merging when it exists</p></dd>
 <dt>Y_LEVELS</dt><dd><p>the remaining levels of the target variable \(Y\) in the DB1</p></dd>
 <dt>Z_LEVELS</dt><dd><p>the remaining Levels of the target variable \(Z\) in the DB2</p></dd>
 <dt>REMOVE1</dt><dd><p>the labels of the deleted covariates because of type incompatibilies of type from DB1 to DB2</p></dd>
@@ -195,8 +197,8 @@
 <dt>REMAINING_VAR</dt><dd><p>labels of the remained covariates for data fusion</p></dd>
 <dt>IMPUTE_TYPE</dt><dd><p>a character with quotes that specify the method eventually chosen to handle missing data in covariates</p></dd>
 <dt>MICE_DETAILS</dt><dd><p>a list containing the details of the imputed datasets using <code>MICE</code> when this option is enabled. Databases imputed for DB1 and DB2 according to the number of mutliple imputation selected (Only if impute = "MICE")</p></dd>
-<dt>DB1_ID</dt><dd><p>a data.frame corresponding to the row identifier of DB1 after merging</p></dd>
-<dt>DB2_ID</dt><dd><p>a data.frame corresponding to the row identifier of DB2 after merging</p></dd>
+<dt>DB1_raw</dt><dd><p>a data.frame corresponding to the row identifier of DB1 after merging</p></dd>
+<dt>DB2_raw</dt><dd><p>a data.frame corresponding to the row identifier of DB2 after merging</p></dd>
 <dt>SEED</dt><dd><p>an integer used as argument by the <code>set.seed</code> function for offsetting the random number generator (random selection by default)</p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -275,17 +277,17 @@ If multiple imputation is required (<code>impute</code> = "MICE"), the default i
 <span class='co'># For the example, a covariate is added (Weight) only in data_A</span>
 <span class='va'>data_A</span><span class='op'>$</span><span class='va'>Weight</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>300</span>,<span class='fl'>70</span>,<span class='fl'>5</span><span class='op'>)</span>
 
-<span class='co'># Be careful: your target variables must be in factor (or ordered) in your 2 databases</span>
-<span class='co'># Because it is not the case for Yb2 in data_B, we convert it.</span>
+<span class='co'># Be careful: the target variables must be in factor (or ordered) in the 2 databases</span>
+<span class='co'># Because it is not the case for Yb2 in data_B, the function will convert it.</span>
 <span class='va'>data_B</span><span class='op'>$</span><span class='va'>Yb2</span>    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='va'>data_B</span><span class='op'>$</span><span class='va'>Yb2</span><span class='op'>)</span>
 
-<span class='co'># Moreover, we store the Dosage covariate in 3 classes in data_B (instead of 4 classes in data_B)</span>
+<span class='co'># Moreover, the Dosage covariate is stored in 3 classes in data_B (instead of 4 classes in data_B)</span>
 <span class='co'># to make the encoding of this covariate specific to each database.</span>
 <span class='va'>data_B</span><span class='op'>$</span><span class='va'>Dosage</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>data_B</span><span class='op'>$</span><span class='va'>Dosage</span><span class='op'>)</span>
 <span class='va'>data_B</span><span class='op'>$</span><span class='va'>Dosage</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.factor</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>data_B</span><span class='op'>$</span><span class='va'>Dosage</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Dos 1"</span>,<span class='st'>"Dos 2"</span><span class='op'>)</span>,<span class='st'>"D1"</span>,
                           <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>data_B</span><span class='op'>$</span><span class='va'>Dosage</span> <span class='op'>==</span> <span class='st'>"Dos 3"</span>,<span class='st'>"D3"</span>,<span class='st'>"D4"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'># For more diversity, we put this covariate at the last column of the data_B</span>
+<span class='co'># For more diversity, this covariate iis placed at the last column of the data_B</span>
 <span class='va'>data_B</span>        <span class='op'>=</span> <span class='va'>data_B</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fl'>5</span>,<span class='fl'>6</span>,<span class='fl'>4</span><span class='op'>)</span><span class='op'>]</span>
 
 <span class='co'># Ex 1: The two databases are merged and incomplete covariates are imputed using MICE</span>
