@@ -150,7 +150,7 @@
 #' # Suppose that we re-order columns in simu_data:
 #' simu_data2 = simu_data[,c(2,4:7,3,8,1)]
 #'
-#' # By changing the corresponding indexes in the index_DB_Y_Z option,
+#' # By changing the corresponding indexes in the index_DB_Y_Z argument,
 #' # we observe the desired output:
 #' try5 = transfo_dist(simu_data2,index_DB_Y_Z = c(8,1,6),quanti = 6:7, nominal = c(2:3,5,8),
 #'                      ordinal = c(1,4), logic = NULL, prep_choice = "E")

@@ -38,9 +38,9 @@ merge_dbs(
 
 \item{order_levels_Z}{the levels of \eqn{Z} stored in a vector and sorted in ascending order in the case of ordered factors. This option permits to reorder the levels in the 2nd database (DB2) if necessary.}
 
-\item{ordinal_DB1}{a vector of index of columns corresponding to ordinal variables in the 1st database (no ordinal variable by default)}
+\item{ordinal_DB1}{a vector of column indexes corresponding to ordinal variables in the 1st database (no ordinal variable by default)}
 
-\item{ordinal_DB2}{a vector of index of columns corresponding to ordinal variables in the 2nd database (no ordinal variable by default)}
+\item{ordinal_DB2}{a vector of column indexes corresponding to ordinal variables in the 2nd database (no ordinal variable by default)}
 
 \item{impute}{a character equals to "NO" when missing data on covariates are kept (Default option), "CC" for Complete Case by keeping only covariates with no missing information , "MICE" for MICE multiple imputation approach, "FAMD" for single imputation approach using Factorial Analysis for Mixed Data}
 
@@ -51,8 +51,10 @@ merge_dbs(
 \item{seed_func}{an integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default, only useful with MICE)}
 }
 \value{
-A list containing 10 elements (11 when \code{impute} equals "MICE"):
+A list containing 12 elements (13 when \code{impute} equals "MICE"):
 \item{DB_READY}{the database matched from the two initial databases with common covariates and imputed or not according to the impute option}
+\item{ID1}{the row identifier of DB1 after merging when it exists}
+\item{ID2}{the row identifier of DB2 after merging when it exists}
 \item{Y_LEVELS}{the remaining levels of the target variable \eqn{Y} in the DB1}
 \item{Z_LEVELS}{the remaining Levels of the target variable \eqn{Z} in the DB2}
 \item{REMOVE1}{the labels of the deleted covariates because of type incompatibilies of type from DB1 to DB2}
@@ -60,8 +62,8 @@ A list containing 10 elements (11 when \code{impute} equals "MICE"):
 \item{REMAINING_VAR}{labels of the remained covariates for data fusion}
 \item{IMPUTE_TYPE}{a character with quotes that specify the method eventually chosen to handle missing data in covariates}
 \item{MICE_DETAILS}{a list containing the details of the imputed datasets using \code{MICE} when this option is enabled. Databases imputed for DB1 and DB2 according to the number of mutliple imputation selected (Only if impute = "MICE")}
-\item{DB1_ID}{a data.frame corresponding to the row identifier of DB1 after merging}
-\item{DB2_ID}{a data.frame corresponding to the row identifier of DB2 after merging}
+\item{DB1_raw}{a data.frame corresponding to the row identifier of DB1 after merging}
+\item{DB2_raw}{a data.frame corresponding to the row identifier of DB2 after merging}
 \item{SEED}{an integer used as argument by the \code{set.seed} function for offsetting the random number generator (random selection by default)}
 }
 \description{
@@ -119,17 +121,17 @@ data_B = simu_data[simu_data$DB == "B",c(3,4:8)]; head(data_B)
 # For the example, a covariate is added (Weight) only in data_A
 data_A$Weight = rnorm(300,70,5)
 
-# Be careful: your target variables must be in factor (or ordered) in your 2 databases
-# Because it is not the case for Yb2 in data_B, we convert it.
+# Be careful: the target variables must be in factor (or ordered) in the 2 databases
+# Because it is not the case for Yb2 in data_B, the function will convert it.
 data_B$Yb2    = as.factor(data_B$Yb2)
 
-# Moreover, we store the Dosage covariate in 3 classes in data_B (instead of 4 classes in data_B)
+# Moreover, the Dosage covariate is stored in 3 classes in data_B (instead of 4 classes in data_B)
 # to make the encoding of this covariate specific to each database.
 data_B$Dosage = as.character(data_B$Dosage)
 data_B$Dosage = as.factor(ifelse(data_B$Dosage \%in\% c("Dos 1","Dos 2"),"D1",
                           ifelse(data_B$Dosage == "Dos 3","D3","D4")))
 
-# For more diversity, we put this covariate at the last column of the data_B
+# For more diversity, this covariate iis placed at the last column of the data_B
 data_B        = data_B[,c(1:3,5,6,4)]
 
 # Ex 1: The two databases are merged and incomplete covariates are imputed using MICE

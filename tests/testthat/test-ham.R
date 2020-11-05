@@ -17,8 +17,8 @@ test_that("ham works", {
 
   expect_equal(dim(ham(A,B)),c(nrow(A),nrow(B)))
   expect_equal(dim(ham(A,A)),c(nrow(A),nrow(A)))
-  expect_equal(is.vector(ham(C,A)),TRUE)
-  expect_equal(is.matrix(ham(A,C)),TRUE)
+  expect_identical(is.vector(ham(C,A)),TRUE)
+  expect_that(ham(A,C),is_a("matrix"))
   expect_equal(dim(ham(C,C)),rep(length(C),2))
 
 
