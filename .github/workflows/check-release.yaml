@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - master
+      - modif_VG
   pull_request:
     branches:
       - master
