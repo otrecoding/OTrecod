@@ -31,6 +31,7 @@ Imports:
     ompr,
     ompr.roi,
     party,
-    vcd
+    vcd,
+    doParallel
 Suggests: 
     testthat
