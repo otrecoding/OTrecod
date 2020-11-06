@@ -58,17 +58,17 @@
 #'
 #' @return A list containing 12 elements (13 when \code{impute} equals "MICE"):
 #' \item{DB_READY}{the database matched from the two initial databases with common covariates and imputed or not according to the impute option}
-#' \item{ID1}{the row identifier of DB1 after merging when it exists}
-#' \item{ID2}{the row identifier of DB2 after merging when it exists}
+#' \item{ID1_drop}{the row numbers or row identifiers excluded of the data merging because of the presence of missing values in the target variable of DB1. NULL otherwise}
+#' \item{ID2_drop}{the row numbers or row identifiers excluded of the data merging because of the presence of missing values in the target variable of DB2. NULL otherwise}
 #' \item{Y_LEVELS}{the remaining levels of the target variable \eqn{Y} in the DB1}
 #' \item{Z_LEVELS}{the remaining Levels of the target variable \eqn{Z} in the DB2}
 #' \item{REMOVE1}{the labels of the deleted covariates because of type incompatibilies of type from DB1 to DB2}
 #' \item{REMOVE2}{the removed factor(s) because of levels incompatibilities from DB1 to DB2}
 #' \item{REMAINING_VAR}{labels of the remained covariates for data fusion}
 #' \item{IMPUTE_TYPE}{a character with quotes that specify the method eventually chosen to handle missing data in covariates}
-#' \item{MICE_DETAILS}{a list containing the details of the imputed datasets using \code{MICE} when this option is enabled. Databases imputed for DB1 and DB2 according to the number of mutliple imputation selected (Only if impute = "MICE")}
-#' \item{DB1_raw}{a data.frame corresponding to the row identifier of DB1 after merging}
-#' \item{DB2_raw}{a data.frame corresponding to the row identifier of DB2 after merging}
+#' \item{MICE_DETAILS}{a list containing the details of the imputed datasets using \code{MICE} when this option is chosen. Raw and imputed databases imputed for DB1 and DB2 according to the number of multiple imputation selected (Only if impute = "MICE")}
+#' \item{DB1_raw}{a data.frame corresponding to DB1 after merging}
+#' \item{DB2_raw}{a data.frame corresponding to DB2 after merging}
 #' \item{SEED}{an integer used as argument by the \code{set.seed} function for offsetting the random number generator (random selection by default)}
 #'
 #' @export
@@ -175,10 +175,10 @@ merge_dbs = function(DB1,
 
   } else {}
 
-  DB1_row     = DB1
-  DB2_row     = DB2
-  ID1         = NULL
-  ID2         = NULL
+  DB1_row     = DB1[!is.na(DB1[,NAME_Y]),]
+  DB2_row     = DB2[!is.na(DB2[,NAME_Z]),]
+  ID1         = row.names(DB1)[is.na(DB1[,NAME_Y])]
+  ID2         = row.names(DB1)[is.na(DB2[,NAME_Z])]
 
   if (!is.null(row_ID1)){
 
@@ -187,7 +187,7 @@ merge_dbs = function(DB1,
      ordinal_DB1 = setdiff(ordinal_DB1,row_ID1)
      ordinal_DB1 = ordinal_DB1 - as.numeric(row_ID1 < ordinal_DB1)
      DB1         = DB1[,-row_ID1]
-     ID1         = ID1[!is.na(DB1[,NAME_Y])]
+     ID1         = ID1[is.na(DB1[,NAME_Y])]
 
   } else {}
 
@@ -198,7 +198,7 @@ merge_dbs = function(DB1,
      ordinal_DB2 = setdiff(ordinal_DB2,row_ID2)
      ordinal_DB2 = ordinal_DB2 - as.numeric(row_ID2 < ordinal_DB2)
      DB2         = DB2[,-row_ID2]
-     ID2         = ID2[!is.na(DB2[, NAME_Z])]
+     ID2         = ID2[is.na(DB2[, NAME_Z])]
 
   } else {}
 
@@ -287,7 +287,7 @@ merge_dbs = function(DB1,
   # Impute NA in covariates from DB1 and DB2 if necessary
 
 
-  count_lev1  = apply(DB1, 2, function(x) {
+  count_lev1  = apply(DB1, 2, function(x){
     length(names(table(x)))
   })
   num_lev1    = sapply(DB1, is.numeric)
@@ -523,7 +523,7 @@ merge_dbs = function(DB1,
     return(
       list(
         DB_READY = DB_COV,
-        ID1 = ID1, ID2 = ID2,
+        ID1_drop = ID1, ID2_drop = ID2,
         Y_LEVELS = levels(DB_COV$Y),
         Z_LEVELS = levels(DB_COV$Z),
         REMOVE1 = remove_var1,
@@ -540,7 +540,7 @@ merge_dbs = function(DB1,
     return(
       list(
         DB_READY = DB_COV,
-        ID1 = ID1, ID2 = ID2,
+        ID1_drop = ID1, ID2_drop = ID2,
         Y_LEVELS = levels(DB_COV$Y),
         Z_LEVELS = levels(DB_COV$Z),
         REMOVE1 = remove_var1,
