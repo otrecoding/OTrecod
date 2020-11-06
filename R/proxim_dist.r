@@ -422,30 +422,65 @@ proxim_dist  = function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.80){
 
   n_Xval = ifelse(nbcvar != 1,nrow(Xval),length(Xval))
 
-  for (i in  (1:n_Xval)){
-
     nbX = nbX + 1;
 
     if (nbcvar != 1){
 
-      x      = Xval[i,]
       Xobs_A = Xobserv[A,]
       Xobs_B = Xobserv[B + nA,]
 
     } else {
 
-      x      = Xval[i]
       Xobs_A = Xobserv[A]
       Xobs_B = Xobserv[B + nA]
 
     }
 
+    fA_one = function(x,method){
+      proxy::dist(x, Xobs_A,method)
+    }
+
+    fB_one = function(x,method){
+      proxy::dist(x, Xobs_B,method)
+    }
+
+    require(doParallel)
+    no_cores <- 4
+    cl <- makeCluster(no_cores)
+    registerDoParallel(cl)
     if (norm == "M"){
+      if (nbcvar != 1){
+        distA  = foreach(i = 1:n_Xval) %dopar% {fA_one(Xval[i,],method =  "manhattan")}
+        distB  = foreach(i = 1:n_Xval) %dopar% {fB_one(Xval[i,],method =  "manhattan")}
 
-      distA  = proxy::dist(x, Xobs_A, method =  "manhattan")
-      distB  = proxy::dist(x, Xobs_B, method =  "manhattan")
+      } else {
 
-    } else if (norm == "E"){
+        distA  = foreach(i = 1:n_Xval) %dopar% {fA_one(Xval[i],method =  "manhattan")}
+        distB  = foreach(i = 1:n_Xval) %dopar% {fB_one(Xval[i],method =  "manhattan")}
+
+      }
+
+    }
+
+      for (i in  (1:n_Xval)){
+
+        nbX = nbX + 1;
+
+        if (nbcvar != 1){
+
+          x      = Xval[i,]
+          Xobs_A = Xobserv[A,]
+          Xobs_B = Xobserv[B + nA,]
+
+        } else {
+
+          x      = Xval[i]
+          Xobs_A = Xobserv[A]
+          Xobs_B = Xobserv[B + nA]
+
+        }
+
+    if (norm == "E"){
 
       distA  = proxy::dist(x, Xobs_A, method = "euclidean")
       distB  = proxy::dist(x, Xobs_B, method = "euclidean")

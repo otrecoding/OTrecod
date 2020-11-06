@@ -204,7 +204,9 @@ indiv_grp_optimal =function(proxim, jointprobaA, jointprobaB, percent_closest = 
   for (z in Z){
 
     nbindZ = c(nbindZ,length(proxim$indZ[[z]]))}
-
+  nbindY2=  sapply(Y,  function(y) {
+    return(length(proxim$indY[[y]]))
+  })
   # Create a model for the optimal transport of individuals
   # indiv = Model(solver=IpoptSolver(print_level=4))
   # indiv = Model(with_optimizer(Clp.Optimizer,LogLevel=0))
