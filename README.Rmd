@@ -1,4 +1,5 @@
 ---
+title: "Description of the OTrecod package"
 output: github_document
 ---
 
@@ -10,7 +11,9 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# OTrecod
+# A package dedicated to data fusion
+
+## Introduction
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/otrecoding/OTrecod.svg?branch=master)](https://travis-ci.org/otrecoding/OTrecod)
@@ -20,11 +23,38 @@ knitr::opts_chunk$set(
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fotrecoding.github.io%2FOTrecod%2F)](https://otrecoding.github.io/OTrecod/)
 <!-- badges: end -->
 
-The goal of OTrecod is to recod data using optimal transport theory.
+The OTrecod package gives access to a set of original functions dedicated to data fusion. 
 
-## Installation
+<p align="justify"> From two separate data sources with no overlapping units, sharing only a set of common variables and a same target information not jointly observed in a same encoding from one data source to another, the functions OT_outcome and OT_joint aims at providing users a complete synthetic database where the missing information is available for every unit. This recoding problem is solved using the optimal transportation theory which provides a map that transfers the distribution of the first target variable to the distribution of the second one and inversely. Algorithms used in these two functions come from the references (1) and (2).
 
-You can install OTrecod with:
+## References
+
+(1) Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N. (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.Volume 16, Issue 1, 20180106, eISSN 1557-4679
+- https://doi.org/10.1515/ijb-2018-0106.
+
+&nbsp;
+
+(2) Gares V, Omer J (2020). Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 - https://doi.org/10.1080/01621459.2020.1775615.
+
+
+## Functions
+
+The OTrecod package provides also a set of support functions to assist users in each step of their data fusion projects:
+
+- The merge_dbs function is dedicated to the harmonization of the data sources before merging.
+- The select_pred function is dedicated to the selection of matching variables before merging.
+- The valid_OT function provides tools for the validation of the data fusion.
+
+## Datasets
+
+The datasets tab_test and simu_data correspond to overlayed databases that help users understanding the structure expected as input argument of the functions OT_outcome and OT_joint.
+
+The datasets api29 and api35 are simple datasets extracted from the API program - https://www.cde.ca.gov/re/pr/api.asp.
+
+
+# Package installation
+
+The development version of OTrecod can be installed from [GitHub][gh] with:
 
 ```r
 # Install development version from GitHub
