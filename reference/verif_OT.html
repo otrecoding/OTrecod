@@ -151,12 +151,12 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of 7 objects is returned:</p>
+    <p>A list of 8 objects is returned:</p>
 <dt>seed</dt><dd><p>the list of used random number generator. The first one is fixed by user or randomly chosen</p></dd>
 <dt>nb.profil</dt><dd><p>the number of profiles of covariates</p></dd>
 <dt>conf.mat</dt><dd><p>the global confusion matrix between \(Y\) and \(Z\)</p></dd>
 <dt>res.prox</dt><dd><p>a summary table related to the association measures between \(Y\) and \(Z\)</p></dd>
-<dt>res.grp</dt><dd><p>a summary table related to the study of the proximity of \(Y\) and \(Z\) using group of levels</p></dd>
+<dt>res.grp</dt><dd><p>a summary table related to the study of the proximity of \(Y\) and \(Z\) using group of levels. Only if the <code>group.clss</code> argument is set to TRUE.</p></dd>
 <dt>hell</dt><dd><p>Hellinger distances between observed and predicted distributions</p></dd>
 <dt>eff.neig</dt><dd><p>a table which corresponds to a count of conditional probabilities according to the number of neighbors used in their computation (only the first ten values)</p></dd>
 <dt>res.stab</dt><dd><p>a summary table related to the stability of the algorithm</p></dd>
@@ -190,10 +190,10 @@ of \(Z\) (or \(Y\)) to individuals that have a same given profile of covariates 
 <p>Assuming that the missing information of \(Z\) in base A was predicted from an OT algorithm (the reasoning will be identical with the prediction of \(Y\) in B, see (2) and (3) for more details), the function <code>verif_OT</code> uses the conditional probabilities stored in the
 object <code>estimatorZA</code> (see outputs of the functions <code><a href='OT_outcome.html'>OT_outcome</a></code> and <code><a href='OT_joint.html'>OT_joint</a></code>) which contains the estimates of all the conditional probabilities of \(Z\) in A, given a profile of covariates \(x\) and given a level of \(Y = y\).
 Indeed, each individual (or row) from A, is associated with a conditional probability \(P(Z= z|Y= y, X= x)\).</p>
-<p>With the function <code><a href='OT_joint.html'>OT_joint</a></code>, the individual predictions for subject i: \(\widehat{z}_i\), \(i=1,\ldots,n_A\) are given using the maximum a posteriori rule:
+<p>With the function <code><a href='OT_joint.html'>OT_joint</a></code>, the individual predictions for subject \(i\): \(\widehat{z}_i\), \(i=1,\ldots,n_A\) are given using the maximum a posteriori rule:
 $$\widehat{z}_i= \mbox{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)$$
 While the function <code><a href='OT_outcome.html'>OT_outcome</a></code> directly gives the individual predictions whereas the probablities \(P(Z= z|Y= y, X= x)\) are computed in a second step (see (3)).</p>
-<p>For each subject i in database A, a new variable \(z_i'\) is simulate such that: $$z_i'\sim \mathcal{Bernoulli}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))$$
+<p>For each subject \(i\) in database A, a new variable \(z_i'\) is simulate such that: $$z_i'\sim \mathcal{Bernoulli}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))$$
 The average stability criterium is so calculated as: $$\mbox{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'$$
 This criterion can be repeated with <code>R</code> samples and the related mean and variance are given in output.</p>
 <p>Nevertheless, it is possible that some of these conditional probabilities could be computed from only few individuals (because they are computed from a certain number of neighbor individuals for each covariates profile \(x\)) and lead to unreliable estimations.
