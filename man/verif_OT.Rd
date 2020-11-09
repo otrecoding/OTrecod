@@ -30,12 +30,12 @@ verif_OT(
 \item{seed.stab}{an integer used as argument by the seed for offsetting the random number generator (Random integer by default). Only useful if the stability study is required.}
 }
 \value{
-A list of 7 objects is returned:
+A list of 8 objects is returned:
 \item{seed}{the list of used random number generator. The first one is fixed by user or randomly chosen}
 \item{nb.profil}{the number of profiles of covariates}
 \item{conf.mat}{the global confusion matrix between \eqn{Y} and \eqn{Z}}
 \item{res.prox}{a summary table related to the association measures between \eqn{Y} and \eqn{Z}}
-\item{res.grp}{a summary table related to the study of the proximity of \eqn{Y} and \eqn{Z} using group of levels}
+\item{res.grp}{a summary table related to the study of the proximity of \eqn{Y} and \eqn{Z} using group of levels. Only if the \code{group.clss} argument is set to TRUE.}
 \item{hell}{Hellinger distances between observed and predicted distributions}
 \item{eff.neig}{a table which corresponds to a count of conditional probabilities according to the number of neighbors used in their computation (only the first ten values)}
 \item{res.stab}{a summary table related to the stability of the algorithm}
@@ -79,11 +79,11 @@ Assuming that the missing information of \eqn{Z} in base A was predicted from an
 object \code{estimatorZA} (see outputs of the functions \code{\link{OT_outcome}} and \code{\link{OT_joint}}) which contains the estimates of all the conditional probabilities of \eqn{Z} in A, given a profile of covariates \eqn{x} and given a level of \eqn{Y = y}.
 Indeed, each individual (or row) from A, is associated with a conditional probability \eqn{P(Z= z|Y= y, X= x)}.
 
-With the function \code{\link{OT_joint}}, the individual predictions for subject i: \eqn{\widehat{z}_i}, \eqn{i=1,\ldots,n_A} are given using the maximum a posteriori rule:
+With the function \code{\link{OT_joint}}, the individual predictions for subject \eqn{i}: \eqn{\widehat{z}_i}, \eqn{i=1,\ldots,n_A} are given using the maximum a posteriori rule:
 \deqn{\widehat{z}_i= \mbox{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)}
 While the function \code{\link{OT_outcome}} directly gives the individual predictions whereas the probablities \eqn{P(Z= z|Y= y, X= x)} are computed in a second step (see (3)).
 
-For each subject i in database A, a new variable \eqn{z_i'} is simulate such that: \deqn{z_i'\sim \mathcal{Bernoulli}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))}
+For each subject \eqn{i} in database A, a new variable \eqn{z_i'} is simulate such that: \deqn{z_i'\sim \mathcal{Bernoulli}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))}
 The average stability criterium is so calculated as: \deqn{\mbox{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'}
 This criterion can be repeated with \code{R} samples and the related mean and variance are given in output.
 
