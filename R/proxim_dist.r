@@ -532,7 +532,7 @@ proxim_dist  = function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.80){
     } else if (norm == "G"){
 
       if (nbcvar != 1){
-        distA  = foreach::foreach(i = 1:n_Xval) %dopar% {fA3one(Xval[i,])}
+        distA  = foreach::foreach(i = 1:n_Xval) %dopar% {fA3_one(Xval[i,])}
         distB  = foreach::foreach(i = 1:n_Xval) %dopar% {fB3_one(Xval[i,])}
 
       } else {
