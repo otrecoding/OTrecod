@@ -447,6 +447,9 @@ proxim_dist  = function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.80){
     no_cores <- 4
     cl <- parallel::makeCluster(no_cores)
     doParallel::registerDoParallel(cl)
+
+    `%dopar%` = foreach::`%dopar%`
+
     if (norm == "M"){
       if (nbcvar != 1){
         distA  = foreach::foreach(i = 1:n_Xval) %dopar% {fA_one(Xval[i,],method =  "manhattan")}
