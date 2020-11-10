@@ -462,54 +462,54 @@ proxim_dist  = function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.80){
 
     }
 
-      for (i in  (1:n_Xval)){
-
-        nbX = nbX + 1;
-
-        if (nbcvar != 1){
-
-          x      = Xval[i,]
-          Xobs_A = Xobserv[A,]
-          Xobs_B = Xobserv[B + nA,]
-
-        } else {
-
-          x      = Xval[i]
-          Xobs_A = Xobserv[A]
-          Xobs_B = Xobserv[B + nA]
-
-        }
-
-    if (norm == "E"){
-
-      distA  = proxy::dist(x, Xobs_A, method = "euclidean")
-      distB  = proxy::dist(x, Xobs_B, method = "euclidean")
-
-    } else if (norm == "H"){
-
-      if (nrow(as.data.frame(dat[,4:ncol(dat)]))== nrow(na.omit(as.data.frame(dat[,4:ncol(dat)])))){
-
-        distA  = rdist::cdist(x, Xobs_A, metric = "hamming")
-        distB  = rdist::cdist(x, Xobs_B, metric = "hamming")
-
-      } else {
-
-        distA  = ham(x, Xobs_A)
-        distB  = ham(x, Xobs_B)
-
-      }
-
-    } else if (norm == "G"){
-
-      distA  = StatMatch::gower.dist(x,Xobs_A)
-      distB  = StatMatch::gower.dist(x,Xobs_B)
-
-    } else {}
-
-    indXA[[nbX]] = which(distA < prox*max(distA,na.rm=TRUE)); names(indXA[[nbX]]) = NULL
-    indXB[[nbX]] = which(distB < prox*max(distA,na.rm=TRUE)); names(indXB[[nbX]]) = NULL
-
-  }
+  #     for (i in  (1:n_Xval)){
+  #
+  #       nbX = nbX + 1;
+  #
+  #       if (nbcvar != 1){
+  #
+  #         x      = Xval[i,]
+  #         Xobs_A = Xobserv[A,]
+  #         Xobs_B = Xobserv[B + nA,]
+  #
+  #       } else {
+  #
+  #         x      = Xval[i]
+  #         Xobs_A = Xobserv[A]
+  #         Xobs_B = Xobserv[B + nA]
+  #
+  #       }
+  #
+  #   if (norm == "E"){
+  #
+  #     distA  = proxy::dist(x, Xobs_A, method = "euclidean")
+  #     distB  = proxy::dist(x, Xobs_B, method = "euclidean")
+  #
+  #   } else if (norm == "H"){
+  #
+  #     if (nrow(as.data.frame(dat[,4:ncol(dat)]))== nrow(na.omit(as.data.frame(dat[,4:ncol(dat)])))){
+  #
+  #       distA  = rdist::cdist(x, Xobs_A, metric = "hamming")
+  #       distB  = rdist::cdist(x, Xobs_B, metric = "hamming")
+  #
+  #     } else {
+  #
+  #       distA  = ham(x, Xobs_A)
+  #       distB  = ham(x, Xobs_B)
+  #
+  #     }
+  #
+  #   } else if (norm == "G"){
+  #
+  #     distA  = StatMatch::gower.dist(x,Xobs_A)
+  #     distB  = StatMatch::gower.dist(x,Xobs_B)
+  #
+  #   } else {}
+  #
+  #   indXA[[nbX]] = which(distA < prox*max(distA,na.rm=TRUE)); names(indXA[[nbX]]) = NULL
+  #   indXB[[nbX]] = which(distB < prox*max(distA,na.rm=TRUE)); names(indXB[[nbX]]) = NULL
+  #
+  # }
 
   # file_name = base_name(data_file)
   file_name = deparse(substitute(data_file))
