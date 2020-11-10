@@ -422,7 +422,7 @@ proxim_dist  = function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.80){
 
   n_Xval = ifelse(nbcvar != 1,nrow(Xval),length(Xval))
 
-    nbX = nbX + 1;
+
 
     if (nbcvar != 1){
 
@@ -444,6 +444,30 @@ proxim_dist  = function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.80){
       proxy::dist(x, Xobs_B,method)
     }
 
+    fA1_one = function(x,method){
+      proxy::dist(x, Xobs_A,method)
+    }
+
+    fB1_one = function(x,method){
+      proxy::dist(x, Xobs_B,method)
+    }
+
+    fA2_one = function(x){
+      ham(x, Xobs_A)
+    }
+
+    fB2_one = function(x){
+      ham(x, Xobs_B)
+    }
+
+    fA3_one = function(x){
+      StatMatch::gower.dist(x,Xobs_A)
+    }
+
+    fB3_one = function(x){
+      StatMatch::gower.dist(x,Xobs_B)
+    }
+
     no_cores <- 4
     cl <- parallel::makeCluster(no_cores)
     doParallel::registerDoParallel(cl)
@@ -462,58 +486,73 @@ proxim_dist  = function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.80){
 
       }
 
-    }
-    parallel::stopCluster(cl)
 
-  #     for (i in  (1:n_Xval)){
-  #
-  #       nbX = nbX + 1;
-  #
-  #       if (nbcvar != 1){
-  #
-  #         x      = Xval[i,]
-  #         Xobs_A = Xobserv[A,]
-  #         Xobs_B = Xobserv[B + nA,]
-  #
-  #       } else {
-  #
-  #         x      = Xval[i]
-  #         Xobs_A = Xobserv[A]
-  #         Xobs_B = Xobserv[B + nA]
-  #
-  #       }
-  #
-  #   if (norm == "E"){
-  #
-  #     distA  = proxy::dist(x, Xobs_A, method = "euclidean")
-  #     distB  = proxy::dist(x, Xobs_B, method = "euclidean")
-  #
-  #   } else if (norm == "H"){
-  #
-  #     if (nrow(as.data.frame(dat[,4:ncol(dat)]))== nrow(na.omit(as.data.frame(dat[,4:ncol(dat)])))){
-  #
-  #       distA  = rdist::cdist(x, Xobs_A, metric = "hamming")
-  #       distB  = rdist::cdist(x, Xobs_B, metric = "hamming")
-  #
-  #     } else {
-  #
-  #       distA  = ham(x, Xobs_A)
-  #       distB  = ham(x, Xobs_B)
-  #
-  #     }
-  #
-  #   } else if (norm == "G"){
-  #
-  #     distA  = StatMatch::gower.dist(x,Xobs_A)
-  #     distB  = StatMatch::gower.dist(x,Xobs_B)
-  #
-  #   } else {}
-  #
-  #   indXA[[nbX]] = which(distA < prox*max(distA,na.rm=TRUE)); names(indXA[[nbX]]) = NULL
-  #   indXB[[nbX]] = which(distB < prox*max(distA,na.rm=TRUE)); names(indXB[[nbX]]) = NULL
-  #
-  # }
+    } else if (norm == "E"){
 
+      if (nbcvar != 1){
+        distA  = foreach::foreach(i = 1:n_Xval) %dopar% {fA_one(Xval[i,],method =  "euclidean")}
+        distB  = foreach::foreach(i = 1:n_Xval) %dopar% {fB_one(Xval[i,],method =  "euclidean")}
+
+      } else {
+
+        distA  = foreach::foreach(i = 1:n_Xval) %dopar% {fA_one(Xval[i],method =  "euclidean")}
+        distB  = foreach::foreach(i = 1:n_Xval) %dopar% {fB_one(Xval[i],method =  "euclidean")}
+
+      }
+
+    } else if (norm == "H"){
+
+      if (nrow(as.data.frame(dat[,4:ncol(dat)]))== nrow(na.omit(as.data.frame(dat[,4:ncol(dat)])))){
+        if (nbcvar != 1){
+          distA  = foreach::foreach(i = 1:n_Xval) %dopar% {fA1_one(Xval[i,],method =  "hamming")}
+          distB  = foreach::foreach(i = 1:n_Xval) %dopar% {fB1_one(Xval[i,],method =  "hamming")}
+
+        } else {
+
+          distA  = foreach::foreach(i = 1:n_Xval) %dopar% {fA1_one(Xval[i],method =  "hamming")}
+          distB  = foreach::foreach(i = 1:n_Xval) %dopar% {fB1_one(Xval[i],method =  "hamming")}
+
+        }
+
+      } else {
+
+        if (nbcvar != 1){
+          distA  = foreach::foreach(i = 1:n_Xval) %dopar% {fA2one(Xval[i,])}
+          distB  = foreach::foreach(i = 1:n_Xval) %dopar% {fB2_one(Xval[i,])}
+
+        } else {
+
+          distA  = foreach::foreach(i = 1:n_Xval) %dopar% {fA2_one(Xval[i])}
+          distB  = foreach::foreach(i = 1:n_Xval) %dopar% {fB2_one(Xval[i])}
+
+        }
+
+       }
+
+    } else if (norm == "G"){
+
+      if (nbcvar != 1){
+        distA  = foreach::foreach(i = 1:n_Xval) %dopar% {fA3one(Xval[i,])}
+        distB  = foreach::foreach(i = 1:n_Xval) %dopar% {fB3_one(Xval[i,])}
+
+      } else {
+
+        distA  = foreach::foreach(i = 1:n_Xval) %dopar% {fA3_one(Xval[i])}
+        distB  = foreach::foreach(i = 1:n_Xval) %dopar% {fB3_one(Xval[i])}
+
+      }
+
+    } else {}
+
+
+    for (i in (1:n_Xval)){
+
+    indXA[[i]] = which(distA < prox*max(distA,na.rm=TRUE)); names(indXA[[i]]) = NULL
+    indXB[[i]] = which(distB < prox*max(distA,na.rm=TRUE)); names(indXB[[i]]) = NULL
+
+  }
+
+  parallel::stopCluster(cl)
   # file_name = base_name(data_file)
   file_name = deparse(substitute(data_file))
 
