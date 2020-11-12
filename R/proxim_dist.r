@@ -544,15 +544,27 @@ proxim_dist  = function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.80){
 
     } else {}
 
-  parallel::stopCluster(cl)
-
+  # parallel::stopCluster(cl)
+  
+  
+    fc1_one = function(x){
+      which(distA[[x]] < prox*max(distA[[x]],na.rm=TRUE))
+    }
+    
+    fc2_one = function(x){
+      which(distB[[x]] < prox*max(distB[[x]],na.rm=TRUE))
+    }
+  
+    indXA = foreach::foreach(i = 1:n_Xval) %dopar% {fc1_one(i)}
+    indXB = foreach::foreach(i = 1:n_Xval) %dopar% {fc1_one(i)}
+  
     #for (i in (1:n_Xval)){
 
     #indXA[[i]] = which(distA < prox*max(distA,na.rm=TRUE)); names(indXA[[i]]) = NULL
     #indXB[[i]] = which(distB < prox*max(distA,na.rm=TRUE)); names(indXB[[i]]) = NULL
 
   #}
-
+  parallel::stopCluster(cl)
 
   # file_name = base_name(data_file)
   file_name = deparse(substitute(data_file))
