@@ -13,4 +13,19 @@ test_that("transfo_quali works", {
   expect_error(transfo_quali(treatment,labx = trt))
   expect_gt(sum(is.na(treat_bin3)), 0)
 
+  # Factor with only one level
+  treatment4 = as.factor(rep("A",25))
+  treat_bin2 = transfo_quali(treatment4,"trt")
+  treat_bin4 = transfo_quali(treatment4)
+
+  expect_equal(dim(treat_bin2),c(25,1))
+  expect_identical(colnames(treat_bin2),"trt")
+
+  expect_equal(dim(treat_bin4),c(25,1))
+  expect_null(colnames(treat_bin4))
+
+  treatment5 = as.factor(rep(0,25))
+  treat_bin5 = transfo_quali(treatment5,"trt")
+  expect_equal(sum(treat_bin5[,1]),0)
+
 })

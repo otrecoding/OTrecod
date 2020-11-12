@@ -217,7 +217,7 @@ test_DB4 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
 
 ### Example 5
 #-----
-# - Starting with an unique database
+# - Starting with a unique database
 # - Same conditions as example 1
 #-----
 simu_A = simu_data[simu_data$DB == "A",-3]    # Base A

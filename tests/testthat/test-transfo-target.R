@@ -24,10 +24,14 @@ test_that("the formats are respected", {
 
   # continuous variable
   Y      = rnorm(150,50,10)
+  Z      = c(rep(1:5,10))
   test1  = transfo_target(Y)
+  lev1   = c("5","3","2","4","1")
+  test1b = transfo_target(Z, levels_order = lev1)
 
   expect_equal(is.factor(test1[[1]]),TRUE)
-
+  expect_equal(is.ordered(test1b[[1]]),TRUE)
+  expect_identical(test1b[[2]],lev1)
 
   # character variable
   YY     = c(rep("A",27),rep("B",42),rep("C",36))
