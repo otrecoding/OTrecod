@@ -20,12 +20,12 @@ for binary covariates only (\code{norm} = "H"), the Manhattan distance ("M", by 
 \value{
 A list of 16 elements (the first 16 detailed below) is returned containing various distance matrices and lists useful for the algorithms that used Optimal Transportation theory. Two more objects (the last two of the following list) will be returned if distance matrices contain NAs.
 \item{FILE_NAME}{a simple reminder of the name of the raw database}
-\item{nA}{the row numbers of the first database (A)}
-\item{nB}{the row numbers of the second database (B)}
-\item{Xobserv}{the subset of the two merged databases composed of the common variables only}
+\item{nA}{the number of rows of the first database (A)}
+\item{nB}{the number of rows of the second database (B)}
+\item{Xobserv}{the subset of the two overlayed databases composed of the shared variables only}
 \item{profile}{the different encountered profiles of covariates according to the data.frame}
-\item{Yobserv}{the values of the target variable in the first database}
-\item{Zobserv}{the values of the target variable in the second database}
+\item{Yobserv}{the numeric values of the target variable in the first database}
+\item{Zobserv}{the numeric values of the target variable in the second database}
 \item{D}{a distance matrix corresponding to the computed distances between individuals of the two databases}
 \item{Y}{the \eqn{n_Y} levels of the target variable in numeric form, in the first database}
 \item{Z}{the \eqn{n_Z} levels of the target variable in numeric form, in the second database}

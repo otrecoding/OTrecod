@@ -47,7 +47,7 @@ test_that("transfo_dist works", {
                        ordinal = c(2,6), logic = 9, prep_choice = "E")
 
 
-  # Hamming distance and convertion options ok
+  # Hamming distance and conversion options ok
 
   test7 = transfo_dist(sim_data,quanti = c(3,8), nominal = c(1,4:5,7),ordinal = c(2,6),
                        convert_num = 8, convert_clss = 3, prep_choice = "H")
