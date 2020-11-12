@@ -195,7 +195,7 @@
 #'
 #' ### Example 5
 #' #-----
-#' # - Starting with an unique database
+#' # - Starting with a unique database
 #' # - Same conditions as example 1
 #' #-----
 #' simu_A = simu_data[simu_data$DB == "A",-3]    # Base A
@@ -263,7 +263,7 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
 
     # Verification
 
-    if (all(apply(databa[,logic],2,is.logical))!=TRUE){
+    if (all(sapply(as.data.frame(databa[,logic]),is.logical))!=TRUE){
 
       stop("At least one logical variable is not boolean")
 

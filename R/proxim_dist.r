@@ -472,7 +472,7 @@ proxim_dist  = function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.80){
     } else {}
 
     indXA[[nbX]] = which(distA < prox*max(distA,na.rm=TRUE)); names(indXA[[nbX]]) = NULL
-    indXB[[nbX]] = which(distB < prox*max(distA,na.rm=TRUE)); names(indXB[[nbX]]) = NULL
+    indXB[[nbX]] = which(distB < prox*max(distB,na.rm=TRUE)); names(indXB[[nbX]]) = NULL
 
   }
 
