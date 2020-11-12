@@ -135,12 +135,12 @@ for binary covariates only (<code>norm</code> = "H"), the Manhattan distance ("M
 
     <p>A list of 16 elements (the first 16 detailed below) is returned containing various distance matrices and lists useful for the algorithms that used Optimal Transportation theory. Two more objects (the last two of the following list) will be returned if distance matrices contain NAs.</p>
 <dt>FILE_NAME</dt><dd><p>a simple reminder of the name of the raw database</p></dd>
-<dt>nA</dt><dd><p>the row numbers of the first database (A)</p></dd>
-<dt>nB</dt><dd><p>the row numbers of the second database (B)</p></dd>
-<dt>Xobserv</dt><dd><p>the subset of the two merged databases composed of the common variables only</p></dd>
+<dt>nA</dt><dd><p>the number of rows of the first database (A)</p></dd>
+<dt>nB</dt><dd><p>the number of rows of the second database (B)</p></dd>
+<dt>Xobserv</dt><dd><p>the subset of the two overlayed databases composed of the shared variables only</p></dd>
 <dt>profile</dt><dd><p>the different encountered profiles of covariates according to the data.frame</p></dd>
-<dt>Yobserv</dt><dd><p>the values of the target variable in the first database</p></dd>
-<dt>Zobserv</dt><dd><p>the values of the target variable in the second database</p></dd>
+<dt>Yobserv</dt><dd><p>the numeric values of the target variable in the first database</p></dd>
+<dt>Zobserv</dt><dd><p>the numeric values of the target variable in the second database</p></dd>
 <dt>D</dt><dd><p>a distance matrix corresponding to the computed distances between individuals of the two databases</p></dd>
 <dt>Y</dt><dd><p>the \(n_Y\) levels of the target variable in numeric form, in the first database</p></dd>
 <dt>Z</dt><dd><p>the \(n_Z\) levels of the target variable in numeric form, in the second database</p></dd>
