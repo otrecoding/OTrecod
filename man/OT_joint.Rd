@@ -16,7 +16,6 @@ OT_joint(
   percent.knn = 1,
   maxrelax = 0,
   lambda.reg = 0,
-  prox.dist = 0.8,
   prox.X = 0.8,
   solvR = "glpk",
   which.DB = "BOTH"
@@ -52,8 +51,6 @@ the Gower distance ("G"), and the Hamming distance ("H") for binary covariates o
 \item{maxrelax}{the maximum percentage of deviation from expected probability masses. It must be equal to 0 (default value) for the \code{JOINT} algorithm, and equal to a strictly positive value for the R-JOINT algorithm.}
 
 \item{lambda.reg}{a coefficient measuring the importance of the regularization term. It corresponds to the \code{R-JOINT} algorithm for a value other than 0 (default value).}
-
-\item{prox.dist}{a probability (between 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.}
 
 \item{prox.X}{a probability (betwen 0 and 1) used to calculate the distance threshold below which two covariates' profiles are supposed as neighbors.
 If \code{prox.X = 1}, all profiles are considered as neighbors.}
@@ -153,13 +150,13 @@ according to the distance function chosen by user (via the argument \code{dist.c
 }
 
 Finally, two profiles of covariates \eqn{P_1} (\eqn{n_1} individuals) and \eqn{P_2} (\eqn{n_2} individuals) will be considered as neighbors if \eqn{dist(P_1,P_2) < prox.X \times max(dist(P_i,P_j))} where \eqn{prox.X} must be fixed by user (\eqn{i = 1,\dots,n_1} and \eqn{j = 1,\dots,n_2}). This choice is used in the computation of the \code{JOINT} and \code{R_JOINT} algorithms.
-In the same way, for a given profile of covariates \eqn{P_j}, an individual \eqn{i} will be considered as a neighbor of \eqn{P_j} if \eqn{dist(i,P_j) < prox.dist \times max(dist(i,P_j))} where \eqn{prox.dist} will be fixed by user.
+Each individual \eqn{i} from A or B is here considered as a neighbor of only one profile of covariates \eqn{P_j}.
 
 
 F. INFORMATIONS ABOUT THE SOLVER
 
-The argument \code{solvR} permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (5) for more details). The solver "clp" (see (6)) for Coin-or Linear Programming, convenient in linear and quadratic situations, is also directly integrated in the function.
-Moreover, the function actually uses the \code{R} optimization infrastructure of the package \pkg{ROI} which offers a wide choice of solver to users by easily loading the associated plugins of \pkg{ROI} (see (7)).
+The argument \code{solvR} permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (5) for more details).
+Moreover, the function actually uses the \code{R} optimization infrastructure of the package \pkg{ROI} which offers a wide choice of solver to users by easily loading the associated plugins of \pkg{ROI} (see (6)).
 
 For more details about the algorithms integrated in \code{OT_joint}, please consult (2).
 }
@@ -257,7 +254,6 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb
 \item Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
 \item Gower J.C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637
 \item Makhorin A (2011). GNU Linear Programming Kit Reference Manual Version 4.47.\url{http://www.gnu.org/software/glpk}
-\item Forrest J, de la Nuez D, Lougee-Heimer R (2004). Clp User Guide. \url{http://www.coin-or.org/Clp/userguide/index.html}
 \item Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 \url{https://doi.org/10.18637/jss.v094.i15}
 }
 }

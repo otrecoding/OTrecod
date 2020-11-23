@@ -31,6 +31,7 @@ test_that("select_pred works", {
   expect_that(test1[[11]],is_a("list"))
   expect_true(all(test1[[11]][[1]][,3]>0.30))
 
+
   ## overlayed with RF
 
   test2 = select_pred(sim_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
@@ -41,6 +42,7 @@ test_that("select_pred works", {
   expect_equal(test2[[1]],448571)
   expect_that(test2,is_a("list"))
   expect_equal(length(test2),14)
+
 
   expect_identical(test2[[2]],"Yb2")
   expect_length(test2[[4]],0)
