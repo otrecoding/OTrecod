@@ -172,8 +172,8 @@ As a decision rule, for a given profile of covariates \eqn{P_j}, an individual \
 
 F. INFORMATIONS ABOUT THE SOLVER
 
-The argument \code{solvR} permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (6) for more details). The solver "clp" (see (7)) for Coin-or Linear Programming, convenient in linear and quadratic situations, is also directly integrated in the function.
-Moreover, the function actually uses the \code{R} optimization infrastructure of the package \pkg{ROI} which offers a wide choice of solver to users by easily loading the associated plugins of \pkg{ROI} (see (8)).
+The argument \code{solvR} permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (6) for more details).
+Moreover, the function actually uses the \code{R} optimization infrastructure of the package \pkg{ROI} which offers a wide choice of solver to users by easily loading the associated plugins of \pkg{ROI} (see (7)).
 
 For more details about the algorithms integrated in \code{OT_outcome}, please consult (1) and (2).
 }
@@ -289,7 +289,6 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | \url{https://doi.org/10.1515/ijb
 \item Gower J.C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637.
 \item Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.
 \item Makhorin A (2011). GNU Linear Programming Kit Reference Manual Version 4.47.\url{http://www.gnu.org/software/glpk}
-\item Forrest J, de la Nuez D, Lougee-Heimer R (2004). Clp User Guide. \url{http://www.coin-or.org/Clp/userguide/index.html}
 \item Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 \url{https://doi.org/10.18637/jss.v094.i15}
 }
 }

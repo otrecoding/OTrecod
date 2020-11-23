@@ -4,7 +4,7 @@
 \alias{proxim_dist}
 \title{proxim_dist()}
 \usage{
-proxim_dist(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.8)
+proxim_dist(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.3)
 }
 \arguments{
 \item{data_file}{a data.frame corresponding ideally to an output object of the function \code{\link{transfo_dist}}. Otherwise this data.frame is the result of two overlayed databases with a column of database identifier ("A" and "B", 1 and 2, for example), a target variable (called \eqn{Y} by example) only known in the first database, a target variable (\eqn{Z}) only stored in the second database, such that \eqn{Y} and \eqn{Z} summarize a same information differently encoded in the two databases and set of common covariates (at least one) of any type.
@@ -15,7 +15,7 @@ The order of the variables in the data.frame have no importance. The type of the
 \item{norm}{a character string indicating the choice of the distance function. This latest depends on the type of the common covariates: the Hamming distance
 for binary covariates only (\code{norm} = "H"), the Manhattan distance ("M", by default) and the euclidean distance ("E") for continuous covariates only, or the Gower distance for mixed covariates ("G").}
 
-\item{prox}{a ratio (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row or a given statistical unit) is considered as a neighbor of a given profile of covariates.}
+\item{prox}{a ratio (betwen 0 and 1) used to calculate the distance threshold below which an individual (a row or a given statistical unit) is considered as a neighbor of a given profile of covariates. 0.3 is the default value.}
 }
 \value{
 A list of 16 elements (the first 16 detailed below) is returned containing various distance matrices and lists useful for the algorithms that used Optimal Transportation theory. Two more objects (the last two of the following list) will be returned if distance matrices contain NAs.
@@ -87,6 +87,8 @@ This number is considered as a maximum here because only the profiles of covaria
 \code{indXA} and \code{indXB} thus contain as many objects as covariates profiles and the proximity between a given profile and a given individual is defined as follows.
 The function also provides in output the list of all the encountered profiles of covariates.
 As a decision rule, for a given profile of covariates \eqn{P_j}, an individual \eqn{i} will be considered as a neighbor of \eqn{P_j} if \eqn{dist(i,P_j) < prox \times max(dist(i,P_j))} where \code{prox} will be fixed by user.
+Set the value 0 to the \code{prox} parameter assures that each individual of A (and B respectively) is exactly the profile of one profile of covariates. Therefore, it is not recommended in presence of continuous coavariates.
+Conversely, assign the value 1 to \code{prox} is not recommended because it assumes that each individual is neighbor with all the encountered profiles of covariates.
 }
 \examples{
 
@@ -98,7 +100,7 @@ data(simu_data)
 
 try1 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
                     ordinal = c(2,6), logic = NULL, prep_choice = "M")
-res1 = proxim_dist(try1,norm = "M")  # try1 compatible with norm = "E" for Euclidean
+res1 = proxim_dist(try1, norm = "M")  # try1 compatible with norm = "E" for Euclidean
 
 
 ### Ex 2: The Euclidean and Manhattan distance applied on coordinates from FAMD
@@ -107,14 +109,14 @@ try2 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
                     ordinal = c(2,6), logic = NULL, prep_choice = "FAMD",info = 0.80)
 res2_E  = proxim_dist(try2,norm = "E")
 \dontrun{
-res2_M  = proxim_dist(try2,norm = "M")
+res2_M  = proxim_dist(try2, norm = "M")
 }
 
 ### Ex 3: The Gower distance with mixed covariates
 
 try3 = transfo_dist(simu_data[c(1:100,301:400),],quanti = c(3,8), nominal = c(1,4:5,7),
                     ordinal = c(2,6), logic = NULL, prep_choice = "G")
-res3 = proxim_dist(try3,norm = "G")
+res3 = proxim_dist(try3, norm = "G")
 
 \dontrun{
 ### Ex 4a: The Hamming distance with binary (but incomplete) covariates only
@@ -122,7 +124,7 @@ res3 = proxim_dist(try3,norm = "G")
 # categorization of the continuous covariates age by tertiles
 try4 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),ordinal = c(2,6),
                     convert_num = 8, convert_clss = 3, prep_choice = "H")
-res4 = proxim_dist(try4,norm = "H")
+res4 = proxim_dist(try4, norm = "H")
 # Be patient ... It could take few minutes
 
 ### Ex 4b: The Hamming distance with complete cases on nominal and ordinal covariates only
@@ -130,14 +132,14 @@ simu_data_CC = simu_data[(!is.na(simu_data[,5]))&(!is.na(simu_data[,6]))
                           &(!is.na(simu_data[,7])),1:7]
 try4b = transfo_dist(simu_data_CC,quanti = 3, nominal = c(1,4:5,7),ordinal = c(2,6),
                      prep_choice = "H")
-res4b = proxim_dist(try4b,norm = "H")
+res4b = proxim_dist(try4b, norm = "H")
 }
 
 ### Ex 5: PARTICULAR CASE, If only one covariate with no NAs
 
 try5 = try1[,c(1:3,7)]           # Only Smoking variable
 try6 = try5[!is.na(try5[,4]),]   # Keep complete case
-res6_M = proxim_dist(try6,norm = "M",prox = 0.01)
+res6_M = proxim_dist(try6,norm = "M", prox = 0.10)
 \dontrun{
 res7_H = proxim_dist(try6,norm = "H") # Hamming
 }

@@ -665,11 +665,11 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
     if (RF_condi == TRUE){
 
       databa2bis = na.omit(databa2)
-      set.seed(RF_SEED); stocres = party::cforest(Y~., data=databa2bis, control = cforest_unbiased(mtry = 5, ntree = RF_ntree))
+      set.seed(RF_SEED); stocres = party::cforest(Y~., data=databa2bis, control = cforest_unbiased(mtry = (ncol(databa2bis)-1)^(1/2), ntree = RF_ntree))
 
     } else {
 
-      set.seed(RF_SEED); stocres = party::cforest(Y~., data=databa2,control = cforest_unbiased(mtry = 5, ntree = RF_ntree))
+      set.seed(RF_SEED); stocres = party::cforest(Y~., data=databa2,control = cforest_unbiased(mtry = (ncol(databa2)-1)^(1/2), ntree = RF_ntree))
 
     }
 
@@ -755,12 +755,12 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
       if (RF_condi == TRUE){
 
         databa3bis = databa2bis[,intersect(c("Y",remain_var),colnames(databa2))]
-        set.seed(RF_SEED); stocres = party::cforest(Y~.,data=databa3bis,control = party::cforest_unbiased(mtry = 5,ntree = RF_ntree))
+        set.seed(RF_SEED); stocres = party::cforest(Y~.,data=databa3bis,control = party::cforest_unbiased(mtry = (ncol(databa3bis)-1)^(1/2),ntree = RF_ntree))
 
       } else {
 
         databa3 = databa2[,intersect(c("Y",remain_var),colnames(databa2))]
-        set.seed(RF_SEED); stocres = party::cforest(Y~.,data=databa3, control = party::cforest_unbiased(mtry = 5,ntree = RF_ntree))
+        set.seed(RF_SEED); stocres = party::cforest(Y~.,data=databa3, control = party::cforest_unbiased(mtry = (ncol(databa3)-1)^(1/2),ntree = RF_ntree))
 
       }
 

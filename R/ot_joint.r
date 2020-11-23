@@ -76,13 +76,13 @@
 #' }
 #'
 #' Finally, two profiles of covariates \eqn{P_1} (\eqn{n_1} individuals) and \eqn{P_2} (\eqn{n_2} individuals) will be considered as neighbors if \eqn{dist(P_1,P_2) < prox.X \times max(dist(P_i,P_j))} where \eqn{prox.X} must be fixed by user (\eqn{i = 1,\dots,n_1} and \eqn{j = 1,\dots,n_2}). This choice is used in the computation of the \code{JOINT} and \code{R_JOINT} algorithms.
-#' In the same way, for a given profile of covariates \eqn{P_j}, an individual \eqn{i} will be considered as a neighbor of \eqn{P_j} if \eqn{dist(i,P_j) < prox.dist \times max(dist(i,P_j))} where \eqn{prox.dist} will be fixed by user.
+#' Each individual \eqn{i} from A or B is here considered as a neighbor of only one profile of covariates \eqn{P_j}.
 #'
 #'
 #' F. INFORMATIONS ABOUT THE SOLVER
 #'
-#' The argument \code{solvR} permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (5) for more details). The solver "clp" (see (6)) for Coin-or Linear Programming, convenient in linear and quadratic situations, is also directly integrated in the function.
-#' Moreover, the function actually uses the \code{R} optimization infrastructure of the package \pkg{ROI} which offers a wide choice of solver to users by easily loading the associated plugins of \pkg{ROI} (see (7)).
+#' The argument \code{solvR} permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (5) for more details).
+#' Moreover, the function actually uses the \code{R} optimization infrastructure of the package \pkg{ROI} which offers a wide choice of solver to users by easily loading the associated plugins of \pkg{ROI} (see (6)).
 #'
 #' For more details about the algorithms integrated in \code{OT_joint}, please consult (2).
 #'
@@ -106,7 +106,6 @@
 #' @param percent.knn the ratio of closest neighbors involved in the computations of the cost matrices. 1 is the default value that includes all rows in the computation.
 #' @param maxrelax the maximum percentage of deviation from expected probability masses. It must be equal to 0 (default value) for the \code{JOINT} algorithm, and equal to a strictly positive value for the R-JOINT algorithm.
 #' @param lambda.reg a coefficient measuring the importance of the regularization term. It corresponds to the \code{R-JOINT} algorithm for a value other than 0 (default value).
-#' @param prox.dist a probability (between 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.
 #' @param prox.X a probability (betwen 0 and 1) used to calculate the distance threshold below which two covariates' profiles are supposed as neighbors.
 #' If \code{prox.X = 1}, all profiles are considered as neighbors.
 #' @param solvR a character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".
@@ -149,7 +148,6 @@
 #' \item Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
 #' \item Gower J.C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637
 #' \item Makhorin A (2011). GNU Linear Programming Kit Reference Manual Version 4.47.\url{http://www.gnu.org/software/glpk}
-#' \item Forrest J, de la Nuez D, Lougee-Heimer R (2004). Clp User Guide. \url{http://www.coin-or.org/Clp/userguide/index.html}
 #' \item Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 \url{https://doi.org/10.18637/jss.v094.i15}
 #' }
 #'
@@ -246,7 +244,7 @@
 OT_joint = function(datab, index_DB_Y_Z = 1:3,
                     nominal = NULL, ordinal = NULL,logic = NULL,
                     convert.num = NULL, convert.clss = NULL, dist.choice = "E", percent.knn = 1,
-                    maxrelax = 0, lambda.reg = 0.0, prox.dist = 0.80, prox.X = 0.80, solvR = "glpk", which.DB = "BOTH"){
+                    maxrelax = 0, lambda.reg = 0.0, prox.X = 0.80, solvR = "glpk", which.DB = "BOTH"){
 
   if (dist.choice %in% c("M","Manhattan","manhattan")){
 
@@ -281,6 +279,12 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
   if (percent.knn > 1){
 
     stop("Improper value for percent.knn")
+
+  } else {}
+
+  if (prox.X > 1){
+
+    stop("Improper value for prox.X")
 
   } else {}
 
@@ -321,7 +325,7 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
   } else {}
 
 
-  inst = proxim_dist(dataB, norm = dist.choice, prox = prox.dist)
+  inst = proxim_dist(dataB, norm = dist.choice, prox = 0)
 
 
   # Local redefinitions of parameters of  the instance
@@ -351,8 +355,9 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
   ###########################################################################
   # println("... aggregating individuals")
 
-  indXA = inst$indXA; indXB = inst$indXB;
-  nbX = length(indXA);
+  indXA = inst$indXA
+  indXB = inst$indXB
+  nbX   = length(indXA)
 
   # compute the neighbors of the covariates for regularization
   Xvalues = unique(Xobserv)
@@ -383,77 +388,52 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
 
    }
 
-   tol.X = prox.X * max(dist_X)
-   voisins_X = dist_X <= tol.X
-   C = avg_dist_closest(inst, percent_closest = percent.knn)[1];
+   tol.X        = prox.X * max(dist_X)
+   voisins_X    = dist_X <= tol.X
+   C            = avg_dist_closest(inst, percent_closest = percent.knn)[[1]]
 
   ###########################################################################
   # Compute the estimators that appear in the model
   ###########################################################################
 
-      estim_XA = estim_XB = estim_XA_YA =  estim_XB_ZB = list()
+   estim_XA     =  lapply(1:nbX,function(y){return(length(indXA[[y]])/nA)})
+   estim_XB     =  lapply(1:nbX,function(y){return(length(indXB[[y]])/nB)})
 
-      for (x in 1:nbX){
-
-        estim_XA[[x]] = length(indXA[[x]])/nA
-        estim_XB[[x]] = length(indXB[[x]])/nB
-
-      }
-
-      for (x in 1:nbX){
-
-        estim_XA_YA[[x]] = estim_XB_ZB[[x]] = numeric(0)
+   estim_XA_YA  = lapply(1:nbX,function(x)return(sapply(Y,function(y)return(length(indXA[[x]][Yobserv[indXA[[x]]] == y])/nA))))
+   estim_XB_ZB  = lapply(1:nbX,function(x)return(sapply(Z,function(z)return(length(indXB[[x]][Zobserv[indXB[[x]] + nA] == z])/nB))))
 
 
-        for (y in Y){
-          estim_XA_YA[[x]][y] = length(indXA[[x]][Yobserv[indXA[[x]]] == y])/nA
-        }
+   Cf           = function(y,z){return(C[y,z])}
 
-        for (z in Z){
-          estim_XB_ZB[[x]][z] = length(indXB[[x]][Zobserv[indXB[[x]] + nA] == z])/nB
-        }
+   estim_XBf    = function(x){return(estim_XB[[x]])}
 
-      }
+   voisin       = function(x){lambda.reg *(1/length(voisins_X[x,]))}
+
+   ind_voisins  = lapply(1:nrow(voisins_X),function(x)return(which(voisins_X[x,])))
 
 
-      Cf <- function(y,z) {
-        return(C$Davg[y,z])
-      }
+   ###########################################################################
+   # Basic part of the model
+   ###########################################################################
 
-      estim_XBf <- function(x) {
-        return(estim_XB[[x]])
-      }
-
-      voisin = function(x1){lambda.reg *(1/length(voisins_X[x1,]))}
-
-      ind_voisins = list()
-      for (x1 in 1:nrow(voisins_X)){
-
-        ind_voisins[[x1]] = which(voisins_X[x1,])
-
-      }
-      ###########################################################################
-      # Basic part of the model
-      ###########################################################################
-
-      if (which.DB %in% c("A","BOTH")){
+   if (which.DB %in% c("A","BOTH")){
 
         # COMPLETE Z IN DATABASE A
 
         result <-  MIPModel() %>%
-          # DEFINE VARIABLES ----------------------------------------------------------------------
-        # gammaA[x,y,z]: joint probability of X=x, Y=y and Z=z in base A
-          ompr::add_variable(gammaA[x,y,z]       , x = 1:nbX, y = Y, z= Z, type = "continuous") %>%
+        # DEFINE VARIABLES ---------------------------------------------------------------------------------------
+          # gammaA[x,y,z]: joint probability of X=x, Y=y and Z=z in base A
+          ompr::add_variable(gammaA[x,y,z]       , x = 1:nbX, y = Y, z= Z, type = "continuous", lb = 0, ub =1) %>%
           ompr::add_variable(errorA_XY[x,y]      , x = 1:nbX, y = Y,       type = "continuous") %>%
-          ompr::add_variable(abserrorA_XY[x,y]   , x = 1:nbX, y = Y,       type = "continuous") %>%
+          ompr::add_variable(abserrorA_XY[x,y]   , x = 1:nbX, y = Y,       type = "continuous", lb = 0, ub =1) %>%
           ompr::add_variable(errorA_XZ[x,z]      , x = 1:nbX, z = Z,       type = "continuous") %>%
-          ompr::add_variable(abserrorA_XZ[x,z]   , x = 1:nbX, z = Z,       type = "continuous") %>%
-          # REGULARIZATION ---------------------------------------------------------------------------------
+          ompr::add_variable(abserrorA_XZ[x,z]   , x = 1:nbX, z = Z,       type = "continuous", lb = 0, ub =1) %>%
+        # REGULARIZATION --------------------------------------------------------------------------------------------------------------------
           # ompr::add_variable(reg_absA[x1,x2,y,z] , x1 = 1:nbX, x2 = 1:nbX, y= Y, z= Z, type = "continuous") %>%
-          ompr::add_variable(reg_absA[x1,x2,y,z]   , x1 = 1:nbX, x2 = ind_voisins[[x1]], y= Y, z= Z, type = "continuous") %>%
-          # OBJECTIVE ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+          ompr::add_variable(reg_absA[x1,x2,y,z]   , x1 = 1:nbX, x2 = ind_voisins[[x1]], y= Y, z= Z, type = "continuous", lb = 0, ub = 1) %>%
+        # OBJECTIVE ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
           ompr::set_objective(sum_expr(Cf(y,z) * gammaA[x,y,z], y = Y, z = Z, x = 1:nbX) + sum_expr(voisin(x1)*reg_absA[x1,x2,y,z], x1 = 1:nbX, x2 = ind_voisins[[x1]],y=Y,z= Z), "min") %>%
-          # CONSTRAINTS ----------------------------------------------------------------------------------------------------
+        # CONSTRAINTS -----------------------------------------------------------------------------------------------------
           ompr::add_constraint(sum_expr(gammaA[x,y,z], z = Z) - errorA_XY[x,y] == estim_XA_YA[[x]][y] , x = 1:nbX,y =Y) %>%
           ompr::add_constraint(estim_XBf(x)*sum_expr(gammaA[x,y,z],y = Y)  - estim_XBf(x)*errorA_XZ[x,z]== estim_XB_ZB[[x]][z] * estim_XA[[x]] , x = 1:nbX, z = Z) %>%
 
@@ -474,7 +454,7 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
           ompr::add_constraint(reg_absA[x1,x2,y,z] + gammaA[x2,y,z]/(max(1,length(indXA[[x2]]))/nA) >= gammaA[x1,y,z]/(max(1,length(indXA[[x1]]))/nA), x1 = 1:nbX, x2 = which(voisins_X[x1,]), y= Y, z = Z) %>%
           ompr::add_constraint(reg_absA[x1,x2,y,z] + gammaA[x1,y,z]/(max(1,length(indXA[[x1]]))/nA) >= gammaA[x2,y,z]/(max(1,length(indXA[[x2]]))/nA), x1 = 1:nbX, x2 = which(voisins_X[x1,]), y= Y, z = Z) %>%
 
-          # SOLUTION -------------------------------------------------------
+        # SOLUTION -------------------------------------------------------
         ompr::solve_model(with_ROI(solver = solvR))
         solution  = ompr::get_solution(result, gammaA[x,y,z])
         gammaA_val= array(solution$value,dim = c(nbX,length(Y),length(Z)))
@@ -517,41 +497,32 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
 
         }
 
+
         # Transport the probability that maximizes frequency
 
-        predZA = numeric(0)
-        for (i in A){
-
-          predZA = c(predZA,which.max(probaZindivA[i,]))
-
-        }
+        predZA = apply(probaZindivA,1,function(x)which.max(x))
 
         DATA1_OT         = dataB[dataB[,1] == unique(dataB[,1])[1],]
-        # DATA1_OT$OTpred  = as.factor(plyr::mapvalues(predZA,from = sort(unique(predZA)), to = levels(dataB[,3])[sort(unique(predZA))]))
 
 
         if (index_DB_Y_Z[3] %in% nominal){
 
-          DATA1_OT$OTpred  = factor(plyr::mapvalues(predZA,from = sort(unique(predZA)),
-                                                    to = levels(dataB[,3])[sort(unique(predZA))]),
-                                                    levels = levels(dataB[,3])[sort(unique(predZA))])
+          DATA1_OT$OTpred  = factor(plyr::mapvalues(predZA,
+                                                    from    = sort(unique(predZA)),
+                                                    to      = levels(dataB[,3])[sort(unique(predZA))]),
+                                                    levels  = levels(dataB[,3])[sort(unique(predZA))])
         } else {
 
-          DATA1_OT$OTpred  = ordered(plyr::mapvalues(predZA,from = sort(unique(predZA)),
-                                                     to = levels(dataB[,3])[sort(unique(predZA))]),
+          DATA1_OT$OTpred  = ordered(plyr::mapvalues(predZA,
+                                                     from   = sort(unique(predZA)),
+                                                     to     = levels(dataB[,3])[sort(unique(predZA))]),
                                                      levels = levels(dataB[,3])[sort(unique(predZA))])
 
         }
 
-
-
-        #if (is.ordered(dataB[,3])){
-
-        #  DATA1_OT$OTpred = as.ordered(DATA1_OT$OTpred)
-
-        #} else {}
-
       } else {}
+
+      #--->  END FOR DATABASE A
 
 
       if (which.DB %in% c("B","BOTH")){
@@ -559,20 +530,20 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
         # COMPLETE Y IN DATABASE B
 
         result <-  ompr::MIPModel() %>%
-          # DEFINE VARIABLES ----------------------------------------------------------------------
+          # DEFINE VARIABLES -----------------------------------------------------------------------------------
         # gammaA[x,y,z]: joint probability of X=x, Y=y and Z=z in base B
 
-          ompr::add_variable(gammaB[x,y,z]    , x = 1:nbX, y = Y, z = Z,type = "continuous") %>%
+          ompr::add_variable(gammaB[x,y,z]    , x = 1:nbX, y = Y, z = Z,type = "continuous", lb = 0, ub = 1) %>%
 
           ompr::add_variable(errorB_XY[x,y]   , x = 1:nbX, y = Y,       type = "continuous") %>%
-          ompr::add_variable(abserrorB_XY[x,y], x = 1:nbX, y = Y,       type = "continuous") %>%
+          ompr::add_variable(abserrorB_XY[x,y], x = 1:nbX, y = Y,       type = "continuous", lb = 0, ub = 1) %>%
           ompr::add_variable(errorB_XZ[x,z]   , x = 1:nbX,        z = Z,type = "continuous") %>%
-          ompr::add_variable(abserrorB_XZ[x,z], x = 1:nbX,        z = Z,type = "continuous") %>%
+          ompr::add_variable(abserrorB_XZ[x,z], x = 1:nbX,        z = Z,type = "continuous", lb = 0, ub = 1) %>%
 
-        # REGULARIZATION ----------------------------------------------------------------------------
+        # REGULARIZATION ------------------------------------------------------------------------------------------
 
           # ompr::add_variable(reg_absB[x1, x2,y,z], x1 = 1:nbX, x2 = 1:nbX, y = Y, z = Z, type = "continuous") %>%
-          ompr::add_variable(reg_absB[x1,x2,y,z], x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z, type = "continuous") %>%
+          ompr::add_variable(reg_absB[x1,x2,y,z], x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z, type = "continuous", lb = 0, ub = 1) %>%
 
         # OBJECTIVE ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -601,12 +572,12 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
           ompr::add_constraint(reg_absB[x1,x2,y,z] + gammaB[x2,y,z]/(max(1,length(indXB[[x2]]))/nB) >= gammaB[x1,y,z]/(max(1,length(indXB[[x1]]))/nB), x1 = 1:nbX, x2 = ind_voisins[[x1]], y= Y, z = Z) %>%
           ompr::add_constraint(reg_absB[x1,x2,y,z] + gammaB[x1,y,z]/(max(1,length(indXB[[x1]]))/nB) >= gammaB[x2,y,z]/(max(1,length(indXB[[x2]]))/nB), x1 = 1:nbX, x2 = ind_voisins[[x1]], y= Y, z = Z) %>%
 
-          # SOLUTION -------------------------------------------------------
+          # SOLUTION ------------------------------------------------------
         ompr::solve_model(with_ROI(solver = solvR))
 
-        solution  = get_solution(result, gammaB[x,y,z])
-        gammaB_val= array(solution$value,dim = c(nbX,length(Y),length(Z)))
-        #------------ END OPTIMIZATION STEP ------------------------------
+        solution   = get_solution(result, gammaB[x,y,z])
+        gammaB_val = array(solution$value,dim = c(nbX,length(Y),length(Z)))
+        #------------ END OPTIMIZATION STEP -------------------------------
 
 
         ### compute the resulting estimators for the distributions of Y conditional to X and Z in base B
@@ -638,7 +609,6 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
 
         for (x in 1:nbX){
 
-
           for (i in indXB[[x]]){
 
             probaYindivB[i,] = estimatorYB[x,Zobserv[i+nA],]
@@ -649,18 +619,7 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
 
         ### Transport the Ylity that maximizes frequency
 
-        predYB = numeric(0)
-
-        for (j in B){
-
-          predYB = c(predYB,which.max(probaYindivB[j,]))
-
-        }
-
-        # Display the solution
-        # println("Solution of the joint probability transport");
-        # println("Distance cost = ", sum(C[y,z] * (gammaA_val[x,y,z]+gammaB_val[x,y,z]) for y in Y, z in Z, x in 1:nbX));
-        # println("Regularization cost = ", lambda_reg * value(regterm));
+        predYB = apply(probaYindivB,1,function(x)which.max(x))
 
 
         DATA2_OT         = dataB[dataB[,1] == unique(dataB[,1])[2],]
@@ -678,16 +637,12 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
         }
 
 
-
-        # DATA2_OT$OTpred  = as.factor(plyr::mapvalues(predYB,from = sort(unique(predYB)), to = levels(dataB[,2])[sort(unique(predYB))]))
-
-        # if (is.ordered(dataB[,2])){
-
-        #  DATA2_OT$OTpred = as.ordered(DATA2_OT$OTpred)
-
-        #} else {}
-
       } else {}
+
+      # ---> END DATABASE B
+
+
+      # OUTPUT OBJECTS -------------------------------------------------
 
       if (which.DB == "A"){
 
@@ -709,8 +664,8 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
 
       } else {
 
-        GAMMA_A = apply(gammaA_val,c(2,3),sum)
-        GAMMA_B = apply(gammaB_val,c(2,3),sum)
+        GAMMA_A            = apply(gammaA_val,c(2,3),sum)
+        GAMMA_B            = apply(gammaB_val,c(2,3),sum)
         colnames(GAMMA_A)  = colnames(GAMMA_B)  = levels(dataB[,3])
         row.names(GAMMA_A) = row.names(GAMMA_B) = levels(dataB[,2])
 
