@@ -134,7 +134,7 @@
     <tr>
       <th>meth</th>
       <td><p>a vector of characters which specifies the imputation method to be used for each column in <code>dat1</code>.
-"pmm" for continuous covariates or by default option, "logreg" for binary covariates, "polr" for ordinal covariates, "polyreg" for categorical covariates (no order), (cf <code><a href='https://rdrr.io/pkg/mice/man/mice.html'>mice</a></code> for more details).</p></td>
+"pmm" for continuous covariates or by default option, "logreg" for binary covariates, "polr" for ordinal covariates, "polyreg" for categorical covariates (no order), (cf <code><a href='https://amices.org/mice/reference/mice.html'>mice</a></code> for more details).</p></td>
     </tr>
     <tr>
       <th>missMDA</th>
@@ -160,9 +160,9 @@
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>By default, the function <code>impute_cov</code> handles missing information using multivariate imputation by chained equations (MICE, see (1) for more details about the method) by integrating in its syntax the function <code><a href='https://rdrr.io/pkg/mice/man/mice.html'>mice</a></code>.
+    <p>By default, the function <code>impute_cov</code> handles missing information using multivariate imputation by chained equations (MICE, see (1) for more details about the method) by integrating in its syntax the function <code><a href='https://amices.org/mice/reference/mice.html'>mice</a></code>.
 All values of this last function are taken by default, excepted the required number of multiple imputations, which can be fixed by using the argument <code>R_mice</code>, and the chosen imputation method for each variable (<code>meth</code> argument),
-that corresponds to the argument <code>defaultMethod</code> of the function <code><a href='https://rdrr.io/pkg/mice/man/mice.html'>mice</a></code>.
+that corresponds to the argument <code>defaultMethod</code> of the function <code><a href='https://amices.org/mice/reference/mice.html'>mice</a></code>.
 When multiple imputations are required (for MICE only), each missing information is imputed by a consensus value:
 the average of the candidate values will be retained for numerical variables, while the most frequent class will be remained for categorical variables (ordinal or not).
 The output <code>MICE_IMPS</code> stores the imputed databases to allow users to build their own consensus values by themselves and(or) to eventually assess the variabilities related to the proposed imputed values if necessary.

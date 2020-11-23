@@ -287,8 +287,8 @@ This method is used (1).</p>
 <p>As a decision rule, for a given profile of covariates \(P_j\), an individual \(i\) will be considered as a neighbor of \(P_j\) if \(dist(i,P_j) &lt; \mbox{prox.dist} \times max(dist(i,P_j))\) where \(prox.dist\) must be fixed by user.</p>
 
 <p>F. INFORMATIONS ABOUT THE SOLVER</p>
-<p>The argument <code>solvR</code> permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (6) for more details). The solver "clp" (see (7)) for Coin-or Linear Programming, convenient in linear and quadratic situations, is also directly integrated in the function.
-Moreover, the function actually uses the <code>R</code> optimization infrastructure of the package <span class="pkg">ROI</span> which offers a wide choice of solver to users by easily loading the associated plugins of <span class="pkg">ROI</span> (see (8)).</p>
+<p>The argument <code>solvR</code> permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (6) for more details).
+Moreover, the function actually uses the <code>R</code> optimization infrastructure of the package <span class="pkg">ROI</span> which offers a wide choice of solver to users by easily loading the associated plugins of <span class="pkg">ROI</span> (see (7)).</p>
 <p>For more details about the algorithms integrated in <code>OT_outcome</code>, please consult (1) and (2).</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -301,7 +301,6 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 <li><p>Gower J.C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637.</p></li>
 <li><p>Pages J. (2004). Analyse factorielle de donnees mixtes. Revue Statistique Appliquee. LII (4). pp. 93-111.</p></li>
 <li><p>Makhorin A (2011). GNU Linear Programming Kit Reference Manual Version 4.47.<a href='http://www.gnu.org/software/glpk'>http://www.gnu.org/software/glpk</a></p></li>
-<li><p>Forrest J, de la Nuez D, Lougee-Heimer R (2004). Clp User Guide. <a href='http://www.coin-or.org/Clp/userguide/index.html'>http://www.coin-or.org/Clp/userguide/index.html</a></p></li>
 <li><p>Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 <a href='https://doi.org/10.18637/jss.v094.i15'>https://doi.org/10.18637/jss.v094.i15</a></p></li>
 </ol>
 

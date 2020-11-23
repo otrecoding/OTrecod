@@ -120,7 +120,6 @@ using optimal transportation of the joint distribution of outcomes and covariate
   percent.knn <span class='op'>=</span> <span class='fl'>1</span>,
   maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
   lambda.reg <span class='op'>=</span> <span class='fl'>0</span>,
-  prox.dist <span class='op'>=</span> <span class='fl'>0.8</span>,
   prox.X <span class='op'>=</span> <span class='fl'>0.8</span>,
   solvR <span class='op'>=</span> <span class='st'>"glpk"</span>,
   which.DB <span class='op'>=</span> <span class='st'>"BOTH"</span>
@@ -180,10 +179,6 @@ the Gower distance ("G"), and the Hamming distance ("H") for binary covariates o
     <tr>
       <th>lambda.reg</th>
       <td><p>a coefficient measuring the importance of the regularization term. It corresponds to the <code>R-JOINT</code> algorithm for a value other than 0 (default value).</p></td>
-    </tr>
-    <tr>
-      <th>prox.dist</th>
-      <td><p>a probability (between 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.</p></td>
     </tr>
     <tr>
       <th>prox.X</th>
@@ -273,11 +268,11 @@ according to the distance function chosen by user (via the argument <code>dist.c
 </ul>
 
 <p>Finally, two profiles of covariates \(P_1\) (\(n_1\) individuals) and \(P_2\) (\(n_2\) individuals) will be considered as neighbors if \(dist(P_1,P_2) &lt; prox.X \times max(dist(P_i,P_j))\) where \(prox.X\) must be fixed by user (\(i = 1,\dots,n_1\) and \(j = 1,\dots,n_2\)). This choice is used in the computation of the <code>JOINT</code> and <code>R_JOINT</code> algorithms.
-In the same way, for a given profile of covariates \(P_j\), an individual \(i\) will be considered as a neighbor of \(P_j\) if \(dist(i,P_j) &lt; prox.dist \times max(dist(i,P_j))\) where \(prox.dist\) will be fixed by user.</p>
+Each individual \(i\) from A or B is here considered as a neighbor of only one profile of covariates \(P_j\).</p>
 
 <p>F. INFORMATIONS ABOUT THE SOLVER</p>
-<p>The argument <code>solvR</code> permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (5) for more details). The solver "clp" (see (6)) for Coin-or Linear Programming, convenient in linear and quadratic situations, is also directly integrated in the function.
-Moreover, the function actually uses the <code>R</code> optimization infrastructure of the package <span class="pkg">ROI</span> which offers a wide choice of solver to users by easily loading the associated plugins of <span class="pkg">ROI</span> (see (7)).</p>
+<p>The argument <code>solvR</code> permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (5) for more details).
+Moreover, the function actually uses the <code>R</code> optimization infrastructure of the package <span class="pkg">ROI</span> which offers a wide choice of solver to users by easily loading the associated plugins of <span class="pkg">ROI</span> (see (6)).</p>
 <p>For more details about the algorithms integrated in <code>OT_joint</code>, please consult (2).</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -289,7 +284,6 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679 | <a href='https://doi.org/10.1515
 <li><p>Anderberg, M.R. (1973), Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.</p></li>
 <li><p>Gower J.C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623–637</p></li>
 <li><p>Makhorin A (2011). GNU Linear Programming Kit Reference Manual Version 4.47.<a href='http://www.gnu.org/software/glpk'>http://www.gnu.org/software/glpk</a></p></li>
-<li><p>Forrest J, de la Nuez D, Lougee-Heimer R (2004). Clp User Guide. <a href='http://www.coin-or.org/Clp/userguide/index.html'>http://www.coin-or.org/Clp/userguide/index.html</a></p></li>
 <li><p>Theussl S, Schwendinger F, Hornik K (2020). ROI: An Extensible R Optimization Infrastructure.Journal of Statistical Software,94(15), 1-64. doi: 10.18637/jss.v094.i15 <a href='https://doi.org/10.18637/jss.v094.i15'>https://doi.org/10.18637/jss.v094.i15</a></p></li>
 </ol>
 
