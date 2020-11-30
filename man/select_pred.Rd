@@ -54,7 +54,7 @@ all quantitative predictors selected for discretization will have by default the
 
 \item{thresh_num}{a threshold associated to the Spearman's coefficient of correlation (= 0.70 by default)}
 
-\item{thresh_Y}{a threshold linked to the RF approach, that indicates the minimal percent of importance required for a variable to be considered as a reliable predictor of the outcome.}
+\item{thresh_Y}{a threshold linked to the RF approach, that corresponds to the minimal cumulative percent of importance measure required to be kept in the final list of predictors.}
 
 \item{RF}{a boolean sets to TRUE (default) if a random forest procedure must be applied to select the best subset of predictors according to the outcome.Otherwise, only pairwise associations between predictors are used for the selection.}
 
