@@ -120,7 +120,7 @@ using optimal transportation of the joint distribution of outcomes and covariate
   percent.knn <span class='op'>=</span> <span class='fl'>1</span>,
   maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
   lambda.reg <span class='op'>=</span> <span class='fl'>0</span>,
-  prox.X <span class='op'>=</span> <span class='fl'>0.8</span>,
+  prox.X <span class='op'>=</span> <span class='fl'>0.1</span>,
   solvR <span class='op'>=</span> <span class='st'>"glpk"</span>,
   which.DB <span class='op'>=</span> <span class='st'>"BOTH"</span>
 <span class='op'>)</span></pre>
@@ -268,7 +268,8 @@ according to the distance function chosen by user (via the argument <code>dist.c
 </ul>
 
 <p>Finally, two profiles of covariates \(P_1\) (\(n_1\) individuals) and \(P_2\) (\(n_2\) individuals) will be considered as neighbors if \(dist(P_1,P_2) &lt; prox.X \times max(dist(P_i,P_j))\) where \(prox.X\) must be fixed by user (\(i = 1,\dots,n_1\) and \(j = 1,\dots,n_2\)). This choice is used in the computation of the <code>JOINT</code> and <code>R_JOINT</code> algorithms.
-Each individual \(i\) from A or B is here considered as a neighbor of only one profile of covariates \(P_j\).</p>
+The <code>prox.X</code> argument influences a lot the running time of the algorithm. The greater, the more the value will be close to 1, the more the convergence of the algorithm will be difficult or even impossible.</p>
+<p>Each individual \(i\) from A or B is here considered as a neighbor of only one profile of covariates \(P_j\).</p>
 
 <p>F. INFORMATIONS ABOUT THE SOLVER</p>
 <p>The argument <code>solvR</code> permits user to choose the solver of the optimization algorithm. The default solver is "glpk" that corresponds to the GNU Linear Programming Kit (see (5) for more details).
