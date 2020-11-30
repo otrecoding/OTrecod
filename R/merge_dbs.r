@@ -449,7 +449,8 @@ merge_dbs = function(DB1,
 
   # Removed factor(s) because of their different levels from DB1 to DB2
 
-  modif_factor = (1:n_col)[l1 %in% c("factor", "ordered factor")]
+  # modif_factor = (1:n_col)[l1 %in% c("factor", "ordered factor")]
+  modif_factor = (1:n_col)[(l1 %in% c("factor", "ordered factor"))&(l2 %in% c("factor", "ordered factor"))]
 
   same_cov2 = same_cov[modif_factor]
 

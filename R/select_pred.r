@@ -88,7 +88,7 @@
 #' all quantitative predictors selected for discretization will have by default the same number of classes.
 #' @param thresh_cat a threshold associated to the Cramer's V coefficient (= 0.30 by default)
 #' @param thresh_num a threshold associated to the Spearman's coefficient of correlation (= 0.70 by default)
-#' @param thresh_Y a threshold linked to the RF approach, that indicates the minimal percent of importance required for a variable to be considered as a reliable predictor of the outcome.
+#' @param thresh_Y a threshold linked to the RF approach, that corresponds to the minimal cumulative percent of importance measure required to be kept in the final list of predictors.
 #' @param RF a boolean sets to TRUE (default) if a random forest procedure must be applied to select the best subset of predictors according to the outcome.Otherwise, only pairwise associations between predictors are used for the selection.
 #' @param RF_ntree the number of bootsrap samples required from the row datasource during the random forest procedure
 #' @param RF_condi a boolean specifying if the conditional importance measures must be assessed from the random forest procedure (\code{TRUE}) rather than the standard variable importance  measures (\code{FALSE} by default)

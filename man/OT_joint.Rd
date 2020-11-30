@@ -16,7 +16,7 @@ OT_joint(
   percent.knn = 1,
   maxrelax = 0,
   lambda.reg = 0,
-  prox.X = 0.8,
+  prox.X = 0.1,
   solvR = "glpk",
   which.DB = "BOTH"
 )
@@ -150,6 +150,8 @@ according to the distance function chosen by user (via the argument \code{dist.c
 }
 
 Finally, two profiles of covariates \eqn{P_1} (\eqn{n_1} individuals) and \eqn{P_2} (\eqn{n_2} individuals) will be considered as neighbors if \eqn{dist(P_1,P_2) < prox.X \times max(dist(P_i,P_j))} where \eqn{prox.X} must be fixed by user (\eqn{i = 1,\dots,n_1} and \eqn{j = 1,\dots,n_2}). This choice is used in the computation of the \code{JOINT} and \code{R_JOINT} algorithms.
+The \code{prox.X} argument influences a lot the running time of the algorithm. The greater, the more the value will be close to 1, the more the convergence of the algorithm will be difficult or even impossible.
+
 Each individual \eqn{i} from A or B is here considered as a neighbor of only one profile of covariates \eqn{P_j}.
 
 
@@ -176,11 +178,11 @@ For more details about the algorithms integrated in \code{OT_joint}, please cons
 data(tab_test)
 tab_test2 = tab_test[c(1:40,5001:5040),1:5]
 
-\dontrun{
 
 try1J = OT_joint(tab_test2, nominal = c(1,4:5), ordinal = c(2,3),
                  dist.choice = "G", which.DB = "B")
 
+\dontrun{
 
 ### An example of R-JOINT algorithm using the previous database,
 ### and keeping the same options excepted for:
