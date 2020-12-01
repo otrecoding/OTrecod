@@ -202,30 +202,12 @@
 #'                   which.DB = "BOTH")
 #'
 #'
+#'
 #' ### Another example of JOINT algorithm with:
 #' #-----
 #' # - A sample of the database simu_data
 #' # - Y1 and Y2 are a 2 outcomes encoded in 2 different forms in DB A and B:
 #' #   (3 levels for Y and 5 levels for Z)
-#' # - n1 = n2 = 100
-#' # - 2 categorical covariates: Gender and Dosage
-#' # - 1 continuous covariate (Age) converted in ordered factor of 3 balanced
-#' #   classes
-#' # - Distances estimated using the Euclidean function
-#' # Predictions are assessed for Y1 in B only
-#' #-----
-#'
-#' simu_data2 = simu_data[c(1:100,401:500),c(1:4,6,8)]
-#'
-#' try2J = OT_joint(simu_data2, convert.num = 6, convert.clss = 3,
-#'                 nominal = c(1,4), ordinal = c(2:3,5),
-#'                 dist.choice = "E", percent.knn = 0.90,
-#'                 which.DB = "A")
-#'
-#'
-#' ### A last example of JOINT algorithm with:
-#' #-----
-#' # - Another sample of the database simu_data using
 #' # - n1 = n2 = 100
 #' # - 3 covariates: Gender, Smoking and Age in a qualitative form
 #' # - Complete Case study
@@ -237,7 +219,7 @@
 #' simu_data2 = simu_data[c(1:100,401:500),c(1:4,7:8)]
 #' simu_data3 = simu_data2[!is.na(simu_data2$Age),]
 #'
-#' try3J = OT_joint(simu_data3, convert.num = 6, convert.clss = 3,
+#' try2J = OT_joint(simu_data3, convert.num = 6, convert.clss = 3,
 #'                  nominal = c(1,4:5), ordinal = 2:3,
 #'                  dist.choice = "H", which.DB = "BOTH")
 #'
@@ -302,7 +284,7 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
   cat("Type                  = ", ifelse((maxrelax == 0)&(lambda.reg == 0),"JOINT","R-JOINT"),"\n")
   cat("Distance              = ", ifelse(dist.choice == "H","Hamming",ifelse(dist.choice == "M","Manhattan",ifelse(dist.choice == "E","Euclidean","Gower"))),"\n")
   cat("Percent closest       = ", 100.0*percent.knn, "%","\n")
-  cat("Relaxation term       = ", ifelse(maxrelax == 0,"NO","YES"),"\n")
+  cat("Relaxation term       = ", maxrelax, "\n")
   cat("Regularization term   = ", lambda.reg  ,"\n")
   cat("Aggregation tol cov   = ", prox.X,"\n")
   cat("DB imputed            = ", which.DB,"\n")
@@ -487,9 +469,9 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
       # ompr::add_constraint(sum_expr(errorA_XZ[x,z]   , x = 1:nbX, z = Z)<= maxrelax/2.0) %>%
 
       # Constraints regularization - Ajout GG
-      ompr::add_constraint(reg_absA[x1,x2,y,z] + gammaA[x2,y,z]/(max(1,length(indXA[[x2]]))/length(unlist(indXA))) >= gammaA[x1,y,z]/(max(1,length(indXA[[x1]]))/length(unlist(indXA))),
+      ompr::add_constraint(reg_absA[x1,x2,y,z] + gammaA[x2,y,z]/(max(1,length(indXA[[x2]]))/nA) >= gammaA[x1,y,z]/(max(1,length(indXA[[x1]]))/nA),
                            x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z) %>%
-      ompr::add_constraint(reg_absA[x1,x2,y,z] + gammaA[x1,y,z]/(max(1,length(indXA[[x1]]))/length(unlist(indXA))) >= gammaA[x2,y,z]/(max(1,length(indXA[[x2]]))/length(unlist(indXA))),
+      ompr::add_constraint(reg_absA[x1,x2,y,z] + gammaA[x1,y,z]/(max(1,length(indXA[[x1]]))/nA) >= gammaA[x2,y,z]/(max(1,length(indXA[[x2]]))/nA),
                            x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z) %>%
 
     # SOLUTION -------------------------------------------------------
