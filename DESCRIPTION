@@ -33,4 +33,7 @@ Imports:
     party,
     vcd
 Suggests: 
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

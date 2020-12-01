@@ -207,30 +207,12 @@ try2RJ = OT_joint(tab_test2, nominal = c(1,4:5), ordinal = c(2,3),
                   which.DB = "BOTH")
 
 
+
 ### Another example of JOINT algorithm with:
 #-----
 # - A sample of the database simu_data
 # - Y1 and Y2 are a 2 outcomes encoded in 2 different forms in DB A and B:
 #   (3 levels for Y and 5 levels for Z)
-# - n1 = n2 = 100
-# - 2 categorical covariates: Gender and Dosage
-# - 1 continuous covariate (Age) converted in ordered factor of 3 balanced
-#   classes
-# - Distances estimated using the Euclidean function
-# Predictions are assessed for Y1 in B only
-#-----
-
-simu_data2 = simu_data[c(1:100,401:500),c(1:4,6,8)]
-
-try2J = OT_joint(simu_data2, convert.num = 6, convert.clss = 3,
-                nominal = c(1,4), ordinal = c(2:3,5),
-                dist.choice = "E", percent.knn = 0.90,
-                which.DB = "A")
-
-
-### A last example of JOINT algorithm with:
-#-----
-# - Another sample of the database simu_data using
 # - n1 = n2 = 100
 # - 3 covariates: Gender, Smoking and Age in a qualitative form
 # - Complete Case study
@@ -242,7 +224,7 @@ data(simu_data)
 simu_data2 = simu_data[c(1:100,401:500),c(1:4,7:8)]
 simu_data3 = simu_data2[!is.na(simu_data2$Age),]
 
-try3J = OT_joint(simu_data3, convert.num = 6, convert.clss = 3,
+try2J = OT_joint(simu_data3, convert.num = 6, convert.clss = 3,
                  nominal = c(1,4:5), ordinal = 2:3,
                  dist.choice = "H", which.DB = "BOTH")
 
