@@ -95,10 +95,10 @@
 <h2 class="hasAnchor">
 <a href="#i--the-context" class="anchor"></a>I. The context</h2>
 <p align="justify">
-This vignette illustrates how to use the tools contained in the <strong>OTrecod</strong> package to solve a variable recoding problem frequently encountered in the context of data fusion. For more details about the theory of the algorithms used in the functions <strong>OT_outcome</strong> and **OT_joint* of the package, user can consult (1),(2) and their respective documentations.
+This vignette illustrates how to use the tools contained in the <strong>OTrecod</strong> package to solve a variable recoding problem frequently encountered in the context of data fusion. For more details about the theory of the algorithms used in the functions <strong>OT_outcome</strong> and <strong>OT_joint</strong> of the package, user can consult (1),(2) and the documentation linked to each function.
 </p>
 <p align="justify">
-For this example, we have transformed an available database called <em>samp.A</em> from the <strong>StatMatch</strong> package (see (3) and <code><a href="https://rdrr.io/pkg/StatMatch/man/samp.A.html">?samp.A</a></code> for more details). The <em>samp.A</em> database provides a limited number of variables observed at persons levels among those usually collected in the <em>European Union Statistics on Income and Living Conditions Survey</em> (the EU–SILC survey). In this database, the variable <em>c.neti</em> is a factor that corresponds to the persons net income categorized in 7 ordered classes of thousand of Euros whose distribution follows.
+For this example, we have transformed an available database called <em>samp.A</em> from the <strong>StatMatch</strong> package (see (3) and <code><a href="https://rdrr.io/pkg/StatMatch/man/samp.A.html">?samp.A</a></code> for more details). The <em>samp.A</em> database provides a limited number of variables observed at persons levels among those usually collected in the <em>European Union Statistics on Income and Living Conditions Survey</em> (the EU–SILC survey). In this database, the variable <em>c.neti</em> is a factor that corresponds to the persons net income of thousand of Euros categorized in 7 ordered classes. The raw distribution of <em>c.neti</em> is done in the following results:
 </p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">StatMatch</span><span class="op">)</span>
@@ -127,7 +127,7 @@ For this example, we have transformed an available database called <em>samp.A</e
 <span class="co">#&gt;       564       671       541       500       307       272       154</span></code></pre></div>
 <p align="justify">
 </p>
-<p>To construct a standard recoding problem in data fusion, the <em>samp.A</em> database has been transformed:</p>
+<p>To construct a standard recoding problem in data fusion, the <em>samp.A</em> database has been transformed as follows:</p>
 <ul>
 <li>From the <em>c.neti</em> variable, we built a variable called <em>c.neti.bis</em> that corresponds to a second encoding of the persons net income now coded in 4 ordered levels (1: by grouping the first two levels of <em>c.neti</em>, 2: by grouping the two subsequent levels of <em>c.neti</em>, 3: by grouping the last two levels).</li>
 <li>To improve the running time of the example, we only kept the first 350 subjects (rows) of <em>samp.A</em>.</li>
@@ -208,13 +208,13 @@ The R code related to these transformations was:
 <a href="#ii--harmonization-of-the-data-sources" class="anchor"></a>II. Harmonization of the data sources</h2>
 <p align="justify">
 </p>
-<p>Knowing the objective of the study, we first prepare the 2 databases to data fusion. The two functions dedicated to this technique in the <strong>OTrecod</strong> package expect a specific structure of database as argument. The <em>merge_dbs</em> function assists user in this task by:</p>
+<p>Knowing the objective of the study, we first prepare the 2 databases to data fusion. The two functions dedicated to this data fusion in the <strong>OTrecod</strong> package expect a specific structure of database as argument. The <em>merge_dbs</em> function assists user in this task by:</p>
 <ul>
 <li>overlaying the two databases</li>
 <li>detecting the false shared variables</li>
-<li>imputing incomplete information of real shared variables if desired.</li>
+<li>imputing incomplete information of shared variables if desired.</li>
 </ul>
-For this, we fill in the arguments of the <em>merge_dbs</em> function by declaring as follows, the column indexes of all the ordinal variables in <em>data1</em> and <em>data2</em> (including the target variables indexes). Here is no need to handle missing information cecause all the shared variables are complete, but note that it exists a specific argument (<em>impute</em>) in the function to take them into account when necessary.
+For this, we fill in the arguments of the <em>merge_dbs</em> function by declaring as follows, the column indexes of all the ordinal variables in <em>data1</em> and <em>data2</em> (including the target variables indexes). Here there is no need to handle missing information because all the shared variables are complete, but note that it exists a specific argument (<em>impute</em>) in the function to take them into account when necessary.
 
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">db_test</span>  <span class="op">=</span> <span class="fu"><a href="../reference/merge_dbs.html">merge_dbs</a></span><span class="op">(</span><span class="va">data1</span>, <span class="va">data2</span>, NAME_Y <span class="op">=</span> <span class="st">"c.neti"</span>, NAME_Z <span class="op">=</span> <span class="st">"c.neti.bis"</span>,
@@ -275,7 +275,7 @@ For this, we fill in the arguments of the <em>merge_dbs</em> function by declari
 <p>In output:</p>
 <ul>
 <li>The <em>REMAINING_VAR</em> object gives the identity of the shared variables kept for the merging of the two databases.</li>
-<li>The <em>REMOVE1</em> object gives the identity of potential shared variables dropped because of dicrepancies of types: the variable <em>age</em> stored as factor in <em>data1</em> and as numeric in <em>data2</em> is in this case. Sometimes it is possible to reconciliate the two encodings a posteriori, sometime not. Here it would be possible to categorize the variable <em>age</em> in <em>data2</em> in the same way as <em>age</em> in <em>data1</em> but we decide for the example to discard it for the rest of the study.</li>
+<li>The <em>REMOVE1</em> object gives the identity of potential shared variables dropped because of dicrepancies of types: the variable <em>age</em> stored as factor in <em>data1</em> and as numeric in <em>data2</em> is in this case. Sometimes it is possible to reconciliate the two encodings a posteriori, sometimes not. Here it would be possible to categorize the variable <em>age</em> in <em>data2</em> in the same way as <em>age</em> in <em>data1</em> but we decide for the example to discard it for the rest of the study.</li>
 <li>The <em>REMOVE2</em> object is null, and this result means that there is no factor dropped because of discrepancies of levels.</li>
 <li>The <em>ID1_drop</em> and <em>ID2_drop</em> objects are null which means that the target variables <em>c.neti</em> and <em>c.neti.bis</em> have no missing values in there respective databases.</li>
 <li>Finally the <em>DB_READY</em> object provides users a synthetic database that overlays <em>data1</em> and <em>data2</em> (in this order) where the <em>DB</em> variable is the database identifier.</li>
@@ -430,7 +430,7 @@ According to the <em>vcrm_OUTC_cat</em> output object, the best predictors of <e
 <p><strong>In conclusion:</strong></p>
 <ul>
 <li>The variables <em>sex</em> and <em>hsize5</em> are the best predictors of the target variables in the two databases.</li>
-<li>The variable <em>marital</em> is dropped in the two tests because of risks of multicollinearity with <em>hsize5</em>.</li>
+<li>The variable <em>marital</em> is dropped whatever the database because of risks of multicollinearity with <em>hsize5</em>.</li>
 <li>The variable <em>ww</em> is never a good predictor of the target information.</li>
 <li>The variable <em>urb</em> is an acceptable predictor in the first database only.
 </li>
@@ -479,7 +479,7 @@ As with the <em>select_pred</em> function, it is possible to transform directly 
 <h3 class="hasAnchor">
 <a href="#a-transporting-target-variables-to-predict-the-missing-scales" class="anchor"></a>A) Transporting target variables to predict the missing scales</h3>
 <p align="justify">
-The algorithm from <strong>OT_outcome</strong> function solves an optimization problem to transfer the distributions of the target variables (or outcome) from one database to another. Using this result, the initial version of the algorithm (see (2)) transfers the distribution of <em>c.neti.bis</em> in <em>data2</em> to the distribution of <em>c.neti.bis</em> in <em>data1</em>, and (inversely for <em>c.neti</em> if necessary). The the algorithm executes in another distinct step, a nearest neighbor procedure to affect the indidividual predictions of <em>c.neti.bis</em> in <em>data1</em>. This algorithm is actually available by writing <em>method = “sequential”</em> as argument of the <em>OT_outcome</em> function.
+The algorithm from <strong>OT_outcome</strong> function solves an optimization problem to transfer the distributions of the target variables (or outcome) from one database to another. Using this result, the initial version of the algorithm (see (2)) transfers the distribution of <em>c.neti.bis</em> in <em>data2</em> to the distribution of <em>c.neti.bis</em> in <em>data1</em>, and (inversely for <em>c.neti</em> if necessary). The algorithm executes in another distinct step, a nearest neighbor procedure to affect the indidividual predictions of <em>c.neti.bis</em> in <em>data1</em>. This versiob of the algorithm is actually available by writing <em>method = “sequential”</em> as argument of the <em>OT_outcome</em> function.
 </p>
 <p align="justify">
 The algorithm assumes the strong hypothesis that the variable <em>c.neti.bis</em> has the same distribution in <em>data1</em> and <em>data2</em> (and so on for the variable <em>c.neti</em>). If in this example, by construction, this hypothesis is obviously verified, there are also several contexts where this latter no longer holds.
@@ -570,7 +570,7 @@ Enrichments have been thus proposed (see (2) to relax this hypothesis (via the <
 <em>gamma_A</em> stores the solution of the optimization problem to determine the missing scales of <em>c.neti.bis</em> in <em>data1</em>.</li>
 <li>The <em>profile</em> object gives the profiles of covariates detected by the algorithm from the two databases: Here we have 29 profiles.</li>
 <li>
-<em>estimatorZA</em> is an array that provides for each profile, the probability for <em>c.neti.bis</em> to belong to a given level knowing the covariates and the corresponding level of <em>c.neti</em>.</li>
+<em>estimatorZA</em> is an array that provides for each profile, the probability for <em>c.neti.bis</em> to belong to a level given the covariates and the corresponding level of <em>c.neti</em>.</li>
 <li>The <em>DATA1_OT</em> object provides the individual predictions of <em>c.neti.bis</em> in <em>data1</em> (variable <em>OTpred</em> of the data.frame).</li>
 </ul>
 <p> </p>
@@ -588,7 +588,7 @@ Nevertheless, as with the <strong>OT_outcome</strong> function, enrichments have
 </p>
 <p>To guarantee the convergence of the algorithm:</p>
 <ul>
-<li>It is suggested to work with a limited number of matching variables and so to select them rigouresly using <em>select_pred</em> or another process of selection.</li>
+<li>It is suggested to work with a limited number of matching variables and so to select them rigorously using <em>select_pred</em> or another process of selection.</li>
 <li>Choosing a small value of the <em>prox.X</em> argument improves the convergence and the running time of the function.</li>
 </ul>
 For our example, the corresponding R code for the prediction of <em>c.neti.bis</em> in <em>data1</em> is:
