@@ -41,11 +41,11 @@ devtools::install_github("otrecoding/OTrecod")
 
 ## I. The context
 
-<p align="justify"> This vignette illustrates how to use the tools contained in the **OTrecod** package to solve a variable recoding problem frequently encountered in the context of data fusion. For more details about the theory of the algorithms used in the functions **OT_outcome** and **OT_joint* of the package, user can consult (1),(2) and their respective documentations. </p>
+<p align="justify"> This vignette illustrates how to use the tools contained in the **OTrecod** package to solve a variable recoding problem frequently encountered in the context of data fusion. For more details about the theory of the algorithms used in the functions **OT_outcome** and **OT_joint** of the package, user can consult (1),(2) and the documentation linked to each function. </p>
 
 <p align="justify"> For this example, we have transformed an available database called *samp.A* from the **StatMatch** package (see (3) and `?samp.A` for more details).
 The *samp.A* database provides a limited number of variables observed at persons levels among those usually collected in the *European Union Statistics on Income and Living Conditions Survey* (the EU–SILC survey). 
-In this database, the variable *c.neti* is a factor that corresponds to the persons net income categorized in 7 ordered classes of thousand of Euros whose distribution follows. </p>
+In this database, the variable *c.neti* is a factor that corresponds to the persons net income of thousand of Euros categorized in 7 ordered classes. The raw distribution of *c.neti* is done in the following results: </p>
 
 ```{r,results='hide',message=FALSE,warning=FALSE}
 library(StatMatch)
@@ -58,7 +58,7 @@ head(samp.A)
 table(samp.A$c.neti)   # Repartition of c.neti in the sample
 ```
 
-<p align="justify"> To construct a standard recoding problem in data fusion, the *samp.A* database has been transformed:
+<p align="justify"> To construct a standard recoding problem in data fusion, the *samp.A* database has been transformed as follows:
 
 - From the *c.neti* variable, we built a variable called *c.neti.bis* that corresponds to a second encoding of the persons net income now coded in 4 ordered levels (1: by grouping the first two levels of *c.neti*, 2: by grouping the two subsequent levels of *c.neti*, 3: by grouping the last two levels).
 - To improve the running time of the example, we only kept the first 350 subjects (rows) of *samp.A*.
@@ -113,15 +113,15 @@ we deliberately limit this example to the prediction of the variable *c.neti.bis
 ## II. Harmonization of the data sources
 
 <p align="justify">  Knowing the objective of the study, we first prepare the 2 databases to data fusion.
-The two functions dedicated to this technique in the **OTrecod** package expect a specific structure of database as argument.
+The two functions dedicated to this data fusion in the **OTrecod** package expect a specific structure of database as argument.
 The *merge_dbs* function assists user in this task by:
 
 - overlaying the two databases
 - detecting the false shared variables
-- imputing incomplete information of real shared variables if desired. 
+- imputing incomplete information of shared variables if desired. 
  
 For this, we fill in the arguments of the *merge_dbs* function by declaring as follows, the column indexes of all the ordinal variables
-in *data1* and *data2* (including the target variables indexes). Here is no need to handle missing information cecause all the shared variables are complete, but note that it exists a specific argument (*impute*) in the function to take them into account when necessary.</p>
+in *data1* and *data2* (including the target variables indexes). Here there is no need to handle missing information because all the shared variables are complete, but note that it exists a specific argument (*impute*) in the function to take them into account when necessary.</p>
 
 ```{r,eval=TRUE}
 db_test  = merge_dbs(data1, data2, NAME_Y = "c.neti", NAME_Z = "c.neti.bis",
@@ -145,7 +145,7 @@ db_test$DB_READY[c(1:5,201:205),]   # The 5 1st subjects of the two databases
 - The *REMAINING_VAR* object gives the identity of the shared variables kept for the merging of the two databases.
 - The *REMOVE1* object gives the identity of potential shared variables dropped because of dicrepancies of types: the variable *age*
 stored as factor in *data1* and as numeric in *data2* is in this case. Sometimes it is possible to reconciliate the two encodings a posteriori,
-sometime not. Here it would be possible to categorize the variable *age* in *data2* in the same way as *age* in *data1* but we decide
+sometimes not. Here it would be possible to categorize the variable *age* in *data2* in the same way as *age* in *data1* but we decide
 for the example to discard it for the rest of the study.
 - The *REMOVE2* object is null, and this result means that there is no factor dropped because of discrepancies of levels.
 - The *ID1_drop* and *ID2_drop* objects are null which means that the target variables *c.neti* and *c.neti.bis* have no missing values in there respective databases.
@@ -235,7 +235,7 @@ test_DB2$RF_PRED
 <p align="justify"> **In conclusion:**
 
 - The variables *sex* and *hsize5* are the best predictors of the target variables in the two databases. 
-- The variable *marital* is dropped in the two tests because of risks of multicollinearity with *hsize5*.
+- The variable *marital* is dropped whatever the database because of risks of multicollinearity with *hsize5*.
 - The variable *ww* is never a good predictor of the target information.
 - The variable *urb* is an acceptable predictor in the first database only. </p>
 
@@ -272,8 +272,8 @@ Let see the R approach for the prediction of *c.neti.bis* in *data1*.
 
 ### A) Transporting target variables to predict the missing scales
 
-<p align="justify"> The algorithm from **OT_outcome** function solves an optimization problem to transfer the distributions of the target variables (or outcome) from one database to another. Using this result, the initial version of the algorithm (see (2)) transfers the distribution of *c.neti.bis* in *data2* to the distribution of *c.neti.bis* in *data1*, and (inversely for *c.neti* if necessary). The the algorithm executes in another distinct step, a nearest neighbor procedure to affect the indidividual predictions of *c.neti.bis* in *data1*.
-This algorithm is actually available by writing *method = "sequential"* as argument of the *OT_outcome* function.</p>
+<p align="justify"> The algorithm from **OT_outcome** function solves an optimization problem to transfer the distributions of the target variables (or outcome) from one database to another. Using this result, the initial version of the algorithm (see (2)) transfers the distribution of *c.neti.bis* in *data2* to the distribution of *c.neti.bis* in *data1*, and (inversely for *c.neti* if necessary). The algorithm executes in another distinct step, a nearest neighbor procedure to affect the indidividual predictions of *c.neti.bis* in *data1*.
+This versiob of the algorithm is actually available by writing *method = "sequential"* as argument of the *OT_outcome* function.</p>
 
 <p align="justify">  The algorithm assumes the strong hypothesis that the variable *c.neti.bis* has the same distribution in *data1* and *data2* (and so on for the variable *c.neti*). If in this example, by construction, this hypothesis is obviously verified, there are also several contexts where this latter no longer holds.</p>
 
@@ -308,7 +308,7 @@ In output, these two models provides lists of same structure:
 
 - *gamma_A* stores the solution of the optimization problem to determine the missing scales of *c.neti.bis* in *data1*. 
 - The *profile* object gives the profiles of covariates detected by the algorithm from the two databases: Here we have 29 profiles.
-- *estimatorZA* is an array that provides for each profile, the probability for *c.neti.bis* to belong to a given level knowing the covariates and the corresponding level of *c.neti*.
+- *estimatorZA* is an array that provides for each profile, the probability for *c.neti.bis* to belong to a level given the covariates and the corresponding level of *c.neti*.
 - The *DATA1_OT* object provides the individual predictions of *c.neti.bis* in *data1* (variable *OTpred* of the data.frame).
 
 
@@ -323,7 +323,7 @@ In output, these two models provides lists of same structure:
 
 <p align="justify">To guarantee the convergence of the algorithm:
 
-- It is suggested to work with a limited number of matching variables and so to select them rigouresly using *select_pred* or another process of selection.
+- It is suggested to work with a limited number of matching variables and so to select them rigorously using *select_pred* or another process of selection.
 - Choosing a small value of the *prox.X* argument improves the convergence and the running time of the function.
 
 For our example, the corresponding R code for the prediction of *c.neti.bis* in *data1* is: </p> 
