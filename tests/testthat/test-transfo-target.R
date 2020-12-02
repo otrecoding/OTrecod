@@ -53,11 +53,13 @@ test_that("the formats are respected", {
   test5  = transfo_target(ZZ,levels_order = c("C","B","A"))
   expect_equal(is.ordered(test5[[1]]),TRUE)
 
+  test6  = transfo_target(ZZ,levels_order = c("A","B","D","C"))
+  expect_identical(test6[[2]],levels(ZZ))
 
   # ordered factor
   UU    = as.ordered(YY)
-  test6 = transfo_target(UU)
-  expect_equal(is.ordered(test6[[1]]),TRUE)
+  test7 = transfo_target(UU)
+  expect_equal(is.ordered(test7[[1]]),TRUE)
 
 
 })

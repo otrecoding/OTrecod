@@ -62,7 +62,7 @@ table(samp.A$c.neti)   # Repartition of c.neti in the sample
 
 - From the *c.neti* variable, we built a variable called *c.neti.bis* that corresponds to a second encoding of the persons net income now coded in 4 ordered levels (1: by grouping the first two levels of *c.neti*, 2: by grouping the two subsequent levels of *c.neti*, 3: by grouping the last two levels).
 - To improve the running time of the example, we only kept the first 350 subjects (rows) of *samp.A*.
-- This new sample has been divided in two distinct subsamples called *data1* (200 rows: subjects 1 to 200) and *data2* (150 rows: sujects 201 to 350).
+- This new sample has been randomly divided in two distinct subsamples called *data1* (200 rows: subjects 1 to 200) and *data2* (150 rows: sujects 201 to 350).
 - The *c.neti.bis* variable has been excluded from *data1* and respectively *c.neti* have been excluded from *data2*.
 - Among the other variables, a random subset of them have been assigned in each database. 
 
@@ -386,9 +386,9 @@ Here the two target variables *c.neti* and *c.neti.bis* are supposed to summariz
 - Finally, studying the stability of the predictions (see *res.stab* object) shows good results whatever the considered model.</p> 
 
 
-**OBJECTIVE**
+**CONCLUSION**
 <p align="justify"> **The two first models are here more adapted when the strong distributional hypothesis previously introduced holds.** **Nevertheless, the mod3_jt model could be significantly improved by adding appropriate relaxation and regularization terms, so now, R user,**
-**try by yourself !** </p>
+**test it by yourself !** </p>
 
 &nbsp;
 
