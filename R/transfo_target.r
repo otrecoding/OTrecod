@@ -72,7 +72,8 @@ transfo_target = function(z,levels_order=NULL){
 
     z = as.factor(z)
 
-    if (length(union(levels(z),levels_order)) == nlev){
+    # if (length(union(levels(z),levels_order)) == nlev){
+      if (length(levels(z)) == nlev){
 
       z = ordered(z,levels = levels_order)
 

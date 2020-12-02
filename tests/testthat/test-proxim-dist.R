@@ -7,7 +7,7 @@ test_that("proxim_dist works", {
 
   ## test1: Manhattan dist. with NAs, standard order for DB, Y and Z
 
-  test1 = proxim_dist(tab1,norm = "M")
+  test1 = proxim_dist(tab1, norm = "M")
 
   # global
 
@@ -53,10 +53,15 @@ test_that("proxim_dist works", {
 
   ## varying prox argument
 
-  test2 = proxim_dist(tab1,norm = "M", prox = 0.20)
+  test2 = proxim_dist(tab1, norm = "E", prox = 0.20)
 
   expect_lt(sum(sapply(test2[[13]],length)),sum(sapply(test1[[13]],length)))
   expect_lt(sum(sapply(test2[[14]],length)),sum(sapply(test1[[14]],length)))
+
+  test2b = proxim_dist(tab1, norm = "E", prox = 0)
+
+  expect_lt(sum(sapply(test2b[[13]],length)),sum(sapply(test1[[13]],length)))
+  expect_lt(sum(sapply(test2b[[14]],length)),sum(sapply(test1[[14]],length)))
 
 
   ## varying order for DB, Y and Z
@@ -93,6 +98,15 @@ test_that("proxim_dist works", {
   expect_equal(length(test5[[14]]),nrow(test5[[5]]))
   expect_equal(dim(test5[[15]]),c(test5[[2]],test5[[2]]))
   expect_equal(dim(test5[[16]]),c(test5[[3]],test5[[3]]))
+
+  # Only on covariate
+
+  tab5  = tab1[,c(1:3,8)]
+  tab6  = tab5[!is.na(tab5[,4]),]
+  test6 = proxim_dist(tab6, norm = "G")
+
+  expect_equal(dim(test6[[15]]),c(test6[[2]],test6[[2]]))
+  expect_equal(dim(test6[[16]]),c(test6[[3]],test6[[3]]))
 
 
 })
