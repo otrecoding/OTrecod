@@ -45,7 +45,7 @@ Obviously, each time an R session is opened, the **OTrecod** library must be loa
 library(OTrecod)
 ```
 
-Moreover, the development version of **OTrecod** can be installed actually from [GitHub][gh] with:
+Moreover, the development version of **OTrecod** can be installed actually from [GitHub](https://github.com/otrecoding/OTrecod) with:
 
 ```r
 # Install development version from GitHub
