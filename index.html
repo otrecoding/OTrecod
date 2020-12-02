@@ -80,13 +80,11 @@
 
 <p>The <strong>OTrecod</strong> package gives access to a set of original functions dedicated to data fusion.</p>
 <p align="justify">
+From two separate data sources with no overlapping units, sharing only a set of common variables X and a same target information not jointly observed in a same encoding from one data source to another (Y in A and Z in B), the functions <strong>OT_outcome</strong> and <strong>OT_joint</strong> aim at providing users a complete synthetic database where the missing information is available for every unit.
 </p>
-<p>From two separate data sources with no overlapping units, sharing only a set of common variables X and a same target information not jointly observed in a same encoding from one data source to another (Y in A and Z in B), the functions <strong>OT_outcome</strong> and <strong>OT_joint</strong> aims at providing users a complete synthetic database where the missing information is available for every unit.</p>
-
 <p align="justify">
+This recoding problem is solved using the optimal transportation theory which provides a map that transfers the joint distribution of the first target variable and X to the joint distribution of the second one and X, or inversely. Algorithms used in these two functions come from the references (1) and (2).
 </p>
-<p>This recoding problem is solved using the optimal transportation theory which provides a map that transfers the joint distribution of the first target variable and X to the joint distribution of the second one and X, or inversely. Algorithms used in these two functions come from the references (1) and (2).</p>
-
 <p> </p>
 </div>
 <div id="package-installation" class="section level2">
@@ -98,7 +96,7 @@
 <p>Obviously, each time an R session is opened, the <strong>OTrecod</strong> library must be loaded with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">OTrecod</span><span class="op">)</span></code></pre></div>
-<p>Moreover, the development version of <strong>OTrecod</strong> can be installed actually from <br><span class="math display"><em>G</em><em>i</em><em>t</em><em>H</em><em>u</em><em>b</em></span><br><br><span class="math display"><em>g</em><em>h</em></span><br> with:</p>
+<p>Moreover, the development version of <strong>OTrecod</strong> can be installed actually from <a href="https://github.com/otrecoding/OTrecod">GitHub</a> with:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Install development version from GitHub</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"otrecoding/OTrecod"</span><span class="op">)</span></code></pre></div>
@@ -108,9 +106,8 @@
 <h2 class="hasAnchor">
 <a href="#database-examples-and-expected-structure-before-data-fusion" class="anchor"></a>Database examples and expected structure before data fusion</h2>
 <p align="justify">
+The available databases called <strong>tab_test</strong> and <strong>simu_data</strong> correspond to overlayed databases used as examples in the documentation of all the functions. Their structures can help users understanding the database structure expected as input argument of the functions <strong>OT_outcome</strong> and <strong>OT_joint</strong>. The first rows of the two overlayed data sources of <strong>simu_data</strong> are visualized as follows to inform about the expected database structure:
 </p>
-<p>The available databases called <strong>tab_test</strong> and <strong>simu_data</strong> correspond to overlayed databases used as examples in the documentation of all the functions. Their structures can help users understanding the database structure expected as input argument of the functions <strong>OT_outcome</strong> and <strong>OT_joint</strong>. The first rows of the two overlayed data sources of <strong>simu_data</strong> are visualized as follows to inform about the expected database structure:</p>
-
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">data</span>(simu_data)</span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="kw">dim</span>(simu_data)</span>
 <span id="cb4-3"><a href="#cb4-3"></a>[<span class="dv">1</span>] <span class="dv">700</span>   <span class="dv">8</span></span>
@@ -127,30 +124,25 @@
 <span id="cb4-14"><a href="#cb4-14"></a><span class="dv">304</span>  B    <span class="op">&lt;</span><span class="ot">NA</span><span class="op">&gt;</span><span class="st">   </span><span class="dv">2</span> Female     Trt A   <span class="op">&lt;</span><span class="ot">NA</span><span class="op">&gt;</span><span class="st">      </span>NO <span class="fl">50.15125</span></span>
 <span id="cb4-15"><a href="#cb4-15"></a><span class="dv">305</span>  B    <span class="op">&lt;</span><span class="ot">NA</span><span class="op">&gt;</span><span class="st">   </span><span class="dv">1</span> Female     Trt B  Dos <span class="dv">4</span>     YES <span class="fl">61.53242</span></span></code></pre></div>
 <p align="justify">
+The first column called <em>DB</em> corresponds here to the database identifier (two data sources called here 1 and 2 with the data source 1 placed above the data source 2). The second column called <em>Yb1</em> is the target variable of the data source 1. The values of <em>Yb1</em> in the data source 2 are missing and will be predicted using an optimal transportation algorithm integrated in one of the two functions called <strong>OT_outcome</strong> and <strong>OT_joint</strong>. In the same way, the variable <em>Yb2</em> (third column) is the target variable of the data source 2 whose values in 1 are unknown. These missing values can also be predicted using <strong>OT_outcome</strong> and <strong>OT_joint</strong>.
 </p>
-<p>The first column called <em>DB</em> corresponds here to the database identifier (two data sources called here 1 and 2 with the data source 1 placed above the data source 2). The second column called <em>Yb1</em> is the target variable of the data source 1. The values of <em>Yb1</em> in the data source 2 are missing and will be predicted using an optimal transportation algorithm integrated in one of the two functions called <strong>OT_outcome</strong> and <strong>OT_joint</strong>. In the same way, the variable <em>Yb2</em> (third column) is the target variable of the data source 2 whose values in 1 are unknown. These missing values can also be predicted using <strong>OT_outcome</strong> and <strong>OT_joint</strong>.</p>
-
 <p align="justify">
+The presence of these three variables is essential in any database dedicated to datafusion in the <strong>OTrecod</strong> package whatevever their names and whatever their orders in the database. The following columns correspond to shared variables of any type, complete or not. Note that continuous variables (like age in years) are not allowed with the <strong>OT_joint</strong> function.
 </p>
-<p>The presence of these three variables is essential in any database dedicated to datafusion in the <strong>OTrecod</strong> package whatevever their names and whatever their orders in the database. The following columns corresponds to shared variables of any type, complete or not. Notice that continuous variables (like age in years) are not allowed with the <strong>OT_joint</strong> function.</p>
-
 <p align="justify">
+Support functions are available in the package (<strong>merge_dbs</strong>, <strong>imput_cov</strong>) to assist user in this preparation.
 </p>
-<p>Support functions are available in the package (<strong>merge_dbs</strong>, <strong>imput_cov</strong>) to assist user in this preparation.</p>
-
 <p align="justify">
+Finally, the supplementary datasets <strong>api29</strong> and <strong>api35</strong> are simple datasets extracted from the API program (<a href="https://www.cde.ca.gov/re/pr/api.asp" class="uri">https://www.cde.ca.gov/re/pr/api.asp</a>) to allow users to practice with convenient databases.
 </p>
-<p>Finally, the supplementary datasets <strong>api29</strong> and <strong>api35</strong> are simple datasets extracted from the API program (<a href="https://www.cde.ca.gov/re/pr/api.asp" class="uri">https://www.cde.ca.gov/re/pr/api.asp</a>) to allow users to practice with convenient databases.</p>
-
 <p> </p>
 </div>
 <div id="support-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#support-functions" class="anchor"></a>Support functions</h2>
 <p align="justify">
+Among the available functions, the <strong>OTrecod</strong> package provides a set of support functions to assist users in each step of their data fusion projects.
 </p>
-<p>Among the available functions, the <strong>OTrecod</strong> package provides a set of support functions to assist users in each step of their data fusion projects.</p>
-
 <div id="merge_dbs" class="section level3">
 <h3 class="hasAnchor">
 <a href="#merge_dbs" class="anchor"></a>merge_dbs</h3>
@@ -162,14 +154,13 @@
 <li>excluding a priori shared variables with different types.</li>
 <li>excluding a priori shared factors with different levels.</li>
 </ul>
-<p>The actual form of the function does not propose automatic reconciliation actions to reintroduce the problematic variables but gives user enough information in output to do it by himself if necessary. The call of the <strong>merge_dbs</strong> function is actually:</p>
+The actual form of the function does not propose automatic reconciliation actions to reintroduce the problematic variables but gives user enough information in output to do it by himself if necessary. The call of the <strong>merge_dbs</strong> function is actually:
 
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>merge_dbs =<span class="st"> </span><span class="cf">function</span>(DB1, DB2, <span class="dt">row_ID1 =</span> <span class="ot">NULL</span>, <span class="dt">row_ID2 =</span> <span class="ot">NULL</span>, NAME_Y, NAME_Z, <span class="dt">order_levels_Y =</span> <span class="kw">levels</span>(DB1[, NAME_Y]), <span class="dt">order_levels_Z =</span> <span class="kw">levels</span>(DB2[, NAME_Z]), <span class="dt">ordinal_DB1 =</span> <span class="ot">NULL</span>, <span class="dt">ordinal_DB2 =</span> <span class="ot">NULL</span>,</span>
 <span id="cb5-2"><a href="#cb5-2"></a>                     <span class="dt">impute =</span> <span class="st">"NO"</span>, <span class="dt">R_MICE =</span> <span class="dv">5</span>, <span class="dt">NCP_FAMD =</span> <span class="dv">3</span>, <span class="dt">seed_func =</span> <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">1000000</span>, <span class="dv">1</span>))</span></code></pre></div>
 <p align="justify">
+The <strong>merge_dbs</strong> function notably provides in output an unique database, result of the overlayed of the two initial data sources, in the structure expected by the <strong>OT_outcome</strong> and <strong>OT_joint</strong> functions.
 </p>
-<p>The <strong>merge_dbs</strong> function notably provides in output an unique database, result of the overlayed of the two initial data sources, in the structure expected by the <strong>OT_outcome</strong> and <strong>OT_joint</strong> functions.</p>
-
 <p> </p>
 </div>
 <div id="select_pred" class="section level3">
@@ -178,7 +169,7 @@
 <p align="justify">
 </p>
 <p>The <strong>select_pred</strong> function is a pre-process data fusion function dedicated to the selection of matching variables. This selection is essential when the initial set of shared variables is important, but also because the choice of predictors greatly influences the quality of the data fusion whatever the optimal transportation algorithms chosen a posteriori.</p>
-<p>The call of the <strong>select_pred</strong> function is actually:</p>
+The call of the <strong>select_pred</strong> function is actually:
 
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>select_pred =<span class="st"> </span><span class="cf">function</span>(databa,<span class="dt">Y =</span> <span class="ot">NULL</span>, <span class="dt">Z =</span> <span class="ot">NULL</span>, <span class="dt">ID =</span> <span class="dv">1</span>, <span class="dt">OUT =</span> <span class="st">"Y"</span>, <span class="dt">quanti =</span> <span class="ot">NULL</span>, <span class="dt">nominal =</span> <span class="ot">NULL</span>, <span class="dt">ordinal =</span> <span class="ot">NULL</span>, <span class="dt">logic =</span> <span class="ot">NULL</span>,</span>
 <span id="cb6-2"><a href="#cb6-2"></a>                       <span class="dt">convert_num =</span> <span class="ot">NULL</span>, <span class="dt">convert_clss =</span> <span class="ot">NULL</span>, <span class="dt">thresh_cat =</span> <span class="fl">0.30</span>, <span class="dt">thresh_num =</span> <span class="fl">0.70</span>, <span class="dt">thresh_Y =</span> <span class="fl">0.20</span>,</span>
@@ -189,9 +180,8 @@
 <h3 class="hasAnchor">
 <a href="#verif_ot" class="anchor"></a>verif_OT</h3>
 <p align="justify">
+The <strong>verif_OT</strong> function is a post-process data fusion function dedicated to the validation of the fusion. The function provides a set of tools to assess the quality of the optimal transportation recoding proposed by the algorithms to predict the missing information of the target variables in one or both datasources.
 </p>
-<p>The <strong>verif_OT</strong> function is a post-process data fusion function dedicated to the validation of the fusion. The function provides a set of tools to assess the quality of the optimal transportation recoding proposed by the algorithms to predict the missing information of the target variables in one or both datasources.</p>
-
 <p>The call of the <strong>verif_OT</strong> function is actually:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>verif_OT =<span class="st"> </span><span class="cf">function</span>(ot_out, <span class="dt">group.clss =</span> <span class="ot">FALSE</span>, <span class="dt">ordinal =</span> <span class="ot">TRUE</span>, <span class="dt">stab.prob =</span> <span class="ot">FALSE</span>, <span class="dt">min.neigb =</span> <span class="dv">1</span>, <span class="dt">R =</span> <span class="dv">10</span>, <span class="dt">seed.stab =</span> <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">1000000</span>, <span class="dv">1</span>))</span></code></pre></div>
 <p> </p>
@@ -203,7 +193,7 @@
 <p align="justify">
 </p>
 <p>The <strong>OTrecod</strong> package provides two algorithms that use optimal transportation theory to solve recoding problems in data fusion contexts (see (1) and (2) for more details). Each algorithm is stored in one function and each function provides in output a unique and synthetic database where the two initial data sources are overlayed and the missing information from only one or both target variables are fully completed.</p>
-<p>Each of the two alogorithms also proposed enrichments by relaxing the initial distributional constraints and adding regularization terms as described in (2).</p>
+Each of the two alogorithms also proposed enrichments by relaxing the initial distributional constraints and adding regularization terms as described in (2).
 
 <p> </p>
 <div id="ot_outcome" class="section level3">
@@ -212,12 +202,12 @@
 <p align="justify">
 </p>
 <p>The <strong>OT_outcome</strong> function can provide individual predictions of the incomplete target variables by considering the recoding problem involving only optimal transportation of outcomes (see (1) and (2) for more details).</p>
-<p>The call of the <strong>OT_outcome</strong> function is:</p>
+The call of the <strong>OT_outcome</strong> function is:
 
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>OT_outcome =<span class="st"> </span><span class="cf">function</span>(datab, <span class="dt">index_DB_Y_Z =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">quanti =</span> <span class="ot">NULL</span>, <span class="dt">nominal =</span> <span class="ot">NULL</span>, <span class="dt">ordinal =</span> <span class="ot">NULL</span>,<span class="dt">logic =</span> <span class="ot">NULL</span>,</span>
 <span id="cb8-2"><a href="#cb8-2"></a>                      <span class="dt">convert.num =</span> <span class="ot">NULL</span>, <span class="dt">convert.clss =</span> <span class="ot">NULL</span>, <span class="dt">FAMD.coord =</span> <span class="st">"NO"</span>, <span class="dt">FAMD.perc =</span> <span class="fl">0.8</span>,</span>
 <span id="cb8-3"><a href="#cb8-3"></a>                      <span class="dt">dist.choice =</span> <span class="st">"E"</span>, <span class="dt">percent.knn =</span> <span class="dv">1</span>, <span class="dt">maxrelax =</span> <span class="dv">0</span>, <span class="dt">indiv.method =</span> <span class="st">"sequential"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4"></a>                      <span class="dt">prox.dist =</span> <span class="fl">0.80</span>, <span class="dt">solvR =</span> <span class="st">"glpk"</span>, <span class="dt">which.DB =</span> <span class="st">"BOTH"</span>)</span></code></pre></div>
+<span id="cb8-4"><a href="#cb8-4"></a>                      <span class="dt">prox.dist =</span> <span class="fl">0.30</span>, <span class="dt">solvR =</span> <span class="st">"glpk"</span>, <span class="dt">which.DB =</span> <span class="st">"BOTH"</span>)</span></code></pre></div>
 <p> </p>
 </div>
 <div id="ot_joint" class="section level3">
@@ -226,19 +216,21 @@
 <p align="justify">
 </p>
 <p>The <strong>OT_joint</strong> function can provide individual predictions of the incomplete target variables by considering the recoding problem involving optimal transportation of shared variables and outcomes (see(2) for more details).</p>
-<p>The call of the <strong>OT_joint</strong> function is:</p>
+The call of the <strong>OT_joint</strong> function is:
 
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>OT_joint =<span class="st"> </span><span class="cf">function</span>(datab, <span class="dt">index_DB_Y_Z =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">nominal =</span> <span class="ot">NULL</span>, <span class="dt">ordinal =</span> <span class="ot">NULL</span>,<span class="dt">logic =</span> <span class="ot">NULL</span>,</span>
 <span id="cb9-2"><a href="#cb9-2"></a>                    <span class="dt">convert.num =</span> <span class="ot">NULL</span>, <span class="dt">convert.clss =</span> <span class="ot">NULL</span>, <span class="dt">dist.choice =</span> <span class="st">"E"</span>, <span class="dt">percent.knn =</span> <span class="dv">1</span>,</span>
-<span id="cb9-3"><a href="#cb9-3"></a>                    <span class="dt">maxrelax =</span> <span class="dv">0</span>, <span class="dt">lambda.reg =</span> <span class="fl">0.0</span>, <span class="dt">prox.X =</span> <span class="fl">0.80</span>, <span class="dt">solvR =</span> <span class="st">"glpk"</span>, <span class="dt">which.DB =</span> <span class="st">"BOTH"</span>)</span></code></pre></div>
+<span id="cb9-3"><a href="#cb9-3"></a>                    <span class="dt">maxrelax =</span> <span class="dv">0</span>, <span class="dt">lambda.reg =</span> <span class="fl">0.0</span>, <span class="dt">prox.X =</span> <span class="fl">0.10</span>, <span class="dt">solvR =</span> <span class="st">"glpk"</span>, <span class="dt">which.DB =</span> <span class="st">"BOTH"</span>)</span></code></pre></div>
 <p> </p>
 </div>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<p>1) Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N. (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.Volume 16, Issue 1, 20180106, eISSN 1557-4679- <a href="https://doi.org/10.1515/ijb-2018-0106" class="uri">https://doi.org/10.1515/ijb-2018-0106</a>.</p>
-<p>2) Gares V, Omer J (2020). Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 - <a href="https://doi.org/10.1080/01621459.2020.1775615" class="uri">https://doi.org/10.1080/01621459.2020.1775615</a>.</p>
+<ol>
+<li><p>Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N. (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.Volume 16, Issue 1, 20180106, eISSN 1557-4679- <a href="https://doi.org/10.1515/ijb-2018-0106" class="uri">https://doi.org/10.1515/ijb-2018-0106</a>.</p></li>
+<li><p>Gares V, Omer J (2020). Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 - <a href="https://doi.org/10.1080/01621459.2020.1775615" class="uri">https://doi.org/10.1080/01621459.2020.1775615</a>.</p></li>
+</ol>
 </div>
 </div>
 
