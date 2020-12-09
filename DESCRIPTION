@@ -1,5 +1,5 @@
 Package: OTrecod
-Title: Data fusion using optimal transportation theory
+Title: Data fusion using Optimal Transportation Theory
 Version: 0.1.0
 Authors@R: c(
   person(given = "Gregory" , family = "Guernec"     , role = c("aut","cre"), email = "otrecod.pkg@gmail.com"),

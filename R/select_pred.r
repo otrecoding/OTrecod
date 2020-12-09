@@ -121,7 +121,7 @@
 #' \item Farrar D, and Glauber R. (1968). Multicolinearity in regression analysis. Review of Economics and Statistics, 49, 92–107.
 #' \item Breiman L. (2001). Random Forests. Machine Learning, 45(1), 5–32.
 #' \item Hothorn T, Buehlmann P, Dudoit S, Molinaro A, Van Der Laan M (2006). “Survival Ensembles.” Biostatistics, 7(3), 355–373.
-#' \item Strobl C, Boulesteix A-L, Kneib T, Augustin T, Zeileis A (2008). Conditional Variable Importance for Random Forests. BMC Bioinformatics, 9, 307. \url{http://www.biomedcentral.com/1471-2105/9/307}
+#' \item Strobl C, Boulesteix A-L, Kneib T, Augustin T, Zeileis A (2008). Conditional Variable Importance for Random Forests. BMC Bioinformatics, 9, 307. \url{https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-9-307}
 #' }
 #'
 #' @author Gregory Guernec

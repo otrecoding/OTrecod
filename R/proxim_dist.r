@@ -233,6 +233,20 @@ proxim_dist  = function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.30){
 
   } else {}
 
+
+  if (is.numeric(dat[,2])){
+
+    dat[,2] = as.factor(dat[,2])
+
+  } else {}
+
+  if (is.numeric(dat[,3])){
+
+    dat[,3] = as.factor(dat[,3])
+
+  } else {}
+
+
   if (nrow(dat[dat[,1] == 1,1:2])!= nrow(na.omit(dat[dat[,1] == 1,1:2]))){
 
     stop("Y has at least one NA in the 1st database, please correct it and return")
@@ -297,24 +311,10 @@ proxim_dist  = function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.30){
   indB = (nA+1):(nA+nB)
 
   # Modify Y and Z so that they go from 1 to the number of modalities
-  Y = sort(unique(Yobserv[Yobserv != -1]));
-  Z = sort(unique(Zobserv[Zobserv != -1]));
-  for (i in 1:length(Y)){
-
-    Yobserv[Yobserv == Y[i]]= i
-
-  }
-
-  #Y = [i for i in 1:length(Y)];
-  Y = 1:length(Y)
-  for (i in 1:length(Z)){
-
-    Zobserv[Zobserv == Z[i]] = i
-
-  }
-
-  #Z = [i for i in 1:length(Z)];
-  Z = 1:length(Z)
+  Yobserv = as.numeric(Yobserv)
+  Zobserv = as.numeric(Zobserv)
+  Y = 1:max(Yobserv,na.rm = TRUE)
+  Z = 1:max(Zobserv,na.rm = TRUE)
 
 
   # list the distinct modalities in A and B
