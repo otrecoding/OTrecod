@@ -41,9 +41,9 @@ devtools::install_github("otrecoding/OTrecod")
 
 ## I. The context
 
-<p align="justify"> This vignette illustrates how to use the tools contained in the **OTrecod** package to solve a variable recoding problem frequently encountered in the context of data fusion. For more details about the theory of the algorithms used in the functions **OT_outcome** and **OT_joint** of the package, user can consult (1),(2) and the documentation linked to each function. </p>
+<p align="justify"> This vignette illustrates how to use the tools contained in the **OTrecod** package to solve a variable recoding problem frequently encountered in the context of data fusion. For more details about the theory of the algorithms used in the functions **OT\_outcome** and **OT\_joint** of the package, user can consult (1),(2) and the documentation linked to each function. </p>
 
-<p align="justify"> For this example, we have transformed an available database called *samp.A* from the **StatMatch** package (see (3) and `?samp.A` for more details).
+<p align="justify"> For this example, we have transformed an available database called *samp.A* from the **StatMatch** package (see (3) and the help of *samp.A* for more details).
 The *samp.A* database provides a limited number of variables observed at persons levels among those usually collected in the *European Union Statistics on Income and Living Conditions Survey* (the EU–SILC survey). 
 In this database, the variable *c.neti* is a factor that corresponds to the persons net income of thousand of Euros categorized in 7 ordered classes. The raw distribution of *c.neti* is done in the following results: </p>
 
@@ -114,13 +114,13 @@ we deliberately limit this example to the prediction of the variable *c.neti.bis
 
 <p align="justify">  Knowing the objective of the study, we first prepare the 2 databases to data fusion.
 The two functions dedicated to this data fusion in the **OTrecod** package expect a specific structure of database as argument.
-The *merge_dbs* function assists user in this task by:
+The **merge\_dbs** function assists user in this task by:
 
 - overlaying the two databases
 - detecting the false shared variables
 - imputing incomplete information of shared variables if desired. 
  
-For this, we fill in the arguments of the *merge_dbs* function by declaring as follows, the column indexes of all the ordinal variables
+For this, we fill in the arguments of the **merge\_dbs** function by declaring as follows, the column indexes of all the ordinal variables
 in *data1* and *data2* (including the target variables indexes). Here there is no need to handle missing information because all the shared variables are complete, but note that it exists a specific argument (*impute*) in the function to take them into account when necessary.</p>
 
 ```{r,eval=TRUE}
@@ -151,14 +151,14 @@ for the example to discard it for the rest of the study.
 - The *ID1_drop* and *ID2_drop* objects are null which means that the target variables *c.neti* and *c.neti.bis* have no missing values in there respective databases.
 - Finally the *DB_READY* object provides users a synthetic database that overlays *data1* and *data2* (in this order) where the *DB* variable is the database identifier.
 
-The variable *Y* now corresponds to the target variable *c.neti* with its specific encoding in *data1* and missing values in *data2*. In the same way, the variable *Z* corresponds to *c.neti.bis*. This database have the structure expected as argument of the **OT_outcome** and **OT_joint** functions. </p>
+The variable *Y* now corresponds to the target variable *c.neti* with its specific encoding in *data1* and missing values in *data2*. In the same way, the variable *Z* corresponds to *c.neti.bis*. This database have the structure expected as argument of the **OT\_outcome** and **OT\_joint** functions. </p>
 
 &nbsp;
 
 
 ## III. Selection of the matching variables
 
-<p align="justify">  Among the set of shared variables kept in the output *DB.READY* database of the **merge_dbs**, it is important to discard those that never appear not good predictors of the persons net income whatever the considered database. The subset of remaining variables will be the matching variables. This selection of matching variables can be done using the *select_pred* function of the package.</p>
+<p align="justify">  Among the set of shared variables kept in the output *DB.READY* database of the **merge\_dbs**, it is important to discard those that never appear not good predictors of the persons net income whatever the considered database. The subset of remaining variables will be the matching variables. This selection of matching variables can be done using the **select\_pred** function of the package.</p>
 
 <p align="justify"> This function proposes two levels of study to conclude:
 
@@ -167,9 +167,9 @@ get rid of potential multicolinearities between the candidates.
 - When the conclusion of the first part appears not so clear, this study can be completed by a random forest (RF) process of selection (see *RF* argument). 
 This part is notably particularly convenient when the sample of covariates is large. The function proposes two random forest procedures: The standard RF which estimates the permutation importance criterion of each shared variable and the conditional importance measures from the *proxy* package ((4)). 
 
-At this step, the choice of the recoding algorithm (see (2)) to use a posteriori must be anticipated in the handling of the potential numeric shared variables (In this example, the *ww* variable is the only one concerned. Indeed, if the **OT_outcome** function runs whatever the type considered, this is not the case of the actual version of the **OT_joint** version which not allows the numeric variable. For this vignette we will test the two algorithms, so we decide to transform *ww* as categorial using the quartiles of its distribution as thresholds of the four classes. This transformation can be dealt by standard R function (like *cut()*) or directly in the functions using the *convert_num* and *convert_clss* arguments dedicated to this task.</p>
+At this step, the choice of the recoding algorithm (see (2)) to use a posteriori must be anticipated in the handling of the potential numeric shared variables (In this example, the *ww* variable is the only one concerned. Indeed, if the **OT\_outcome** function runs whatever the type considered, this is not the case of the actual version of the **OT\_joint** version which not allows the numeric variable. For this vignette we will test the two algorithms, so we decide to transform *ww* as categorial using the quartiles of its distribution as thresholds of the four classes. This transformation can be dealt by standard R function (like *cut()*) or directly in the functions using the *convert\_num* and *convert\_clss* arguments dedicated to this task.</p>
 
-<p align="justify"> The selection of the best predictors of the persons net income must be done in the two databases separately but the *selec_pred* functions allowed overlayed databases as arguments using the following code: </p>
+<p align="justify"> The selection of the best predictors of the persons net income must be done in the two databases separately but the **selec\_pred** functions allowed overlayed databases as arguments using the following code: </p>
 
 ```{r, eval=TRUE}
 # for data1
@@ -190,13 +190,13 @@ test_DB2 = select_pred(db_test$DB_READY,Y = "Y", Z = "Z", ID = 1, OUT = "Z",
 <p align="justify"> As input:
 
 - The *OUT* argument specifies the target variable to predict.
-- The *thresh_cat* argument corresponds to the threshold of the V Cramer coefficient (for the categorical variables) .
-- The *thresh_num* argument corresponds to the threshold of the Spearman correlation coefficient (for the continuous and ordinal variables).
+- The *thresh\_cat* argument corresponds to the threshold of the V Cramer coefficient (for the categorical variables) .
+- The *thresh\_num* argument corresponds to the threshold of the Spearman correlation coefficient (for the continuous and ordinal variables).
 Under these values, two shared variables present acceptable colinearities.
 Under these values, a shared variable is not considered as a good predictor of a target variable. 
-- The *thresh_Y* argument is reserved to random forest procedures. It corresponds to an acceptability threshold related to the importance mesure criterions. Variables with a cumulative percent of importance measures less than this threshold will be dropped from the final list of RF predictors. </p>
+- The *thresh\_Y* argument is reserved to random forest procedures. It corresponds to an acceptability threshold related to the importance mesure criterions. Variables with a cumulative percent of importance measures less than this threshold will be dropped from the final list of RF predictors. </p>
 
-<p align="justify"> Notice that it is important to keep the same arguments in the two selections (*test_DB1* and *test_DB2*) for an optimal comparability. Here the standard RF process is used, and the *ww* variable is converted in categorical type before the selection using *convert_num*. </p>
+<p align="justify"> Notice that it is important to keep the same arguments in the two selections (*test\_DB1* and *test\_DB2*) for an optimal comparability. Here the standard RF process is used, and the *ww* variable is converted in categorical type before the selection using *convert\_num*. </p>
 
 Let see the result for *data1*:
 
@@ -213,7 +213,7 @@ test_DB1$drop_var
 test_DB1$RF_PRED
 ```
 
-<p align="justify"> In the set of shared variables, all variables are now categorical (factors or ordered factors). According to the *vcrm_OUTC_cat* output object, the best predictors of *c.neti* are: *sex*, *marital*, *urb*, *hsize5*, and *ww* in that order.
+<p align="justify"> In the set of shared variables, all variables are now categorical (factors or ordered factors). According to the *vcrm_OUTC\_cat* output object, the best predictors of *c.neti* are: *sex*, *marital*, *urb*, *hsize5*, and *ww* in that order.
 Nevertheless, a risk of collinearity is detected between *marital* and *hsize5*. The RF process finally suggests to drop *marital* and to keep only *sex*, *hsize5* and eventually *urb* as matching variables. </p>
 
 Let see the result for *data2*:
@@ -230,7 +230,7 @@ test_DB2$drop_var
 test_DB2$RF_PRED
 ```
 
-<p align="justify"> According to the *vcrm_OUTC_cat* output object, the best predictors of *c.neti.bis* are: *sex*, *hsize5*, *marital*, *urb*, and *ww* in that order. A risk of collinearity is also detected between *marital* and *hsize5*. The RF process here suggests to drop *marital* and to keep only *sex*, *hsize5* as matching variables.</p>
+<p align="justify"> According to the *vcrm_OUTC\_cat* output object, the best predictors of *c.neti.bis* are: *sex*, *hsize5*, *marital*, *urb*, and *ww* in that order. A risk of collinearity is also detected between *marital* and *hsize5*. The RF process here suggests to drop *marital* and to keep only *sex*, *hsize5* as matching variables.</p>
 
 <p align="justify"> **In conclusion:**
 
@@ -254,6 +254,143 @@ match_var[c(1:5,201:205),]
 **This overlayed database is now ready for recoding.**
 
 &nbsp;
+
+
+## IV. Predicting the missing scales in the databases
+
+<p align="justify"> The **OTrecod** package proposes actually two algorithms using optimal transportation theory (see (3) for details) to solve
+the recoding problem previously introduced. Each algorithm is stored in a unique function called **OT\_outcome** and **OT\_joint**.
+These two functions can predict the missing values of *c.neti* in *data2*, the missing values of *c.neti.bis* in *data1* or the both
+using a same argument called *which.DB*.</p>
+
+<p align="justify"> As with the **select\_pred** function, it is possible to transform directly the continuous matching variables if necessary using the *convert\_num* and *convert\_clss* arguments. </p>
+
+Let see the R approach for the prediction of *c.neti.bis* in *data1*.
+
+&nbsp;
+
+
+### A) Transporting target variables to predict the missing scales
+
+<p align="justify"> The algorithm from **OT\_outcome** function solves an optimization problem to transfer the distributions of the target variables (or outcome) from one database to another. Using this result, the initial version of the algorithm (see (2)) transfers the distribution of *c.neti.bis* in *data2* to the distribution of *c.neti.bis* in *data1*, and (inversely for *c.neti* if necessary). The algorithm executes in another distinct step, a nearest neighbor procedure to affect the indidividual predictions of *c.neti.bis* in *data1*.
+This version of the algorithm is actually available by writing *sequential* as argument *method* of the **OT\_outcome** function.</p>
+
+<p align="justify">  The algorithm assumes the strong hypothesis that the variable *c.neti.bis* has the same distribution in *data1* and *data2* (and so on for the variable *c.neti*). If in this example, by construction, this hypothesis is obviously verified, there are also several contexts where this latter no longer holds.</p>
+
+<p align="justify">  Enrichments have been thus proposed (see (2)) to relax this hypothesis via the *maxrelax* argument of **OT\_outcome** and directly provides the individual predictions without using the nearest neighbor process. This algorithm is actually available by assigning the *method* argument to *optimal* in input of the **OT\_outcome** function. For our example, the corresponding R code for the prediction of *c.neti.bis* in *data1* is: </p>
+
+```{r}
+# sequential algorithm
+mod1_seq = OT_outcome(match_var, nominal = c(1,5:6), ordinal = 2:4, dist.choice = "E",
+                      maxrelax = 0 , indiv.method = "sequential", which.DB = "A")
+summary(mod1_seq)
+
+# optimal algorithm with no relaxation term
+mod2_opt = OT_outcome(match_var, nominal = c(1,5:6), ordinal = 2:4, dist.choice = "E",
+                      maxrelax = 0, indiv.method = "optimal", which.DB = "A")
+head(mod2_opt$profile)
+
+dim(mod2_opt$profile)
+
+mod2_opt$gamma_A
+
+head(mod2_opt$DATA1_OT)
+
+```
+
+
+As input:
+
+- The target *c.neti.bis* is here considered as an ordinal scale but sometimes this information can be unknown: In the situation where there is no information about the encoding, is recommended to consider it as nominal.
+- There is many possible distance functions integrated in **OT\_outcome** to evaluate the distances between individuals: Here, the Euclidean distance have been chosen.
+- The *percent.knn* argument corresponds to the fixed part (from 0 to 1) of individuals that participate to the computations of average distances between levels of target variables.
+
+In output, these two models provides lists of same structure:
+
+- *gamma_A* stores the solution of the optimization problem to determine the missing scales of *c.neti.bis* in *data1*.
+- The *profile* object gives the profiles of covariates detected by the algorithm from the two databases: Here we have 29 profiles.
+- *estimatorZA* is an array that provides for each profile, the probability for *c.neti.bis* to belong to a level given the covariates and the corresponding level of *c.neti*.
+- The *DATA1\_OT* object provides the individual predictions of *c.neti.bis* in *data1* (variable *OTpred* of the data.frame).
+
+
+&nbsp;
+
+
+### B) Transporting target and shared variables to predict the missing scales
+
+<p align="justify"> The objective of the algorithm integrated in the **OT\_joint** function is the same as that of the **OT\_outcome** function, but unlike **OT\_outcome**  transfers only the distributions of the target variables to solve the optimization problem, the **OT\_joint** function now transports the joint distribution of outcomes and covariates: This approach makes it possible to no longer assumes the strong distributional hypothesis mentionned previously.</p>
+
+<p align="justify"> Nevertheless, as with the **OT\_outcome** function, enrichments have been proposed to relax distributional constraints (see *maxrelax* argument and (2)) and eventually adds to the algorithm a regularization term to smooth the variations of target variables with respect to matching variables (see *lambda.reg* arguments).</p>
+
+<p align="justify">To guarantee the convergence of the algorithm:
+
+- It is suggested to work with a limited number of matching variables and so to select them rigorously using *select\_pred* or another process of selection.
+- Choosing a small value of the *prox.X* argument improves the convergence and the running time of the function.
+
+For our example, the corresponding R code for the prediction of *c.neti.bis* in *data1* is: </p>
+
+```{r}
+# Algorithms with no enrichments
+mod3_joint = OT_joint(match_var, nominal = c(1,5), ordinal = c(2:4,6), dist.choice = "E", which.DB = "A")
+summary(mod3_joint)
+```
+
+<p align="justify"> For a better understanding, the input arguments and output objects of the **OT\_joint** function have been thought to be similar to those proposed by the **OT\_outcome** function. As previously, the *OTpred* variable of the *DATA1\_OT* object stores the individual predictions of *c.neti.bis* in *data1*.</p>
+
+ &nbsp;
+ 
+ 
+## V. Validation of the individual predictions
+
+<p align="justify"> The **verif\_OT** function gives access to different tools for assessing the reliability of the individual predictions proposed by the **OT\_outcome** and **OT\_joint** functions.</p>
+
+```{r}
+# Validation of the mod1_seq model
+verif_out1 = verif_OT(mod1_seq, stab.prob = TRUE, min.neigb = 3)
+verif_out1$conf.mat
+
+verif_out1$res.prox
+
+verif_out1$res.stab
+
+
+# Validation of the mod2_seq model
+verif_out2 = verif_OT(mod2_opt, stab.prob = TRUE, min.neigb = 3)
+verif_out2$conf.mat
+rate_good_pred = (37+40+31+45+18+13+9)/200
+rate_good_pred
+
+verif_out2$res.prox
+
+verif_out2$res.stab
+
+
+# Validation of the mod3_opt model
+verif_jt   = verif_OT(mod3_joint, stab.prob = TRUE, min.neigb = 3)
+verif_jt$conf.mat
+
+verif_jt$res.prox
+
+verif_jt$res.stab
+```
+
+<p align="justify"> As input:
+
+- When the *stab.prob* argument is set to *TRUE*, the function provides information about the average stability of the individual predictions.
+- The *min.neigb* argument specifies that individuals whose probabilities of assignments have been estimated using less than 3 neighbors are dropped from this average (see the documentation of the function for more details).</p>
+
+<p align="justify"> As output, we have selected the most interesting one to make the comparison between the three tested models:
+
+- The *conf.mat* object provides the confusion matrix between *c.neti* and the individual predictions of *c.neti.bis* in *data1*.
+Here the two target variables *c.neti* and *c.neti.bis* are supposed to summarize a same information, so if the two scales are ordered, a clear structure in the confusion matrix traduces a good logical in the prediction. In our example, by construction, we also know the real encoding of *c.neti.bis*: We can so easily verify that the rate of good predictions equals 0.965 for the *mod2\_opt* model, 0.93 for the *mod1\_seq* model and 0.635 for the *mod3\_jt* model.
+- Studying the proximity between the distributions of *c.neti* and *c.neti.bis* in *data1* via the V Cramer criterion (see *res.prox* object) confirms that the *mod2\_opt* model is the more adapted for our example.
+- Finally, studying the stability of the predictions (see *res.stab* object) shows good results whatever the considered model.</p>
+
+
+**CONCLUSION**
+ <p align="justify"> **The two first models are here more adapted when the strong distributional hypothesis previously introduced holds.** **Nevertheless, the mod3\_jt model could be significantly improved by adding appropriate relaxation and regularization terms, so now, R user,**
+**test it by yourself !** </p>
+
 
 
 ## References
