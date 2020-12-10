@@ -12,7 +12,7 @@
 #'
 #' where: \eqn{i = 1,\dots,\mbox{nrow}(A)} and  \eqn{k = 1,\dots,\mbox{nrow}(B)}; And the expression located to the right term of the multiplication corresponds to a specific weigh applied in presence of NAs in \eqn{A_i} and/or \eqn{B_k}.
 #'
-#' This specificity is not implemented in the \code{\link[rdist]{cdist}} function and the Hamming distance can not be computed using the \code{\link[proxy]{dist}} function either.
+#' This specificity is not implemented in the \code{cdist} function and the Hamming distance can not be computed using the \code{\link[proxy]{dist}} function either.
 #'
 #' The Hamming distance can not be calculated in only two situations:
 #' \enumerate{
