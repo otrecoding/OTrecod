@@ -337,7 +337,7 @@ summary(mod3_joint)
 
 <p align="justify"> For a better understanding, the input arguments and output objects of the **OT\_joint** function have been thought to be similar to those proposed by the **OT\_outcome** function. As previously, the *OTpred* variable of the *DATA1\_OT* object stores the individual predictions of *c.neti.bis* in *data1*.</p>
 
- &nbsp;
+&nbsp;
  
  
 ## V. Validation of the individual predictions
@@ -401,9 +401,9 @@ Here the two target variables *c.neti* and *c.neti.bis* are supposed to summariz
 
 (3) D’Orazio, M (2015). Integration and imputation of survey data in R: the StatMatch package. Romanian Statistical Review, vol. 63(2), pages 57-68
 
-(4) Strobl C, Boulesteix A-L, Kneib T, Augustin T, Zeileis A (2008). Conditional Variable Importance for Random Forests. BMC Bioinformatics, 9, 307 - (https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-9-307)
+(4) Strobl C, Boulesteix A-L, Kneib T, Augustin T, Zeileis A (2008). Conditional Variable Importance for Random Forests. BMC Bioinformatics, 9, 307 - https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-9-307
 
-
+&nbsp;
 
 
 
