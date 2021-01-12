@@ -73,7 +73,7 @@ summary(imput_famd)
 \references{
 \enumerate{
 \item van Buuren, S., Groothuis-Oudshoorn, K. (2011). mice: Multivariate Imputation by Chained Equations in R. Journal of Statistical Software, 45(3), 1–67. url{https://www.jstatsoft.org/v45/i03/}
-\item Josse J, Husson F. (2016). missMDA: A Package for Handling Missing Values in Multivariate Data Analysis. Journal of Statistical Software, 70(1), 1–31. DOI: 10.18637/jss.v070.i01
+\item Josse J, Husson F (2016). missMDA: A Package for Handling Missing Values in Multivariate Data Analysis. Journal of Statistical Software, 70(1), 1–31. \doi{10.18637/jss.v070.i01}
 }
 }
 \author{

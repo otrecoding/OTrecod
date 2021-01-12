@@ -83,7 +83,7 @@
 #'
 #' @references
 #' \enumerate{
-#' \item Gares V, Omer J (2020). Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association, doi: 10.1080/01621459.2020.1775615 | \url{https://doi.org/10.1080/01621459.2020.1775615}
+#' \item Gares V, Omer J (2020) Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association. \doi{10.1080/01621459.2020.1775615}
 #' \item Anderberg, M.R. (1973). Cluster analysis for applications, 359 pp., Academic Press, New York, NY, USA.
 #' \item Borg, I. and Groenen, P. (1997). Modern Multidimensional Scaling. Theory and Applications. Springer.
 #' \item Gower, J. C. (1971). A general coefficient of similarity and some of its properties. Biometrics, 27, 623--637.
