@@ -307,12 +307,11 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3, nominal = NULL, ordinal = NULL,lo
 ## References
 
 1)  Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy
-    N. (2019). On the use of optimal transportation theory to recode
+    N (2019). On the use of optimal transportation theory to recode
     variables and application to database merging. The International
     Journal of Biostatistics.Volume 16, Issue 1, 20180106, eISSN
-    1557-4679- <https://doi.org/10.1515/ijb-2018-0106>.
+    1557-4679.
 
 2)  Gares V, Omer J (2020). Regularized optimal transport of covariates
     and outcomes in data recoding. Journal of the American Statistical
-    Association, doi: 10.1080/01621459.2020.1775615 -
-    <https://doi.org/10.1080/01621459.2020.1775615>.
+    Association.
