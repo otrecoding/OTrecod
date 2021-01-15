@@ -8,6 +8,7 @@ Authors@R: c(
   person(given = "Jeremy"  , family = "Omer"        , role = "ctb"),
   person(given = "Philippe", family = "Saint-Pierre", role = "ctb"),
   person(given = "Nicolas" , family = "Savy"        , role = "ctb"))
+Maintainer: Gregory Guernec <otrecod.pkg@gmail.com>
 Description: In the context of data fusion, the package provides a set of functions dedicated to the solving of 'recoding problems' using optimal transportation theory (<doi:10.1080/01621459.2020.1775615>). From two databases with no overlapping part except a subset of shared variables, the functions of the package assist users until obtaining a unique synthetic database, where the missing information is fully completed.
 License: GPL-3
 Encoding: UTF-8
