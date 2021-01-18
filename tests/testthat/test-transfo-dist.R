@@ -25,18 +25,18 @@ test_that("transfo_dist works", {
   # Gower distance ok
   test3 = transfo_dist(sim_data, quanti = c(3,8), nominal = c(1,4:5,7),
                        ordinal = c(2,6), logic = NULL, prep_choice = "G")
-
-  expect_equal(dim(test3),dim(sim_data))
+  #
+  # expect_equal(dim(test3),dim(sim_data))
 
   # FAMD ok
-  test4 = transfo_dist(sim_data, quanti = c(3,8), nominal = c(1,4:5,7),
-                       ordinal = c(2,6), logic = NULL, prep_choice = "FAMD")
+  # test4 = transfo_dist(sim_data, quanti = c(3,8), nominal = c(1,4:5,7),
+  #                     ordinal = c(2,6), logic = NULL, prep_choice = "FAMD")
 
   test5 = transfo_dist(sim_data, quanti = c(3,8), nominal = c(1,4:5,7),
                        ordinal = c(2,6), logic = NULL, prep_choice = "FAMD",info = 0.5)
 
   expect_equal(dim(test3),dim(sim_data))
-  expect_lt(ncol(test5),ncol(test3))
+  expect_lt(ncol(test5),ncol(test2))
 
   # Boolean ok
 

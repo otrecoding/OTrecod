@@ -11,7 +11,7 @@ test_that("select_pred works", {
                       RF = FALSE)
 
 
-  expect_that(test1,is_a("list"))
+  # expect_that(test1,is_a("list"))
   expect_equal(length(test1),11)
 
   expect_true(is.numeric(test1[[1]]))
@@ -40,7 +40,7 @@ test_that("select_pred works", {
                       RF = TRUE, RF_SEED = 448571)
 
   expect_equal(test2[[1]],448571)
-  expect_that(test2,is_a("list"))
+  # expect_that(test2,is_a("list"))
   expect_equal(length(test2),14)
 
 
@@ -80,18 +80,18 @@ test_that("select_pred works", {
 
   # RF condi
 
-  ident_NA  = unique(unlist(lapply(sim_data2[,3:9],function(x)which(is.na(x)))))
-  sim_data4 = sim_data2[-ident_NA,]
+  # ident_NA  = unique(unlist(lapply(sim_data2[,3:9],function(x)which(is.na(x)))))
+  # sim_data4 = sim_data2[-ident_NA,]
 
-  test5 = select_pred(sim_data4,Y = "Yb1", Z = "Yb2", ID = 4, OUT = "Y",
-                      quanti = c(2,8), nominal = c(4,3,5,7), ordinal = c(1,6),
-                      logic = 9, convert_num = 8, convert_clss = 4,
-                      thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
-                      RF = TRUE, RF_condi = TRUE, RF_SEED = 2036)
+  # test5 = select_pred(sim_data4,Y = "Yb1", Z = "Yb2", ID = 4, OUT = "Y",
+    #                  quanti = c(2,8), nominal = c(4,3,5,7), ordinal = c(1,6),
+    #                  logic = 9, convert_num = 8, convert_clss = 4,
+    #                  thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+    #                  RF = TRUE, RF_condi = TRUE, RF_SEED = 2036)
 
-  expect_equal(length(test5),14)
-  expect_equal(test5[[1]],2036)
-  expect_equal(dim(test5[[5]]),dim(sim_data4[sim_data4[,4]=="A",]))
+  # expect_equal(length(test5),14)
+  # expect_equal(test5[[1]],2036)
+  # expect_equal(dim(test5[[5]]),dim(sim_data4[sim_data4[,4]=="A",]))
 
 
 })
