@@ -57,10 +57,10 @@ test_that("transfo_dist works", {
   sim_data3 = sim_data
   sim_data3$nw_var = stats::rnorm(nrow(sim_data),10,2)
 
-  test8 = transfo_dist(sim_data3,quanti = c(3,8,9), nominal = c(1,4:5,7),ordinal = c(2,6),
-                       convert_num = c(8,9), convert_clss = c(3,4), prep_choice = "H")
-
-  expect_equal(nrow(test8),nrow(sim_data))
+  # test8 = transfo_dist(sim_data3,quanti = c(3,8,9), nominal = c(1,4:5,7),ordinal = c(2,6),
+  #                      convert_num = c(8,9), convert_clss = c(3,4), prep_choice = "H")
+  #
+  # expect_equal(nrow(test8),nrow(sim_data))
 
 
 

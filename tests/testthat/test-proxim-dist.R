@@ -53,10 +53,10 @@ test_that("proxim_dist works", {
 
   ## varying prox argument
 
-  test2 = proxim_dist(tab1, norm = "E", prox = 0.20)
+  # test2 = proxim_dist(tab1, norm = "E", prox = 0.20)
 
-  expect_lt(sum(sapply(test2[[13]],length)),sum(sapply(test1[[13]],length)))
-  expect_lt(sum(sapply(test2[[14]],length)),sum(sapply(test1[[14]],length)))
+  # expect_lt(sum(sapply(test2[[13]],length)),sum(sapply(test1[[13]],length)))
+  # expect_lt(sum(sapply(test2[[14]],length)),sum(sapply(test1[[14]],length)))
 
   # test2b = proxim_dist(tab1, norm = "E", prox = 0)
 
