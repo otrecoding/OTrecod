@@ -203,7 +203,7 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,
 
   } else {}
 
-  if (!is.null(quanti)){
+  if (length(quanti)>0){
 
     if (max(quanti)>ncol(DB)){
 
@@ -213,7 +213,7 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,
 
   } else {}
 
-  if (!is.null(nominal)){
+  if (length(nominal)>0){
 
     if (max(nominal)>ncol(DB)){
 
@@ -223,7 +223,7 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,
 
   } else {}
 
-  if (!is.null(ordinal)){
+  if (length(ordinal)>0){
 
     if (max(ordinal)>ncol(DB)){
 
@@ -233,7 +233,7 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,
 
   } else {}
 
-  if (!is.null(logic)){
+  if (length(logic)>0){
 
     if (max(logic)>ncol(DB)){
 

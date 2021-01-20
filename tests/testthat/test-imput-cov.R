@@ -1,19 +1,10 @@
-test_that("there are no discrepancies between arguments",{
-
-  data(simu_data)
-
-  typ_mic = c("logreg","polyreg","polr")
-  expect_error(imput_cov(simu_data, indcol = 4:8, R_mice = 3, meth = typ_mic))
-
-})
-
 test_that("mice works",{
 
   data(simu_data)
   sim_data = simu_data[c(1:100,301:450),]
 
   ind1 = 4:8
-  imp1 = imput_cov(sim_data, indcol = ind1, R_mice = 3, meth = c("logreg","polyreg","polr","logreg","pmm"))
+  imp1 = imput_cov(sim_data, indcol = ind1, R_mice = 2, meth = c("logreg","polyreg","polr","logreg","pmm"))
 
   # global
   # expect_that(imp1,is_a("list"))
@@ -32,17 +23,17 @@ test_that("mice works",{
   # expect_identical(lapply(imp1[[3]],typeof),lapply(simu_data[ind1],typeof))
 
   # output 4
-  expect_equal(length(imp1[[4]]),3)
+  expect_equal(length(imp1[[4]]),2)
   expect_identical(colnames(imp1[[4]][[1]]),colnames(sim_data)[ind1])
 
 
-  ind3 = c(4,6:8)
-  imp3 = imput_cov(sim_data, indcol = ind3, R_mice = 3, meth = c("logreg","polr","logreg","pmm"))
+  # ind3 = c(4,6:8)
+  # imp3 = imput_cov(sim_data, indcol = ind3, R_mice = 2, meth = c("logreg","polr","logreg","pmm"))
 
-  expect_identical(colnames(imp3[[3]]),colnames(sim_data)[ind3])
+  # expect_identical(colnames(imp3[[3]]),colnames(sim_data)[ind3])
 
   ind4 = c(6:8,4)
-  imp4 = imput_cov(sim_data, indcol = ind4, R_mice = 3, meth = c("polr","logreg","pmm","logreg"))
+  imp4 = imput_cov(sim_data, indcol = ind4, R_mice = 2, meth = c("polr","logreg","pmm","logreg"))
 
   expect_identical(colnames(imp4[[3]]),colnames(sim_data)[ind4])
 
@@ -71,3 +62,16 @@ test_that("famd works",{
   expect_identical(colnames(imp2[[3]]),colnames(simu_data)[ind2])
 
 })
+
+# test_that("there are no discrepancies between arguments",{
+#
+#  data(simu_data)
+#
+#  typ_mic = c("logreg","polyreg","polr")
+#  expect_error(imput_cov(simu_data, indcol = 4:8, R_mice = 3, meth = typ_mic))
+#
+#})
+
+
+
+

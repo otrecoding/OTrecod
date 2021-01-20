@@ -17,7 +17,7 @@ test_that("OT_outcome works", {
   expect_equal(nrow(test1[[2]]),length(levels(simu_data[,2])))
   expect_equal(ncol(test1[[2]]),length(levels(as.factor(simu_data[,3]))))
 
-  expect_that(test1[[5]],is_a("list"))
+  # expect_that(test1[[5]],is_a("list"))
   expect_equal(nrow(test1[[5]][[5]]),nrow(test1[[4]]))
 
   expect_that(test1[[6]],is_a("array"))
