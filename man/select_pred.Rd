@@ -186,7 +186,7 @@ test_DB2 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
                        RF = FALSE)
 
-\dontrun{
+\donttest{
 ### Example 3
 #-----
 # - With same conditions as example 1

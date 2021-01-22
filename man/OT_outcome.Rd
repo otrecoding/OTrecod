@@ -213,7 +213,7 @@ try1$profile[1,]   # Details of P_1
 # ... And so on, the reasoning is the same for the estimatorYB object.
 
 
-\dontrun{
+\donttest{
 
 ### An example of OUTCOME algorithm with same conditions as the previous example, excepted that;
 # - Only the individual predictions of Y in B are required

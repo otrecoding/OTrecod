@@ -108,7 +108,7 @@ res1 = proxim_dist(try1, norm = "M")  # try1 compatible with norm = "E" for Eucl
 try2 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
                     ordinal = c(2,6), logic = NULL, prep_choice = "FAMD",info = 0.80)
 res2_E  = proxim_dist(try2,norm = "E")
-\dontrun{
+\donttest{
 res2_M  = proxim_dist(try2, norm = "M")
 }
 
@@ -118,7 +118,7 @@ try3 = transfo_dist(simu_data[c(1:100,301:400),],quanti = c(3,8), nominal = c(1,
                     ordinal = c(2,6), logic = NULL, prep_choice = "G")
 res3 = proxim_dist(try3, norm = "G")
 
-\dontrun{
+\donttest{
 ### Ex 4a: The Hamming distance with binary (but incomplete) covariates only
 
 # categorization of the continuous covariates age by tertiles
@@ -133,17 +133,17 @@ simu_data_CC = simu_data[(!is.na(simu_data[,5]))&(!is.na(simu_data[,6]))
 try4b = transfo_dist(simu_data_CC,quanti = 3, nominal = c(1,4:5,7),ordinal = c(2,6),
                      prep_choice = "H")
 res4b = proxim_dist(try4b, norm = "H")
-}
+
 
 ### Ex 5: PARTICULAR CASE, If only one covariate with no NAs
 
 try5 = try1[,c(1:3,7)]           # Only Smoking variable
 try6 = try5[!is.na(try5[,4]),]   # Keep complete case
 res6_M = proxim_dist(try6,norm = "M", prox = 0.10)
-\dontrun{
+
 res7_H = proxim_dist(try6,norm = "H") # Hamming
-}
-\dontrun{
+
+
 ### Ex 6: PARTICULAR CASE, many covariates but NAs in distance matrix
 
 # We generated NAs in the try1 object so that:

@@ -177,14 +177,14 @@
 #' try1J = OT_joint(tab_test2, nominal = c(1,4:5), ordinal = c(2,3),
 #'                  dist.choice = "G", which.DB = "B")
 #'
-#' \dontrun{
+#' \donttest{
 #'
 #' ### An example of R-JOINT algorithm using the previous database,
 #' ### and keeping the same options excepted for:
 #' #-----
 #' # - The distances are estimated using the Gower function
 #' # - Inclusion of an error term in the constraints on
-#'     the marginals (relaxation term)
+#' #   the marginals (relaxation term)
 #' # Predictions are assessed for Y1 AND Y2 in A and B respectively
 #' #-----
 #'
@@ -278,17 +278,17 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
 
   } else {}
 
-  cat("---------------------------------------","\n")
-  cat("OT JOINT PROCEDURE in progress ..."     ,"\n")
-  cat("---------------------------------------","\n")
-  cat("Type                  = ", ifelse((maxrelax == 0)&(lambda.reg == 0),"JOINT","R-JOINT"),"\n")
-  cat("Distance              = ", ifelse(dist.choice == "H","Hamming",ifelse(dist.choice == "M","Manhattan",ifelse(dist.choice == "E","Euclidean","Gower"))),"\n")
-  cat("Percent closest       = ", 100.0*percent.knn, "%","\n")
-  cat("Relaxation term       = ", maxrelax, "\n")
-  cat("Regularization term   = ", lambda.reg  ,"\n")
-  cat("Aggregation tol cov   = ", prox.X,"\n")
-  cat("DB imputed            = ", which.DB,"\n")
-  cat("---------------------------------------","\n")
+  message("---------------------------------------","\n")
+  message("OT JOINT PROCEDURE in progress ..."     ,"\n")
+  message("---------------------------------------","\n")
+  message("Type                  = ", ifelse((maxrelax == 0)&(lambda.reg == 0),"JOINT","R-JOINT"),"\n")
+  message("Distance              = ", ifelse(dist.choice == "H","Hamming",ifelse(dist.choice == "M","Manhattan",ifelse(dist.choice == "E","Euclidean","Gower"))),"\n")
+  message("Percent closest       = ", 100.0*percent.knn, "%","\n")
+  message("Relaxation term       = ", maxrelax, "\n")
+  message("Regularization term   = ", lambda.reg  ,"\n")
+  message("Aggregation tol cov   = ", prox.X,"\n")
+  message("DB imputed            = ", which.DB,"\n")
+  message("---------------------------------------","\n")
 
 
   tstart = Sys.time()

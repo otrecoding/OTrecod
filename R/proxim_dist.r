@@ -126,7 +126,7 @@
 #' try2 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
 #'                     ordinal = c(2,6), logic = NULL, prep_choice = "FAMD",info = 0.80)
 #' res2_E  = proxim_dist(try2,norm = "E")
-#' \dontrun{
+#' \donttest{
 #' res2_M  = proxim_dist(try2, norm = "M")
 #' }
 #'
@@ -136,7 +136,7 @@
 #'                     ordinal = c(2,6), logic = NULL, prep_choice = "G")
 #' res3 = proxim_dist(try3, norm = "G")
 #'
-#' \dontrun{
+#' \donttest{
 #' ### Ex 4a: The Hamming distance with binary (but incomplete) covariates only
 #'
 #' # categorization of the continuous covariates age by tertiles
@@ -151,17 +151,17 @@
 #' try4b = transfo_dist(simu_data_CC,quanti = 3, nominal = c(1,4:5,7),ordinal = c(2,6),
 #'                      prep_choice = "H")
 #' res4b = proxim_dist(try4b, norm = "H")
-#' }
+#'
 #'
 #' ### Ex 5: PARTICULAR CASE, If only one covariate with no NAs
 #'
 #' try5 = try1[,c(1:3,7)]           # Only Smoking variable
 #' try6 = try5[!is.na(try5[,4]),]   # Keep complete case
 #' res6_M = proxim_dist(try6,norm = "M", prox = 0.10)
-#' \dontrun{
+#'
 #' res7_H = proxim_dist(try6,norm = "H") # Hamming
-#' }
-#' \dontrun{
+#'
+#'
 #' ### Ex 6: PARTICULAR CASE, many covariates but NAs in distance matrix
 #'
 #' # We generated NAs in the try1 object so that:
@@ -399,9 +399,9 @@ proxim_dist  = function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.30){
 
     warning("THE PROCESS STOPPED")
 
-    cat("!!! Because of the presence of NAs in distance matrix, the process stopped",
-        "Combinations of rows of A and B with NAs cause pbs and have to be removed or imputed",
-        "To help you, the indexes of rows are listed in the returned object",sep="\n")
+    message("!!! Because of the presence of NAs in distance matrix, the process stopped",
+            "Combinations of rows of A and B with NAs cause pbs and have to be removed or imputed",
+            "To help you, the indexes of rows are listed in the returned object",sep="\n")
 
     return(list(ROWS_TABLE = tab_pb, ROWS_TO_RM = freq_pb))
 

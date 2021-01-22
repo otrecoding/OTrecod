@@ -164,7 +164,7 @@
 #'                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
 #'                        RF = FALSE)
 #'
-#' \dontrun{
+#' \donttest{
 #' ### Example 3
 #' #-----
 #' # - With same conditions as example 1
@@ -334,7 +334,7 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
   } else {}
 
 
-  cat("The select_pred function is running. Please wait ...","\n")
+  message("The select_pred function is running. Please wait ...","\n")
 
 
   # Exclude systematically ID and Y and Z before discretization
@@ -683,7 +683,7 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
 
     if (nrow(candidates)!=0){
 
-      cat("Risks of collinearity between predictors detected. Consult outputs for more details ...","\n")
+      message("Risks of collinearity between predictors detected. Consult outputs for more details ...","\n")
 
       # } else {}
 

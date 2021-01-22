@@ -80,8 +80,8 @@ transfo_target = function(z,levels_order=NULL){
     } else {
 
       z = as.factor(z)
-      cat("Inappropriate number or declared labels of levels","\n")
-      cat("The default levels have been kept","\n")
+      message("Inappropriate number or declared labels of levels","\n")
+      message("The default levels have been kept","\n")
 
     }
 
@@ -92,14 +92,14 @@ transfo_target = function(z,levels_order=NULL){
   if ((is.numeric(z))&(nlev == 0)){
 
     # cat("Your target was numeric ... By default, it has been converted in factor of integers","\n")
-    cat(paste("Your target",deparse(substitute(z)),"was numeric ... By default, it has been converted in factor of integers",sep=" "),"\n")
+    message(paste("Your target",deparse(substitute(z)),"was numeric ... By default, it has been converted in factor of integers",sep=" "),"\n")
     z = as.factor(as.integer(z))
-    cat(paste(length(levels(z)),"remaining levels",sep=" "),"\n")
+    message(paste(length(levels(z)),"remaining levels",sep=" "),"\n")
 
 
   } else if ((is.numeric(z))&(nlev!=0)){
 
-    cat(paste("Your target",deparse(substitute(z)),"was numeric ... By default, it has been converted in factor of integers",sep=" "),"\n")
+    message(paste("Your target",deparse(substitute(z)),"was numeric ... By default, it has been converted in factor of integers",sep=" "),"\n")
     z = as.factor(as.integer(z))
 
     if (length(union(levels(z),levels_order)) == nlev){
@@ -109,8 +109,8 @@ transfo_target = function(z,levels_order=NULL){
     } else {
 
       z = as.factor(as.integer(z))
-      cat("Inappropriate number or declared labels of levels","\n")
-      cat("The default labels have been kept","\n")
+      message("Inappropriate number or declared labels of levels","\n")
+      message("The default labels have been kept","\n")
 
     }
 

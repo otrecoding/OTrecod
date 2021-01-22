@@ -137,7 +137,7 @@
 #' try4 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),ordinal = c(2,6),
 #' convert_num = 8, convert_clss = 3, prep_choice = "H")
 #'
-#' \dontrun{
+#' \donttest{
 #' # Other situation with a new numeric covariate with a finite number of values
 #' simu_dat = simu_data[,-8]
 #' simu_dat$new = sample(1:3,nrow(simu_data),replace = TRUE)
@@ -518,7 +518,7 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,
       DB_NEW  = DB_NEW[countNA==0,]
       DB_NEW2 = DB_NEW[,-index_DB_Y_Z]
 
-      cat(
+      message(
         "Only",
         nrow(DB_NEW),"rows",
         "(",
