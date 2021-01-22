@@ -71,7 +71,7 @@
 #' error_group(Z3,Z1,FALSE)
 #'
 #'
-#' \dontrun{
+#' \donttest{
 #'
 #' ### using a sample of the tab_test object (3 complete covariates)
 #' ### Y1 and Y2 are a same variable encoded in 2 different forms in DB 1 and 2:

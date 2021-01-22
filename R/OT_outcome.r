@@ -198,7 +198,7 @@
 #' # ... And so on, the reasoning is the same for the estimatorYB object.
 #'
 #'
-#' \dontrun{
+#' \donttest{
 #'
 #' ### An example of OUTCOME algorithm with same conditions as the previous example, excepted that;
 #' # - Only the individual predictions of Y in B are required
@@ -275,17 +275,17 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
 
   tstart = Sys.time()
 
-  cat("---------------------------------------","\n")
-  cat("OT PROCEDURE in progress ..."           ,"\n")
-  cat("---------------------------------------","\n")
-  cat("Type                     = ", ifelse((maxrelax == 0) & (indiv.method == "sequential"),"OUTCOME","R-OUTCOME"),"\n")
-  cat("Distance                 = ", ifelse(dist.choice == "H","Hamming",ifelse(dist.choice == "M","Manhattan",ifelse(dist.choice == "E","Euclidean","Gower"))),"\n")
-  cat("Percent closest knn      = ", 100.0*percent.knn,"%","\n")
-  cat("Relaxation parameter     = ", ifelse(maxrelax == 0,"NO","YES"),"\n")
-  cat("Relaxation value         = ", maxrelax,"\n")
-  cat("Individual pred process  = ", ifelse(indiv.method == "sequential","Sequential","Optimal"),"\n")
-  cat("DB imputed               = ", which.DB,"\n")
-  cat("---------------------------------------","\n")
+  message("---------------------------------------","\n")
+  message("OT PROCEDURE in progress ..."           ,"\n")
+  message("---------------------------------------","\n")
+  message("Type                     = ", ifelse((maxrelax == 0) & (indiv.method == "sequential"),"OUTCOME","R-OUTCOME"),"\n")
+  message("Distance                 = ", ifelse(dist.choice == "H","Hamming",ifelse(dist.choice == "M","Manhattan",ifelse(dist.choice == "E","Euclidean","Gower"))),"\n")
+  message("Percent closest knn      = ", 100.0*percent.knn,"%","\n")
+  message("Relaxation parameter     = ", ifelse(maxrelax == 0,"NO","YES"),"\n")
+  message("Relaxation value         = ", maxrelax,"\n")
+  message("Individual pred process  = ", ifelse(indiv.method == "sequential","Sequential","Optimal"),"\n")
+  message("DB imputed               = ", which.DB,"\n")
+  message("---------------------------------------","\n")
 
 
   if (index_DB_Y_Z[2] %in% quanti){

@@ -112,7 +112,7 @@ try1 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(
 ver1 = verif_OT(try1); ver1
 
 
-\dontrun{
+\donttest{
 
 ### Example 2
 #-----

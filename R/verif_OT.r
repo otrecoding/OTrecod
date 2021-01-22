@@ -112,7 +112,7 @@
 #' ver1 = verif_OT(try1); ver1
 #'
 #'
-#' \dontrun{
+#' \donttest{
 #'
 #' ### Example 2
 #' #-----

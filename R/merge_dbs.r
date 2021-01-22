@@ -162,7 +162,7 @@ merge_dbs = function(DB1,
                      R_MICE = 5,
                      NCP_FAMD = 3,
                      seed_func = sample(1:1000000, 1)) {
-  cat("DBS MERGING in progress. Please wait ...", "\n")
+  message("DBS MERGING in progress. Please wait ...", "\n")
 
   if ((length(row_ID1)>1)|(length(row_ID2)>1)){
 
@@ -323,8 +323,7 @@ merge_dbs = function(DB1,
 
   if ((setequal(DB1, stats::na.omit(DB1))) &
       (setequal(DB2, stats::na.omit(DB2))) & (impute != "NO")) {
-    cat("No missing values in covariates: No imputation methods required",
-        "\n")
+    message("No missing values in covariates: No imputation methods required","\n")
     impute = "NO"
 
   } else {
@@ -384,9 +383,7 @@ merge_dbs = function(DB1,
   # Transform Y
   #-------------
 
-  cat("Y", "\n")
   Y            = transfo_target(DB1[, NAME_Y], levels_order = order_levels_Y)$NEW
-  cat("Z", "\n")
   Z            = transfo_target(DB2[, NAME_Z], levels_order = order_levels_Z)$NEW
 
   if (setequal(levels(Y), levels(Z))) {
@@ -503,11 +500,11 @@ merge_dbs = function(DB1,
 
   DB_COV$Z[1:nrow(DB1_4FUS)] = rep(NA, nrow(DB1_4FUS))
 
-  cat("DBS MERGING OK", "\n")
-  cat(rep("-", 23), sep = "")
-  cat("\n")
-  cat("SUMMARY OF DBS MERGING:", "\n")
-  cat(
+  message("DBS MERGING OK", "\n")
+  message(rep("-", 23), sep = "")
+  message("\n")
+  message("SUMMARY OF DBS MERGING:", "\n")
+  message(
     "Nb of removed subjects because of NA on targets:",
     REMOVE_SUBJECT1 + REMOVE_SUBJECT2,
     "(",
@@ -515,11 +512,11 @@ merge_dbs = function(DB1,
     "%)",
     "\n"
   )
-  cat("Nb of covariates removed because of differences between the 2 bases:",
+  message("Nb of covariates removed because of differences between the 2 bases:",
       length(remove_var),
       "\n")
-  cat("Nb of covariates remained:", ncol(DB_COV) - 3, "\n")
-  cat("Imputation on incomplete covariates:",impute,"\n")
+  message("Nb of covariates remained:", ncol(DB_COV) - 3, "\n")
+  message("Imputation on incomplete covariates:",impute,"\n")
 
   if (impute %in% c("NO", "CC", "FAMD")) {
     return(

@@ -106,7 +106,7 @@ res4      = indiv_grp_optimal(res3,jointprobaA = transport2,
             jointprobaB = transport2, percent_closest= 0.90,
             which.DB = "A")
 
-\dontrun{
+\donttest{
 ### Example 2 using The Manhattan distance with incomplete covariates
 data(simu_data)
 
@@ -132,11 +132,11 @@ transport1 = matrix(c(0,0.35285714,0,0.09142857,0,0.03571429,
 
 
 # The predicted values of Y in database B and Z in
-database A are stored in the following object:
+# database A are stored in the following object:
 
 res2 = indiv_grp_optimal(res1,jointprobaA = transport1,
                          jointprobaB = transport1,
-                         percent_closest= 0.90)                               )
+                         percent_closest= 0.90)
 summary(res2)
 }
 

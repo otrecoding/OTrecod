@@ -182,14 +182,14 @@ tab_test2 = tab_test[c(1:40,5001:5040),1:5]
 try1J = OT_joint(tab_test2, nominal = c(1,4:5), ordinal = c(2,3),
                  dist.choice = "G", which.DB = "B")
 
-\dontrun{
+\donttest{
 
 ### An example of R-JOINT algorithm using the previous database,
 ### and keeping the same options excepted for:
 #-----
 # - The distances are estimated using the Gower function
 # - Inclusion of an error term in the constraints on
-    the marginals (relaxation term)
+#   the marginals (relaxation term)
 # Predictions are assessed for Y1 AND Y2 in A and B respectively
 #-----
 
