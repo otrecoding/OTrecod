@@ -219,16 +219,15 @@ For this, we fill in the arguments of the <strong>merge_dbs</strong> function by
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">db_test</span>  <span class="op">=</span> <span class="fu"><a href="../reference/merge_dbs.html">merge_dbs</a></span><span class="op">(</span><span class="va">data1</span>, <span class="va">data2</span>, NAME_Y <span class="op">=</span> <span class="st">"c.neti"</span>, NAME_Z <span class="op">=</span> <span class="st">"c.neti.bis"</span>,
                      ordinal_DB1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">7</span><span class="op">)</span>, ordinal_DB2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,<span class="fl">6</span>,<span class="fl">9</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; DBS MERGING in progress. Please wait ... </span>
-<span class="co">#&gt; Y </span>
-<span class="co">#&gt; Z </span>
-<span class="co">#&gt; DBS MERGING OK </span>
+<span class="co">#&gt; DBS MERGING in progress. Please wait ...</span>
+<span class="co">#&gt; DBS MERGING OK</span>
 <span class="co">#&gt; -----------------------</span>
-<span class="co">#&gt; SUMMARY OF DBS MERGING: </span>
-<span class="co">#&gt; Nb of removed subjects because of NA on targets: 0 ( 0 %) </span>
-<span class="co">#&gt; Nb of covariates removed because of differences between the 2 bases: 1 </span>
-<span class="co">#&gt; Nb of covariates remained: 5 </span>
-<span class="co">#&gt; Imputation on incomplete covariates: NO</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; SUMMARY OF DBS MERGING:</span>
+<span class="co">#&gt; Nb of removed subjects because of NA on targets:0(0%)</span>
+<span class="co">#&gt; Nb of covariates removed because of differences between the 2 bases:1</span>
+<span class="co">#&gt; Nb of covariates remained:5</span>
+<span class="co">#&gt; Imputation on incomplete covariates:NO</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">db_test</span><span class="op">)</span>
 <span class="co">#&gt;               Length Class      Mode     </span>
@@ -309,7 +308,7 @@ The selection of the best predictors of the persons net income must be done in t
                        convert_num <span class="op">=</span> <span class="fl">8</span>, convert_clss <span class="op">=</span> <span class="fl">4</span>,
                        thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.10</span>,
                        RF <span class="op">=</span> <span class="cn">TRUE</span>, RF_SEED <span class="op">=</span> <span class="fl">3017</span><span class="op">)</span>
-<span class="co">#&gt; The select_pred function is running. Please wait ... </span>
+<span class="co">#&gt; The select_pred function is running. Please wait ...</span>
 <span class="co">#&gt; Risks of collinearity between predictors detected. Consult outputs for more details ...</span>
 
 <span class="co"># for data2</span>
@@ -318,7 +317,8 @@ The selection of the best predictors of the persons net income must be done in t
                        convert_num <span class="op">=</span> <span class="fl">8</span>, convert_clss <span class="op">=</span> <span class="fl">4</span>,
                        thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.10</span>,
                        RF <span class="op">=</span> <span class="cn">TRUE</span>, RF_SEED <span class="op">=</span> <span class="fl">3017</span><span class="op">)</span>
-<span class="co">#&gt; The select_pred function is running. Please wait ... </span>
+<span class="co">#&gt; The select_pred function is running. Please wait ...</span>
+<span class="co">#&gt; </span>
 <span class="co">#&gt; Risks of collinearity between predictors detected. Consult outputs for more details ...</span></code></pre></div>
 <p align="justify">
 </p>
@@ -491,16 +491,16 @@ Enrichments have been thus proposed (see (2)) to relax this hypothesis via the <
 <code class="sourceCode R"><span class="co"># sequential algorithm</span>
 <span class="va">mod1_seq</span> <span class="op">=</span> <span class="fu"><a href="../reference/OT_outcome.html">OT_outcome</a></span><span class="op">(</span><span class="va">match_var</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, dist.choice <span class="op">=</span> <span class="st">"E"</span>,
                       maxrelax <span class="op">=</span> <span class="fl">0</span> , indiv.method <span class="op">=</span> <span class="st">"sequential"</span>, which.DB <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span>
-<span class="co">#&gt; --------------------------------------- </span>
-<span class="co">#&gt; OT PROCEDURE in progress ... </span>
-<span class="co">#&gt; --------------------------------------- </span>
-<span class="co">#&gt; Type                     =  OUTCOME </span>
-<span class="co">#&gt; Distance                 =  Euclidean </span>
-<span class="co">#&gt; Percent closest knn      =  100 % </span>
-<span class="co">#&gt; Relaxation parameter     =  NO </span>
-<span class="co">#&gt; Relaxation value         =  0 </span>
-<span class="co">#&gt; Individual pred process  =  Sequential </span>
-<span class="co">#&gt; DB imputed               =  A </span>
+<span class="co">#&gt; ---------------------------------------</span>
+<span class="co">#&gt; OT PROCEDURE in progress ...</span>
+<span class="co">#&gt; ---------------------------------------</span>
+<span class="co">#&gt; Type                     = OUTCOME</span>
+<span class="co">#&gt; Distance                 = Euclidean</span>
+<span class="co">#&gt; Percent closest knn      = 100%</span>
+<span class="co">#&gt; Relaxation parameter     = NO</span>
+<span class="co">#&gt; Relaxation value         = 0</span>
+<span class="co">#&gt; Individual pred process  = Sequential</span>
+<span class="co">#&gt; DB imputed               = A</span>
 <span class="co">#&gt; ---------------------------------------</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mod1_seq</span><span class="op">)</span>
 <span class="co">#&gt;             Length Class      Mode   </span>
@@ -517,16 +517,16 @@ Enrichments have been thus proposed (see (2)) to relax this hypothesis via the <
 <span class="co"># optimal algorithm with no relaxation term</span>
 <span class="va">mod2_opt</span> <span class="op">=</span> <span class="fu"><a href="../reference/OT_outcome.html">OT_outcome</a></span><span class="op">(</span><span class="va">match_var</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, dist.choice <span class="op">=</span> <span class="st">"E"</span>,
                       maxrelax <span class="op">=</span> <span class="fl">0</span>, indiv.method <span class="op">=</span> <span class="st">"optimal"</span>, which.DB <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span>
-<span class="co">#&gt; --------------------------------------- </span>
-<span class="co">#&gt; OT PROCEDURE in progress ... </span>
-<span class="co">#&gt; --------------------------------------- </span>
-<span class="co">#&gt; Type                     =  R-OUTCOME </span>
-<span class="co">#&gt; Distance                 =  Euclidean </span>
-<span class="co">#&gt; Percent closest knn      =  100 % </span>
-<span class="co">#&gt; Relaxation parameter     =  NO </span>
-<span class="co">#&gt; Relaxation value         =  0 </span>
-<span class="co">#&gt; Individual pred process  =  Optimal </span>
-<span class="co">#&gt; DB imputed               =  A </span>
+<span class="co">#&gt; ---------------------------------------</span>
+<span class="co">#&gt; OT PROCEDURE in progress ...</span>
+<span class="co">#&gt; ---------------------------------------</span>
+<span class="co">#&gt; Type                     = R-OUTCOME</span>
+<span class="co">#&gt; Distance                 = Euclidean</span>
+<span class="co">#&gt; Percent closest knn      = 100%</span>
+<span class="co">#&gt; Relaxation parameter     = NO</span>
+<span class="co">#&gt; Relaxation value         = 0</span>
+<span class="co">#&gt; Individual pred process  = Optimal</span>
+<span class="co">#&gt; DB imputed               = A</span>
 <span class="co">#&gt; ---------------------------------------</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mod2_opt</span><span class="op">$</span><span class="va">profile</span><span class="op">)</span>
 <span class="co">#&gt;        ID sex_2 urb_2 urb_3 hsize5</span>
@@ -596,16 +596,16 @@ For our example, the corresponding R code for the prediction of <em>c.neti.bis</
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Algorithms with no enrichments</span>
 <span class="va">mod3_joint</span> <span class="op">=</span> <span class="fu"><a href="../reference/OT_joint.html">OT_joint</a></span><span class="op">(</span><span class="va">match_var</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">6</span><span class="op">)</span>, dist.choice <span class="op">=</span> <span class="st">"E"</span>, which.DB <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span>
-<span class="co">#&gt; --------------------------------------- </span>
-<span class="co">#&gt; OT JOINT PROCEDURE in progress ... </span>
-<span class="co">#&gt; --------------------------------------- </span>
-<span class="co">#&gt; Type                  =  JOINT </span>
-<span class="co">#&gt; Distance              =  Euclidean </span>
-<span class="co">#&gt; Percent closest       =  100 % </span>
-<span class="co">#&gt; Relaxation term       =  0 </span>
-<span class="co">#&gt; Regularization term   =  0 </span>
-<span class="co">#&gt; Aggregation tol cov   =  0.1 </span>
-<span class="co">#&gt; DB imputed            =  A </span>
+<span class="co">#&gt; ---------------------------------------</span>
+<span class="co">#&gt; OT JOINT PROCEDURE in progress ...</span>
+<span class="co">#&gt; ---------------------------------------</span>
+<span class="co">#&gt; Type                  = JOINT</span>
+<span class="co">#&gt; Distance              = Euclidean</span>
+<span class="co">#&gt; Percent closest       = 100%</span>
+<span class="co">#&gt; Relaxation term       = 0</span>
+<span class="co">#&gt; Regularization term   = 0</span>
+<span class="co">#&gt; Aggregation tol cov   = 0.1</span>
+<span class="co">#&gt; DB imputed            = A</span>
 <span class="co">#&gt; ---------------------------------------</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mod3_joint</span><span class="op">)</span>
 <span class="co">#&gt;             Length Class      Mode   </span>

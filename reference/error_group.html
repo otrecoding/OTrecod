@@ -205,7 +205,7 @@ Here, the tests permit to conclude that the difference of encodings between \(Y\
 #&gt; 3 1/2 3         52 -0.022    0.00  -0.025
 #&gt; 2 1 3/2         54 -0.090    0.05  -0.092</div><div class='input'>
 
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'># \donttest{</span>
 
 <span class='co'>### using a sample of the tab_test object (3 complete covariates)</span>
 <span class='co'>### Y1 and Y2 are a same variable encoded in 2 different forms in DB 1 and 2:</span>
@@ -219,13 +219,20 @@ Here, the tests permit to conclude that the difference of encodings between \(Y\
 <span class='co'># Suppose we want to impute the missing parts of Y1 in DB2 only ...</span>
 <span class='va'>try1J</span> <span class='op'>=</span> <span class='fu'><a href='OT_joint.html'>OT_joint</a></span><span class='op'>(</span><span class='va'>tab_test2</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>,
                  dist.choice <span class='op'>=</span> <span class='st'>"M"</span>, which.DB <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>OT JOINT PROCEDURE in progress ...</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Type                  = JOINT</span></div><div class='output co'>#&gt; <span class='message'>Distance              = Manhattan</span></div><div class='output co'>#&gt; <span class='message'>Percent closest       = 100%</span></div><div class='output co'>#&gt; <span class='message'>Relaxation term       = 0</span></div><div class='output co'>#&gt; <span class='message'>Regularization term   = 0</span></div><div class='output co'>#&gt; <span class='message'>Aggregation tol cov   = 0.1</span></div><div class='output co'>#&gt; <span class='message'>DB imputed            = B</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Your target DB[, "Y"] was numeric ... By default, it has been converted in factor of integers</span></div><div class='output co'>#&gt; <span class='message'>4 remaining levels</span></div><div class='output co'>#&gt; <span class='message'>Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span></div><div class='output co'>#&gt; <span class='message'>3 remaining levels</span></div><div class='input'>
 <span class='co'># Error rates between Y2 and the predictions of Y1 in the DB 2</span>
 <span class='co'># by grouping the levels of Y1:</span>
 <span class='fu'>error_group</span><span class='op'>(</span><span class='va'>try1J</span><span class='op'>$</span><span class='va'>DATA2_OT</span><span class='op'>$</span><span class='va'>Z</span>,<span class='va'>try1J</span><span class='op'>$</span><span class='va'>DATA2_OT</span><span class='op'>$</span><span class='va'>OTpred</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>try1J</span><span class='op'>$</span><span class='va'>DATA2_OT</span><span class='op'>$</span><span class='va'>Z</span>,<span class='va'>try1J</span><span class='op'>$</span><span class='va'>DATA2_OT</span><span class='op'>$</span><span class='va'>OTpred</span><span class='op'>)</span>
-
-<span class='op'>}</span>
+</div><div class='output co'>#&gt;     combi error_rate  Kappa Vcramer RankCor
+#&gt; 3 1/2/3 4       47.1  0.286    0.68   0.844
+#&gt; 1 1 2/3/4       60.0  0.098    0.95   0.664
+#&gt; 2 1/2 3/4       82.9 -0.182    0.74   0.316</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>try1J</span><span class='op'>$</span><span class='va'>DATA2_OT</span><span class='op'>$</span><span class='va'>Z</span>,<span class='va'>try1J</span><span class='op'>$</span><span class='va'>DATA2_OT</span><span class='op'>$</span><span class='va'>OTpred</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;    
+#&gt;      1  2  3  4
+#&gt;   1 12 16  0  0
+#&gt;   2  2  0  0 15
+#&gt;   3  0  0 25  0</div><div class='input'>
+<span class='co'># }</span>
 
 
 </div></pre>
