@@ -360,11 +360,11 @@ proxim_dist  = function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.30){
     } else {
 
       D  = ham(a,b)
-      print("Hamming 1/3")
+      message("Hamming 1/3")
       DA = ham(a,a)
-      print("Hamming 2/3")
+      message("Hamming 2/3")
       DB = ham(b,b)
-      print("Hamming 3/3")
+      message("Hamming 3/3")
 
     }
 
