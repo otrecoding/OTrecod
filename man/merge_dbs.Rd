@@ -115,8 +115,8 @@ As a finally step, the function checks that all values related to \eqn{Y} in B a
 ### Some transformations will be made beforehand on variables to generate
 ### heterogeneities between the two bases.
 data(simu_data)
-data_A = simu_data[simu_data$DB == "A",c(2,4:8)]; head(data_A)
-data_B = simu_data[simu_data$DB == "B",c(3,4:8)]; head(data_B)
+data_A = simu_data[simu_data$DB == "A",c(2,4:8)]
+data_B = simu_data[simu_data$DB == "B",c(3,4:8)]
 
 # For the example, a covariate is added (Weight) only in data_A
 data_A$Weight = rnorm(300,70,5)
