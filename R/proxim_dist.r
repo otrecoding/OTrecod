@@ -399,9 +399,9 @@ proxim_dist  = function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.30){
 
     warning("THE PROCESS STOPPED")
 
-    message("!!! Because of the presence of NAs in distance matrix, the process stopped",
-            "Combinations of rows of A and B with NAs cause pbs and have to be removed or imputed",
-            "To help you, the indexes of rows are listed in the returned object",sep="\n")
+    message("!!! Because of the presence of NAs in distance matrix, the process stopped. ",
+            "Combinations of rows of A and B with NAs cause pbs and have to be removed or imputed. ",
+            "To help you, the indexes of rows are listed in the returned object.",sep="\n")
 
     return(list(ROWS_TABLE = tab_pb, ROWS_TO_RM = freq_pb))
 

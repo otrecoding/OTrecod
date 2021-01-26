@@ -98,8 +98,8 @@
 #' ### Some transformations will be made beforehand on variables to generate
 #' ### heterogeneities between the two bases.
 #' data(simu_data)
-#' data_A = simu_data[simu_data$DB == "A",c(2,4:8)]; head(data_A)
-#' data_B = simu_data[simu_data$DB == "B",c(3,4:8)]; head(data_B)
+#' data_A = simu_data[simu_data$DB == "A",c(2,4:8)]
+#' data_B = simu_data[simu_data$DB == "B",c(3,4:8)]
 #'
 #' # For the example, a covariate is added (Weight) only in data_A
 #' data_A$Weight = rnorm(300,70,5)
@@ -505,18 +505,18 @@ merge_dbs = function(DB1,
   message("\n")
   message("SUMMARY OF DBS MERGING:", "\n")
   message(
-    "Nb of removed subjects because of NA on targets:",
+    "Nb of removed subjects because of NA on targets: ",
     REMOVE_SUBJECT1 + REMOVE_SUBJECT2,
     "(",
     round((REMOVE_SUBJECT1 + REMOVE_SUBJECT2) * 100 / (NB1_1 + NB2_1)),
     "%)",
     "\n"
   )
-  message("Nb of covariates removed because of differences between the 2 bases:",
+  message("Nb of covariates removed because of differences between the 2 bases: ",
       length(remove_var),
       "\n")
-  message("Nb of covariates remained:", ncol(DB_COV) - 3, "\n")
-  message("Imputation on incomplete covariates:",impute,"\n")
+  message("Nb of covariates remained: ", ncol(DB_COV) - 3, "\n")
+  message("Imputation on incomplete covariates: ",impute,"\n")
 
   if (impute %in% c("NO", "CC", "FAMD")) {
     return(

@@ -142,14 +142,6 @@ try3 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
 try4 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),ordinal = c(2,6),
 convert_num = 8, convert_clss = 3, prep_choice = "H")
 
-\donttest{
-# Other situation with a new numeric covariate with a finite number of values
-simu_dat = simu_data[,-8]
-simu_dat$new = sample(1:3,nrow(simu_data),replace = TRUE)
-try5 = transfo_dist(simu_dat,quanti = c(3,8), nominal = c(1,4:5,7),ordinal = c(2,6),
-prep_choice = "H")
-# Return Error because a continuous variable remains
-}
 
 ### This function works whatever the order of your columns in your database:
 # Suppose that we re-order columns in simu_data:
