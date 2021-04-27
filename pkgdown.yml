@@ -1,9 +1,9 @@
 pandoc: 2.7.3
-pkgdown: 1.6.1.9000
-pkgdown_sha: 84f234cf19153ce99bf1bcf875dc56248ddf0cbe
+pkgdown: 1.6.1.9001
+pkgdown_sha: dff8062d297c001dba0dfaf567bfffdc8ad89f5c
 articles:
   an-application-of-the-OTrecod-package: an-application-of-the-OTrecod-package.html
-last_built: 2021-01-26T15:36Z
+last_built: 2021-04-27T20:09Z
 urls:
   reference: https://otrecoding.github.io/OTrecod/reference
   article: https://otrecoding.github.io/OTrecod/articles

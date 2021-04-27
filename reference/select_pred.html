@@ -58,9 +58,18 @@
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -334,7 +343,8 @@ Finally, because all random forest results are subjects to random variation, use
                        quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
                        thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,
                        RF <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>The select_pred function is running. Please wait ...</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>The select_pred function is running. Please wait ...</span></div>
+<div class='input'>
 <span class='co'>### Example 2</span>
 <span class='co'>#-----</span>
 <span class='co'># - With same conditions as example 1</span>
@@ -345,7 +355,8 @@ Finally, because all random forest results are subjects to random variation, use
                        quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
                        thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,
                        RF <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>The select_pred function is running. Please wait ...</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>The select_pred function is running. Please wait ...</span></div>
+<div class='input'>
 <span class='co'># \donttest{</span>
 <span class='co'>### Example 3</span>
 <span class='co'>#-----</span>
@@ -359,7 +370,9 @@ Finally, because all random forest results are subjects to random variation, use
                        quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
                        thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,
                        RF <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi <span class='op'>=</span> <span class='cn'>FALSE</span>, RF_SEED <span class='op'>=</span> <span class='fl'>3023</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>The select_pred function is running. Please wait ...</span></div><div class='output co'>#&gt; <span class='message'>Risks of collinearity between predictors detected. Consult outputs for more details ...</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>The select_pred function is running. Please wait ...</span></div>
+<div class='output co'>#&gt; <span class='message'>Risks of collinearity between predictors detected. Consult outputs for more details ...</span></div>
+<div class='input'>
 <span class='co'>### Example 4</span>
 <span class='co'>#-----</span>
 <span class='co'># - With same conditions as example 1</span>
@@ -374,7 +387,9 @@ Finally, because all random forest results are subjects to random variation, use
                        convert_num <span class='op'>=</span> <span class='fl'>8</span>, convert_clss <span class='op'>=</span> <span class='fl'>3</span>,
                        thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,
                        RF <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi_thr <span class='op'>=</span> <span class='fl'>0.60</span>, RF_SEED <span class='op'>=</span> <span class='fl'>3023</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>The select_pred function is running. Please wait ...</span></div><div class='output co'>#&gt; <span class='message'>Risks of collinearity between predictors detected. Consult outputs for more details ...</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>The select_pred function is running. Please wait ...</span></div>
+<div class='output co'>#&gt; <span class='message'>Risks of collinearity between predictors detected. Consult outputs for more details ...</span></div>
+<div class='input'>
 <span class='co'>### Example 5</span>
 <span class='co'>#-----</span>
 <span class='co'># - Starting with a unique database</span>
@@ -386,7 +401,8 @@ Finally, because all random forest results are subjects to random variation, use
                        quanti <span class='op'>=</span> <span class='fl'>7</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span>,<span class='fl'>6</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>5</span><span class='op'>)</span>,
                        thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,
                        RF <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>The select_pred function is running. Please wait ...</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>The select_pred function is running. Please wait ...</span></div>
+<div class='input'>
 <span class='co'>### Example 6</span>
 <span class='co'>#-----</span>
 <span class='co'># - Starting with an unique database</span>
@@ -403,7 +419,9 @@ Finally, because all random forest results are subjects to random variation, use
                        convert_num <span class='op'>=</span> <span class='fl'>7</span>, convert_clss <span class='op'>=</span> <span class='fl'>3</span>,
                        thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,
                        RF <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi_thr <span class='op'>=</span> <span class='fl'>0.60</span>, RF_SEED <span class='op'>=</span> <span class='fl'>3023</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>The select_pred function is running. Please wait ...</span></div><div class='output co'>#&gt; <span class='message'>Risks of collinearity between predictors detected. Consult outputs for more details ...</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>The select_pred function is running. Please wait ...</span></div>
+<div class='output co'>#&gt; <span class='message'>Risks of collinearity between predictors detected. Consult outputs for more details ...</span></div>
+<div class='input'>
 <span class='co'># }</span>
 
 </div></pre>
@@ -418,11 +436,11 @@ Finally, because all random forest results are subjects to random variation, use
 
       <footer>
       <div class="copyright">
-  <p>Developed by Gregory Guernec, Valerie Gares.</p>
+  <p><p>Developed by Gregory Guernec, Valerie Gares.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -430,6 +448,8 @@ Finally, because all random forest results are subjects to random variation, use
 
   
 
+
+  
 
   </body>
 </html>

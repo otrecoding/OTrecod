@@ -58,9 +58,18 @@
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -247,7 +256,18 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
                  dist.choice <span class='op'>=</span> <span class='st'>"G"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
                  convert.num <span class='op'>=</span> <span class='fl'>8</span>, convert.clss <span class='op'>=</span> <span class='fl'>3</span>,
                  indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>,which.DB <span class='op'>=</span> <span class='st'>"BOTH"</span>,prox.dist <span class='op'>=</span> <span class='fl'>0.30</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Type                     = OUTCOME</span></div><div class='output co'>#&gt; <span class='message'>Distance                 = Gower</span></div><div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div><div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div><div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div><div class='output co'>#&gt; <span class='message'>Individual pred process  = Sequential</span></div><div class='output co'>#&gt; <span class='message'>DB imputed               = BOTH</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>Type                     = OUTCOME</span></div>
+<div class='output co'>#&gt; <span class='message'>Distance                 = Gower</span></div>
+<div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div>
+<div class='output co'>#&gt; <span class='message'>Individual pred process  = Sequential</span></div>
+<div class='output co'>#&gt; <span class='message'>DB imputed               = BOTH</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='input'>
 <span class='va'>ver1</span> <span class='op'>=</span> <span class='fu'>verif_OT</span><span class='op'>(</span><span class='va'>try1</span><span class='op'>)</span>; <span class='va'>ver1</span>
 </div><div class='output co'>#&gt; $seed
 #&gt; [1] 530470
@@ -281,7 +301,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 #&gt; 
 #&gt; $res.stab
 #&gt; NULL
-#&gt; </div><div class='input'>
+#&gt; </div>
+<div class='input'>
 
 <span class='co'># \donttest{</span>
 
@@ -299,7 +320,18 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
                  dist.choice <span class='op'>=</span> <span class='st'>"G"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
                  convert.num <span class='op'>=</span> <span class='fl'>8</span>, convert.clss <span class='op'>=</span> <span class='fl'>3</span>,
                  indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>,which.DB <span class='op'>=</span> <span class='st'>"B"</span>,prox.dist <span class='op'>=</span> <span class='fl'>0.30</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Type                     = OUTCOME</span></div><div class='output co'>#&gt; <span class='message'>Distance                 = Gower</span></div><div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div><div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div><div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div><div class='output co'>#&gt; <span class='message'>Individual pred process  = Sequential</span></div><div class='output co'>#&gt; <span class='message'>DB imputed               = B</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>Type                     = OUTCOME</span></div>
+<div class='output co'>#&gt; <span class='message'>Distance                 = Gower</span></div>
+<div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div>
+<div class='output co'>#&gt; <span class='message'>Individual pred process  = Sequential</span></div>
+<div class='output co'>#&gt; <span class='message'>DB imputed               = B</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='input'>
 <span class='va'>ver2</span> <span class='op'>=</span> <span class='fu'>verif_OT</span><span class='op'>(</span><span class='va'>try2</span>, group.clss <span class='op'>=</span> <span class='cn'>TRUE</span>, ordinal <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>; <span class='va'>ver2</span>
 </div><div class='output co'>#&gt; $seed
 #&gt; [1] 867460
@@ -337,7 +369,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 #&gt; 
 #&gt; $res.stab
 #&gt; NULL
-#&gt; </div><div class='input'>
+#&gt; </div>
+<div class='input'>
 
 <span class='co'>### Example 3</span>
 <span class='co'>#-----</span>
@@ -398,7 +431,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 #&gt; $res.stab
 #&gt;          N min.N  R  mean    sd
 #&gt; 2nd DB 386     5 10 0.859 0.105
-#&gt; </div><div class='input'>
+#&gt; </div>
+<div class='input'>
 <span class='co'># }</span>
 
 </div></pre>
@@ -413,11 +447,11 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 
       <footer>
       <div class="copyright">
-  <p>Developed by Gregory Guernec, Valerie Gares.</p>
+  <p><p>Developed by Gregory Guernec, Valerie Gares.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -425,6 +459,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 
   
 
+
+  
 
   </body>
 </html>

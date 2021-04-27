@@ -58,9 +58,18 @@
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -298,7 +307,16 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
                     NAME_Y <span class='op'>=</span> <span class='st'>"Yb1"</span>,NAME_Z <span class='op'>=</span> <span class='st'>"Yb2"</span>,
                     ordinal_DB1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>)</span>, ordinal_DB2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>6</span><span class='op'>)</span>,
                     impute <span class='op'>=</span> <span class='st'>"MICE"</span>,R_MICE <span class='op'>=</span> <span class='fl'>2</span>, seed_func <span class='op'>=</span> <span class='fl'>3011</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>DBS MERGING in progress. Please wait ...</span></div><div class='output co'>#&gt; <span class='message'>DBS MERGING OK</span></div><div class='output co'>#&gt; <span class='message'>-----------------------</span></div><div class='output co'>#&gt; <span class='message'></span></div><div class='output co'>#&gt; <span class='message'>SUMMARY OF DBS MERGING:</span></div><div class='output co'>#&gt; <span class='message'>Nb of removed subjects because of NA on targets: 0(0%)</span></div><div class='output co'>#&gt; <span class='message'>Nb of covariates removed because of differences between the 2 bases: 1</span></div><div class='output co'>#&gt; <span class='message'>Nb of covariates remained: 4</span></div><div class='output co'>#&gt; <span class='message'>Imputation on incomplete covariates: MICE</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>soluc1</span><span class='op'>$</span><span class='va'>DB_READY</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>DBS MERGING in progress. Please wait ...</span></div>
+<div class='output co'>#&gt; <span class='message'>DBS MERGING OK</span></div>
+<div class='output co'>#&gt; <span class='message'>-----------------------</span></div>
+<div class='output co'>#&gt; <span class='message'></span></div>
+<div class='output co'>#&gt; <span class='message'>SUMMARY OF DBS MERGING:</span></div>
+<div class='output co'>#&gt; <span class='message'>Nb of removed subjects because of NA on targets: 0(0%)</span></div>
+<div class='output co'>#&gt; <span class='message'>Nb of covariates removed because of differences between the 2 bases: 1</span></div>
+<div class='output co'>#&gt; <span class='message'>Nb of covariates remained: 4</span></div>
+<div class='output co'>#&gt; <span class='message'>Imputation on incomplete covariates: MICE</span></div>
+<div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>soluc1</span><span class='op'>$</span><span class='va'>DB_READY</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;        DB              Y          Z            Age           Gender   
 #&gt;  Min.   :1.000   [20-40]:130   1   :145   Min.   :34.37   Female:414  
 #&gt;  1st Qu.:1.000   [40-60[:127   2   : 51   1st Qu.:46.81   Male  :286  
@@ -312,26 +330,54 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 #&gt;            Trt B  :132  
 #&gt;                         
 #&gt;                         
-#&gt;                         </div><div class='input'>
+#&gt;                         </div>
+<div class='input'>
 
 <span class='co'># Ex 2: The two databases are merged and missing values are kept</span>
 <span class='va'>soluc2</span>  <span class='op'>=</span> <span class='fu'>merge_dbs</span><span class='op'>(</span><span class='va'>data_A</span>,<span class='va'>data_B</span>,
                     NAME_Y <span class='op'>=</span> <span class='st'>"Yb1"</span>,NAME_Z <span class='op'>=</span> <span class='st'>"Yb2"</span>,
                     ordinal_DB1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>)</span>, ordinal_DB2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>6</span><span class='op'>)</span>,
                     impute <span class='op'>=</span> <span class='st'>"NO"</span>,seed_func <span class='op'>=</span> <span class='fl'>3011</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>DBS MERGING in progress. Please wait ...</span></div><div class='output co'>#&gt; <span class='message'>DBS MERGING OK</span></div><div class='output co'>#&gt; <span class='message'>-----------------------</span></div><div class='output co'>#&gt; <span class='message'></span></div><div class='output co'>#&gt; <span class='message'>SUMMARY OF DBS MERGING:</span></div><div class='output co'>#&gt; <span class='message'>Nb of removed subjects because of NA on targets: 0(0%)</span></div><div class='output co'>#&gt; <span class='message'>Nb of covariates removed because of differences between the 2 bases: 1</span></div><div class='output co'>#&gt; <span class='message'>Nb of covariates remained: 4</span></div><div class='output co'>#&gt; <span class='message'>Imputation on incomplete covariates: NO</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>DBS MERGING in progress. Please wait ...</span></div>
+<div class='output co'>#&gt; <span class='message'>DBS MERGING OK</span></div>
+<div class='output co'>#&gt; <span class='message'>-----------------------</span></div>
+<div class='output co'>#&gt; <span class='message'></span></div>
+<div class='output co'>#&gt; <span class='message'>SUMMARY OF DBS MERGING:</span></div>
+<div class='output co'>#&gt; <span class='message'>Nb of removed subjects because of NA on targets: 0(0%)</span></div>
+<div class='output co'>#&gt; <span class='message'>Nb of covariates removed because of differences between the 2 bases: 1</span></div>
+<div class='output co'>#&gt; <span class='message'>Nb of covariates remained: 4</span></div>
+<div class='output co'>#&gt; <span class='message'>Imputation on incomplete covariates: NO</span></div>
+<div class='input'>
 <span class='co'># Ex 3: The two databases are merged by only keeping the complete cases</span>
 <span class='va'>soluc3</span>  <span class='op'>=</span> <span class='fu'>merge_dbs</span><span class='op'>(</span><span class='va'>data_A</span>,<span class='va'>data_B</span>,
                     NAME_Y <span class='op'>=</span> <span class='st'>"Yb1"</span>,NAME_Z <span class='op'>=</span> <span class='st'>"Yb2"</span>,
                     ordinal_DB1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>)</span>, ordinal_DB2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>6</span><span class='op'>)</span>,
                     impute <span class='op'>=</span> <span class='st'>"CC"</span>,seed_func <span class='op'>=</span> <span class='fl'>3011</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>DBS MERGING in progress. Please wait ...</span></div><div class='output co'>#&gt; <span class='message'>DBS MERGING OK</span></div><div class='output co'>#&gt; <span class='message'>-----------------------</span></div><div class='output co'>#&gt; <span class='message'></span></div><div class='output co'>#&gt; <span class='message'>SUMMARY OF DBS MERGING:</span></div><div class='output co'>#&gt; <span class='message'>Nb of removed subjects because of NA on targets: 0(0%)</span></div><div class='output co'>#&gt; <span class='message'>Nb of covariates removed because of differences between the 2 bases: 1</span></div><div class='output co'>#&gt; <span class='message'>Nb of covariates remained: 4</span></div><div class='output co'>#&gt; <span class='message'>Imputation on incomplete covariates: CC</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>DBS MERGING in progress. Please wait ...</span></div>
+<div class='output co'>#&gt; <span class='message'>DBS MERGING OK</span></div>
+<div class='output co'>#&gt; <span class='message'>-----------------------</span></div>
+<div class='output co'>#&gt; <span class='message'></span></div>
+<div class='output co'>#&gt; <span class='message'>SUMMARY OF DBS MERGING:</span></div>
+<div class='output co'>#&gt; <span class='message'>Nb of removed subjects because of NA on targets: 0(0%)</span></div>
+<div class='output co'>#&gt; <span class='message'>Nb of covariates removed because of differences between the 2 bases: 1</span></div>
+<div class='output co'>#&gt; <span class='message'>Nb of covariates remained: 4</span></div>
+<div class='output co'>#&gt; <span class='message'>Imputation on incomplete covariates: CC</span></div>
+<div class='input'>
 <span class='co'># Ex 4: The two databases are merged and incomplete covariates are imputed using FAMD</span>
 <span class='va'>soluc4</span>  <span class='op'>=</span> <span class='fu'>merge_dbs</span><span class='op'>(</span><span class='va'>data_A</span>,<span class='va'>data_B</span>,
                     NAME_Y <span class='op'>=</span> <span class='st'>"Yb1"</span>,NAME_Z <span class='op'>=</span> <span class='st'>"Yb2"</span>,
                     ordinal_DB1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>)</span>, ordinal_DB2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>6</span><span class='op'>)</span>,
                     impute <span class='op'>=</span> <span class='st'>"FAMD"</span>,NCP_FAMD <span class='op'>=</span> <span class='fl'>4</span>,seed_func <span class='op'>=</span> <span class='fl'>2096</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>DBS MERGING in progress. Please wait ...</span></div><div class='output co'>#&gt; <span class='message'>DBS MERGING OK</span></div><div class='output co'>#&gt; <span class='message'>-----------------------</span></div><div class='output co'>#&gt; <span class='message'></span></div><div class='output co'>#&gt; <span class='message'>SUMMARY OF DBS MERGING:</span></div><div class='output co'>#&gt; <span class='message'>Nb of removed subjects because of NA on targets: 0(0%)</span></div><div class='output co'>#&gt; <span class='message'>Nb of covariates removed because of differences between the 2 bases: 1</span></div><div class='output co'>#&gt; <span class='message'>Nb of covariates remained: 4</span></div><div class='output co'>#&gt; <span class='message'>Imputation on incomplete covariates: FAMD</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>DBS MERGING in progress. Please wait ...</span></div>
+<div class='output co'>#&gt; <span class='message'>DBS MERGING OK</span></div>
+<div class='output co'>#&gt; <span class='message'>-----------------------</span></div>
+<div class='output co'>#&gt; <span class='message'></span></div>
+<div class='output co'>#&gt; <span class='message'>SUMMARY OF DBS MERGING:</span></div>
+<div class='output co'>#&gt; <span class='message'>Nb of removed subjects because of NA on targets: 0(0%)</span></div>
+<div class='output co'>#&gt; <span class='message'>Nb of covariates removed because of differences between the 2 bases: 1</span></div>
+<div class='output co'>#&gt; <span class='message'>Nb of covariates remained: 4</span></div>
+<div class='output co'>#&gt; <span class='message'>Imputation on incomplete covariates: FAMD</span></div>
+<div class='input'>
 <span class='co'># Conclusion:</span>
 <span class='co'># The data fusion is successful in each situation.</span>
 <span class='co'># The Dosage and Weight covariates have been normally excluded from the fusion.</span>
@@ -349,11 +395,11 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 
       <footer>
       <div class="copyright">
-  <p>Developed by Gregory Guernec, Valerie Gares.</p>
+  <p><p>Developed by Gregory Guernec, Valerie Gares.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -361,6 +407,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 
   
 
+
+  
 
   </body>
 </html>

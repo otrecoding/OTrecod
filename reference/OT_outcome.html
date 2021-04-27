@@ -59,9 +59,18 @@ using optimal transportation (OT) of the joint distribution of outcomes." />
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -347,7 +356,18 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class='va'>try1</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_dat</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
                   dist.choice <span class='op'>=</span> <span class='st'>"M"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
                   indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Type                     = OUTCOME</span></div><div class='output co'>#&gt; <span class='message'>Distance                 = Manhattan</span></div><div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div><div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div><div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div><div class='output co'>#&gt; <span class='message'>Individual pred process  = Sequential</span></div><div class='output co'>#&gt; <span class='message'>DB imputed               = BOTH</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>DATA1_OT</span><span class='op'>)</span>  <span class='co'># Part of the completed database A</span>
+</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>Type                     = OUTCOME</span></div>
+<div class='output co'>#&gt; <span class='message'>Distance                 = Manhattan</span></div>
+<div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div>
+<div class='output co'>#&gt; <span class='message'>Individual pred process  = Sequential</span></div>
+<div class='output co'>#&gt; <span class='message'>DB imputed               = BOTH</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>DATA1_OT</span><span class='op'>)</span>  <span class='co'># Part of the completed database A</span>
 </div><div class='output co'>#&gt;   DB       Y    Z Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage     Age
 #&gt; 1  A [40-60[ &lt;NA&gt;        0           1           0         1      3  3.0342
 #&gt; 2  A [20-40] &lt;NA&gt;        1          NA          NA         0      2  0.3472
@@ -361,14 +381,16 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 #&gt; 3      2
 #&gt; 4      5
 #&gt; 5      5
-#&gt; 6      1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>DATA2_OT</span><span class='op'>)</span>  <span class='co'># Part of the completed database B</span>
+#&gt; 6      1</div>
+<div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>DATA2_OT</span><span class='op'>)</span>  <span class='co'># Part of the completed database B</span>
 </div><div class='output co'>#&gt;     DB    Y Z Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage     Age  OTpred
 #&gt; 301  B &lt;NA&gt; 5        0           0           0         1      2 -1.0701 [40-60[
 #&gt; 302  B &lt;NA&gt; 1        0           0           1        NA      4  2.9942 [20-40]
 #&gt; 303  B &lt;NA&gt; 2        0           0           0         0     NA  0.3189 [20-40]
 #&gt; 304  B &lt;NA&gt; 2        0           1           0         0     NA  0.0256 [20-40]
 #&gt; 305  B &lt;NA&gt; 1        0           0           1         1      4  2.2648 [20-40]
-#&gt; 306  B &lt;NA&gt; 1        0           0           1        NA      3  2.0712 [20-40]</div><div class='input'>
+#&gt; 306  B &lt;NA&gt; 1        0           0           1        NA      3  2.0712 [20-40]</div>
+<div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>estimatorZA</span><span class='op'>[</span>,,<span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;       [20-40]    [40-60[    [60-80]
 #&gt; P_1 0.9000000 0.01176471 0.03703704
@@ -376,11 +398,13 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 #&gt; P_3 0.8390805 0.01219512 0.03846154
 #&gt; P_4 0.9250000 0.01176471 0.03703704
 #&gt; P_5 0.8470588 0.01176471 0.03703704
-#&gt; P_6 0.8390805 0.01176471 0.03703704</div><div class='input'><span class='co'># ... Corresponds to P[Z = 1|Y,P1] when P1 corresponds to the 1st profile of covariates (P_1)</span>
+#&gt; P_6 0.8390805 0.01176471 0.03703704</div>
+<div class='input'><span class='co'># ... Corresponds to P[Z = 1|Y,P1] when P1 corresponds to the 1st profile of covariates (P_1)</span>
 <span class='co'># detailed in the 1st row of the profile object:</span>
 <span class='va'>try1</span><span class='op'>$</span><span class='va'>profile</span><span class='op'>[</span><span class='fl'>1</span>,<span class='op'>]</span>   <span class='co'># Details of P_1</span>
 </div><div class='output co'>#&gt;    ID Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage    Age
-#&gt; 1 P_1        0           1           0         1      3 3.0342</div><div class='input'>
+#&gt; 1 P_1        0           1           0         1      3 3.0342</div>
+<div class='input'>
 <span class='co'># So estimatorZA[1,1,1]= 0.2 corresponds to an estimation of:</span>
 <span class='co'># P[Z = 1|Y=[20-40],Gender_2=0,Treatment_2=1,Treatment_3=0,Smoking_2=1,Dosage=3,Age=65.44]</span>
 <span class='co'># Thus, we can conclude that all individuals with the P_1 profile of covariates have</span>
@@ -401,7 +425,18 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
                   dist.choice <span class='op'>=</span> <span class='st'>"G"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
                   convert.num <span class='op'>=</span> <span class='fl'>8</span>, convert.clss <span class='op'>=</span> <span class='fl'>3</span>,
                   indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>, which.DB <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Type                     = OUTCOME</span></div><div class='output co'>#&gt; <span class='message'>Distance                 = Gower</span></div><div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div><div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div><div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div><div class='output co'>#&gt; <span class='message'>Individual pred process  = Sequential</span></div><div class='output co'>#&gt; <span class='message'>DB imputed               = B</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>Type                     = OUTCOME</span></div>
+<div class='output co'>#&gt; <span class='message'>Distance                 = Gower</span></div>
+<div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div>
+<div class='output co'>#&gt; <span class='message'>Individual pred process  = Sequential</span></div>
+<div class='output co'>#&gt; <span class='message'>DB imputed               = B</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='input'>
 
 <span class='co'>### An example of OUTCOME algorithm with same conditions as the first example, excepted that;</span>
 <span class='co'># - Only the individual predictions of Z in A are required</span>
@@ -416,7 +451,21 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
                   dist.choice <span class='op'>=</span> <span class='st'>"H"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
                   convert.num <span class='op'>=</span> <span class='fl'>8</span>, convert.clss <span class='op'>=</span> <span class='fl'>3</span>,
                   indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>,which.DB <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Type                     = OUTCOME</span></div><div class='output co'>#&gt; <span class='message'>Distance                 = Hamming</span></div><div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div><div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div><div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div><div class='output co'>#&gt; <span class='message'>Individual pred process  = Sequential</span></div><div class='output co'>#&gt; <span class='message'>DB imputed               = B</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Hamming 1/3</span></div><div class='output co'>#&gt; <span class='message'>Hamming 2/3</span></div><div class='output co'>#&gt; <span class='message'>Hamming 3/3</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>Type                     = OUTCOME</span></div>
+<div class='output co'>#&gt; <span class='message'>Distance                 = Hamming</span></div>
+<div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div>
+<div class='output co'>#&gt; <span class='message'>Individual pred process  = Sequential</span></div>
+<div class='output co'>#&gt; <span class='message'>DB imputed               = B</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>Hamming 1/3</span></div>
+<div class='output co'>#&gt; <span class='message'>Hamming 2/3</span></div>
+<div class='output co'>#&gt; <span class='message'>Hamming 3/3</span></div>
+<div class='input'>
 
 <span class='co'>### An example of R-OUTCOME algorithm using:</span>
 <span class='co'># - An optimization procedure for individual predictions on the 2 databases</span>
@@ -426,7 +475,18 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class='va'>try4</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
                   dist.choice <span class='op'>=</span> <span class='st'>"M"</span>, percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
                   indiv.method <span class='op'>=</span> <span class='st'>"optimal"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Type                     = R-OUTCOME</span></div><div class='output co'>#&gt; <span class='message'>Distance                 = Manhattan</span></div><div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div><div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div><div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div><div class='output co'>#&gt; <span class='message'>Individual pred process  = Optimal</span></div><div class='output co'>#&gt; <span class='message'>DB imputed               = BOTH</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>Type                     = R-OUTCOME</span></div>
+<div class='output co'>#&gt; <span class='message'>Distance                 = Manhattan</span></div>
+<div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div>
+<div class='output co'>#&gt; <span class='message'>Individual pred process  = Optimal</span></div>
+<div class='output co'>#&gt; <span class='message'>DB imputed               = BOTH</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='input'>
 
 <span class='co'>### An example of R-OUTCOME algorithm with:</span>
 <span class='co'># - An optimization procedure for individual predictions on the 2 databases</span>
@@ -438,7 +498,18 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
                   dist.choice <span class='op'>=</span> <span class='st'>"E"</span>, percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>,
                   FAMD.coord <span class='op'>=</span> <span class='st'>"YES"</span>, FAMD.perc <span class='op'>=</span> <span class='fl'>0.8</span>,
                   indiv.method <span class='op'>=</span> <span class='st'>"optimal"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Type                     = R-OUTCOME</span></div><div class='output co'>#&gt; <span class='message'>Distance                 = Euclidean</span></div><div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div><div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div><div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div><div class='output co'>#&gt; <span class='message'>Individual pred process  = Optimal</span></div><div class='output co'>#&gt; <span class='message'>DB imputed               = BOTH</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>Type                     = R-OUTCOME</span></div>
+<div class='output co'>#&gt; <span class='message'>Distance                 = Euclidean</span></div>
+<div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div>
+<div class='output co'>#&gt; <span class='message'>Individual pred process  = Optimal</span></div>
+<div class='output co'>#&gt; <span class='message'>DB imputed               = BOTH</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='input'>
 
 <span class='co'>### An example of R-OUTCOME algorithm with relaxation on marginal distributions and:</span>
 <span class='co'># - An optimization procedure for individual predictions on the 2 databases</span>
@@ -450,7 +521,18 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class='va'>try6</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
                   dist.choice <span class='op'>=</span> <span class='st'>"E"</span>, percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>,
                   maxrelax <span class='op'>=</span> <span class='fl'>0.4</span>, indiv.method <span class='op'>=</span> <span class='st'>"optimal"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='output co'>#&gt; <span class='message'>Type                     = R-OUTCOME</span></div><div class='output co'>#&gt; <span class='message'>Distance                 = Euclidean</span></div><div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div><div class='output co'>#&gt; <span class='message'>Relaxation parameter     = YES</span></div><div class='output co'>#&gt; <span class='message'>Relaxation value         = 0.4</span></div><div class='output co'>#&gt; <span class='message'>Individual pred process  = Optimal</span></div><div class='output co'>#&gt; <span class='message'>DB imputed               = BOTH</span></div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='output co'>#&gt; <span class='message'>Type                     = R-OUTCOME</span></div>
+<div class='output co'>#&gt; <span class='message'>Distance                 = Euclidean</span></div>
+<div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation parameter     = YES</span></div>
+<div class='output co'>#&gt; <span class='message'>Relaxation value         = 0.4</span></div>
+<div class='output co'>#&gt; <span class='message'>Individual pred process  = Optimal</span></div>
+<div class='output co'>#&gt; <span class='message'>DB imputed               = BOTH</span></div>
+<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
+<div class='input'>
 
 <span class='co'># }</span>
 
@@ -466,11 +548,11 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 
       <footer>
       <div class="copyright">
-  <p>Developed by Gregory Guernec, Valerie Gares.</p>
+  <p><p>Developed by Gregory Guernec, Valerie Gares.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -478,6 +560,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 
   
 
+
+  
 
   </body>
 </html>
