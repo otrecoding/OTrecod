@@ -73,7 +73,7 @@ transfo_target = function(z,levels_order=NULL){
     z = as.factor(z)
 
     # if (length(union(levels(z),levels_order)) == nlev){
-      if (length(levels(z)) == nlev){
+      if (nlevels(z) == nlev){
 
       z = ordered(z,levels = levels_order)
 
@@ -85,7 +85,7 @@ transfo_target = function(z,levels_order=NULL){
 
     }
 
-  } else {}
+  }
 
 
 
@@ -94,7 +94,7 @@ transfo_target = function(z,levels_order=NULL){
     # cat("Your target was numeric ... By default, it has been converted in factor of integers","\n")
     message(paste("Your target",deparse(substitute(z)),"was numeric ... By default, it has been converted in factor of integers",sep=" "),"\n")
     z = as.factor(as.integer(z))
-    message(paste(length(levels(z)),"remaining levels",sep=" "),"\n")
+    message(paste(nlevels(z),"remaining levels",sep=" "),"\n")
 
 
   } else if ((is.numeric(z))&(nlev!=0)){
@@ -114,7 +114,7 @@ transfo_target = function(z,levels_order=NULL){
 
     }
 
-  } else {}
+  }
 
 
   return(list(NEW = z,LEVELS_NEW = levels(z)))

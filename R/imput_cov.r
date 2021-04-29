@@ -219,7 +219,7 @@ imput_cov = function(dat1,
 
   if (missMDA == FALSE){
 
-    return(list(RAW = dat1,IMPUTE = "MICE", DATA_IMPUTE = datcov_IMP,MICE_IMPS = list_mice))
+    return(list(RAW = dat1,IMPUTE = "MICE", DATA_IMPUTE = datcov_IMP, MICE_IMPS = list_mice))
 
   } else {
 
