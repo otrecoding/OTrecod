@@ -180,24 +180,21 @@ or the information is missing in B, which induces: \(\mbox{ham}(A_i,B_k) = \mbox
 
 <span class='co'># Matrix of pairwise distances with A:</span>
 <span class='fu'>ham</span><span class='op'>(</span><span class='va'>A</span>,<span class='va'>A</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;           [,1]      [,2]      [,3]      [,4]
+</div><div class='co'>#&gt;           [,1]      [,2]      [,3]      [,4]
 #&gt; [1,] 0.0000000 0.6666667 0.6666667 1.0000000
 #&gt; [2,] 0.6666667 0.0000000 0.6666667 0.3333333
 #&gt; [3,] 0.6666667 0.6666667 0.0000000 0.3333333
-#&gt; [4,] 1.0000000 0.3333333 0.3333333 0.0000000</div>
-<div class='input'>
+#&gt; [4,] 1.0000000 0.3333333 0.3333333 0.0000000</div><div class='input'>
 <span class='co'># Matrix of distances between the rows of A and the rows of B:</span>
 <span class='fu'>ham</span><span class='op'>(</span><span class='va'>A</span>,<span class='va'>B</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;           [,1]      [,2]      [,3]      [,4]      [,5]
+</div><div class='co'>#&gt;           [,1]      [,2]      [,3]      [,4]      [,5]
 #&gt; [1,] 1.0000000 0.0000000 0.3333333 0.6666667 0.6666667
 #&gt; [2,] 0.3333333 0.6666667 1.0000000 0.6666667 0.6666667
 #&gt; [3,] 0.3333333 0.6666667 0.3333333 0.0000000 0.6666667
-#&gt; [4,] 0.0000000 1.0000000 0.6666667 0.3333333 0.3333333</div>
-<div class='input'>
+#&gt; [4,] 0.0000000 1.0000000 0.6666667 0.3333333 0.3333333</div><div class='input'>
 <span class='co'># If mat_1 is a vector of binary values:</span>
 <span class='fu'>ham</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>,<span class='va'>B</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.6666667 0.3333333 0.6666667 0.3333333 1.0000000</div>
-<div class='input'>
+</div><div class='co'>#&gt; [1] 0.6666667 0.3333333 0.6666667 0.3333333 1.0000000</div><div class='input'>
 <span class='co'># Now by considering A_NA and B_NA two matrices built from A and B respectively,</span>
 <span class='co'># where missing values have been manually added:</span>
 <span class='va'>A_NA</span>        <span class='op'>=</span> <span class='va'>A</span>
@@ -208,12 +205,11 @@ or the information is missing in B, which induces: \(\mbox{ham}(A_i,B_k) = \mbox
 <span class='va'>B_NA</span><span class='op'>[</span><span class='fl'>2</span>,<span class='fl'>2</span><span class='op'>]</span> <span class='op'>=</span> <span class='cn'>NA</span>
 
 <span class='fu'>ham</span><span class='op'>(</span><span class='va'>A_NA</span>,<span class='va'>B_NA</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;      [,1] [,2]      [,3]      [,4]      [,5]
+</div><div class='co'>#&gt;      [,1] [,2]      [,3]      [,4]      [,5]
 #&gt; [1,]  1.0    0 0.3333333 0.6666667 0.6666667
 #&gt; [2,]  0.0    1 1.0000000 0.0000000 1.0000000
 #&gt; [3,]  0.5    0 0.0000000 0.0000000 0.5000000
-#&gt; [4,]  0.0    1 0.6666667 0.3333333 0.3333333</div>
-<div class='input'>
+#&gt; [4,]  0.0    1 0.6666667 0.3333333 0.3333333</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

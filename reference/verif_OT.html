@@ -256,20 +256,9 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
                  dist.choice <span class='op'>=</span> <span class='st'>"G"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
                  convert.num <span class='op'>=</span> <span class='fl'>8</span>, convert.clss <span class='op'>=</span> <span class='fl'>3</span>,
                  indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>,which.DB <span class='op'>=</span> <span class='st'>"BOTH"</span>,prox.dist <span class='op'>=</span> <span class='fl'>0.30</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div>
-<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>Type                     = OUTCOME</span></div>
-<div class='output co'>#&gt; <span class='message'>Distance                 = Gower</span></div>
-<div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div>
-<div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div>
-<div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div>
-<div class='output co'>#&gt; <span class='message'>Individual pred process  = Sequential</span></div>
-<div class='output co'>#&gt; <span class='message'>DB imputed               = BOTH</span></div>
-<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='input'>
+</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; OT PROCEDURE in progress ...</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Type                     = OUTCOME</div><div class='co'>#&gt; Distance                 = Gower</div><div class='co'>#&gt; Percent closest knn      = 90%</div><div class='co'>#&gt; Relaxation parameter     = NO</div><div class='co'>#&gt; Relaxation value         = 0</div><div class='co'>#&gt; Individual pred process  = Sequential</div><div class='co'>#&gt; DB imputed               = BOTH</div><div class='co'>#&gt; ---------------------------------------</div><div class='input'>
 <span class='va'>ver1</span> <span class='op'>=</span> <span class='fu'>verif_OT</span><span class='op'>(</span><span class='va'>try1</span><span class='op'>)</span>; <span class='va'>ver1</span>
-</div><div class='output co'>#&gt; $seed
+</div><div class='co'>#&gt; $seed
 #&gt; [1] 530470
 #&gt; 
 #&gt; $nb.profil
@@ -301,8 +290,7 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 #&gt; 
 #&gt; $res.stab
 #&gt; NULL
-#&gt; </div>
-<div class='input'>
+#&gt; </div><div class='input'>
 
 <span class='co'># \donttest{</span>
 
@@ -320,20 +308,9 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
                  dist.choice <span class='op'>=</span> <span class='st'>"G"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
                  convert.num <span class='op'>=</span> <span class='fl'>8</span>, convert.clss <span class='op'>=</span> <span class='fl'>3</span>,
                  indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>,which.DB <span class='op'>=</span> <span class='st'>"B"</span>,prox.dist <span class='op'>=</span> <span class='fl'>0.30</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>OT PROCEDURE in progress ...</span></div>
-<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>Type                     = OUTCOME</span></div>
-<div class='output co'>#&gt; <span class='message'>Distance                 = Gower</span></div>
-<div class='output co'>#&gt; <span class='message'>Percent closest knn      = 90%</span></div>
-<div class='output co'>#&gt; <span class='message'>Relaxation parameter     = NO</span></div>
-<div class='output co'>#&gt; <span class='message'>Relaxation value         = 0</span></div>
-<div class='output co'>#&gt; <span class='message'>Individual pred process  = Sequential</span></div>
-<div class='output co'>#&gt; <span class='message'>DB imputed               = B</span></div>
-<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='input'>
+</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; OT PROCEDURE in progress ...</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Type                     = OUTCOME</div><div class='co'>#&gt; Distance                 = Gower</div><div class='co'>#&gt; Percent closest knn      = 90%</div><div class='co'>#&gt; Relaxation parameter     = NO</div><div class='co'>#&gt; Relaxation value         = 0</div><div class='co'>#&gt; Individual pred process  = Sequential</div><div class='co'>#&gt; DB imputed               = B</div><div class='co'>#&gt; ---------------------------------------</div><div class='input'>
 <span class='va'>ver2</span> <span class='op'>=</span> <span class='fu'>verif_OT</span><span class='op'>(</span><span class='va'>try2</span>, group.clss <span class='op'>=</span> <span class='cn'>TRUE</span>, ordinal <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>; <span class='va'>ver2</span>
-</div><div class='output co'>#&gt; $seed
+</div><div class='co'>#&gt; $seed
 #&gt; [1] 867460
 #&gt; 
 #&gt; $nb.profil
@@ -369,8 +346,7 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 #&gt; 
 #&gt; $res.stab
 #&gt; NULL
-#&gt; </div>
-<div class='input'>
+#&gt; </div><div class='input'>
 
 <span class='co'>### Example 3</span>
 <span class='co'>#-----</span>
@@ -384,7 +360,7 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 
 <span class='va'>ver3</span> <span class='op'>=</span> <span class='fu'>verif_OT</span><span class='op'>(</span><span class='va'>try2</span>, group.clss <span class='op'>=</span> <span class='cn'>TRUE</span>, ordinal <span class='op'>=</span> <span class='cn'>TRUE</span>, stab.prob <span class='op'>=</span> <span class='cn'>TRUE</span>, min.neigb <span class='op'>=</span> <span class='fl'>5</span>,
        seed.stab <span class='op'>=</span> <span class='fl'>991891</span><span class='op'>)</span>; <span class='va'>ver3</span>
-</div><div class='output co'>#&gt; $seed
+</div><div class='co'>#&gt; $seed
 #&gt; [1] 991891
 #&gt; 
 #&gt; $nb.profil
@@ -431,8 +407,7 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 #&gt; $res.stab
 #&gt;          N min.N  R  mean    sd
 #&gt; 2nd DB 386     5 10 0.859 0.105
-#&gt; </div>
-<div class='input'>
+#&gt; </div><div class='input'>
 <span class='co'># }</span>
 
 </div></pre>

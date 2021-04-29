@@ -338,22 +338,7 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 
 <span class='va'>try1J</span> <span class='op'>=</span> <span class='fu'>OT_joint</span><span class='op'>(</span><span class='va'>tab_test2</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>,
                  dist.choice <span class='op'>=</span> <span class='st'>"G"</span>, which.DB <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>OT JOINT PROCEDURE in progress ...</span></div>
-<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>Type                  = JOINT</span></div>
-<div class='output co'>#&gt; <span class='message'>Distance              = Gower</span></div>
-<div class='output co'>#&gt; <span class='message'>Percent closest       = 100%</span></div>
-<div class='output co'>#&gt; <span class='message'>Relaxation term       = 0</span></div>
-<div class='output co'>#&gt; <span class='message'>Regularization term   = 0</span></div>
-<div class='output co'>#&gt; <span class='message'>Aggregation tol cov   = 0.1</span></div>
-<div class='output co'>#&gt; <span class='message'>DB imputed            = B</span></div>
-<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>Your target DB[, "Y"] was numeric ... By default, it has been converted in factor of integers</span></div>
-<div class='output co'>#&gt; <span class='message'>4 remaining levels</span></div>
-<div class='output co'>#&gt; <span class='message'>Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span></div>
-<div class='output co'>#&gt; <span class='message'>3 remaining levels</span></div>
-<div class='input'>
+</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; OT JOINT PROCEDURE in progress ...</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Type                  = JOINT</div><div class='co'>#&gt; Distance              = Gower</div><div class='co'>#&gt; Percent closest       = 100%</div><div class='co'>#&gt; Relaxation term       = 0</div><div class='co'>#&gt; Regularization term   = 0</div><div class='co'>#&gt; Aggregation tol cov   = 0.1</div><div class='co'>#&gt; DB imputed            = B</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Your target DB[, "Y"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 4 remaining levels</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 3 remaining levels</div><div class='input'>
 <span class='co'># \donttest{</span>
 
 <span class='co'>### An example of R-JOINT algorithm using the previous database,</span>
@@ -368,22 +353,7 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class='va'>try1RJ</span> <span class='op'>=</span> <span class='fu'>OT_joint</span><span class='op'>(</span><span class='va'>tab_test2</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>,
                   dist.choice <span class='op'>=</span> <span class='st'>"G"</span>, maxrelax <span class='op'>=</span> <span class='fl'>0.4</span>,
                   which.DB <span class='op'>=</span> <span class='st'>"BOTH"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>OT JOINT PROCEDURE in progress ...</span></div>
-<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>Type                  = R-JOINT</span></div>
-<div class='output co'>#&gt; <span class='message'>Distance              = Gower</span></div>
-<div class='output co'>#&gt; <span class='message'>Percent closest       = 100%</span></div>
-<div class='output co'>#&gt; <span class='message'>Relaxation term       = 0.4</span></div>
-<div class='output co'>#&gt; <span class='message'>Regularization term   = 0</span></div>
-<div class='output co'>#&gt; <span class='message'>Aggregation tol cov   = 0.1</span></div>
-<div class='output co'>#&gt; <span class='message'>DB imputed            = BOTH</span></div>
-<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>Your target DB[, "Y"] was numeric ... By default, it has been converted in factor of integers</span></div>
-<div class='output co'>#&gt; <span class='message'>4 remaining levels</span></div>
-<div class='output co'>#&gt; <span class='message'>Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span></div>
-<div class='output co'>#&gt; <span class='message'>3 remaining levels</span></div>
-<div class='input'>
+</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; OT JOINT PROCEDURE in progress ...</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Type                  = R-JOINT</div><div class='co'>#&gt; Distance              = Gower</div><div class='co'>#&gt; Percent closest       = 100%</div><div class='co'>#&gt; Relaxation term       = 0.4</div><div class='co'>#&gt; Regularization term   = 0</div><div class='co'>#&gt; Aggregation tol cov   = 0.1</div><div class='co'>#&gt; DB imputed            = BOTH</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Your target DB[, "Y"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 4 remaining levels</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 3 remaining levels</div><div class='input'>
 <span class='co'>### The previous example of R-JOINT algorithm with:</span>
 <span class='co'># - Adding a regularization term</span>
 <span class='co'># Predictions are assessed for Y1 and Y2 in A and B respectively</span>
@@ -392,22 +362,7 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class='va'>try2RJ</span> <span class='op'>=</span> <span class='fu'>OT_joint</span><span class='op'>(</span><span class='va'>tab_test2</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span><span class='op'>)</span>,
                   dist.choice <span class='op'>=</span> <span class='st'>"G"</span>, maxrelax <span class='op'>=</span> <span class='fl'>0.4</span>, lambda.reg <span class='op'>=</span> <span class='fl'>0.9</span>,
                   which.DB <span class='op'>=</span> <span class='st'>"BOTH"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>OT JOINT PROCEDURE in progress ...</span></div>
-<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>Type                  = R-JOINT</span></div>
-<div class='output co'>#&gt; <span class='message'>Distance              = Gower</span></div>
-<div class='output co'>#&gt; <span class='message'>Percent closest       = 100%</span></div>
-<div class='output co'>#&gt; <span class='message'>Relaxation term       = 0.4</span></div>
-<div class='output co'>#&gt; <span class='message'>Regularization term   = 0.9</span></div>
-<div class='output co'>#&gt; <span class='message'>Aggregation tol cov   = 0.1</span></div>
-<div class='output co'>#&gt; <span class='message'>DB imputed            = BOTH</span></div>
-<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>Your target DB[, "Y"] was numeric ... By default, it has been converted in factor of integers</span></div>
-<div class='output co'>#&gt; <span class='message'>4 remaining levels</span></div>
-<div class='output co'>#&gt; <span class='message'>Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span></div>
-<div class='output co'>#&gt; <span class='message'>3 remaining levels</span></div>
-<div class='input'>
+</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; OT JOINT PROCEDURE in progress ...</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Type                  = R-JOINT</div><div class='co'>#&gt; Distance              = Gower</div><div class='co'>#&gt; Percent closest       = 100%</div><div class='co'>#&gt; Relaxation term       = 0.4</div><div class='co'>#&gt; Regularization term   = 0.9</div><div class='co'>#&gt; Aggregation tol cov   = 0.1</div><div class='co'>#&gt; DB imputed            = BOTH</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Your target DB[, "Y"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 4 remaining levels</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 3 remaining levels</div><div class='input'>
 
 
 <span class='co'>### Another example of JOINT algorithm with:</span>
@@ -429,23 +384,7 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class='va'>try2J</span> <span class='op'>=</span> <span class='fu'>OT_joint</span><span class='op'>(</span><span class='va'>simu_data3</span>, convert.num <span class='op'>=</span> <span class='fl'>6</span>, convert.clss <span class='op'>=</span> <span class='fl'>3</span>,
                  nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>,
                  dist.choice <span class='op'>=</span> <span class='st'>"H"</span>, which.DB <span class='op'>=</span> <span class='st'>"BOTH"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>OT JOINT PROCEDURE in progress ...</span></div>
-<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>Type                  = JOINT</span></div>
-<div class='output co'>#&gt; <span class='message'>Distance              = Hamming</span></div>
-<div class='output co'>#&gt; <span class='message'>Percent closest       = 100%</span></div>
-<div class='output co'>#&gt; <span class='message'>Relaxation term       = 0</span></div>
-<div class='output co'>#&gt; <span class='message'>Regularization term   = 0</span></div>
-<div class='output co'>#&gt; <span class='message'>Aggregation tol cov   = 0.1</span></div>
-<div class='output co'>#&gt; <span class='message'>DB imputed            = BOTH</span></div>
-<div class='output co'>#&gt; <span class='message'>---------------------------------------</span></div>
-<div class='output co'>#&gt; <span class='message'>Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span></div>
-<div class='output co'>#&gt; <span class='message'>5 remaining levels</span></div>
-<div class='output co'>#&gt; <span class='message'>Hamming 1/3</span></div>
-<div class='output co'>#&gt; <span class='message'>Hamming 2/3</span></div>
-<div class='output co'>#&gt; <span class='message'>Hamming 3/3</span></div>
-<div class='input'>
+</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; OT JOINT PROCEDURE in progress ...</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Type                  = JOINT</div><div class='co'>#&gt; Distance              = Hamming</div><div class='co'>#&gt; Percent closest       = 100%</div><div class='co'>#&gt; Relaxation term       = 0</div><div class='co'>#&gt; Regularization term   = 0</div><div class='co'>#&gt; Aggregation tol cov   = 0.1</div><div class='co'>#&gt; DB imputed            = BOTH</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 5 remaining levels</div><div class='co'>#&gt; Hamming 1/3</div><div class='co'>#&gt; Hamming 2/3</div><div class='co'>#&gt; Hamming 3/3</div><div class='input'>
 <span class='co'># }</span>
 </div></pre>
   </div>
