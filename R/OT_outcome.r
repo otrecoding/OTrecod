@@ -116,12 +116,12 @@
 #' This option fixes the remaining number of principal components for the rest of the study.
 #' @param percent.knn the ratio of closest neighbors involved in the computations of the cost matrices. 1 is the default value that includes all rows in the computation.
 #' @param maxrelax the maximum percentage of deviation from expected probability masses. It must be equal to 0 (default value) for the \code{OUTCOME} algorithm, and equal to a strictly positive value for the R-OUTCOME algorithm. See (2) for details.
-#' @param prox.dist a probability (between 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.
+#' @param prox.dist a probability (between 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates. When shared variables are all factors or categorical, it is suggested to keep this option to 0.
 #' @param indiv.method a character string indicating the chosen method to get individual predictions from the joint probabilities assessed, "sequential" by default, or "optimal". See the \code{details} section and (2) for details.
 #' @param solvR a character string that specifies the type of method selected to solve the optimization algorithms. The default solver is "glpk".
 #' @param which.DB a character string indicating the database to complete ("BOTH" by default, for the prediction of \eqn{Y} and \eqn{Z} in the two databases), "A" only for the imputation of \eqn{Z} in A, "B" only for the imputation of \eqn{Y} in B.
 #'
-#' @return A list containing 9 elements:
+#' @return A "otres" class object of 9 elements:
 #' \item{time_exe}{the running time of the function}
 #' \item{gamma_A}{a matrix corresponding to an estimation of the joint distribution of \eqn{(Y,Z)} in A}
 #' \item{gamma_B}{a matrix corresponding to an estimation of the joint distribution of \eqn{(Y,Z)} in B}
@@ -181,7 +181,7 @@
 #' #-----
 #'
 #' try1 = OT_outcome(simu_dat, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                   dist.choice = "M",percent.knn = 0.90, maxrelax = 0,
+#'                   dist.choice = "M", maxrelax = 0,
 #'                   indiv.method = "sequential")
 #' head(try1$DATA1_OT)  # Part of the completed database A
 #' head(try1$DATA2_OT)  # Part of the completed database B
@@ -208,7 +208,7 @@
 #' ###-----
 #'
 #' try2 = OT_outcome(simu_dat, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                   dist.choice = "G",percent.knn = 0.90, maxrelax = 0,
+#'                   dist.choice = "G", maxrelax = 0,
 #'                   convert.num = 8, convert.clss = 3,
 #'                   indiv.method = "sequential", which.DB = "B")
 #'
@@ -223,7 +223,7 @@
 #' ###-----
 #'
 #' try3 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                   dist.choice = "H",percent.knn = 0.90, maxrelax = 0,
+#'                   dist.choice = "H", maxrelax = 0,
 #'                   convert.num = 8, convert.clss = 3,
 #'                   indiv.method = "sequential",which.DB = "B")
 #'
@@ -234,7 +234,7 @@
 #' # - Raw covariates
 #' ###-----
 #' try4 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                   dist.choice = "M", percent.knn = 0.90, maxrelax = 0,
+#'                   dist.choice = "M", maxrelax = 0,
 #'                   indiv.method = "optimal")
 #'
 #'
@@ -245,7 +245,7 @@
 #' ###-----
 #'
 #' try5 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                   dist.choice = "E", percent.knn = 0.90,
+#'                   dist.choice = "E",
 #'                   FAMD.coord = "YES", FAMD.perc = 0.8,
 #'                   indiv.method = "optimal")
 #'
@@ -258,8 +258,8 @@
 #' #-----
 #'
 #' try6 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                   dist.choice = "E", percent.knn = 0.90,
-#'                   maxrelax = 0.4, indiv.method = "optimal")
+#'                   dist.choice = "E", maxrelax = 0.4,
+#'                   indiv.method = "optimal")
 #'
 #'
 #' }
@@ -268,7 +268,7 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
                       quanti = NULL, nominal = NULL, ordinal = NULL,logic = NULL,
                       convert.num = NULL, convert.clss = NULL, FAMD.coord = "NO", FAMD.perc = 0.8,
                       dist.choice = "E", percent.knn = 1,
-                      maxrelax = 0, indiv.method = "sequential", prox.dist = 0.80,
+                      maxrelax = 0, indiv.method = "sequential", prox.dist = 0,
                       solvR = "glpk", which.DB = "BOTH"){
 
 
@@ -701,8 +701,14 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
 
   tend = Sys.time()
 
-  return(list(time_exe = difftime(tend,tstart), gamma_A = transportA_val,gamma_B = transportB_val,
-              profile = data.frame(ID = ID_prof,prof),res_prox = inst, estimatorZA= estimatorZA,estimatorYB = estimatorYB,DATA1_OT = DATA1_OT,DATA2_OT  = DATA2_OT))
+  res_OT = list(time_exe = difftime(tend,tstart), gamma_A = transportA_val,gamma_B = transportB_val,
+                profile = data.frame(ID = ID_prof,prof),res_prox = inst, estimatorZA= estimatorZA,estimatorYB = estimatorYB,DATA1_OT = DATA1_OT,DATA2_OT  = DATA2_OT)
+
+  # otres class object
+  class(res_OT) = "otres"
+
+  return(res_OT)
+
 }
 
 

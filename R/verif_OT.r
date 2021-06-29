@@ -53,7 +53,7 @@
 #' Finally, when the predictions of \eqn{Z} in A and \eqn{Y} in B are available, the function \code{verif_OT} provides in output, global results and results by database.
 #'
 #'
-#' @param ot_out an \code{\link{OT_outcome}} or \code{\link{OT_joint}} object
+#' @param ot_out an otres object from \code{\link{OT_outcome}} or \code{\link{OT_joint}}
 #' @param group.clss a boolean indicating if the results related to the proximity between outcomes by grouping levels are requested in output (\code{FALSE} by default).
 #' @param ordinal a boolean that indicates if \eqn{Y} and \eqn{Z} are ordinal (\code{TRUE} by default) or not. This argument is only useful in the context of groups of levels (\code{group.clss}=TRUE).
 #' @param stab.prob a boolean indicating if the results related to the stability of the algorithm are requested in output (\code{FALSE} by default).
@@ -150,6 +150,13 @@
 
 verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALSE,
                     min.neigb = 1, R = 10, seed.stab = sample(1:1000000, 1)){
+
+ if (class(ot_out) != "otres"){
+
+   stop("ot_out must be an otres object: output from OT_outcome or OT_joint")
+
+ } else {}
+
 
   stopifnot(is.list(ot_out))
   stopifnot(is.logical(group.clss))

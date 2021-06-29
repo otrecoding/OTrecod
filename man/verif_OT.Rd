@@ -15,7 +15,7 @@ verif_OT(
 )
 }
 \arguments{
-\item{ot_out}{an \code{\link{OT_outcome}} or \code{\link{OT_joint}} object}
+\item{ot_out}{an otres object from \code{\link{OT_outcome}} or \code{\link{OT_joint}}}
 
 \item{group.clss}{a boolean indicating if the results related to the proximity between outcomes by grouping levels are requested in output (\code{FALSE} by default).}
 
