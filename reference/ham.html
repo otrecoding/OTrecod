@@ -58,9 +58,6 @@
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -129,7 +126,7 @@
     <p>This function computes a matrix distance using the Hamming distance as proximity measure.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ham</span><span class='op'>(</span><span class='va'>mat_1</span>, <span class='va'>mat_2</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>ham</span><span class='op'>(</span><span class='va'>mat_1</span>, <span class='va'>mat_2</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -171,46 +168,50 @@ or the information is missing in B, which induces: \(\mbox{ham}(A_i,B_k) = \mbox
 <p><a href='mailto:otrecod.pkg@gmail.com'>otrecod.pkg@gmail.com</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>3010</span><span class='op'>)</span>; <span class='va'>aaa</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>,<span class='fl'>12</span>,replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>3007</span><span class='op'>)</span>; <span class='va'>bbb</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>,<span class='fl'>15</span>,replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>A</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='va'>aaa</span>, ncol <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-<span class='va'>B</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='va'>bbb</span>, ncol <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
-
-<span class='co'># These 2 matrices have no missing values</span>
-
-<span class='co'># Matrix of pairwise distances with A:</span>
-<span class='fu'>ham</span><span class='op'>(</span><span class='va'>A</span>,<span class='va'>A</span><span class='op'>)</span>
-</div><div class='co'>#&gt;           [,1]      [,2]      [,3]      [,4]
-#&gt; [1,] 0.0000000 0.6666667 0.6666667 1.0000000
-#&gt; [2,] 0.6666667 0.0000000 0.6666667 0.3333333
-#&gt; [3,] 0.6666667 0.6666667 0.0000000 0.3333333
-#&gt; [4,] 1.0000000 0.3333333 0.3333333 0.0000000</div><div class='input'>
-<span class='co'># Matrix of distances between the rows of A and the rows of B:</span>
-<span class='fu'>ham</span><span class='op'>(</span><span class='va'>A</span>,<span class='va'>B</span><span class='op'>)</span>
-</div><div class='co'>#&gt;           [,1]      [,2]      [,3]      [,4]      [,5]
-#&gt; [1,] 1.0000000 0.0000000 0.3333333 0.6666667 0.6666667
-#&gt; [2,] 0.3333333 0.6666667 1.0000000 0.6666667 0.6666667
-#&gt; [3,] 0.3333333 0.6666667 0.3333333 0.0000000 0.6666667
-#&gt; [4,] 0.0000000 1.0000000 0.6666667 0.3333333 0.3333333</div><div class='input'>
-<span class='co'># If mat_1 is a vector of binary values:</span>
-<span class='fu'>ham</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>,<span class='va'>B</span><span class='op'>)</span>
-</div><div class='co'>#&gt; [1] 0.6666667 0.3333333 0.6666667 0.3333333 1.0000000</div><div class='input'>
-<span class='co'># Now by considering A_NA and B_NA two matrices built from A and B respectively,</span>
-<span class='co'># where missing values have been manually added:</span>
-<span class='va'>A_NA</span>        <span class='op'>=</span> <span class='va'>A</span>
-<span class='va'>A_NA</span><span class='op'>[</span><span class='fl'>3</span>,<span class='fl'>1</span><span class='op'>]</span>   <span class='op'>=</span> <span class='cn'>NA</span>
-<span class='va'>A_NA</span><span class='op'>[</span><span class='fl'>2</span>,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='fl'>2</span><span class='op'>)</span>
-
-<span class='va'>B_NA</span> <span class='op'>=</span> <span class='va'>B</span>
-<span class='va'>B_NA</span><span class='op'>[</span><span class='fl'>2</span>,<span class='fl'>2</span><span class='op'>]</span> <span class='op'>=</span> <span class='cn'>NA</span>
-
-<span class='fu'>ham</span><span class='op'>(</span><span class='va'>A_NA</span>,<span class='va'>B_NA</span><span class='op'>)</span>
-</div><div class='co'>#&gt;      [,1] [,2]      [,3]      [,4]      [,5]
-#&gt; [1,]  1.0    0 0.3333333 0.6666667 0.6666667
-#&gt; [2,]  0.0    1 1.0000000 0.0000000 1.0000000
-#&gt; [3,]  0.5    0 0.0000000 0.0000000 0.5000000
-#&gt; [4,]  0.0    1 0.6666667 0.3333333 0.3333333</div><div class='input'>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>3010</span><span class='op'>)</span>; <span class='va'>aaa</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>,<span class='fl'>12</span>,replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>3007</span><span class='op'>)</span>; <span class='va'>bbb</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>,<span class='fl'>15</span>,replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>A</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='va'>aaa</span>, ncol <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>B</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='va'>bbb</span>, ncol <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># These 2 matrices have no missing values</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Matrix of pairwise distances with A:</span></span>
+<span class='r-in'><span class='fu'>ham</span><span class='op'>(</span><span class='va'>A</span>,<span class='va'>A</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           [,1]      [,2]      [,3]      [,4]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1,] 0.0000000 0.6666667 0.6666667 1.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [2,] 0.6666667 0.0000000 0.6666667 0.3333333</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [3,] 0.6666667 0.6666667 0.0000000 0.3333333</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [4,] 1.0000000 0.3333333 0.3333333 0.0000000</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Matrix of distances between the rows of A and the rows of B:</span></span>
+<span class='r-in'><span class='fu'>ham</span><span class='op'>(</span><span class='va'>A</span>,<span class='va'>B</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>           [,1]      [,2]      [,3]      [,4]      [,5]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1,] 1.0000000 0.0000000 0.3333333 0.6666667 0.6666667</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [2,] 0.3333333 0.6666667 1.0000000 0.6666667 0.6666667</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [3,] 0.3333333 0.6666667 0.3333333 0.0000000 0.6666667</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [4,] 0.0000000 1.0000000 0.6666667 0.3333333 0.3333333</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># If mat_1 is a vector of binary values:</span></span>
+<span class='r-in'><span class='fu'>ham</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span>,<span class='fl'>0</span><span class='op'>)</span>,<span class='va'>B</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.6666667 0.3333333 0.6666667 0.3333333 1.0000000</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Now by considering A_NA and B_NA two matrices built from A and B respectively,</span></span>
+<span class='r-in'><span class='co'># where missing values have been manually added:</span></span>
+<span class='r-in'><span class='va'>A_NA</span>        <span class='op'>=</span> <span class='va'>A</span></span>
+<span class='r-in'><span class='va'>A_NA</span><span class='op'>[</span><span class='fl'>3</span>,<span class='fl'>1</span><span class='op'>]</span>   <span class='op'>=</span> <span class='cn'>NA</span></span>
+<span class='r-in'><span class='va'>A_NA</span><span class='op'>[</span><span class='fl'>2</span>,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>]</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='cn'>NA</span>,<span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>B_NA</span> <span class='op'>=</span> <span class='va'>B</span></span>
+<span class='r-in'><span class='va'>B_NA</span><span class='op'>[</span><span class='fl'>2</span>,<span class='fl'>2</span><span class='op'>]</span> <span class='op'>=</span> <span class='cn'>NA</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>ham</span><span class='op'>(</span><span class='va'>A_NA</span>,<span class='va'>B_NA</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      [,1] [,2]      [,3]      [,4]      [,5]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1,]  1.0    0 0.3333333 0.6666667 0.6666667</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [2,]  0.0    1 1.0000000 0.0000000 1.0000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [3,]  0.5    0 0.0000000 0.0000000 0.5000000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [4,]  0.0    1 0.6666667 0.3333333 0.3333333</span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

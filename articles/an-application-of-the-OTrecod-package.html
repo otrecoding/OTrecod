@@ -311,7 +311,7 @@ The selection of the best predictors of the persons net income must be done in t
                        thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.10</span>,
                        RF <span class="op">=</span> <span class="cn">TRUE</span>, RF_SEED <span class="op">=</span> <span class="fl">3017</span><span class="op">)</span>
 <span class="co">#&gt; The select_pred function is running. Please wait ...</span>
-<span class="co">#&gt; Risks of collinearity between predictors detected. Consult outputs for more details ...</span>
+<span class="co">#&gt; Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span>
 
 <span class="co"># for data2</span>
 <span class="va">test_DB2</span> <span class="op">=</span> <span class="fu"><a href="../reference/select_pred.html">select_pred</a></span><span class="op">(</span><span class="va">db_test</span><span class="op">$</span><span class="va">DB_READY</span>,Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="st">"Z"</span>, ID <span class="op">=</span> <span class="fl">1</span>, OUT <span class="op">=</span> <span class="st">"Z"</span>,
@@ -321,7 +321,7 @@ The selection of the best predictors of the persons net income must be done in t
                        RF <span class="op">=</span> <span class="cn">TRUE</span>, RF_SEED <span class="op">=</span> <span class="fl">3017</span><span class="op">)</span>
 <span class="co">#&gt; The select_pred function is running. Please wait ...</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Risks of collinearity between predictors detected. Consult outputs for more details ...</span></code></pre></div>
+<span class="co">#&gt; Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span></code></pre></div>
 <p align="justify">
 </p>
 <p>As input:</p>
@@ -368,7 +368,7 @@ Notice that it is important to keep the same arguments in the two selections (<e
 <span class="co">#&gt; 21 hsize5 marital   0.5038       0.4858 200</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $SPEARM</span>
-<span class="co">#&gt; [1] name1       name2       ABS_COR     pv_COR_test N          </span>
+<span class="co">#&gt; [1] name1       name2       RANK_COR    pv_COR_test N          </span>
 <span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span>
 
 <span class="co"># Results from RF</span>
@@ -414,7 +414,7 @@ In the set of shared variables, all variables are now categorical (factors or or
 <span class="co">#&gt; 21 hsize5 marital   0.3555       0.3177 150</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $SPEARM</span>
-<span class="co">#&gt; [1] name1       name2       ABS_COR     pv_COR_test N          </span>
+<span class="co">#&gt; [1] name1       name2       RANK_COR    pv_COR_test N          </span>
 <span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span>
 
 <span class="co"># Results from RF</span>
@@ -653,7 +653,7 @@ The <strong>verif_OT</strong> function gives access to different tools for asses
 
 <span class="va">verif_out1</span><span class="op">$</span><span class="va">res.stab</span>
 <span class="co">#&gt;          N min.N  R  mean    sd</span>
-<span class="co">#&gt; 1st DB 200     3 10 0.863 0.147</span>
+<span class="co">#&gt; 1st DB 112     3 10 0.977 0.009</span>
 
 
 <span class="co"># Validation of the mod2_seq model</span>
@@ -678,8 +678,8 @@ The <strong>verif_OT</strong> function gives access to different tools for asses
 <span class="co">#&gt;  200.000    0.960    0.939</span>
 
 <span class="va">verif_out2</span><span class="op">$</span><span class="va">res.stab</span>
-<span class="co">#&gt;          N min.N  R mean    sd</span>
-<span class="co">#&gt; 1st DB 200     3 10 0.93 0.109</span>
+<span class="co">#&gt;          N min.N  R  mean    sd</span>
+<span class="co">#&gt; 1st DB 112     3 10 0.983 0.013</span>
 
 
 <span class="co"># Validation of the mod3_opt model</span>
@@ -702,7 +702,7 @@ The <strong>verif_OT</strong> function gives access to different tools for asses
 
 <span class="va">verif_jt</span><span class="op">$</span><span class="va">res.stab</span>
 <span class="co">#&gt;          N min.N  R  mean    sd</span>
-<span class="co">#&gt; 1st DB 112     3 10 0.904 0.117</span></code></pre></div>
+<span class="co">#&gt; 1st DB 112     3 10 0.869 0.152</span></code></pre></div>
 <p align="justify">
 </p>
 <p>As input:</p>

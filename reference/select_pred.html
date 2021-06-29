@@ -58,9 +58,6 @@
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -129,7 +126,7 @@
     <p>Selection of a subset of non collinear predictors having relevant relationships with a given target outcome using a random forest procedure.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>select_pred</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>select_pred</span><span class='op'>(</span>
   <span class='va'>databa</span>,
   Y <span class='op'>=</span> <span class='cn'>NULL</span>,
   Z <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -149,7 +146,7 @@
   RF_condi <span class='op'>=</span> <span class='cn'>FALSE</span>,
   RF_condi_thr <span class='op'>=</span> <span class='fl'>0.2</span>,
   RF_SEED <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>1e+06</span>, <span class='fl'>1</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -242,15 +239,15 @@ Conversely, a larger threshold will only keeps the subset of variables that is s
 <dt>thresh</dt><dd><p>a summarize of the different thresholds fixed for the study</p></dd>
 <dt>convert_num</dt><dd><p>the labels of the continuous predictors transformed in categorical form</p></dd>
 <dt>DB_USED</dt><dd><p>the final database used after potential transformations of predictors</p></dd>
-<dt>vcrm_Y_cat</dt><dd><p>a table of pairwise associations between the outcome and the categorical predictors (Cramer's V)</p></dd>
-<dt>cor_Y_num</dt><dd><p>a table of pairwise associations between the outcome and the continuous predictors (Rank correlation)</p></dd>
+<dt>vcrm_OUTC_cat</dt><dd><p>a table of pairwise associations between the outcome and the categorical predictors (Cramer's V)</p></dd>
+<dt>cor_OUTC_num</dt><dd><p>a table of pairwise associations between the outcome and the continuous predictors (Rank correlation)</p></dd>
 <dt>vcrm_X_cat</dt><dd><p>a table of pairwise associations between the categorical predictors (Cramer's V)</p></dd>
 <dt>cor_X_num</dt><dd><p>a table of pairwise associations between the continuous predictors (Cramer's V)</p></dd>
 <dt>FG_test</dt><dd><p>the results of the Farrar and Glauber tests, with and without approximation form</p></dd>
 <dt>collinear_PB</dt><dd><p>a table of predictors with problem of collinearity according to the fixed thresholds</p></dd>
 <dt>drop_var</dt><dd><p>the labels of predictors to drop after RF process (optional output: only if <code>RF</code>=TRUE)</p></dd>
-<dt>RF_PRED_Y</dt><dd><p>the table of variable importance measurements, conditional or not, according to the argument <code>condi_RF</code> (optional output: Only if <code>RF</code>=TRUE)</p></dd>
-<dt>best_pred</dt><dd><p>the labels of the best predictors selected (optional output: Only if <code>RF</code>=TRUE) according to the value of the argument <code>thresh_Y</code></p></dd>
+<dt>RF_PRED</dt><dd><p>the table of variable importance measurements, conditional or not, according to the argument <code>condi_RF</code> (optional output: Only if <code>RF</code>=TRUE)</p></dd>
+<dt>RF_best</dt><dd><p>the labels of the best predictors selected (optional output: Only if <code>RF</code>=TRUE) according to the value of the argument <code>thresh_Y</code></p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -329,93 +326,102 @@ Finally, because all random forest results are subjects to random variation, use
 <p><a href='mailto:gregory.guernec@inserm.fr'>gregory.guernec@inserm.fr</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'>### Example 1</span>
-<span class='co'>#-----</span>
-<span class='co'># - From two overlayed databases: using the table simu_data</span>
-<span class='co'># - Searching for the best predictors of "Yb1"</span>
-<span class='co'># - Using the row database</span>
-<span class='co'># - The RF approaches are not required</span>
-<span class='co'>#-----</span>
-
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span>
-<span class='va'>test_DB1</span> <span class='op'>=</span> <span class='fu'>select_pred</span><span class='op'>(</span><span class='va'>simu_data</span>,Y <span class='op'>=</span> <span class='st'>"Yb1"</span>, Z <span class='op'>=</span> <span class='st'>"Yb2"</span>, ID <span class='op'>=</span> <span class='fl'>1</span>, OUT <span class='op'>=</span> <span class='st'>"Y"</span>,
-                       quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
-                       thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,
-                       RF <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='co'>#&gt; The select_pred function is running. Please wait ...</div><div class='input'>
-<span class='co'>### Example 2</span>
-<span class='co'>#-----</span>
-<span class='co'># - With same conditions as example 1</span>
-<span class='co'># - Searching for the best predictors of "Yb2"</span>
-<span class='co'>#-----</span>
-
-<span class='va'>test_DB2</span> <span class='op'>=</span> <span class='fu'>select_pred</span><span class='op'>(</span><span class='va'>simu_data</span>,Y <span class='op'>=</span> <span class='st'>"Yb1"</span>, Z <span class='op'>=</span> <span class='st'>"Yb2"</span>, ID <span class='op'>=</span> <span class='fl'>1</span>, OUT <span class='op'>=</span> <span class='st'>"Z"</span>,
-                       quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
-                       thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,
-                       RF <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='co'>#&gt; The select_pred function is running. Please wait ...</div><div class='input'>
-<span class='co'># \donttest{</span>
-<span class='co'>### Example 3</span>
-<span class='co'>#-----</span>
-<span class='co'># - With same conditions as example 1</span>
-<span class='co'># - Using a RF approach to estimate the standard variable importance measures</span>
-<span class='co'>#   and determine the best subset of predictors</span>
-<span class='co'># - Here a seed is required</span>
-<span class='co'>#-----</span>
-
-<span class='va'>test_DB3</span> <span class='op'>=</span> <span class='fu'>select_pred</span><span class='op'>(</span><span class='va'>simu_data</span>,Y <span class='op'>=</span> <span class='st'>"Yb1"</span>, Z <span class='op'>=</span> <span class='st'>"Yb2"</span>, ID <span class='op'>=</span> <span class='fl'>1</span>, OUT <span class='op'>=</span> <span class='st'>"Y"</span>,
-                       quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
-                       thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,
-                       RF <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi <span class='op'>=</span> <span class='cn'>FALSE</span>, RF_SEED <span class='op'>=</span> <span class='fl'>3023</span><span class='op'>)</span>
-</div><div class='co'>#&gt; The select_pred function is running. Please wait ...</div><div class='co'>#&gt; Risks of collinearity between predictors detected. Consult outputs for more details ...</div><div class='input'>
-<span class='co'>### Example 4</span>
-<span class='co'>#-----</span>
-<span class='co'># - With same conditions as example 1</span>
-<span class='co'># - Using a RF approach to estimate the conditional variable importance measures</span>
-<span class='co'>#   and determine the best subset of predictors</span>
-<span class='co'># - This approach requires to convert the numeric variables: Only "Age" here</span>
-<span class='co'>#   discretized in 3 levels</span>
-<span class='co'>#-----</span>
-
-<span class='va'>test_DB4</span> <span class='op'>=</span> <span class='fu'>select_pred</span><span class='op'>(</span><span class='va'>simu_data</span>,Y <span class='op'>=</span> <span class='st'>"Yb1"</span>, Z <span class='op'>=</span> <span class='st'>"Yb2"</span>, ID <span class='op'>=</span> <span class='fl'>1</span>, OUT <span class='op'>=</span> <span class='st'>"Z"</span>,
-                       quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
-                       convert_num <span class='op'>=</span> <span class='fl'>8</span>, convert_clss <span class='op'>=</span> <span class='fl'>3</span>,
-                       thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,
-                       RF <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi_thr <span class='op'>=</span> <span class='fl'>0.60</span>, RF_SEED <span class='op'>=</span> <span class='fl'>3023</span><span class='op'>)</span>
-</div><div class='co'>#&gt; The select_pred function is running. Please wait ...</div><div class='co'>#&gt; Risks of collinearity between predictors detected. Consult outputs for more details ...</div><div class='input'>
-<span class='co'>### Example 5</span>
-<span class='co'>#-----</span>
-<span class='co'># - Starting with a unique database</span>
-<span class='co'># - Same conditions as example 1</span>
-<span class='co'>#-----</span>
-<span class='va'>simu_A</span> <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span><span class='va'>simu_data</span><span class='op'>$</span><span class='va'>DB</span> <span class='op'>==</span> <span class='st'>"A"</span>,<span class='op'>-</span><span class='fl'>3</span><span class='op'>]</span>    <span class='co'># Base A</span>
-
-<span class='va'>test_DB5</span> <span class='op'>=</span> <span class='fu'>select_pred</span><span class='op'>(</span><span class='va'>simu_A</span>, Y <span class='op'>=</span> <span class='st'>"Yb1"</span>,
-                       quanti <span class='op'>=</span> <span class='fl'>7</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span>,<span class='fl'>6</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>5</span><span class='op'>)</span>,
-                       thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,
-                       RF <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='co'>#&gt; The select_pred function is running. Please wait ...</div><div class='input'>
-<span class='co'>### Example 6</span>
-<span class='co'>#-----</span>
-<span class='co'># - Starting with an unique database</span>
-<span class='co'># - Using a RF approach to estimate the conditional variable importance measures</span>
-<span class='co'>#   and determine the best subset of predictors</span>
-<span class='co'># - This approach requires to convert the numeric variables: Only "Age" here</span>
-<span class='co'>#   discretized in 3 levels</span>
-<span class='co'>#-----</span>
-
-<span class='va'>simu_B</span> <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span><span class='va'>simu_data</span><span class='op'>$</span><span class='va'>DB</span> <span class='op'>==</span> <span class='st'>"B"</span>,<span class='op'>-</span><span class='fl'>2</span><span class='op'>]</span>    <span class='co'># Base B</span>
-
-<span class='va'>test_DB6</span> <span class='op'>=</span> <span class='fu'>select_pred</span><span class='op'>(</span><span class='va'>simu_B</span>, Y <span class='op'>=</span> <span class='st'>"Yb2"</span>,
-                       quanti <span class='op'>=</span> <span class='fl'>7</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span>,<span class='fl'>6</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>5</span><span class='op'>)</span>,
-                       convert_num <span class='op'>=</span> <span class='fl'>7</span>, convert_clss <span class='op'>=</span> <span class='fl'>3</span>,
-                       thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,
-                       RF <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi_thr <span class='op'>=</span> <span class='fl'>0.60</span>, RF_SEED <span class='op'>=</span> <span class='fl'>3023</span><span class='op'>)</span>
-</div><div class='co'>#&gt; The select_pred function is running. Please wait ...</div><div class='co'>#&gt; Risks of collinearity between predictors detected. Consult outputs for more details ...</div><div class='input'>
-<span class='co'># }</span>
-
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'></span>
+<span class='r-in'><span class='co'>### Example 1</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'><span class='co'># - From two overlayed databases: using the table simu_data</span></span>
+<span class='r-in'><span class='co'># - Searching for the best predictors of "Yb1"</span></span>
+<span class='r-in'><span class='co'># - Using the row database</span></span>
+<span class='r-in'><span class='co'># - The RF approaches are not required</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>test_DB1</span> <span class='op'>=</span> <span class='fu'>select_pred</span><span class='op'>(</span><span class='va'>simu_data</span>,Y <span class='op'>=</span> <span class='st'>"Yb1"</span>, Z <span class='op'>=</span> <span class='st'>"Yb2"</span>, ID <span class='op'>=</span> <span class='fl'>1</span>, OUT <span class='op'>=</span> <span class='st'>"Y"</span>,</span>
+<span class='r-in'>                       quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>                       thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,</span>
+<span class='r-in'>                       RF <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The select_pred function is running. Please wait ...</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Example 2</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'><span class='co'># - With same conditions as example 1</span></span>
+<span class='r-in'><span class='co'># - Searching for the best predictors of "Yb2"</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>test_DB2</span> <span class='op'>=</span> <span class='fu'>select_pred</span><span class='op'>(</span><span class='va'>simu_data</span>,Y <span class='op'>=</span> <span class='st'>"Yb1"</span>, Z <span class='op'>=</span> <span class='st'>"Yb2"</span>, ID <span class='op'>=</span> <span class='fl'>1</span>, OUT <span class='op'>=</span> <span class='st'>"Z"</span>,</span>
+<span class='r-in'>                       quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>                       thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,</span>
+<span class='r-in'>                       RF <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The select_pred function is running. Please wait ...</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='co'>### Example 3</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'><span class='co'># - With same conditions as example 1</span></span>
+<span class='r-in'><span class='co'># - Using a RF approach to estimate the standard variable importance measures</span></span>
+<span class='r-in'><span class='co'>#   and determine the best subset of predictors</span></span>
+<span class='r-in'><span class='co'># - Here a seed is required</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>test_DB3</span> <span class='op'>=</span> <span class='fu'>select_pred</span><span class='op'>(</span><span class='va'>simu_data</span>,Y <span class='op'>=</span> <span class='st'>"Yb1"</span>, Z <span class='op'>=</span> <span class='st'>"Yb2"</span>, ID <span class='op'>=</span> <span class='fl'>1</span>, OUT <span class='op'>=</span> <span class='st'>"Y"</span>,</span>
+<span class='r-in'>                       quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>                       thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,</span>
+<span class='r-in'>                       RF <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi <span class='op'>=</span> <span class='cn'>FALSE</span>, RF_SEED <span class='op'>=</span> <span class='fl'>3023</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The select_pred function is running. Please wait ...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Example 4</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'><span class='co'># - With same conditions as example 1</span></span>
+<span class='r-in'><span class='co'># - Using a RF approach to estimate the conditional variable importance measures</span></span>
+<span class='r-in'><span class='co'>#   and determine the best subset of predictors</span></span>
+<span class='r-in'><span class='co'># - This approach requires to convert the numeric variables: Only "Age" here</span></span>
+<span class='r-in'><span class='co'>#   discretized in 3 levels</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>test_DB4</span> <span class='op'>=</span> <span class='fu'>select_pred</span><span class='op'>(</span><span class='va'>simu_data</span>,Y <span class='op'>=</span> <span class='st'>"Yb1"</span>, Z <span class='op'>=</span> <span class='st'>"Yb2"</span>, ID <span class='op'>=</span> <span class='fl'>1</span>, OUT <span class='op'>=</span> <span class='st'>"Z"</span>,</span>
+<span class='r-in'>                       quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>                       convert_num <span class='op'>=</span> <span class='fl'>8</span>, convert_clss <span class='op'>=</span> <span class='fl'>3</span>,</span>
+<span class='r-in'>                       thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,</span>
+<span class='r-in'>                       RF <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi_thr <span class='op'>=</span> <span class='fl'>0.60</span>, RF_SEED <span class='op'>=</span> <span class='fl'>3023</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The select_pred function is running. Please wait ...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Example 5</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'><span class='co'># - Starting with a unique database</span></span>
+<span class='r-in'><span class='co'># - Same conditions as example 1</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'><span class='va'>simu_A</span> <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span><span class='va'>simu_data</span><span class='op'>$</span><span class='va'>DB</span> <span class='op'>==</span> <span class='st'>"A"</span>,<span class='op'>-</span><span class='fl'>3</span><span class='op'>]</span>    <span class='co'># Base A</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>test_DB5</span> <span class='op'>=</span> <span class='fu'>select_pred</span><span class='op'>(</span><span class='va'>simu_A</span>, Y <span class='op'>=</span> <span class='st'>"Yb1"</span>,</span>
+<span class='r-in'>                       quanti <span class='op'>=</span> <span class='fl'>7</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span>,<span class='fl'>6</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>5</span><span class='op'>)</span>,</span>
+<span class='r-in'>                       thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,</span>
+<span class='r-in'>                       RF <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The select_pred function is running. Please wait ...</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Example 6</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'><span class='co'># - Starting with an unique database</span></span>
+<span class='r-in'><span class='co'># - Using a RF approach to estimate the conditional variable importance measures</span></span>
+<span class='r-in'><span class='co'>#   and determine the best subset of predictors</span></span>
+<span class='r-in'><span class='co'># - This approach requires to convert the numeric variables: Only "Age" here</span></span>
+<span class='r-in'><span class='co'>#   discretized in 3 levels</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>simu_B</span> <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span><span class='va'>simu_data</span><span class='op'>$</span><span class='va'>DB</span> <span class='op'>==</span> <span class='st'>"B"</span>,<span class='op'>-</span><span class='fl'>2</span><span class='op'>]</span>    <span class='co'># Base B</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>test_DB6</span> <span class='op'>=</span> <span class='fu'>select_pred</span><span class='op'>(</span><span class='va'>simu_B</span>, Y <span class='op'>=</span> <span class='st'>"Yb2"</span>,</span>
+<span class='r-in'>                       quanti <span class='op'>=</span> <span class='fl'>7</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>3</span><span class='op'>:</span><span class='fl'>4</span>,<span class='fl'>6</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>5</span><span class='op'>)</span>,</span>
+<span class='r-in'>                       convert_num <span class='op'>=</span> <span class='fl'>7</span>, convert_clss <span class='op'>=</span> <span class='fl'>3</span>,</span>
+<span class='r-in'>                       thresh_cat <span class='op'>=</span> <span class='fl'>0.30</span>, thresh_num <span class='op'>=</span> <span class='fl'>0.70</span>, thresh_Y <span class='op'>=</span> <span class='fl'>0.20</span>,</span>
+<span class='r-in'>                       RF <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi <span class='op'>=</span> <span class='cn'>TRUE</span>, RF_condi_thr <span class='op'>=</span> <span class='fl'>0.60</span>, RF_SEED <span class='op'>=</span> <span class='fl'>3023</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The select_pred function is running. Please wait ...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># }</span></span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

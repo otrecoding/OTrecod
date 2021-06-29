@@ -58,9 +58,6 @@
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -129,7 +126,7 @@
     <p>This function prepares an overlayed database for data fusion according to the distance function chosen to evaluate the proximities between units.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>transfo_dist</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>transfo_dist</span><span class='op'>(</span>
   <span class='va'>DB</span>,
   index_DB_Y_Z <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,
   quanti <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -140,7 +137,7 @@
   convert_clss <span class='op'>=</span> <span class='cn'>NULL</span>,
   prep_choice <span class='op'>=</span> <span class='st'>"E"</span>,
   info <span class='op'>=</span> <span class='fl'>0.8</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -259,56 +256,68 @@ Please notice that this method supposed complete covariates in input, neverthele
 <p><a href='mailto:otrecod.pkg@gmail.com'>otrecod.pkg@gmail.com</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'>### Using the table simu_data:</span>
-
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span>
-
-<span class='co'># 1. the Euclidean distance (same output with Manhattan distance),</span>
-<span class='va'>try1</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
-                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"E"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 5 remaining levels</div><div class='input'><span class='co'># Here Yb2 was stored in numeric: It has been automatically converted in factor</span>
-
-<span class='co'># You can also convert beforehand Yb2 in ordered factor by example:</span>
-<span class='va'>sim_data</span>     <span class='op'>=</span> <span class='va'>simu_data</span>
-<span class='va'>sim_data</span><span class='op'>$</span><span class='va'>Yb2</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.ordered</a></span><span class='op'>(</span><span class='va'>sim_data</span><span class='op'>$</span><span class='va'>Yb2</span><span class='op'>)</span>
-<span class='va'>try1</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>sim_data</span>,quanti <span class='op'>=</span> <span class='fl'>8</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
-                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"E"</span><span class='op'>)</span>
-
-<span class='co'># 2. The Euclidean distance generated on principal components</span>
-<span class='co'>#    by a factor analysis for mixed data (FAMD):</span>
-<span class='va'>try2</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
-                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"FAMD"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 5 remaining levels</div><div class='co'>#&gt; <span class='warning'>Warning: </span>Presence of NA on covariates. You should work with complete or imputed DB before using this method.
-#&gt;               By default, only rows with no NA on covariates have been kept.</div><div class='co'>#&gt; Only 528 rows (75%)are kept here corresponding to complete cases</div><div class='input'>
-<span class='co'># Please notice that this method works only with rows that have complete</span>
-<span class='co'># information on covariates.</span>
-
-<span class='co'># 3. The Gower distance for mixed data:</span>
-<span class='va'>try3</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
-                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"G"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 5 remaining levels</div><div class='input'>
-<span class='co'># 4. The Hamming distance:</span>
-<span class='co'># Here the quanti option could only contain indexes related to targets.</span>
-<span class='co'># Column indexes related to potential binary covariates or covariates with</span>
-<span class='co'># finite number of values must be include in the ordinal option.</span>
-<span class='co'># So in simu_data, the discretization of the variable age is required (index=8),</span>
-<span class='co'># using the convert_num and convert_clss arguments (for tertiles = 3):</span>
-
-<span class='va'>try4</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
-convert_num <span class='op'>=</span> <span class='fl'>8</span>, convert_clss <span class='op'>=</span> <span class='fl'>3</span>, prep_choice <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 5 remaining levels</div><div class='input'>
-
-<span class='co'>### This function works whatever the order of your columns in your database:</span>
-<span class='co'># Suppose that we re-order columns in simu_data:</span>
-<span class='va'>simu_data2</span> <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>7</span>,<span class='fl'>3</span>,<span class='fl'>8</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>]</span>
-
-<span class='co'># By changing the corresponding indexes in the index_DB_Y_Z argument,</span>
-<span class='co'># we observe the desired output:</span>
-<span class='va'>try5</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data2</span>,index_DB_Y_Z <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>8</span>,<span class='fl'>1</span>,<span class='fl'>6</span><span class='op'>)</span>,quanti <span class='op'>=</span> <span class='fl'>6</span><span class='op'>:</span><span class='fl'>7</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fl'>5</span>,<span class='fl'>8</span><span class='op'>)</span>,
-                     ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"E"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 5 remaining levels</div><div class='input'>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'></span>
+<span class='r-in'><span class='co'>### Using the table simu_data:</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># 1. the Euclidean distance (same output with Manhattan distance),</span></span>
+<span class='r-in'><span class='va'>try1</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,</span>
+<span class='r-in'>                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"E"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 5 remaining levels</span>
+<span class='r-in'><span class='co'># Here Yb2 was stored in numeric: It has been automatically converted in factor</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># You can also convert beforehand Yb2 in ordered factor by example:</span></span>
+<span class='r-in'><span class='va'>sim_data</span>     <span class='op'>=</span> <span class='va'>simu_data</span></span>
+<span class='r-in'><span class='va'>sim_data</span><span class='op'>$</span><span class='va'>Yb2</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>as.ordered</a></span><span class='op'>(</span><span class='va'>sim_data</span><span class='op'>$</span><span class='va'>Yb2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>try1</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>sim_data</span>,quanti <span class='op'>=</span> <span class='fl'>8</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,</span>
+<span class='r-in'>                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>3</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"E"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># 2. The Euclidean distance generated on principal components</span></span>
+<span class='r-in'><span class='co'>#    by a factor analysis for mixed data (FAMD):</span></span>
+<span class='r-in'><span class='va'>try2</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,</span>
+<span class='r-in'>                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"FAMD"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 5 remaining levels</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Presence of NA on covariates. You should work with complete or imputed DB before using this method.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span>               By default, only rows with no NA on covariates have been kept.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Only 528 rows (75%)are kept here corresponding to complete cases</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Please notice that this method works only with rows that have complete</span></span>
+<span class='r-in'><span class='co'># information on covariates.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># 3. The Gower distance for mixed data:</span></span>
+<span class='r-in'><span class='va'>try3</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,</span>
+<span class='r-in'>                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"G"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 5 remaining levels</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># 4. The Hamming distance:</span></span>
+<span class='r-in'><span class='co'># Here the quanti option could only contain indexes related to targets.</span></span>
+<span class='r-in'><span class='co'># Column indexes related to potential binary covariates or covariates with</span></span>
+<span class='r-in'><span class='co'># finite number of values must be include in the ordinal option.</span></span>
+<span class='r-in'><span class='co'># So in simu_data, the discretization of the variable age is required (index=8),</span></span>
+<span class='r-in'><span class='co'># using the convert_num and convert_clss arguments (for tertiles = 3):</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>try4</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>convert_num <span class='op'>=</span> <span class='fl'>8</span>, convert_clss <span class='op'>=</span> <span class='fl'>3</span>, prep_choice <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 5 remaining levels</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### This function works whatever the order of your columns in your database:</span></span>
+<span class='r-in'><span class='co'># Suppose that we re-order columns in simu_data:</span></span>
+<span class='r-in'><span class='va'>simu_data2</span> <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>7</span>,<span class='fl'>3</span>,<span class='fl'>8</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>]</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># By changing the corresponding indexes in the index_DB_Y_Z argument,</span></span>
+<span class='r-in'><span class='co'># we observe the desired output:</span></span>
+<span class='r-in'><span class='va'>try5</span> <span class='op'>=</span> <span class='fu'>transfo_dist</span><span class='op'>(</span><span class='va'>simu_data2</span>,index_DB_Y_Z <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>8</span>,<span class='fl'>1</span>,<span class='fl'>6</span><span class='op'>)</span>,quanti <span class='op'>=</span> <span class='fl'>6</span><span class='op'>:</span><span class='fl'>7</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fl'>5</span>,<span class='fl'>8</span><span class='op'>)</span>,</span>
+<span class='r-in'>                     ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"E"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 5 remaining levels</span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -58,9 +58,6 @@
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -129,13 +126,13 @@
     <p>This function sequentially assigns individual predictions using a nearest neighbors procedure to solve recoding problems of data fusion.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>indiv_grp_closest</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>indiv_grp_closest</span><span class='op'>(</span>
   <span class='va'>proxim</span>,
   jointprobaA <span class='op'>=</span> <span class='cn'>NULL</span>,
   jointprobaB <span class='op'>=</span> <span class='cn'>NULL</span>,
   percent_closest <span class='op'>=</span> <span class='fl'>1</span>,
   which.DB <span class='op'>=</span> <span class='st'>"BOTH"</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -213,57 +210,64 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <p><a href='mailto:otrecod.pkg@gmail.com'>otrecod.pkg@gmail.com</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span>
-
-<span class='co'>### Example with the Manhattan distance</span>
-
-<span class='va'>try1</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
-                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 5 remaining levels</div><div class='input'><span class='va'>res1</span> <span class='op'>=</span> <span class='fu'><a href='proxim_dist.html'>proxim_dist</a></span><span class='op'>(</span><span class='va'>try1</span>,norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>
-
-<span class='co'>### Y(Yb1) and Z(Yb2) are a same information encoded in 2 different forms:</span>
-<span class='co'>### (3 levels for Y and 5 levels for Z)</span>
-<span class='co'>### ... Stored in two distinct databases, A and B, respectively</span>
-<span class='co'>### The marginal distribution of Y in B is unknown,</span>
-<span class='co'>### as the marginal distribution of Z in A ...</span>
-
-<span class='co'># Empirical distribution of Y in database A:</span>
-<span class='va'>freqY</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/proportions.html'>prop.table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>Y</span><span class='op'>)</span><span class='op'>)</span>; <span class='va'>freqY</span>
-</div><div class='co'>#&gt; 
-#&gt;   [20-40]   [40-60[   [60-80] 
-#&gt; 0.4333333 0.4233333 0.1433333 </div><div class='input'>
-<span class='co'># Empirical distribution of Z in database B</span>
-<span class='va'>freqZ</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/proportions.html'>prop.table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>Z</span><span class='op'>)</span><span class='op'>)</span>; <span class='va'>freqZ</span>
-</div><div class='co'>#&gt; 
-#&gt;      1      2      3      4      5 
-#&gt; 0.3625 0.1275 0.0875 0.1075 0.3150 </div><div class='input'>
-<span class='co'># By supposing that the following matrix called transport symbolizes</span>
-<span class='co'># an estimation of the joint distribution L(Y,Z) ...</span>
-<span class='co'># Note that, in reality this distribution is UNKNOWN and is</span>
-<span class='co'># estimated in the OT function by resolving an optimisation problem.</span>
-
-<span class='va'>transport1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>0.35285714</span>,<span class='fl'>0</span>,<span class='fl'>0.09142857</span>,<span class='fl'>0</span>,<span class='fl'>0.03571429</span>,
-                      <span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0.08285714</span>,<span class='fl'>0</span>,<span class='fl'>0.07857143</span>,<span class='fl'>0.03142857</span>,
-                      <span class='fl'>0.32714286</span>,<span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span>,ncol <span class='op'>=</span> <span class='fl'>5</span>,byrow <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-
-<span class='co'># ... So that the marginal distributions of this object corresponds to freqY and freqZ:</span>
-<span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>transport1</span>,<span class='fl'>1</span>,<span class='va'>sum</span><span class='op'>)</span>  <span class='co'># = freqY</span>
-</div><div class='co'>#&gt; [1] 0.4185714 0.4314286 0.1500000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>transport1</span>,<span class='fl'>2</span>,<span class='va'>sum</span><span class='op'>)</span>  <span class='co'># = freqZ</span>
-</div><div class='co'>#&gt; [1] 0.35285714 0.12714286 0.08285714 0.11000000 0.32714286</div><div class='input'>
-<span class='co'># The affectation of the predicted values of Y in database B and Z in database A</span>
-<span class='co'># are stored in the following object:</span>
-
-<span class='va'>res2</span>      <span class='op'>=</span> <span class='fu'>indiv_grp_closest</span><span class='op'>(</span><span class='va'>res1</span>,jointprobaA <span class='op'>=</span> <span class='va'>transport1</span>, jointprobaB <span class='op'>=</span> <span class='va'>transport1</span>,
-                              percent_closest<span class='op'>=</span> <span class='fl'>0.90</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>res2</span><span class='op'>)</span>
-</div><div class='co'>#&gt;         Length Class  Mode   
-#&gt; YAtrans 400    -none- numeric
-#&gt; ZBtrans 300    -none- numeric</div><div class='input'>
-<span class='co'># For the prediction of Z in A only, add the corresponding argument:</span>
-<span class='va'>res3</span> <span class='op'>=</span> <span class='fu'>indiv_grp_closest</span><span class='op'>(</span><span class='va'>res1</span>,jointprobaA <span class='op'>=</span> <span class='va'>transport1</span>, jointprobaB <span class='op'>=</span> <span class='va'>transport1</span>,
-percent_closest<span class='op'>=</span> <span class='fl'>0.90</span>,which.DB<span class='op'>=</span><span class='st'>"A"</span><span class='op'>)</span>
-
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Example with the Manhattan distance</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>try1</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,</span>
+<span class='r-in'>                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 5 remaining levels</span>
+<span class='r-in'><span class='va'>res1</span> <span class='op'>=</span> <span class='fu'><a href='proxim_dist.html'>proxim_dist</a></span><span class='op'>(</span><span class='va'>try1</span>,norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Y(Yb1) and Z(Yb2) are a same information encoded in 2 different forms:</span></span>
+<span class='r-in'><span class='co'>### (3 levels for Y and 5 levels for Z)</span></span>
+<span class='r-in'><span class='co'>### ... Stored in two distinct databases, A and B, respectively</span></span>
+<span class='r-in'><span class='co'>### The marginal distribution of Y in B is unknown,</span></span>
+<span class='r-in'><span class='co'>### as the marginal distribution of Z in A ...</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Empirical distribution of Y in database A:</span></span>
+<span class='r-in'><span class='va'>freqY</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/proportions.html'>prop.table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>Y</span><span class='op'>)</span><span class='op'>)</span>; <span class='va'>freqY</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   [20-40]   [40-60[   [60-80] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.4333333 0.4233333 0.1433333 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Empirical distribution of Z in database B</span></span>
+<span class='r-in'><span class='va'>freqZ</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/proportions.html'>prop.table</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>Z</span><span class='op'>)</span><span class='op'>)</span>; <span class='va'>freqZ</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      1      2      3      4      5 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.3625 0.1275 0.0875 0.1075 0.3150 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># By supposing that the following matrix called transport symbolizes</span></span>
+<span class='r-in'><span class='co'># an estimation of the joint distribution L(Y,Z) ...</span></span>
+<span class='r-in'><span class='co'># Note that, in reality this distribution is UNKNOWN and is</span></span>
+<span class='r-in'><span class='co'># estimated in the OT function by resolving an optimisation problem.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>transport1</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>0.35285714</span>,<span class='fl'>0</span>,<span class='fl'>0.09142857</span>,<span class='fl'>0</span>,<span class='fl'>0.03571429</span>,</span>
+<span class='r-in'>                      <span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>0.08285714</span>,<span class='fl'>0</span>,<span class='fl'>0.07857143</span>,<span class='fl'>0.03142857</span>,</span>
+<span class='r-in'>                      <span class='fl'>0.32714286</span>,<span class='fl'>0</span>,<span class='fl'>0</span><span class='op'>)</span>,ncol <span class='op'>=</span> <span class='fl'>5</span>,byrow <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># ... So that the marginal distributions of this object corresponds to freqY and freqZ:</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>transport1</span>,<span class='fl'>1</span>,<span class='va'>sum</span><span class='op'>)</span>  <span class='co'># = freqY</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.4185714 0.4314286 0.1500000</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>transport1</span>,<span class='fl'>2</span>,<span class='va'>sum</span><span class='op'>)</span>  <span class='co'># = freqZ</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.35285714 0.12714286 0.08285714 0.11000000 0.32714286</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># The affectation of the predicted values of Y in database B and Z in database A</span></span>
+<span class='r-in'><span class='co'># are stored in the following object:</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>res2</span>      <span class='op'>=</span> <span class='fu'>indiv_grp_closest</span><span class='op'>(</span><span class='va'>res1</span>,jointprobaA <span class='op'>=</span> <span class='va'>transport1</span>, jointprobaB <span class='op'>=</span> <span class='va'>transport1</span>,</span>
+<span class='r-in'>                              percent_closest<span class='op'>=</span> <span class='fl'>0.90</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>res2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         Length Class  Mode   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> YAtrans 400    -none- numeric</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ZBtrans 300    -none- numeric</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># For the prediction of Z in A only, add the corresponding argument:</span></span>
+<span class='r-in'><span class='va'>res3</span> <span class='op'>=</span> <span class='fu'>indiv_grp_closest</span><span class='op'>(</span><span class='va'>res1</span>,jointprobaA <span class='op'>=</span> <span class='va'>transport1</span>, jointprobaB <span class='op'>=</span> <span class='va'>transport1</span>,</span>
+<span class='r-in'>percent_closest<span class='op'>=</span> <span class='fl'>0.90</span>,which.DB<span class='op'>=</span><span class='st'>"A"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

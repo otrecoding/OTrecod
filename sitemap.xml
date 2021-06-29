@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://otrecoding.github.io/OTrecod/404.html</loc>
+  </url>
+  <url>
+    <loc>https://otrecoding.github.io/OTrecod/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://otrecoding.github.io/OTrecod/articles/an-application-of-the-OTrecod-package.html</loc>
+  </url>
+  <url>
+    <loc>https://otrecoding.github.io/OTrecod/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://otrecoding.github.io/OTrecod/authors.html</loc>
+  </url>
+  <url>
     <loc>https://otrecoding.github.io/OTrecod/index.html</loc>
   </url>
   <url>
@@ -29,6 +44,9 @@
   </url>
   <url>
     <loc>https://otrecoding.github.io/OTrecod/reference/imput_cov.html</loc>
+  </url>
+  <url>
+    <loc>https://otrecoding.github.io/OTrecod/reference/index.html</loc>
   </url>
   <url>
     <loc>https://otrecoding.github.io/OTrecod/reference/indiv_grp_closest.html</loc>
@@ -65,8 +83,5 @@
   </url>
   <url>
     <loc>https://otrecoding.github.io/OTrecod/reference/verif_OT.html</loc>
-  </url>
-  <url>
-    <loc>https://otrecoding.github.io/OTrecod/articles/an-application-of-the-OTrecod-package.html</loc>
   </url>
 </urlset>

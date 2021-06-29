@@ -59,9 +59,6 @@ using optimal transportation (OT) of the joint distribution of outcomes." />
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -131,7 +128,7 @@ using optimal transportation (OT) of the joint distribution of outcomes." />
 using optimal transportation (OT) of the joint distribution of outcomes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>OT_outcome</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>OT_outcome</span><span class='op'>(</span>
   <span class='va'>datab</span>,
   index_DB_Y_Z <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,
   quanti <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -146,10 +143,10 @@ using optimal transportation (OT) of the joint distribution of outcomes.</p>
   percent.knn <span class='op'>=</span> <span class='fl'>1</span>,
   maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
   indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>,
-  prox.dist <span class='op'>=</span> <span class='fl'>0.8</span>,
+  prox.dist <span class='op'>=</span> <span class='fl'>0</span>,
   solvR <span class='op'>=</span> <span class='st'>"glpk"</span>,
   which.DB <span class='op'>=</span> <span class='st'>"BOTH"</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -221,7 +218,7 @@ the Gower distance ("G"), the Hamming distance ("H") for binary covariates only,
     </tr>
     <tr>
       <th>prox.dist</th>
-      <td><p>a probability (between 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates.</p></td>
+      <td><p>a probability (between 0 and 1) used to calculate the distance threshold below which an individual (a row) is considered as a neighbor of a given profile of covariates. When shared variables are all factors or categorical, it is suggested to keep this option to 0.</p></td>
     </tr>
     <tr>
       <th>solvR</th>
@@ -235,7 +232,7 @@ the Gower distance ("G"), the Hamming distance ("H") for binary covariates only,
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list containing 9 elements:</p>
+    <p>A "otres" class object of 9 elements:</p>
 <dt>time_exe</dt><dd><p>the running time of the function</p></dd>
 <dt>gamma_A</dt><dd><p>a matrix corresponding to an estimation of the joint distribution of \((Y,Z)\) in A</p></dd>
 <dt>gamma_B</dt><dd><p>a matrix corresponding to an estimation of the joint distribution of \((Y,Z)\) in B</p></dd>
@@ -336,134 +333,207 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <p><a href='mailto:otrecod.pkg@gmail.com'>otrecod.pkg@gmail.com</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'>### Using a sample of simu_data dataset</span>
-<span class='co'>### Y and Z are a same variable encoded in 2 different forms:</span>
-<span class='co'>### (3 levels for Y and 5 levels for Z)</span>
-<span class='co'>#--------</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span>
-<span class='va'>simu_dat</span>  <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>200</span>,<span class='fl'>301</span><span class='op'>:</span><span class='fl'>500</span><span class='op'>)</span>,<span class='op'>]</span>
-
-<span class='co'>### An example of OUTCOME algorithm that uses:</span>
-<span class='co'>#-----</span>
-<span class='co'># - A nearest neighbor procedure for the estimation of individual predictions</span>
-<span class='co'># - The Manhattan distance function</span>
-<span class='co'># - 90% of individuals from each modalities to calculate average distances</span>
-<span class='co'>#   between individuals and modalities</span>
-<span class='co'># Predictions are assessed for Y in B and Z in A</span>
-<span class='co'>#-----</span>
-
-<span class='va'>try1</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_dat</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
-                  dist.choice <span class='op'>=</span> <span class='st'>"M"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
-                  indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; OT PROCEDURE in progress ...</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Type                     = OUTCOME</div><div class='co'>#&gt; Distance                 = Manhattan</div><div class='co'>#&gt; Percent closest knn      = 90%</div><div class='co'>#&gt; Relaxation parameter     = NO</div><div class='co'>#&gt; Relaxation value         = 0</div><div class='co'>#&gt; Individual pred process  = Sequential</div><div class='co'>#&gt; DB imputed               = BOTH</div><div class='co'>#&gt; ---------------------------------------</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>DATA1_OT</span><span class='op'>)</span>  <span class='co'># Part of the completed database A</span>
-</div><div class='co'>#&gt;   DB       Y    Z Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage     Age
-#&gt; 1  A [40-60[ &lt;NA&gt;        0           1           0         1      3  3.0342
-#&gt; 2  A [20-40] &lt;NA&gt;        1          NA          NA         0      2  0.3472
-#&gt; 3  A [40-60[ &lt;NA&gt;        0           0           0         1      2 -0.1796
-#&gt; 4  A [40-60[ &lt;NA&gt;        0           0           1        NA      4  1.2620
-#&gt; 5  A [40-60[ &lt;NA&gt;        0           1           0         1      4 -1.0325
-#&gt; 6  A [20-40] &lt;NA&gt;        0           1           0        NA      1      NA
-#&gt;   OTpred
-#&gt; 1      5
-#&gt; 2      1
-#&gt; 3      2
-#&gt; 4      5
-#&gt; 5      5
-#&gt; 6      1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>DATA2_OT</span><span class='op'>)</span>  <span class='co'># Part of the completed database B</span>
-</div><div class='co'>#&gt;     DB    Y Z Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage     Age  OTpred
-#&gt; 301  B &lt;NA&gt; 5        0           0           0         1      2 -1.0701 [40-60[
-#&gt; 302  B &lt;NA&gt; 1        0           0           1        NA      4  2.9942 [20-40]
-#&gt; 303  B &lt;NA&gt; 2        0           0           0         0     NA  0.3189 [20-40]
-#&gt; 304  B &lt;NA&gt; 2        0           1           0         0     NA  0.0256 [20-40]
-#&gt; 305  B &lt;NA&gt; 1        0           0           1         1      4  2.2648 [20-40]
-#&gt; 306  B &lt;NA&gt; 1        0           0           1        NA      3  2.0712 [20-40]</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>estimatorZA</span><span class='op'>[</span>,,<span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='co'>#&gt;       [20-40]    [40-60[    [60-80]
-#&gt; P_1 0.9000000 0.01176471 0.03703704
-#&gt; P_2 0.8390805 0.00000000 0.03703704
-#&gt; P_3 0.8390805 0.01219512 0.03846154
-#&gt; P_4 0.9250000 0.01176471 0.03703704
-#&gt; P_5 0.8470588 0.01176471 0.03703704
-#&gt; P_6 0.8390805 0.01176471 0.03703704</div><div class='input'><span class='co'># ... Corresponds to P[Z = 1|Y,P1] when P1 corresponds to the 1st profile of covariates (P_1)</span>
-<span class='co'># detailed in the 1st row of the profile object:</span>
-<span class='va'>try1</span><span class='op'>$</span><span class='va'>profile</span><span class='op'>[</span><span class='fl'>1</span>,<span class='op'>]</span>   <span class='co'># Details of P_1</span>
-</div><div class='co'>#&gt;    ID Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage    Age
-#&gt; 1 P_1        0           1           0         1      3 3.0342</div><div class='input'>
-<span class='co'># So estimatorZA[1,1,1]= 0.2 corresponds to an estimation of:</span>
-<span class='co'># P[Z = 1|Y=[20-40],Gender_2=0,Treatment_2=1,Treatment_3=0,Smoking_2=1,Dosage=3,Age=65.44]</span>
-<span class='co'># Thus, we can conclude that all individuals with the P_1 profile of covariates have</span>
-<span class='co'># 20% of chance to be affected to the 1st level of Z in database A.</span>
-<span class='co'># ... And so on, the reasoning is the same for the estimatorYB object.</span>
-
-
-<span class='co'># \donttest{</span>
-
-<span class='co'>### An example of OUTCOME algorithm with same conditions as the previous example, excepted that;</span>
-<span class='co'># - Only the individual predictions of Y in B are required</span>
-<span class='co'># - The continuous covariates "age" (related index = 8) will be converted in an ordinal factors</span>
-<span class='co'>#   of 3 balanced classes (tertiles)</span>
-<span class='co'># - The Gower distance is now used</span>
-<span class='co'>###-----</span>
-
-<span class='va'>try2</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_dat</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
-                  dist.choice <span class='op'>=</span> <span class='st'>"G"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
-                  convert.num <span class='op'>=</span> <span class='fl'>8</span>, convert.clss <span class='op'>=</span> <span class='fl'>3</span>,
-                  indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>, which.DB <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; OT PROCEDURE in progress ...</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Type                     = OUTCOME</div><div class='co'>#&gt; Distance                 = Gower</div><div class='co'>#&gt; Percent closest knn      = 90%</div><div class='co'>#&gt; Relaxation parameter     = NO</div><div class='co'>#&gt; Relaxation value         = 0</div><div class='co'>#&gt; Individual pred process  = Sequential</div><div class='co'>#&gt; DB imputed               = B</div><div class='co'>#&gt; ---------------------------------------</div><div class='input'>
-
-<span class='co'>### An example of OUTCOME algorithm with same conditions as the first example, excepted that;</span>
-<span class='co'># - Only the individual predictions of Z in A are required</span>
-<span class='co'># - The continuous covariates "age" (related index = 8) will be converted in an ordinal factors</span>
-<span class='co'>#   of 3 balanced classes (tertiles)</span>
-<span class='co'># - Here, the Hamming distance can be applied because, after conversion, all covariates are factors.</span>
-<span class='co'>#   Disjunctive tables of each covariates will be automatically used to work with a set of binary</span>
-<span class='co'>#   variables.</span>
-<span class='co'>###-----</span>
-
-<span class='va'>try3</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
-                  dist.choice <span class='op'>=</span> <span class='st'>"H"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
-                  convert.num <span class='op'>=</span> <span class='fl'>8</span>, convert.clss <span class='op'>=</span> <span class='fl'>3</span>,
-                  indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>,which.DB <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; OT PROCEDURE in progress ...</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Type                     = OUTCOME</div><div class='co'>#&gt; Distance                 = Hamming</div><div class='co'>#&gt; Percent closest knn      = 90%</div><div class='co'>#&gt; Relaxation parameter     = NO</div><div class='co'>#&gt; Relaxation value         = 0</div><div class='co'>#&gt; Individual pred process  = Sequential</div><div class='co'>#&gt; DB imputed               = B</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Hamming 1/3</div><div class='co'>#&gt; Hamming 2/3</div><div class='co'>#&gt; Hamming 3/3</div><div class='input'>
-
-<span class='co'>### An example of R-OUTCOME algorithm using:</span>
-<span class='co'># - An optimization procedure for individual predictions on the 2 databases</span>
-<span class='co'># - The Manhattan distance</span>
-<span class='co'># - Raw covariates</span>
-<span class='co'>###-----</span>
-<span class='va'>try4</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
-                  dist.choice <span class='op'>=</span> <span class='st'>"M"</span>, percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,
-                  indiv.method <span class='op'>=</span> <span class='st'>"optimal"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; OT PROCEDURE in progress ...</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Type                     = R-OUTCOME</div><div class='co'>#&gt; Distance                 = Manhattan</div><div class='co'>#&gt; Percent closest knn      = 90%</div><div class='co'>#&gt; Relaxation parameter     = NO</div><div class='co'>#&gt; Relaxation value         = 0</div><div class='co'>#&gt; Individual pred process  = Optimal</div><div class='co'>#&gt; DB imputed               = BOTH</div><div class='co'>#&gt; ---------------------------------------</div><div class='input'>
-
-<span class='co'>### An example of R-OUTCOME algorithm with:</span>
-<span class='co'># - An optimization procedure for individual predictions on the 2 databases</span>
-<span class='co'># - The use of Euclidean distance on coordinates from FAMD</span>
-<span class='co'># - Raw covariates</span>
-<span class='co'>###-----</span>
-
-<span class='va'>try5</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
-                  dist.choice <span class='op'>=</span> <span class='st'>"E"</span>, percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>,
-                  FAMD.coord <span class='op'>=</span> <span class='st'>"YES"</span>, FAMD.perc <span class='op'>=</span> <span class='fl'>0.8</span>,
-                  indiv.method <span class='op'>=</span> <span class='st'>"optimal"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; OT PROCEDURE in progress ...</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Type                     = R-OUTCOME</div><div class='co'>#&gt; Distance                 = Euclidean</div><div class='co'>#&gt; Percent closest knn      = 90%</div><div class='co'>#&gt; Relaxation parameter     = NO</div><div class='co'>#&gt; Relaxation value         = 0</div><div class='co'>#&gt; Individual pred process  = Optimal</div><div class='co'>#&gt; DB imputed               = BOTH</div><div class='co'>#&gt; ---------------------------------------</div><div class='input'>
-
-<span class='co'>### An example of R-OUTCOME algorithm with relaxation on marginal distributions and:</span>
-<span class='co'># - An optimization procedure for individual predictions on the 2 databases</span>
-<span class='co'># - The use of the euclidean distance</span>
-<span class='co'># - An arbitrary coefficient of relaxation</span>
-<span class='co'># - Raw covariates</span>
-<span class='co'>#-----</span>
-
-<span class='va'>try6</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
-                  dist.choice <span class='op'>=</span> <span class='st'>"E"</span>, percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>,
-                  maxrelax <span class='op'>=</span> <span class='fl'>0.4</span>, indiv.method <span class='op'>=</span> <span class='st'>"optimal"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; OT PROCEDURE in progress ...</div><div class='co'>#&gt; ---------------------------------------</div><div class='co'>#&gt; Type                     = R-OUTCOME</div><div class='co'>#&gt; Distance                 = Euclidean</div><div class='co'>#&gt; Percent closest knn      = 90%</div><div class='co'>#&gt; Relaxation parameter     = YES</div><div class='co'>#&gt; Relaxation value         = 0.4</div><div class='co'>#&gt; Individual pred process  = Optimal</div><div class='co'>#&gt; DB imputed               = BOTH</div><div class='co'>#&gt; ---------------------------------------</div><div class='input'>
-
-<span class='co'># }</span>
-
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'></span>
+<span class='r-in'><span class='co'>### Using a sample of simu_data dataset</span></span>
+<span class='r-in'><span class='co'>### Y and Z are a same variable encoded in 2 different forms:</span></span>
+<span class='r-in'><span class='co'>### (3 levels for Y and 5 levels for Z)</span></span>
+<span class='r-in'><span class='co'>#--------</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>simu_dat</span>  <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>200</span>,<span class='fl'>301</span><span class='op'>:</span><span class='fl'>500</span><span class='op'>)</span>,<span class='op'>]</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### An example of OUTCOME algorithm that uses:</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'><span class='co'># - A nearest neighbor procedure for the estimation of individual predictions</span></span>
+<span class='r-in'><span class='co'># - The Manhattan distance function</span></span>
+<span class='r-in'><span class='co'># - 90% of individuals from each modalities to calculate average distances</span></span>
+<span class='r-in'><span class='co'>#   between individuals and modalities</span></span>
+<span class='r-in'><span class='co'># Predictions are assessed for Y in B and Z in A</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>try1</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_dat</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>                  dist.choice <span class='op'>=</span> <span class='st'>"M"</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,</span>
+<span class='r-in'>                  indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> OT PROCEDURE in progress ...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Type                     = OUTCOME</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Distance                 = Manhattan</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Percent closest knn      = 100%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Relaxation parameter     = NO</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Relaxation value         = 0</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Individual pred process  = Sequential</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> DB imputed               = BOTH</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>DATA1_OT</span><span class='op'>)</span>  <span class='co'># Part of the completed database A</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   DB       Y    Z Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage     Age</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  A [40-60[ &lt;NA&gt;        0           1           0         1      3  3.0342</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  A [20-40] &lt;NA&gt;        1          NA          NA         0      2  0.3472</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  A [40-60[ &lt;NA&gt;        0           0           0         1      2 -0.1796</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  A [40-60[ &lt;NA&gt;        0           0           1        NA      4  1.2620</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  A [40-60[ &lt;NA&gt;        0           1           0         1      4 -1.0325</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  A [20-40] &lt;NA&gt;        0           1           0        NA      1      NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   OTpred</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1      5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2      1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3      2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4      5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5      5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6      1</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>DATA2_OT</span><span class='op'>)</span>  <span class='co'># Part of the completed database B</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     DB    Y Z Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage     Age  OTpred</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 301  B &lt;NA&gt; 5        0           0           0         1      2 -1.0701 [40-60[</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 302  B &lt;NA&gt; 1        0           0           1        NA      4  2.9942 [20-40]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 303  B &lt;NA&gt; 2        0           0           0         0     NA  0.3189 [20-40]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 304  B &lt;NA&gt; 2        0           1           0         0     NA  0.0256 [20-40]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 305  B &lt;NA&gt; 1        0           0           1         1      4  2.2648 [20-40]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 306  B &lt;NA&gt; 1        0           0           1        NA      3  2.0712 [20-40]</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>try1</span><span class='op'>$</span><span class='va'>estimatorZA</span><span class='op'>[</span>,,<span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     [20-40] [40-60[ [60-80]</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> P_1    0.20     0.0     0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> P_2    1.00     0.2     0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> P_3    0.20     0.0     0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> P_4    0.20     0.0     0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> P_5    0.20     0.0     0.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> P_6    0.75     0.0     0.0</span>
+<span class='r-in'><span class='co'># ... Corresponds to P[Z = 1|Y,P1] when P1 corresponds to the 1st profile of covariates (P_1)</span></span>
+<span class='r-in'><span class='co'># detailed in the 1st row of the profile object:</span></span>
+<span class='r-in'><span class='va'>try1</span><span class='op'>$</span><span class='va'>profile</span><span class='op'>[</span><span class='fl'>1</span>,<span class='op'>]</span>   <span class='co'># Details of P_1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    ID Gender_2 Treatment_2 Treatment_3 Smoking_2 Dosage    Age</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 P_1        0           1           0         1      3 3.0342</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># So estimatorZA[1,1,1]= 0.2 corresponds to an estimation of:</span></span>
+<span class='r-in'><span class='co'># P[Z = 1|Y=[20-40],Gender_2=0,Treatment_2=1,Treatment_3=0,Smoking_2=1,Dosage=3,Age=65.44]</span></span>
+<span class='r-in'><span class='co'># Thus, we can conclude that all individuals with the P_1 profile of covariates have</span></span>
+<span class='r-in'><span class='co'># 20% of chance to be affected to the 1st level of Z in database A.</span></span>
+<span class='r-in'><span class='co'># ... And so on, the reasoning is the same for the estimatorYB object.</span></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### An example of OUTCOME algorithm with same conditions as the previous example, excepted that;</span></span>
+<span class='r-in'><span class='co'># - Only the individual predictions of Y in B are required</span></span>
+<span class='r-in'><span class='co'># - The continuous covariates "age" (related index = 8) will be converted in an ordinal factors</span></span>
+<span class='r-in'><span class='co'>#   of 3 balanced classes (tertiles)</span></span>
+<span class='r-in'><span class='co'># - The Gower distance is now used</span></span>
+<span class='r-in'><span class='co'>###-----</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>try2</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_dat</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>                  dist.choice <span class='op'>=</span> <span class='st'>"G"</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,</span>
+<span class='r-in'>                  convert.num <span class='op'>=</span> <span class='fl'>8</span>, convert.clss <span class='op'>=</span> <span class='fl'>3</span>,</span>
+<span class='r-in'>                  indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>, which.DB <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> OT PROCEDURE in progress ...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Type                     = OUTCOME</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Distance                 = Gower</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Percent closest knn      = 100%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Relaxation parameter     = NO</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Relaxation value         = 0</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Individual pred process  = Sequential</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> DB imputed               = B</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### An example of OUTCOME algorithm with same conditions as the first example, excepted that;</span></span>
+<span class='r-in'><span class='co'># - Only the individual predictions of Z in A are required</span></span>
+<span class='r-in'><span class='co'># - The continuous covariates "age" (related index = 8) will be converted in an ordinal factors</span></span>
+<span class='r-in'><span class='co'>#   of 3 balanced classes (tertiles)</span></span>
+<span class='r-in'><span class='co'># - Here, the Hamming distance can be applied because, after conversion, all covariates are factors.</span></span>
+<span class='r-in'><span class='co'>#   Disjunctive tables of each covariates will be automatically used to work with a set of binary</span></span>
+<span class='r-in'><span class='co'>#   variables.</span></span>
+<span class='r-in'><span class='co'>###-----</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>try3</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>                  dist.choice <span class='op'>=</span> <span class='st'>"H"</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,</span>
+<span class='r-in'>                  convert.num <span class='op'>=</span> <span class='fl'>8</span>, convert.clss <span class='op'>=</span> <span class='fl'>3</span>,</span>
+<span class='r-in'>                  indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>,which.DB <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> OT PROCEDURE in progress ...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Type                     = OUTCOME</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Distance                 = Hamming</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Percent closest knn      = 100%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Relaxation parameter     = NO</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Relaxation value         = 0</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Individual pred process  = Sequential</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> DB imputed               = B</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Hamming 1/3</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Hamming 2/3</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Hamming 3/3</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### An example of R-OUTCOME algorithm using:</span></span>
+<span class='r-in'><span class='co'># - An optimization procedure for individual predictions on the 2 databases</span></span>
+<span class='r-in'><span class='co'># - The Manhattan distance</span></span>
+<span class='r-in'><span class='co'># - Raw covariates</span></span>
+<span class='r-in'><span class='co'>###-----</span></span>
+<span class='r-in'><span class='va'>try4</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>                  dist.choice <span class='op'>=</span> <span class='st'>"M"</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,</span>
+<span class='r-in'>                  indiv.method <span class='op'>=</span> <span class='st'>"optimal"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> OT PROCEDURE in progress ...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Type                     = R-OUTCOME</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Distance                 = Manhattan</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Percent closest knn      = 100%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Relaxation parameter     = NO</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Relaxation value         = 0</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Individual pred process  = Optimal</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> DB imputed               = BOTH</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### An example of R-OUTCOME algorithm with:</span></span>
+<span class='r-in'><span class='co'># - An optimization procedure for individual predictions on the 2 databases</span></span>
+<span class='r-in'><span class='co'># - The use of Euclidean distance on coordinates from FAMD</span></span>
+<span class='r-in'><span class='co'># - Raw covariates</span></span>
+<span class='r-in'><span class='co'>###-----</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>try5</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>                  dist.choice <span class='op'>=</span> <span class='st'>"E"</span>,</span>
+<span class='r-in'>                  FAMD.coord <span class='op'>=</span> <span class='st'>"YES"</span>, FAMD.perc <span class='op'>=</span> <span class='fl'>0.8</span>,</span>
+<span class='r-in'>                  indiv.method <span class='op'>=</span> <span class='st'>"optimal"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> OT PROCEDURE in progress ...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Type                     = R-OUTCOME</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Distance                 = Euclidean</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Percent closest knn      = 100%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Relaxation parameter     = NO</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Relaxation value         = 0</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Individual pred process  = Optimal</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> DB imputed               = BOTH</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### An example of R-OUTCOME algorithm with relaxation on marginal distributions and:</span></span>
+<span class='r-in'><span class='co'># - An optimization procedure for individual predictions on the 2 databases</span></span>
+<span class='r-in'><span class='co'># - The use of the euclidean distance</span></span>
+<span class='r-in'><span class='co'># - An arbitrary coefficient of relaxation</span></span>
+<span class='r-in'><span class='co'># - Raw covariates</span></span>
+<span class='r-in'><span class='co'>#-----</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>try6</span> <span class='op'>=</span> <span class='fu'>OT_outcome</span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>                  dist.choice <span class='op'>=</span> <span class='st'>"E"</span>, maxrelax <span class='op'>=</span> <span class='fl'>0.4</span>,</span>
+<span class='r-in'>                  indiv.method <span class='op'>=</span> <span class='st'>"optimal"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> OT PROCEDURE in progress ...</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Type                     = R-OUTCOME</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Distance                 = Euclidean</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Percent closest knn      = 100%</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Relaxation parameter     = YES</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Relaxation value         = 0.4</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Individual pred process  = Optimal</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> DB imputed               = BOTH</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># }</span></span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

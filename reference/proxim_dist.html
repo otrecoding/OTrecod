@@ -58,9 +58,6 @@
 
 
 
-<!-- dependencies from examples -->
-
-
   
 
   
@@ -129,7 +126,7 @@
     <p><code>proxim_dist</code> computes the pairwise distance matrix of a database and cross-distance matrix between two databases according to various distances used in the context of data fusion.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>data_file</span>, indx_DB_Y_Z <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, norm <span class='op'>=</span> <span class='st'>"E"</span>, prox <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>data_file</span>, indx_DB_Y_Z <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, norm <span class='op'>=</span> <span class='st'>"E"</span>, prox <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -236,77 +233,94 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <p><a href='mailto:otrecod.pkg@gmail.com'>otrecod.pkg@gmail.com</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span>
-<span class='co'>### The covariates of the data are prepared according to the chosen distance</span>
-<span class='co'>### using the transfo_dist function</span>
-
-<span class='co'>### Ex 1: The Manhattan distance</span>
-
-<span class='va'>try1</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
-                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 5 remaining levels</div><div class='input'><span class='va'>res1</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try1</span>, norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>  <span class='co'># try1 compatible with norm = "E" for Euclidean</span>
-
-
-<span class='co'>### Ex 2: The Euclidean and Manhattan distance applied on coordinates from FAMD</span>
-
-<span class='va'>try2</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
-                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"FAMD"</span>,info <span class='op'>=</span> <span class='fl'>0.80</span><span class='op'>)</span>
-</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 5 remaining levels</div><div class='co'>#&gt; <span class='warning'>Warning: </span>Presence of NA on covariates. You should work with complete or imputed DB before using this method.
-#&gt;               By default, only rows with no NA on covariates have been kept.</div><div class='co'>#&gt; Only 528 rows (75%)are kept here corresponding to complete cases</div><div class='input'><span class='va'>res2_E</span>  <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try2</span>,norm <span class='op'>=</span> <span class='st'>"E"</span><span class='op'>)</span>
-<span class='co'># \donttest{</span>
-<span class='va'>res2_M</span>  <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try2</span>, norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>
-<span class='co'># }</span>
-
-<span class='co'>### Ex 3: The Gower distance with mixed covariates</span>
-
-<span class='va'>try3</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span>,<span class='fl'>301</span><span class='op'>:</span><span class='fl'>400</span><span class='op'>)</span>,<span class='op'>]</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,
-                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"G"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 5 remaining levels</div><div class='input'><span class='va'>res3</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try3</span>, norm <span class='op'>=</span> <span class='st'>"G"</span><span class='op'>)</span>
-
-<span class='co'># \donttest{</span>
-<span class='co'>### Ex 4a: The Hamming distance with binary (but incomplete) covariates only</span>
-
-<span class='co'># categorization of the continuous covariates age by tertiles</span>
-<span class='va'>try4</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
-                    convert_num <span class='op'>=</span> <span class='fl'>8</span>, convert_clss <span class='op'>=</span> <span class='fl'>3</span>, prep_choice <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 5 remaining levels</div><div class='input'><span class='va'>res4</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try4</span>, norm <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; Hamming 1/3</div><div class='co'>#&gt; Hamming 2/3</div><div class='co'>#&gt; Hamming 3/3</div><div class='input'><span class='co'># Be patient ... It could take few minutes</span>
-
-<span class='co'>### Ex 4b: The Hamming distance with complete cases on nominal and ordinal covariates only</span>
-<span class='va'>simu_data_CC</span> <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>[</span>,<span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span><span class='op'>&amp;</span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>[</span>,<span class='fl'>6</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
-                          <span class='op'>&amp;</span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>[</span>,<span class='fl'>7</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span><span class='op'>]</span>
-<span class='va'>try4b</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data_CC</span>,quanti <span class='op'>=</span> <span class='fl'>3</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,
-                     prep_choice <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</div><div class='co'>#&gt; 5 remaining levels</div><div class='input'><span class='va'>res4b</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try4b</span>, norm <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span>
-
-
-<span class='co'>### Ex 5: PARTICULAR CASE, If only one covariate with no NAs</span>
-
-<span class='va'>try5</span> <span class='op'>=</span> <span class='va'>try1</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fl'>7</span><span class='op'>)</span><span class='op'>]</span>           <span class='co'># Only Smoking variable</span>
-<span class='va'>try6</span> <span class='op'>=</span> <span class='va'>try5</span><span class='op'>[</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>try5</span><span class='op'>[</span>,<span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>,<span class='op'>]</span>   <span class='co'># Keep complete case</span>
-<span class='va'>res6_M</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try6</span>,norm <span class='op'>=</span> <span class='st'>"M"</span>, prox <span class='op'>=</span> <span class='fl'>0.10</span><span class='op'>)</span>
-
-<span class='va'>res7_H</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try6</span>,norm <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span> <span class='co'># Hamming</span>
-
-
-<span class='co'>### Ex 6: PARTICULAR CASE, many covariates but NAs in distance matrix</span>
-
-<span class='co'># We generated NAs in the try1 object so that:</span>
-<span class='co'># dist(A4,B102) and dist(A122,B102) returns NA whatever the norm chosen:</span>
-<span class='va'>try7</span> <span class='op'>=</span> <span class='va'>try1</span>
-<span class='va'>try7</span><span class='op'>[</span><span class='fl'>4</span>,<span class='fl'>7</span><span class='op'>:</span><span class='fl'>9</span><span class='op'>]</span>   <span class='op'>=</span> <span class='cn'>NA</span>
-<span class='va'>try7</span><span class='op'>[</span><span class='fl'>122</span>,<span class='fl'>6</span><span class='op'>:</span><span class='fl'>9</span><span class='op'>]</span> <span class='op'>=</span> <span class='cn'>NA</span>
-<span class='va'>try7</span><span class='op'>[</span><span class='fl'>300</span><span class='op'>+</span><span class='fl'>102</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span> <span class='op'>=</span> <span class='cn'>NA</span>
-<span class='va'>res7</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try7</span>,norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>
-</div><div class='co'>#&gt; <span class='warning'>Warning: </span>THE PROCESS STOPPED</div><div class='co'>#&gt; !!! Because of the presence of NAs in distance matrix, the process stopped. Combinations of rows of A and B with NAs cause pbs and have to be removed or imputed. To help you, the indexes of rows are listed in the returned object.</div><div class='input'><span class='co'># The process stopped indicates 2 NAs and the corresponding row numbers</span>
-<span class='co'># The 2nd output of res7 indicates that removing first the 102th row of the database</span>
-<span class='co'># B is enough to solve the pb:</span>
-<span class='va'>try8</span> <span class='op'>=</span> <span class='va'>try7</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>402</span>,<span class='op'>]</span>
-<span class='va'>res8</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try8</span>,norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>
-<span class='co'># }</span>
-
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>### The covariates of the data are prepared according to the chosen distance</span></span>
+<span class='r-in'><span class='co'>### using the transfo_dist function</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Ex 1: The Manhattan distance</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>try1</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,</span>
+<span class='r-in'>                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 5 remaining levels</span>
+<span class='r-in'><span class='va'>res1</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try1</span>, norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span>  <span class='co'># try1 compatible with norm = "E" for Euclidean</span></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Ex 2: The Euclidean and Manhattan distance applied on coordinates from FAMD</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>try2</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,</span>
+<span class='r-in'>                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"FAMD"</span>,info <span class='op'>=</span> <span class='fl'>0.80</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 5 remaining levels</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Presence of NA on covariates. You should work with complete or imputed DB before using this method.</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span>               By default, only rows with no NA on covariates have been kept.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Only 528 rows (75%)are kept here corresponding to complete cases</span>
+<span class='r-in'><span class='va'>res2_E</span>  <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try2</span>,norm <span class='op'>=</span> <span class='st'>"E"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='va'>res2_M</span>  <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try2</span>, norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># }</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Ex 3: The Gower distance with mixed covariates</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>try3</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span>,<span class='fl'>301</span><span class='op'>:</span><span class='fl'>400</span><span class='op'>)</span>,<span class='op'>]</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,</span>
+<span class='r-in'>                    ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>, logic <span class='op'>=</span> <span class='cn'>NULL</span>, prep_choice <span class='op'>=</span> <span class='st'>"G"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 5 remaining levels</span>
+<span class='r-in'><span class='va'>res3</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try3</span>, norm <span class='op'>=</span> <span class='st'>"G"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='co'>### Ex 4a: The Hamming distance with binary (but incomplete) covariates only</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># categorization of the continuous covariates age by tertiles</span></span>
+<span class='r-in'><span class='va'>try4</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data</span>,quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>                    convert_num <span class='op'>=</span> <span class='fl'>8</span>, convert_clss <span class='op'>=</span> <span class='fl'>3</span>, prep_choice <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 5 remaining levels</span>
+<span class='r-in'><span class='va'>res4</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try4</span>, norm <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Hamming 1/3</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Hamming 2/3</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Hamming 3/3</span>
+<span class='r-in'><span class='co'># Be patient ... It could take few minutes</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Ex 4b: The Hamming distance with complete cases on nominal and ordinal covariates only</span></span>
+<span class='r-in'><span class='va'>simu_data_CC</span> <span class='op'>=</span> <span class='va'>simu_data</span><span class='op'>[</span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>[</span>,<span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span><span class='op'>&amp;</span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>[</span>,<span class='fl'>6</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'>                          <span class='op'>&amp;</span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>[</span>,<span class='fl'>7</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>7</span><span class='op'>]</span></span>
+<span class='r-in'><span class='va'>try4b</span> <span class='op'>=</span> <span class='fu'><a href='transfo_dist.html'>transfo_dist</a></span><span class='op'>(</span><span class='va'>simu_data_CC</span>,quanti <span class='op'>=</span> <span class='fl'>3</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>,ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,</span>
+<span class='r-in'>                     prep_choice <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> 5 remaining levels</span>
+<span class='r-in'><span class='va'>res4b</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try4b</span>, norm <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Ex 5: PARTICULAR CASE, If only one covariate with no NAs</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>try5</span> <span class='op'>=</span> <span class='va'>try1</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>,<span class='fl'>7</span><span class='op'>)</span><span class='op'>]</span>           <span class='co'># Only Smoking variable</span></span>
+<span class='r-in'><span class='va'>try6</span> <span class='op'>=</span> <span class='va'>try5</span><span class='op'>[</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>try5</span><span class='op'>[</span>,<span class='fl'>4</span><span class='op'>]</span><span class='op'>)</span>,<span class='op'>]</span>   <span class='co'># Keep complete case</span></span>
+<span class='r-in'><span class='va'>res6_M</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try6</span>,norm <span class='op'>=</span> <span class='st'>"M"</span>, prox <span class='op'>=</span> <span class='fl'>0.10</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>res7_H</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try6</span>,norm <span class='op'>=</span> <span class='st'>"H"</span><span class='op'>)</span> <span class='co'># Hamming</span></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>### Ex 6: PARTICULAR CASE, many covariates but NAs in distance matrix</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># We generated NAs in the try1 object so that:</span></span>
+<span class='r-in'><span class='co'># dist(A4,B102) and dist(A122,B102) returns NA whatever the norm chosen:</span></span>
+<span class='r-in'><span class='va'>try7</span> <span class='op'>=</span> <span class='va'>try1</span></span>
+<span class='r-in'><span class='va'>try7</span><span class='op'>[</span><span class='fl'>4</span>,<span class='fl'>7</span><span class='op'>:</span><span class='fl'>9</span><span class='op'>]</span>   <span class='op'>=</span> <span class='cn'>NA</span></span>
+<span class='r-in'><span class='va'>try7</span><span class='op'>[</span><span class='fl'>122</span>,<span class='fl'>6</span><span class='op'>:</span><span class='fl'>9</span><span class='op'>]</span> <span class='op'>=</span> <span class='cn'>NA</span></span>
+<span class='r-in'><span class='va'>try7</span><span class='op'>[</span><span class='fl'>300</span><span class='op'>+</span><span class='fl'>102</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span> <span class='op'>=</span> <span class='cn'>NA</span></span>
+<span class='r-in'><span class='va'>res7</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try7</span>,norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>THE PROCESS STOPPED</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> !!! Because of the presence of NAs in distance matrix, the process stopped. Combinations of rows of A and B with NAs cause pbs and have to be removed or imputed. To help you, the indexes of rows are listed in the returned object.</span>
+<span class='r-in'><span class='co'># The process stopped indicates 2 NAs and the corresponding row numbers</span></span>
+<span class='r-in'><span class='co'># The 2nd output of res7 indicates that removing first the 102th row of the database</span></span>
+<span class='r-in'><span class='co'># B is enough to solve the pb:</span></span>
+<span class='r-in'><span class='va'>try8</span> <span class='op'>=</span> <span class='va'>try7</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>402</span>,<span class='op'>]</span></span>
+<span class='r-in'><span class='va'>res8</span> <span class='op'>=</span> <span class='fu'>proxim_dist</span><span class='op'>(</span><span class='va'>try8</span>,norm <span class='op'>=</span> <span class='st'>"M"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># }</span></span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
