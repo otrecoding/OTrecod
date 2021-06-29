@@ -114,7 +114,7 @@
 #' @param which.DB a character string indicating the database to complete ("BOTH" by default, for the prediction of \eqn{Y} and \eqn{Z} in the two databases), "A" only for the imputation of \eqn{Z} in A, "B" only for the imputation of \eqn{Y} in B.
 #'
 #'
-#' @return A list of 9 elements containing:
+#' @return A "otres" class object of 9 elements:
 #'     \item{time_exe}{running time of the function}
 #'     \item{gamma_A}{estimate of \eqn{\gamma} for the completion of A. A matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in A}
 #'     \item{gamma_B}{estimate of \eqn{\gamma} for the completion of B. A matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in B}
@@ -693,14 +693,20 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
 
   tend = Sys.time()
 
-  return(list(time_exe    = difftime(tend,tstart),
-              gamma_A     = GAMMA_A,
-              gamma_B     = GAMMA_B,
-              profile     = data.frame(ID = ID_prof,prof),
-              res_prox    = inst,
-              estimatorZA = estimatorZA,
-              estimatorYB = estimatorYB,
-              DATA1_OT    = DATA1_OT,
-              DATA2_OT    = DATA2_OT))
+  res_OT = list(time_exe    = difftime(tend,tstart),
+                gamma_A     = GAMMA_A,
+                gamma_B     = GAMMA_B,
+                profile     = data.frame(ID = ID_prof,prof),
+                res_prox    = inst,
+                estimatorZA = estimatorZA,
+                estimatorYB = estimatorYB,
+                DATA1_OT    = DATA1_OT,
+                DATA2_OT    = DATA2_OT)
+
+  # otres class object
+  class(res_OT) = "otres"
+
+  return(res_OT)
+
 }
 

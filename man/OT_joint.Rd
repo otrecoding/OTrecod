@@ -60,7 +60,7 @@ If \code{prox.X = 1}, all profiles are considered as neighbors.}
 \item{which.DB}{a character string indicating the database to complete ("BOTH" by default, for the prediction of \eqn{Y} and \eqn{Z} in the two databases), "A" only for the imputation of \eqn{Z} in A, "B" only for the imputation of \eqn{Y} in B.}
 }
 \value{
-A list of 9 elements containing:
+A "otres" class object of 9 elements:
     \item{time_exe}{running time of the function}
     \item{gamma_A}{estimate of \eqn{\gamma} for the completion of A. A matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in A}
     \item{gamma_B}{estimate of \eqn{\gamma} for the completion of B. A matrix that corresponds to the joint distribution of \eqn{(Y,Z,X)} in B}

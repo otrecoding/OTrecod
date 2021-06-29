@@ -74,15 +74,15 @@ A list of 14 (if \code{RF = TRUE}) or 11 objects (Only the first ten objects if 
 \item{thresh}{a summarize of the different thresholds fixed for the study}
 \item{convert_num}{the labels of the continuous predictors transformed in categorical form}
 \item{DB_USED}{the final database used after potential transformations of predictors}
-\item{vcrm_Y_cat}{a table of pairwise associations between the outcome and the categorical predictors (Cramer's V)}
-\item{cor_Y_num}{a table of pairwise associations between the outcome and the continuous predictors (Rank correlation)}
+\item{vcrm_OUTC_cat}{a table of pairwise associations between the outcome and the categorical predictors (Cramer's V)}
+\item{cor_OUTC_num}{a table of pairwise associations between the outcome and the continuous predictors (Rank correlation)}
 \item{vcrm_X_cat}{a table of pairwise associations between the categorical predictors (Cramer's V)}
 \item{cor_X_num}{a table of pairwise associations between the continuous predictors (Cramer's V)}
 \item{FG_test}{the results of the Farrar and Glauber tests, with and without approximation form}
 \item{collinear_PB}{a table of predictors with problem of collinearity according to the fixed thresholds}
 \item{drop_var}{the labels of predictors to drop after RF process (optional output: only if \code{RF}=TRUE)}
-\item{RF_PRED_Y}{the table of variable importance measurements, conditional or not, according to the argument \code{condi_RF} (optional output: Only if \code{RF}=TRUE)}
-\item{best_pred}{the labels of the best predictors selected (optional output: Only if \code{RF}=TRUE) according to the value of the argument \code{thresh_Y}}
+\item{RF_PRED}{the table of variable importance measurements, conditional or not, according to the argument \code{condi_RF} (optional output: Only if \code{RF}=TRUE)}
+\item{RF_best}{the labels of the best predictors selected (optional output: Only if \code{RF}=TRUE) according to the value of the argument \code{thresh_Y}}
 }
 \description{
 Selection of a subset of non collinear predictors having relevant relationships with a given target outcome using a random forest procedure.

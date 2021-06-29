@@ -103,15 +103,15 @@
 #' \item{thresh}{a summarize of the different thresholds fixed for the study}
 #' \item{convert_num}{the labels of the continuous predictors transformed in categorical form}
 #' \item{DB_USED}{the final database used after potential transformations of predictors}
-#' \item{vcrm_Y_cat}{a table of pairwise associations between the outcome and the categorical predictors (Cramer's V)}
-#' \item{cor_Y_num}{a table of pairwise associations between the outcome and the continuous predictors (Rank correlation)}
+#' \item{vcrm_OUTC_cat}{a table of pairwise associations between the outcome and the categorical predictors (Cramer's V)}
+#' \item{cor_OUTC_num}{a table of pairwise associations between the outcome and the continuous predictors (Rank correlation)}
 #' \item{vcrm_X_cat}{a table of pairwise associations between the categorical predictors (Cramer's V)}
 #' \item{cor_X_num}{a table of pairwise associations between the continuous predictors (Cramer's V)}
 #' \item{FG_test}{the results of the Farrar and Glauber tests, with and without approximation form}
 #' \item{collinear_PB}{a table of predictors with problem of collinearity according to the fixed thresholds}
 #' \item{drop_var}{the labels of predictors to drop after RF process (optional output: only if \code{RF}=TRUE)}
-#' \item{RF_PRED_Y}{the table of variable importance measurements, conditional or not, according to the argument \code{condi_RF} (optional output: Only if \code{RF}=TRUE)}
-#' \item{best_pred}{the labels of the best predictors selected (optional output: Only if \code{RF}=TRUE) according to the value of the argument \code{thresh_Y}}
+#' \item{RF_PRED}{the table of variable importance measurements, conditional or not, according to the argument \code{condi_RF} (optional output: Only if \code{RF}=TRUE)}
+#' \item{RF_best}{the labels of the best predictors selected (optional output: Only if \code{RF}=TRUE) according to the value of the argument \code{thresh_Y}}
 #'
 #' @export
 #'
@@ -224,7 +224,7 @@
 #'
 #' }
 #'
-select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
+select_pred = function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
                        quanti = NULL, nominal = NULL, ordinal = NULL, logic = NULL,
                        convert_num = NULL, convert_clss = NULL,
                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
@@ -558,7 +558,7 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
     # Spearman's Rank correlation
 
     tab_cor4       = NULL
-    mat_cor4       = matrix(ncol = N_num,nrow = N_num)
+    mat_cor4       = matrix(ncol = N_num, nrow = N_num)
     diag(mat_cor4) = 1
     kk = 0
     for (j in 1:(N_num-1)){
@@ -577,7 +577,8 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
         rescor          = suppressWarnings(cor(rank(datacv$XX),rank(datacv$vars)))
         mat_cor4[j,k]   = rescor
         mat_cor4[k,j]   = rescor
-        tab_cor[k-kk,3] = round(abs(rescor),4)
+        # tab_cor[k-kk,3] = round(abs(rescor),4)
+        tab_cor[k-kk,3] = round(rescor,4)
         tab_cor[k-kk,4] = round(suppressWarnings(stats::cor.test(rank(datacv$XX),rank(datacv$vars)))$p.value,4)
         tab_cor[k-kk,5] = nrow(datacv)
 
@@ -588,7 +589,8 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
     }
 
 
-    colnames(tab_cor4)[3] = "ABS_COR"
+    # colnames(tab_cor4)[3] = "ABS_COR"
+    colnames(tab_cor4)[3] = "RANK_COR"
     colnames(tab_cor4)[4] = "pv_COR_test"
     colnames(tab_cor4)[5] = "N"
     colnames(mat_cor4)    = colnames(datacov3)
@@ -596,11 +598,12 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
 
     mat_cor4 = mat_cor4[2:nrow(mat_cor4),2:ncol(mat_cor4)]
 
-    tab_cor4    = tab_cor4[order(tab_cor4$ABS_COR,decreasing=TRUE),]
+    # tab_cor4    = tab_cor4[order(tab_cor4$ABS_COR,decreasing=TRUE),]
+    tab_cor4    = tab_cor4[order(abs(tab_cor4$RANK_COR), decreasing=TRUE),]
     tab_cor4_Y  = tab_cor4[as.character(tab_cor4$name1) == "Y",]
     tab_cor4_X  = tab_cor4[as.character(tab_cor4$name1) != "Y",]
 
-    tab_cor5_X = tab_cor4_X[tab_cor4_X$ABS_COR> thresh_num,]
+    tab_cor5_X = tab_cor4_X[abs(tab_cor4_X$RANK_COR)> thresh_num,]
 
   } else {
 
@@ -683,7 +686,7 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
 
     if (nrow(candidates)!=0){
 
-      message("Risks of collinearity between predictors detected. Consult outputs for more details ...","\n")
+      message("Risk of collinearity between predictors detected: Some predictors will be dropped during RF process","\n")
 
       # } else {}
 
@@ -755,12 +758,12 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
       if (RF_condi == TRUE){
 
         databa3bis = databa2bis[,intersect(c("Y",remain_var),colnames(databa2))]
-        set.seed(RF_SEED); stocres = party::cforest(Y~.,data=databa3bis,control = party::cforest_unbiased(mtry = (ncol(databa3bis)-1)^(1/2),ntree = RF_ntree))
+        set.seed(RF_SEED); stocres = party::cforest(Y~.,data=databa3bis,control = party::cforest_unbiased(mtry = (ncol(databa3bis)-1)^(1/2), ntree = RF_ntree))
 
       } else {
 
         databa3 = databa2[,intersect(c("Y",remain_var),colnames(databa2))]
-        set.seed(RF_SEED); stocres = party::cforest(Y~.,data=databa3, control = party::cforest_unbiased(mtry = (ncol(databa3)-1)^(1/2),ntree = RF_ntree))
+        set.seed(RF_SEED); stocres = party::cforest(Y~.,data=databa3, control = party::cforest_unbiased(mtry = (ncol(databa3)-1)^(1/2), ntree = RF_ntree))
 
       }
 
@@ -785,6 +788,7 @@ select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y",
 
     resYbis   = cumsum(rev(resY))
     best_pred = rev(names(resYbis)[resYbis>=(thresh_Y*100)])
+
 
     out1 = list(seed = RF_SEED, outc = outc, thresh = c(CATEG = thresh_cat, NUM = thresh_num, RF_IMP = thresh_Y), convert_num = colnames(databa)[convert_nm], DB_USED = databa,
                 vcrm_OUTC_cat = tab_cor2_Y, cor_OUTC_num = tab_cor4_Y, vcrm_X_cat = tab_cor2_X, cor_X_num = tab_cor4_X, FG_test = FG_synt,

@@ -30,7 +30,7 @@ library(OTrecod)
 
 Moreover, the development version of **OTrecod** can be installed actually from [GitHub](https://github.com/otrecoding/OTrecod) with:
 
-```r
+```{r,eval=FALSE}
 # Install development version from GitHub
 devtools::install_github("otrecoding/OTrecod")
 ```
