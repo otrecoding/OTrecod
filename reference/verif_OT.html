@@ -131,9 +131,7 @@
   group.clss <span class='op'>=</span> <span class='cn'>FALSE</span>,
   ordinal <span class='op'>=</span> <span class='cn'>TRUE</span>,
   stab.prob <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  min.neigb <span class='op'>=</span> <span class='fl'>1</span>,
-  R <span class='op'>=</span> <span class='fl'>10</span>,
-  seed.stab <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>1e+06</span>, <span class='fl'>1</span><span class='op'>)</span>
+  min.neigb <span class='op'>=</span> <span class='fl'>1</span>
 <span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -159,20 +157,11 @@
       <th>min.neigb</th>
       <td><p>a value indicating the minimal required number of neighbors to consider in the estimation of stability (1 by default).</p></td>
     </tr>
-    <tr>
-      <th>R</th>
-      <td><p>a positive integer indicating the number of desired repetitions for the bernoulli simulations in the stability study</p></td>
-    </tr>
-    <tr>
-      <th>seed.stab</th>
-      <td><p>an integer used as argument by the seed for offsetting the random number generator (Random integer by default). Only useful if the stability study is required.</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of 8 objects is returned:</p>
-<dt>seed</dt><dd><p>the list of used random number generator. The first one is fixed by user or randomly chosen</p></dd>
+    <p>A list of 7 objects is returned:</p>
 <dt>nb.profil</dt><dd><p>the number of profiles of covariates</p></dd>
 <dt>conf.mat</dt><dd><p>the global confusion matrix between \(Y\) and \(Z\)</p></dd>
 <dt>res.prox</dt><dd><p>a summary table related to the association measures between \(Y\) and \(Z\)</p></dd>
@@ -205,22 +194,22 @@ but also to emphasize the consistency in the predictions proposed by the algorit
 This measure varies between 0 and 1: a value of 0 corresponds to a perfect similarity while a value close to 1 (the maximum) indicates a great dissimilarity.
 Using this distance, two distributions will be considered as close as soon as the observed measure will be less than 0.05.</p>
 <p>C. STABILITY OF THE PREDICTIONS</p>
-<p>These optional results are based on the decision rule which defines the stability of an algorithm in A (or B) as its average ability to assign a same prediction
+<p>These results are based on the decision rule which defines the stability of an algorithm in A (or B) as its average ability to assign a same prediction
 of \(Z\) (or \(Y\)) to individuals that have a same given profile of covariates \(X\) and a same given level of \(Y\) (or \(Z\) respectively).</p>
 <p>Assuming that the missing information of \(Z\) in base A was predicted from an OT algorithm (the reasoning will be identical with the prediction of \(Y\) in B, see (2) and (3) for more details), the function <code>verif_OT</code> uses the conditional probabilities stored in the
 object <code>estimatorZA</code> (see outputs of the functions <code><a href='OT_outcome.html'>OT_outcome</a></code> and <code><a href='OT_joint.html'>OT_joint</a></code>) which contains the estimates of all the conditional probabilities of \(Z\) in A, given a profile of covariates \(x\) and given a level of \(Y = y\).
-Indeed, each individual (or row) from A, is associated with a conditional probability \(P(Z= z|Y= y, X= x)\).</p>
-<p>With the function <code><a href='OT_joint.html'>OT_joint</a></code>, the individual predictions for subject \(i\): \(\widehat{z}_i\), \(i=1,\ldots,n_A\) are given using the maximum a posteriori rule:
+Indeed, each individual (or row) from A, is associated with a conditional probability \(P(Z= z|Y= y, X= x)\) and averaging all the corresponding estimates can provide an indicator of the predictions stability.</p>
+<p>The function <code><a href='OT_joint.html'>OT_joint</a></code> provides the individual predictions for subject \(i\): \(\widehat{z}_i\), \(i=1,\ldots,n_A\) according to the the maximum a posteriori rule:
 $$\widehat{z}_i= \mbox{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)$$
-While the function <code><a href='OT_outcome.html'>OT_outcome</a></code> directly gives the individual predictions whereas the probablities \(P(Z= z|Y= y, X= x)\) are computed in a second step (see (3)).</p>
-<p>For each subject \(i\) in database A, a new variable \(z_i'\) is simulate such that: $$z_i'\sim \mathcal{Bernoulli}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))$$
-The average stability criterium is so calculated as: $$\mbox{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'$$
-This criterion can be repeated with <code>R</code> samples and the related mean and variance are given in output.</p>
-<p>Nevertheless, it is possible that some of these conditional probabilities could be computed from only few individuals (because they are computed from a certain number of neighbor individuals for each covariates profile \(x\)) and lead to unreliable estimations.
-To avoid this problem, such conditional probabilities can be removed from the stability criterion since they have been assessed from an insufficient number of subjects.
-In this way, the minimal number of subjects required for a conditional probability to participate to the stability estimation can be fixed a priori by filling in the argument <code>min.neigb</code>.</p>
-<p>Notice that, these results are optional and available only if the argument <code>stab.prob = TRUE</code>.
-Finally, when the predictions of \(Z\) in A and \(Y\) in B are available, the function <code>verif_OT</code> provides in output, global results and results by database.</p>
+The function <code><a href='OT_outcome.html'>OT_outcome</a></code> directly deduces the individual predictions from the probablities \(P(Z= z|Y= y, X= x)\) computed in the second part of the algorithm (see (3)).</p>
+<p>It is nevertheless common that conditional probabilities are estimated from too rare covariates profiles to be considered as a reliable estimate of the reality.
+In this context, the use of trimmed means and standard deviances is suggested by removing the corresponding probabilities from the final computation.
+In this way, the function provides in output a table (<code>eff.neig</code> object) that provides the frequency of these critical probabilities that must help the user to choose.
+According to this table, a minimal number of profiles can be imposed for a conditional probability to be part of the final computation by filling in the <code>min.neigb</code> argument.</p>
+<p>Notice that these results are optional and available only if the argument <code>stab.prob = TRUE</code>.
+When the predictions of \(Z\) in A and \(Y\) in B are available, the function <code>verif_OT</code> provides in output, global results and results by database.
+The <code>res.stab</code> table can produce NA with <code>OT_outcome</code> output in presence of incomplete shared variables: this problem appears when the <code>prox.dist</code> argument is set to 0 and can
+be simply solved by increasing this value.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
@@ -266,9 +255,6 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>ver1</span> <span class='op'>=</span> <span class='fu'>verif_OT</span><span class='op'>(</span><span class='va'>try1</span><span class='op'>)</span>; <span class='va'>ver1</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> $seed</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 530470</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $nb.profil</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 232</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
@@ -309,14 +295,15 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class='r-in'><span class='co'># - Studying the proximity between Y and Z using standard criterions and studying</span></span>
 <span class='r-in'><span class='co'>#   associations by grouping levels of Z</span></span>
 <span class='r-in'><span class='co'># - When only Y is predicted in B</span></span>
+<span class='r-in'><span class='co'># - Tolerated distance between a subject and a profile: 0.30 * distance max</span></span>
 <span class='r-in'><span class='co'># - Using an outcome model (individual assignment with knn)</span></span>
 <span class='r-in'><span class='co'>#-----</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>simu_data</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>try2</span> <span class='op'>=</span> <span class='fu'><a href='OT_outcome.html'>OT_outcome</a></span><span class='op'>(</span><span class='va'>simu_data</span>, quanti <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>,<span class='fl'>8</span><span class='op'>)</span>, nominal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span><span class='op'>:</span><span class='fl'>5</span>,<span class='fl'>7</span><span class='op'>)</span>, ordinal <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>6</span><span class='op'>)</span>,</span>
-<span class='r-in'>                 dist.choice <span class='op'>=</span> <span class='st'>"G"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>,</span>
+<span class='r-in'>                 dist.choice <span class='op'>=</span> <span class='st'>"G"</span>,percent.knn <span class='op'>=</span> <span class='fl'>0.90</span>, maxrelax <span class='op'>=</span> <span class='fl'>0</span>, prox.dist <span class='op'>=</span> <span class='fl'>0.3</span>,</span>
 <span class='r-in'>                 convert.num <span class='op'>=</span> <span class='fl'>8</span>, convert.clss <span class='op'>=</span> <span class='fl'>3</span>,</span>
-<span class='r-in'>                 indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>,which.DB <span class='op'>=</span> <span class='st'>"B"</span>,prox.dist <span class='op'>=</span> <span class='fl'>0.30</span><span class='op'>)</span></span>
+<span class='r-in'>                 indiv.method <span class='op'>=</span> <span class='st'>"sequential"</span>,which.DB <span class='op'>=</span> <span class='st'>"B"</span><span class='op'>)</span></span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> OT PROCEDURE in progress ...</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
@@ -330,9 +317,6 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> ---------------------------------------</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>ver2</span> <span class='op'>=</span> <span class='fu'>verif_OT</span><span class='op'>(</span><span class='va'>try2</span>, group.clss <span class='op'>=</span> <span class='cn'>TRUE</span>, ordinal <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>; <span class='va'>ver2</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> $seed</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 867460</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $nb.profil</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 232</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
@@ -379,11 +363,7 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class='r-in'><span class='co'># - Using an outcome model (individual assignment with knn)</span></span>
 <span class='r-in'><span class='co'>#-----</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='va'>ver3</span> <span class='op'>=</span> <span class='fu'>verif_OT</span><span class='op'>(</span><span class='va'>try2</span>, group.clss <span class='op'>=</span> <span class='cn'>TRUE</span>, ordinal <span class='op'>=</span> <span class='cn'>TRUE</span>, stab.prob <span class='op'>=</span> <span class='cn'>TRUE</span>, min.neigb <span class='op'>=</span> <span class='fl'>5</span>,</span>
-<span class='r-in'>       seed.stab <span class='op'>=</span> <span class='fl'>991891</span><span class='op'>)</span>; <span class='va'>ver3</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> $seed</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 991891</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='va'>ver3</span> <span class='op'>=</span> <span class='fu'>verif_OT</span><span class='op'>(</span><span class='va'>try2</span>, group.clss <span class='op'>=</span> <span class='cn'>TRUE</span>, ordinal <span class='op'>=</span> <span class='cn'>TRUE</span>, stab.prob <span class='op'>=</span> <span class='cn'>TRUE</span>, min.neigb <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>; <span class='va'>ver3</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $nb.profil</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 232</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
@@ -426,8 +406,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 10          12      12</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $res.stab</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>          N min.N  R  mean    sd</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2nd DB 386     5 10 0.859 0.105</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          N min.N  mean    sd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2nd DB 386     5 0.866 0.202</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># }</span></span>

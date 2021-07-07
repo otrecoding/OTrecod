@@ -226,9 +226,9 @@ For this, we fill in the arguments of the <strong>merge_dbs</strong> function by
 <span class="co">#&gt; -----------------------</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; SUMMARY OF DBS MERGING:</span>
-<span class="co">#&gt; Nb of removed subjects because of NA on targets: 0(0%)</span>
-<span class="co">#&gt; Nb of covariates removed because of differences between the 2 bases: 1</span>
-<span class="co">#&gt; Nb of covariates remained: 5</span>
+<span class="co">#&gt; Nb of removed subjects due to NA on targets: 0(0%)</span>
+<span class="co">#&gt; Nb of removed covariates due to differences between the 2 bases: 1</span>
+<span class="co">#&gt; Nb of remained covariates: 5</span>
 <span class="co">#&gt; Imputation on incomplete covariates: NO</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">db_test</span><span class="op">)</span>
@@ -652,8 +652,8 @@ The <strong>verif_OT</strong> function gives access to different tools for asses
 <span class="co">#&gt;  200.000    0.860    0.871</span>
 
 <span class="va">verif_out1</span><span class="op">$</span><span class="va">res.stab</span>
-<span class="co">#&gt;          N min.N  R  mean    sd</span>
-<span class="co">#&gt; 1st DB 112     3 10 0.977 0.009</span>
+<span class="co">#&gt;          N min.N  mean    sd</span>
+<span class="co">#&gt; 1st DB 112     3 0.976 0.107</span>
 
 
 <span class="co"># Validation of the mod2_seq model</span>
@@ -678,8 +678,8 @@ The <strong>verif_OT</strong> function gives access to different tools for asses
 <span class="co">#&gt;  200.000    0.960    0.939</span>
 
 <span class="va">verif_out2</span><span class="op">$</span><span class="va">res.stab</span>
-<span class="co">#&gt;          N min.N  R  mean    sd</span>
-<span class="co">#&gt; 1st DB 112     3 10 0.983 0.013</span>
+<span class="co">#&gt;          N min.N  mean    sd</span>
+<span class="co">#&gt; 1st DB 112     3 0.986 0.084</span>
 
 
 <span class="co"># Validation of the mod3_opt model</span>
@@ -701,8 +701,8 @@ The <strong>verif_OT</strong> function gives access to different tools for asses
 <span class="co">#&gt;  200.000    0.550    0.613</span>
 
 <span class="va">verif_jt</span><span class="op">$</span><span class="va">res.stab</span>
-<span class="co">#&gt;          N min.N  R  mean    sd</span>
-<span class="co">#&gt; 1st DB 112     3 10 0.869 0.152</span></code></pre></div>
+<span class="co">#&gt;          N min.N  mean    sd</span>
+<span class="co">#&gt; 1st DB 112     3 0.869 0.175</span></code></pre></div>
 <p align="justify">
 </p>
 <p>As input:</p>
