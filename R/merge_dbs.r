@@ -495,17 +495,17 @@ merge_dbs = function(DB1,
   message("\n")
   message("SUMMARY OF DBS MERGING:", "\n")
   message(
-    "Nb of removed subjects because of NA on targets: ",
+    "Nb of removed subjects due to NA on targets: ",
     REMOVE_SUBJECT1 + REMOVE_SUBJECT2,
     "(",
     round((REMOVE_SUBJECT1 + REMOVE_SUBJECT2) * 100 / (NB1_1 + NB2_1)),
     "%)",
     "\n"
   )
-  message("Nb of covariates removed because of differences between the 2 bases: ",
+  message("Nb of removed covariates due to differences between the 2 bases: ",
       length(remove_var),
       "\n")
-  message("Nb of covariates remained: ", ncol(DB_COV) - 3, "\n")
+  message("Nb of remained covariates: ", ncol(DB_COV) - 3, "\n")
   message("Imputation on incomplete covariates: ",impute,"\n")
 
   if (impute %in% c("NO", "CC", "FAMD")) {

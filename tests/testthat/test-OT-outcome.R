@@ -10,7 +10,7 @@ test_that("OT_outcome works", {
                      dist.choice = "M", percent.knn = 0.90, maxrelax = 0,
                      indiv.method = "sequential")  # Ex - optimal
 
-  # expect_that(test1,is_a("list"))
+  expect_that(test1,is_a("otres"))
   expect_equal(length(test1),9)
 
   expect_equal(dim(test1[[2]]),dim(test1[[3]]))

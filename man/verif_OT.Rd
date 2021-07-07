@@ -9,9 +9,7 @@ verif_OT(
   group.clss = FALSE,
   ordinal = TRUE,
   stab.prob = FALSE,
-  min.neigb = 1,
-  R = 10,
-  seed.stab = sample(1:1e+06, 1)
+  min.neigb = 1
 )
 }
 \arguments{
@@ -24,14 +22,9 @@ verif_OT(
 \item{stab.prob}{a boolean indicating if the results related to the stability of the algorithm are requested in output (\code{FALSE} by default).}
 
 \item{min.neigb}{a value indicating the minimal required number of neighbors to consider in the estimation of stability (1 by default).}
-
-\item{R}{a positive integer indicating the number of desired repetitions for the bernoulli simulations in the stability study}
-
-\item{seed.stab}{an integer used as argument by the seed for offsetting the random number generator (Random integer by default). Only useful if the stability study is required.}
 }
 \value{
-A list of 8 objects is returned:
-\item{seed}{the list of used random number generator. The first one is fixed by user or randomly chosen}
+A list of 7 objects is returned:
 \item{nb.profil}{the number of profiles of covariates}
 \item{conf.mat}{the global confusion matrix between \eqn{Y} and \eqn{Z}}
 \item{res.prox}{a summary table related to the association measures between \eqn{Y} and \eqn{Z}}
@@ -72,27 +65,26 @@ Using this distance, two distributions will be considered as close as soon as th
 
 C. STABILITY OF THE PREDICTIONS
 
-These optional results are based on the decision rule which defines the stability of an algorithm in A (or B) as its average ability to assign a same prediction
+These results are based on the decision rule which defines the stability of an algorithm in A (or B) as its average ability to assign a same prediction
 of \eqn{Z} (or \eqn{Y}) to individuals that have a same given profile of covariates \eqn{X} and a same given level of \eqn{Y} (or \eqn{Z} respectively).
 
 Assuming that the missing information of \eqn{Z} in base A was predicted from an OT algorithm (the reasoning will be identical with the prediction of \eqn{Y} in B, see (2) and (3) for more details), the function \code{verif_OT} uses the conditional probabilities stored in the
 object \code{estimatorZA} (see outputs of the functions \code{\link{OT_outcome}} and \code{\link{OT_joint}}) which contains the estimates of all the conditional probabilities of \eqn{Z} in A, given a profile of covariates \eqn{x} and given a level of \eqn{Y = y}.
-Indeed, each individual (or row) from A, is associated with a conditional probability \eqn{P(Z= z|Y= y, X= x)}.
+Indeed, each individual (or row) from A, is associated with a conditional probability \eqn{P(Z= z|Y= y, X= x)} and averaging all the corresponding estimates can provide an indicator of the predictions stability.
 
-With the function \code{\link{OT_joint}}, the individual predictions for subject \eqn{i}: \eqn{\widehat{z}_i}, \eqn{i=1,\ldots,n_A} are given using the maximum a posteriori rule:
+The function \code{\link{OT_joint}} provides the individual predictions for subject \eqn{i}: \eqn{\widehat{z}_i}, \eqn{i=1,\ldots,n_A} according to the the maximum a posteriori rule:
 \deqn{\widehat{z}_i= \mbox{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)}
-While the function \code{\link{OT_outcome}} directly gives the individual predictions whereas the probablities \eqn{P(Z= z|Y= y, X= x)} are computed in a second step (see (3)).
+The function \code{\link{OT_outcome}} directly deduces the individual predictions from the probablities \eqn{P(Z= z|Y= y, X= x)} computed in the second part of the algorithm (see (3)).
 
-For each subject \eqn{i} in database A, a new variable \eqn{z_i'} is simulate such that: \deqn{z_i'\sim \mathcal{Bernoulli}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))}
-The average stability criterium is so calculated as: \deqn{\mbox{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'}
-This criterion can be repeated with \code{R} samples and the related mean and variance are given in output.
+It is nevertheless common that conditional probabilities are estimated from too rare covariates profiles to be considered as a reliable estimate of the reality.
+In this context, the use of trimmed means and standard deviances is suggested by removing the corresponding probabilities from the final computation.
+In this way, the function provides in output a table (\code{eff.neig} object) that provides the frequency of these critical probabilities that must help the user to choose.
+According to this table, a minimal number of profiles can be imposed for a conditional probability to be part of the final computation by filling in the \code{min.neigb} argument.
 
-Nevertheless, it is possible that some of these conditional probabilities could be computed from only few individuals (because they are computed from a certain number of neighbor individuals for each covariates profile \eqn{x}) and lead to unreliable estimations.
-To avoid this problem, such conditional probabilities can be removed from the stability criterion since they have been assessed from an insufficient number of subjects.
-In this way, the minimal number of subjects required for a conditional probability to participate to the stability estimation can be fixed a priori by filling in the argument \code{min.neigb}.
-
-Notice that, these results are optional and available only if the argument \code{stab.prob = TRUE}.
-Finally, when the predictions of \eqn{Z} in A and \eqn{Y} in B are available, the function \code{verif_OT} provides in output, global results and results by database.
+Notice that these results are optional and available only if the argument \code{stab.prob = TRUE}.
+When the predictions of \eqn{Z} in A and \eqn{Y} in B are available, the function \code{verif_OT} provides in output, global results and results by database.
+The \code{res.stab} table can produce NA with \code{OT_outcome} output in presence of incomplete shared variables: this problem appears when the \code{prox.dist} argument is set to 0 and can
+be simply solved by increasing this value.
 }
 \examples{
 
@@ -120,14 +112,15 @@ ver1 = verif_OT(try1); ver1
 # - Studying the proximity between Y and Z using standard criterions and studying
 #   associations by grouping levels of Z
 # - When only Y is predicted in B
+# - Tolerated distance between a subject and a profile: 0.30 * distance max
 # - Using an outcome model (individual assignment with knn)
 #-----
 
 data(simu_data)
 try2 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-                 dist.choice = "G",percent.knn = 0.90, maxrelax = 0,
+                 dist.choice = "G",percent.knn = 0.90, maxrelax = 0, prox.dist = 0.3,
                  convert.num = 8, convert.clss = 3,
-                 indiv.method = "sequential",which.DB = "B",prox.dist = 0.30)
+                 indiv.method = "sequential",which.DB = "B")
 
 ver2 = verif_OT(try2, group.clss = TRUE, ordinal = TRUE); ver2
 
@@ -142,8 +135,7 @@ ver2 = verif_OT(try2, group.clss = TRUE, ordinal = TRUE); ver2
 # - Using an outcome model (individual assignment with knn)
 #-----
 
-ver3 = verif_OT(try2, group.clss = TRUE, ordinal = TRUE, stab.prob = TRUE, min.neigb = 5,
-       seed.stab = 991891); ver3
+ver3 = verif_OT(try2, group.clss = TRUE, ordinal = TRUE, stab.prob = TRUE, min.neigb = 5); ver3
 
 }
 
