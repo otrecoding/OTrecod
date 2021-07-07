@@ -7,7 +7,7 @@ test_that("OT_joint works", {
 
   test1 = OT_joint(tb_test, dist.choice = "M", percent.knn = 0.30, which.DB = "A", ordinal = 1:6, prox.X = 0.10, maxrelax = 0.4, lambda.reg = 0.1)
 
-  # expect_that(test1,is_a("list"))
+  expect_that(test1,is_a("otres"))
   expect_equal(length(test1),9)
 
   expect_equal(sum(test1[[2]]),1)

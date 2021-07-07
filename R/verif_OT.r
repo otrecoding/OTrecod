@@ -30,39 +30,34 @@
 #'
 #' C. STABILITY OF THE PREDICTIONS
 #'
-#' These optional results are based on the decision rule which defines the stability of an algorithm in A (or B) as its average ability to assign a same prediction
+#' These results are based on the decision rule which defines the stability of an algorithm in A (or B) as its average ability to assign a same prediction
 #' of \eqn{Z} (or \eqn{Y}) to individuals that have a same given profile of covariates \eqn{X} and a same given level of \eqn{Y} (or \eqn{Z} respectively).
 #'
 #' Assuming that the missing information of \eqn{Z} in base A was predicted from an OT algorithm (the reasoning will be identical with the prediction of \eqn{Y} in B, see (2) and (3) for more details), the function \code{verif_OT} uses the conditional probabilities stored in the
 #' object \code{estimatorZA} (see outputs of the functions \code{\link{OT_outcome}} and \code{\link{OT_joint}}) which contains the estimates of all the conditional probabilities of \eqn{Z} in A, given a profile of covariates \eqn{x} and given a level of \eqn{Y = y}.
-#' Indeed, each individual (or row) from A, is associated with a conditional probability \eqn{P(Z= z|Y= y, X= x)}.
+#' Indeed, each individual (or row) from A, is associated with a conditional probability \eqn{P(Z= z|Y= y, X= x)} and averaging all the corresponding estimates can provide an indicator of the predictions stability.
 #'
-#' With the function \code{\link{OT_joint}}, the individual predictions for subject \eqn{i}: \eqn{\widehat{z}_i}, \eqn{i=1,\ldots,n_A} are given using the maximum a posteriori rule:
+#' The function \code{\link{OT_joint}} provides the individual predictions for subject \eqn{i}: \eqn{\widehat{z}_i}, \eqn{i=1,\ldots,n_A} according to the the maximum a posteriori rule:
 #' \deqn{\widehat{z}_i= \mbox{argmax}_{z\in \mathcal{Z}} P(Z= z| Y= y_i, X= x_i)}
-#' While the function \code{\link{OT_outcome}} directly gives the individual predictions whereas the probablities \eqn{P(Z= z|Y= y, X= x)} are computed in a second step (see (3)).
+#' The function \code{\link{OT_outcome}} directly deduces the individual predictions from the probablities \eqn{P(Z= z|Y= y, X= x)} computed in the second part of the algorithm (see (3)).
 #'
-#' For each subject \eqn{i} in database A, a new variable \eqn{z_i'} is simulate such that: \deqn{z_i'\sim \mathcal{Bernoulli}(P(Z= \widehat{z}_i|Y= y_i, X= x_i))}
-#' The average stability criterium is so calculated as: \deqn{\mbox{Stab}_A = \frac{1}{n_A}\sum_{i=1}^{n_A} z_i'}
-#' This criterion can be repeated with \code{R} samples and the related mean and variance are given in output.
+#' It is nevertheless common that conditional probabilities are estimated from too rare covariates profiles to be considered as a reliable estimate of the reality.
+#' In this context, the use of trimmed means and standard deviances is suggested by removing the corresponding probabilities from the final computation.
+#' In this way, the function provides in output a table (\code{eff.neig} object) that provides the frequency of these critical probabilities that must help the user to choose.
+#' According to this table, a minimal number of profiles can be imposed for a conditional probability to be part of the final computation by filling in the \code{min.neigb} argument.
 #'
-#' Nevertheless, it is possible that some of these conditional probabilities could be computed from only few individuals (because they are computed from a certain number of neighbor individuals for each covariates profile \eqn{x}) and lead to unreliable estimations.
-#' To avoid this problem, such conditional probabilities can be removed from the stability criterion since they have been assessed from an insufficient number of subjects.
-#' In this way, the minimal number of subjects required for a conditional probability to participate to the stability estimation can be fixed a priori by filling in the argument \code{min.neigb}.
-#'
-#' Notice that, these results are optional and available only if the argument \code{stab.prob = TRUE}.
-#' Finally, when the predictions of \eqn{Z} in A and \eqn{Y} in B are available, the function \code{verif_OT} provides in output, global results and results by database.
-#'
+#' Notice that these results are optional and available only if the argument \code{stab.prob = TRUE}.
+#' When the predictions of \eqn{Z} in A and \eqn{Y} in B are available, the function \code{verif_OT} provides in output, global results and results by database.
+#' The \code{res.stab} table can produce NA with \code{OT_outcome} output in presence of incomplete shared variables: this problem appears when the \code{prox.dist} argument is set to 0 and can
+#' be simply solved by increasing this value.
 #'
 #' @param ot_out an otres object from \code{\link{OT_outcome}} or \code{\link{OT_joint}}
 #' @param group.clss a boolean indicating if the results related to the proximity between outcomes by grouping levels are requested in output (\code{FALSE} by default).
 #' @param ordinal a boolean that indicates if \eqn{Y} and \eqn{Z} are ordinal (\code{TRUE} by default) or not. This argument is only useful in the context of groups of levels (\code{group.clss}=TRUE).
 #' @param stab.prob a boolean indicating if the results related to the stability of the algorithm are requested in output (\code{FALSE} by default).
 #' @param min.neigb a value indicating the minimal required number of neighbors to consider in the estimation of stability (1 by default).
-#' @param R a positive integer indicating the number of desired repetitions for the bernoulli simulations in the stability study
-#' @param seed.stab an integer used as argument by the seed for offsetting the random number generator (Random integer by default). Only useful if the stability study is required.
 #'
-#' @return A list of 8 objects is returned:
-#' \item{seed}{the list of used random number generator. The first one is fixed by user or randomly chosen}
+#' @return A list of 7 objects is returned:
 #' \item{nb.profil}{the number of profiles of covariates}
 #' \item{conf.mat}{the global confusion matrix between \eqn{Y} and \eqn{Z}}
 #' \item{res.prox}{a summary table related to the association measures between \eqn{Y} and \eqn{Z}}
@@ -120,14 +115,15 @@
 #' # - Studying the proximity between Y and Z using standard criterions and studying
 #' #   associations by grouping levels of Z
 #' # - When only Y is predicted in B
+#' # - Tolerated distance between a subject and a profile: 0.30 * distance max
 #' # - Using an outcome model (individual assignment with knn)
 #' #-----
 #'
 #' data(simu_data)
 #' try2 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                  dist.choice = "G",percent.knn = 0.90, maxrelax = 0,
+#'                  dist.choice = "G",percent.knn = 0.90, maxrelax = 0, prox.dist = 0.3,
 #'                  convert.num = 8, convert.clss = 3,
-#'                  indiv.method = "sequential",which.DB = "B",prox.dist = 0.30)
+#'                  indiv.method = "sequential",which.DB = "B")
 #'
 #' ver2 = verif_OT(try2, group.clss = TRUE, ordinal = TRUE); ver2
 #'
@@ -142,27 +138,23 @@
 #' # - Using an outcome model (individual assignment with knn)
 #' #-----
 #'
-#' ver3 = verif_OT(try2, group.clss = TRUE, ordinal = TRUE, stab.prob = TRUE, min.neigb = 5,
-#'        seed.stab = 991891); ver3
+#' ver3 = verif_OT(try2, group.clss = TRUE, ordinal = TRUE, stab.prob = TRUE, min.neigb = 5); ver3
 #'
 #' }
 #'
 
-verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALSE,
-                    min.neigb = 1, R = 10, seed.stab = sample(1:1000000, 1)){
+verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALSE, min.neigb = 1){
 
- if (class(ot_out) != "otres"){
+  if (class(ot_out) != "otres"){
 
-   stop("ot_out must be an otres object: output from OT_outcome or OT_joint")
+    stop("ot_out must be an otres object: output from OT_outcome or OT_joint")
 
- } else {}
+  } else {}
 
 
-  stopifnot(is.list(ot_out))
   stopifnot(is.logical(group.clss))
   stopifnot(is.logical(ordinal))
   stopifnot(is.logical(stab.prob))
-  stopifnot(min.neigb >= 1)
 
 
   ### Test 1: Evaluation of the proximity between the distributions of Y and Z
@@ -186,8 +178,8 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
   if (length(yy) == length(zz)){
 
     hh = data.frame(
-        YA_YB = round(sqrt(0.5 * sum((sqrt(YA) - sqrt(YB))^2)),3),
-        ZA_ZB = round(sqrt(0.5 * sum((sqrt(ZA) - sqrt(ZB))^2)),3)
+      YA_YB = round(sqrt(0.5 * sum((sqrt(YA) - sqrt(YB))^2)),3),
+      ZA_ZB = round(sqrt(0.5 * sum((sqrt(ZA) - sqrt(ZB))^2)),3)
     )
     row.names(hh) = "Hellinger dist."
 
@@ -287,39 +279,39 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
 
   if ((!is.null(DATA1_OT))&(!is.null(DATA2_OT))){
 
-  # Using standard criterions: Global
+    # Using standard criterions: Global
 
-  stoc      = data.frame(predY,predZ)
-  N         = nrow(stoc)
-  vcram     = round(suppressWarnings(StatMatch::pw.assoc(predY~predZ,data = stoc)$V),2)
-  # chisqT    = suppressWarnings(stats::chisq.test(table(predY,predZ))$p.value)
-  rankor    = round(stats::cor(rank(predY),rank(predZ)),3)
-
-
-  # Standard criterions: 1st DB
-
-  stoc1     = stoc[ID.DB == ID.DB1,]
-  N1        = nrow(stoc1)
-  vcram1    = round(suppressWarnings(StatMatch::pw.assoc(predY~predZ,data = stoc1)$V),2)
-  # chisqT1   = suppressWarnings(stats::chisq.test(table(stoc1$predY,stoc1$predZ))$p.value)
-  rankor1   = round(stats::cor(rank(stoc1$predY),rank(stoc1$predZ)),3)
+    stoc      = data.frame(predY,predZ)
+    N         = nrow(stoc)
+    vcram     = round(suppressWarnings(StatMatch::pw.assoc(predY~predZ,data = stoc)$V),2)
+    # chisqT    = suppressWarnings(stats::chisq.test(table(predY,predZ))$p.value)
+    rankor    = round(stats::cor(rank(predY),rank(predZ)),3)
 
 
-  # Standard criterions: 2nd DB
+    # Standard criterions: 1st DB
 
-  stoc2     = stoc[ID.DB == ID.DB2,]
-  N2        = nrow(stoc2)
-  vcram2    = round(suppressWarnings(StatMatch::pw.assoc(predY~predZ,data = stoc2)$V),2)
-  # chisqT2   = suppressWarnings(chisq.test(table(stoc2$predY,stoc2$predZ))$p.value)
-  rankor2   = round(stats::cor(rank(stoc2$predY),rank(stoc2$predZ)),3)
+    stoc1     = stoc[ID.DB == ID.DB1,]
+    N1        = nrow(stoc1)
+    vcram1    = round(suppressWarnings(StatMatch::pw.assoc(predY~predZ,data = stoc1)$V),2)
+    # chisqT1   = suppressWarnings(stats::chisq.test(table(stoc1$predY,stoc1$predZ))$p.value)
+    rankor1   = round(stats::cor(rank(stoc1$predY),rank(stoc1$predZ)),3)
 
 
-  restand = rbind(c(N = N , vcram = vcram , rank_cor = rankor),
-                  c(N = N1, vcram = vcram1, rank_cor = rankor1),
-                  c(N = N2, vcram = vcram2, rank_cor = rankor2))
+    # Standard criterions: 2nd DB
 
-  colnames(restand)[2] = "V_cram"
-  row.names(restand)   = c("Global","1st DB","2nd DB")
+    stoc2     = stoc[ID.DB == ID.DB2,]
+    N2        = nrow(stoc2)
+    vcram2    = round(suppressWarnings(StatMatch::pw.assoc(predY~predZ,data = stoc2)$V),2)
+    # chisqT2   = suppressWarnings(chisq.test(table(stoc2$predY,stoc2$predZ))$p.value)
+    rankor2   = round(stats::cor(rank(stoc2$predY),rank(stoc2$predZ)),3)
+
+
+    restand = rbind(c(N = N , vcram = vcram , rank_cor = rankor),
+                    c(N = N1, vcram = vcram1, rank_cor = rankor1),
+                    c(N = N2, vcram = vcram2, rank_cor = rankor2))
+
+    colnames(restand)[2] = "V_cram"
+    row.names(restand)   = c("Global","1st DB","2nd DB")
 
   } else {
 
@@ -354,7 +346,7 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
       colnames(resgrp)[1] = paste("combi","Z",paste ="_")
       colnames(resgrp)[1] = "grp levels Y to Z"
 
-      }
+    }
 
 
   } else {
@@ -366,9 +358,9 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
   if (stab.prob == TRUE){
 
 
- ### Test 2: Average ability of OT to give a same prediction according to the profile of covariates
- ###         and according to the reliability of the conditional prediction which depends on the
- ###         number of neigbhors for each profile
+    ### Test 2: Average ability of OT to give a same prediction according to the profile of covariates
+    ###         and according to the reliability of the conditional prediction which depends on the
+    ###         number of neigbhors for each profile
 
 
     inst   = ot_out$res_prox
@@ -399,14 +391,12 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
     }
 
 
-  # assignment of conditional probabilities to each individual
+    # assignment of conditional probabilities to each individual
 
-    seed.stb  = seed.stab
+    # seed.stb  = seed.stab
     simu1_avg = simu2_avg = simuglb_avg = NULL
 
     # DATABASE A
-
-    simu1 = list()
 
     if (!is.null(DATA1_OT)){
 
@@ -416,14 +406,11 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
       for (i in 1:nrow(DATA1_OT)){
 
         coord1 = which(row.names(estimatorZA[profil[i],,]) == as.character(DATA1_OT$Y)[i])
-        # coord2 = as.numeric(DATA1_OT$OTpred)[i]
         coord2 = as.numeric(predZ)[i]
 
         DATA1_OT$prob[i] = estimatorZA[profil[i],coord1,coord2]
 
       }
-
-      # Simulations
 
       for (i in 1:nrow(DATA1_OT)){
 
@@ -434,38 +421,18 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
 
       }
 
-      for (k in 1:R){
-
-        simu_vf1 = vector(length=nrow(DATA1_OT))
-
-        for (i in 1:nrow(DATA1_OT)){
-
-          if (DATA1_OT$prob[i]>1){DATA1_OT$prob[i] = 1} else {}
-          set.seed(seed.stb); simu_vf1[i] = rbinom(1,1,DATA1_OT$prob[i])
-
-        }
-
-        simu1[[k]] = simu_vf1[DATA1_OT$eff >= min.neigb]
-        simu1_avg  = c(simu1_avg,mean(simu1[[k]]))
-        seed.stb  = seed.stb + 1
-
-      }
-
-    } else {
-
-      simu1 = NULL
+      N1         = length(DATA1_OT$prob[DATA1_OT$eff >= min.neigb])
+      simu1_avg  = mean(DATA1_OT$prob[DATA1_OT$eff >= min.neigb])
+      simu1_sd   = stats::sd(DATA1_OT$prob[DATA1_OT$eff >= min.neigb])
 
     }
 
 
+    ### DATABASE B
 
-  ### DATABASE B
-
-    simu2 = list()
 
     if (!is.null(DATA2_OT)){
 
-      seed.stb   = seed.stab
       estimatorYB = ot_out$estimatorYB
 
       for (i in 1:nrow(DATA2_OT)){
@@ -481,80 +448,62 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
       for (i in 1:nrow(DATA2_OT)){
 
 
-          profil2   = profil[(n1+1):(n1 + nrow(DATA2_OT))]
+        profil2   = profil[(n1+1):(n1 + nrow(DATA2_OT))]
 
-          freq_prof       = tapply(rep(1,nrow(DATA2_OT[inst$indXB[[profil2[i]]],])),DATA2_OT[inst$indXB[[profil2[i]]],3],sum)
-          coord1          = as.numeric(DATA2_OT[i,3])
-          DATA2_OT$eff[i] = freq_prof[coord1]
-
-      }
-
-    # Simulations
-
-    for (k in 1:R){
-
-      simu_vf2  = vector(length=nrow(DATA2_OT))
-
-      for (i in 1:nrow(DATA2_OT)){
-
-        if (DATA2_OT$prob[i]>1){DATA2_OT$prob[i] = 1} else {}
-        set.seed(seed.stb); simu_vf2[i] = stats::rbinom(1,1,DATA2_OT$prob[i])
+        freq_prof       = tapply(rep(1,nrow(DATA2_OT[inst$indXB[[profil2[i]]],])),DATA2_OT[inst$indXB[[profil2[i]]],3],sum)
+        coord1          = as.numeric(DATA2_OT[i,3])
+        DATA2_OT$eff[i] = freq_prof[coord1]
 
       }
 
-      simu2[[k]] = simu_vf2[DATA2_OT$eff >= min.neigb]
-      simu2_avg  = c(simu2_avg, mean(simu2[[k]]))
-      seed.stb  = seed.stb + 1
+
+       N2         = length(DATA2_OT$prob[DATA2_OT$eff >= min.neigb])
+       simu2_avg  = mean(DATA2_OT$prob[DATA2_OT$eff >= min.neigb])
+       simu2_sd   = stats::sd(DATA2_OT$prob[DATA2_OT$eff >= min.neigb])
+
+      }
 
 
-    }
+      simuglb     = c(DATA1_OT$prob[DATA1_OT$eff >= min.neigb], DATA2_OT$prob[DATA2_OT$eff >= min.neigb])
+      Nglob       = length(simuglb)
+      simuglb_avg = mean(simuglb)
+      simuglb_sd  = stats::sd(simuglb)
+
+
+    if (is.null(DATA1_OT)){
+
+      restand3 = data.frame(N = N2, min.N = min.neigb, mean = round(simu2_avg, 3), sd = round(simu2_sd,3))
+      row.names(restand3) = "2nd DB"
+
+    } else if (is.null(DATA2_OT)){
+
+      restand3 = data.frame(N = N1, min.N = min.neigb, mean = round(simu1_avg, 3), sd = round(simu1_sd,3))
+      row.names(restand3) = "1st DB"
 
     } else {
 
-      simu2 = NULL
-  }
+      restand3 = rbind(c(N = Nglob, min.N = min.neigb,  mean = round(simuglb_avg, 3), sd = round(simuglb_sd,3)),
+                       c(N = N1   , min.N = min.neigb,  mean = round(simu1_avg, 3)  , sd = round(simu1_sd,3)),
+                       c(N = N2   , min.N = min.neigb,  mean = round(simu2_avg, 3)  , sd = round(simu2_sd,3)))
 
-  for (k in 1:R){
+      row.names(restand3)   = c("Global","1st DB","2nd DB")
 
-    simuglb     = c(simu1[[k]],simu2[[k]])
-    simuglb_avg = c(simuglb_avg,mean(simuglb))
+    }
 
-  }
+    eff              = c(DATA1_OT$eff,DATA2_OT$eff)
+    eft              = table(eff)
+    eff_tb           = data.frame(as.numeric(names(eft)),Nb.Prob = eft)
+    eff_tb           = eff_tb[,-2]
+    colnames(eff_tb) = c("Nb.neighbor","Nb.Prob")
+    eff_tb           = eff_tb[1:10,]
 
-  if (is.null(DATA1_OT)){
-
-    restand3 = data.frame(N = length(simu2[[1]])  , min.N = min.neigb, R = R, mean = round(mean(simu2_avg)  ,3), sd = round(stats::sd(simu2_avg),3))
-    row.names(restand3) = "2nd DB"
-
-  } else if (is.null(DATA2_OT)){
-
-    restand3 = data.frame(N = length(simu1[[1]])  , min.N = min.neigb, R = R, mean = round(mean(simu1_avg)  ,3), sd = round(stats::sd(simu1_avg),3  ))
-    row.names(restand3) = "1st DB"
 
   } else {
-
-    restand3 = rbind(c(N = length(simuglb), min.N = min.neigb, R = R, mean = round(mean(simuglb_avg),3), sd = round(stats::sd(simuglb_avg),3)),
-                     c(N = length(simu1[[1]])  , min.N = min.neigb, R = R, mean = round(mean(simu1_avg)  ,3), sd = round(stats::sd(simu1_avg),3  )),
-                     c(N = length(simu2[[1]])  , min.N = min.neigb, R = R, mean = round(mean(simu2_avg)  ,3), sd = round(stats::sd(simu2_avg),3  )))
-
-    row.names(restand3)   = c("Global","1st DB","2nd DB")
-
-  }
-
-  eff              = c(DATA1_OT$eff,DATA2_OT$eff)
-  eft              = table(eff)
-  eff_tb           = data.frame(as.numeric(names(eft)),Nb.Prob = eft)
-  eff_tb           = eff_tb[,-2]
-  colnames(eff_tb) = c("Nb.neighbor","Nb.Prob")
-  eff_tb           = eff_tb[1:10,]
-
-
- } else {
 
     restand3 = NULL
     eff_tb   = NULL
 
- }
+  }
 
   if (is.null(DATA1_OT)){
 
@@ -572,14 +521,7 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
 
   }
 
-  out_verif = list(seed = seed.stab, nb.profil = length(inst$indXA), conf.mat = conf,
+  out_verif = list(nb.profil = length(inst$indXA), conf.mat = conf,
                    res.prox = restand, res.grp = resgrp, hell = hh, eff.neig = eff_tb, res.stab = restand3)
 
 }
-
-
-
-
-
-
-
