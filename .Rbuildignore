@@ -12,3 +12,4 @@ _pkgdown.yaml
 ^docs$
 ^pkgdown$
 ^\.github$
+^cran-comments\.md$
