@@ -438,6 +438,7 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
     # Solve the problem
 
     solution       = ompr::get_solution(result, transport[y,z])
+    solution       = dplyr::arrange(solution, .data$z, .data$y)
 
     # Extract the values of the solution
 
@@ -481,6 +482,7 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
       ompr::solve_model(with_ROI(solver = solvR))
 
     solution       = ompr::get_solution(result, transportA[y,z])
+    solution       = dplyr::arrange(solution, .data$z, .data$y)
 
     transportA_val = matrix(solution$value, length(Y),length(Z))
 
@@ -519,6 +521,7 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
 
 
     solution       = ompr::get_solution(result, transportB[y,z])
+    solution       = dplyr::arrange(solution, .data$z, .data$y)
     transportB_val = matrix(solution$value, length(Y),length(Z))
 
 
