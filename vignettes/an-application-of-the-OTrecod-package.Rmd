@@ -167,7 +167,7 @@ get rid of potential multicolinearities between the candidates.
 - When the conclusion of the first part appears not so clear, this study can be completed by a random forest (RF) process of selection (see *RF* argument). 
 This part is notably particularly convenient when the sample of covariates is large. The function proposes two random forest procedures: The standard RF which estimates the permutation importance criterion of each shared variable and the conditional importance measures from the *proxy* package ((4)). 
 
-At this step, the choice of the recoding algorithm (see (2)) to use a posteriori must be anticipated in the handling of the potential numeric shared variables (In this example, the *ww* variable is the only one concerned. Indeed, if the **OT\_outcome** function runs whatever the type considered, this is not the case of the actual version of the **OT\_joint** version which not allows the numeric variable. For this vignette we will test the two algorithms, so we decide to transform *ww* as categorial using the quartiles of its distribution as thresholds of the four classes. This transformation can be dealt by standard R function (like *cut()*) or directly in the functions using the *convert\_num* and *convert\_clss* arguments dedicated to this task.</p>
+At this step, the choice of the recoding algorithm (see (2)) to use a posteriori must be anticipated in the handling of the potential numeric shared variables (In this example, the *ww* variable is the only one concerned. Indeed, if the **OT\_outcome** function runs whatever the type considered, this is not the case of the actual version of the **OT\_joint** version which not allows the numeric variable. For this vignette we will test the two algorithms, so we decide to transform *ww* as categorial using the quartiles of its distribution as thresholds of the four classes. This transformation can be dealt by standard R function (like *cut()*) or directly in the functions using the *convert\_num* and *convert\_class* arguments dedicated to this task.</p>
 
 <p align="justify"> The selection of the best predictors of the persons net income must be done in the two databases separately but the **selec\_pred** functions allowed overlayed databases as arguments using the following code: </p>
 
@@ -175,14 +175,14 @@ At this step, the choice of the recoding algorithm (see (2)) to use a posteriori
 # for data1
 test_DB1 = select_pred(db_test$DB_READY,Y = "Y", Z = "Z", ID = 1, OUT = "Y",
                        quanti = 8, nominal = c(1,5:6,7), ordinal = c(2:4),
-                       convert_num = 8, convert_clss = 4,
+                       convert_num = 8, convert_class = 4,
                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.10,
                        RF = TRUE, RF_SEED = 3017)
 
 # for data2
 test_DB2 = select_pred(db_test$DB_READY,Y = "Y", Z = "Z", ID = 1, OUT = "Z",
                        quanti = 8, nominal = c(1,5:6,7), ordinal = c(2:4),
-                       convert_num = 8, convert_clss = 4,
+                       convert_num = 8, convert_class = 4,
                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.10,
                        RF = TRUE, RF_SEED = 3017)
 ```
@@ -263,7 +263,7 @@ the recoding problem previously introduced. Each algorithm is stored in a unique
 These two functions can predict the missing values of *c.neti* in *data2*, the missing values of *c.neti.bis* in *data1* or the both
 using a same argument called *which.DB*.</p>
 
-<p align="justify"> As with the **select\_pred** function, it is possible to transform directly the continuous matching variables if necessary using the *convert\_num* and *convert\_clss* arguments. </p>
+<p align="justify"> As with the **select\_pred** function, it is possible to transform directly the continuous matching variables if necessary using the *convert\_num* and *convert\_class* arguments. </p>
 
 Let see the R approach for the prediction of *c.neti.bis* in *data1*.
 

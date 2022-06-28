@@ -117,7 +117,7 @@ The call of the **select\_pred** function is actually: </p>
 
 ```{r, eval=FALSE}
 select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y", quanti = NULL, nominal = NULL, ordinal = NULL, logic = NULL,
-                       convert_num = NULL, convert_clss = NULL, thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+                       convert_num = NULL, convert_class = NULL, thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
                        RF = TRUE, RF_ntree = 500, RF_condi = FALSE, RF_condi_thr = 0.20, RF_SEED = sample(1:1000000, 1))
 ```
 
@@ -132,7 +132,7 @@ missing information of the target variables in one or both datasources. </p>
 The call of the **verif\_OT** function is actually:
 
 ```{r, eval=FALSE}
-verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALSE, min.neigb = 1, R = 10, seed.stab = sample(1:1000000, 1))
+verif_OT = function(ot_out, group.class = FALSE, ordinal = TRUE, stab.prob = FALSE, min.neigb = 1, R = 10, seed.stab = sample(1:1000000, 1))
 ```
 
 &nbsp;
@@ -155,7 +155,7 @@ The call of the **OT_outcome** function is: </p>
 
 ```{r, eval=FALSE}
 OT_outcome = function(datab, index_DB_Y_Z = 1:3, quanti = NULL, nominal = NULL, ordinal = NULL,logic = NULL,
-                      convert.num = NULL, convert.clss = NULL, FAMD.coord = "NO", FAMD.perc = 0.8,
+                      convert.num = NULL, convert.class = NULL, FAMD.coord = "NO", FAMD.perc = 0.8,
                       dist.choice = "E", percent.knn = 1, maxrelax = 0, indiv.method = "sequential",
                       prox.dist = 0.30, solvR = "glpk", which.DB = "BOTH")
 ```
@@ -172,7 +172,7 @@ The call of the **OT_joint** function is:  </p>
 
 ```{r, eval=FALSE}
 OT_joint = function(datab, index_DB_Y_Z = 1:3, nominal = NULL, ordinal = NULL,logic = NULL,
-                    convert.num = NULL, convert.clss = NULL, dist.choice = "E", percent.knn = 1,
+                    convert.num = NULL, convert.class = NULL, dist.choice = "E", percent.knn = 1,
                     maxrelax = 0, lambda.reg = 0.0, prox.X = 0.10, solvR = "glpk", which.DB = "BOTH")
 ```
 
