@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">OTrecod</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
       </span>
     </div>
 
@@ -43,7 +43,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -78,24 +78,24 @@
 
     
     
-<div id="package-installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#package-installation" class="anchor" aria-hidden="true"></a>Package installation</h2>
+<div class="section level2">
+<h2 id="package-installation">Package installation<a class="anchor" aria-label="anchor" href="#package-installation"></a>
+</h2>
 <p>If the package <strong>OTrecod</strong> is not installed in their current R versions, users can install it by following the standard instruction:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"OTrecod"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"OTrecod"</span><span class="op">)</span></span></code></pre></div>
 <p>Each time an R session is opened, the <strong>OTrecod</strong> library must be loaded with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">OTrecod</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">OTrecod</span><span class="op">)</span></span></code></pre></div>
 <p>Moreover, the development version of <strong>OTrecod</strong> can be installed actually from <a href="https://github.com/otrecoding/OTrecod" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Install development version from GitHub</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"otrecoding/OTrecod"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Install development version from GitHub</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"otrecoding/OTrecod"</span><span class="op">)</span></span></code></pre></div>
 <p> </p>
 </div>
-<div id="i--the-context" class="section level2">
-<h2 class="hasAnchor">
-<a href="#i--the-context" class="anchor" aria-hidden="true"></a>I. The context</h2>
+<div class="section level2">
+<h2 id="i--the-context">I. The context<a class="anchor" aria-label="anchor" href="#i--the-context"></a>
+</h2>
 <p align="justify">
 This vignette illustrates how to use the tools contained in the <strong>OTrecod</strong> package to solve a variable recoding problem frequently encountered in the context of data fusion. For more details about the theory of the algorithms used in the functions <strong>OT_outcome</strong> and <strong>OT_joint</strong> of the package, user can consult (1),(2) and the documentation linked to each function.
 </p>
@@ -103,30 +103,30 @@ This vignette illustrates how to use the tools contained in the <strong>OTrecod<
 For this example, we have transformed an available database called <em>samp.A</em> from the <strong>StatMatch</strong> package (see (3) and the help of <em>samp.A</em> for more details). The <em>samp.A</em> database provides a limited number of variables observed at persons levels among those usually collected in the <em>European Union Statistics on Income and Living Conditions Survey</em> (the EU–SILC survey). In this database, the variable <em>c.neti</em> is a factor that corresponds to the persons net income of thousand of Euros categorized in 7 ordered classes. The raw distribution of <em>c.neti</em> is done in the following results:
 </p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">StatMatch</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">samp.A</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/marcellodo/StatMatch" class="external-link">StatMatch</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">samp.A</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">samp.A</span><span class="op">)</span>
-<span class="co">#&gt; [1] 3009   13</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">samp.A</span><span class="op">)</span>
-<span class="co">#&gt;        HH.P.id area5 urb hsize hsize5 age    c.age sex marital edu7 n.income</span>
-<span class="co">#&gt; 21384 10149.01    NE   1     1      1  85 (64,104]   2       3    3     1677</span>
-<span class="co">#&gt; 35973 17154.02    NE   1     2      2  78 (64,104]   1       2    3    13520</span>
-<span class="co">#&gt; 11774  5628.01    NO   2     1      1  48  (44,54]   1       3    3    20000</span>
-<span class="co">#&gt; 32127 15319.01     S   1     2      2  78 (64,104]   1       2    1    12428</span>
-<span class="co">#&gt; 6301   2973.05     S   2     5    &gt;=5  17  [16,34]   1       1    1        0</span>
-<span class="co">#&gt; 12990  6206.02     C   2     2      2  28  [16,34]   2       2    5        0</span>
-<span class="co">#&gt;         c.neti        ww</span>
-<span class="co">#&gt; 21384   (0,10] 3591.8939</span>
-<span class="co">#&gt; 35973  (10,15]  415.1592</span>
-<span class="co">#&gt; 11774  (15,20] 2735.4029</span>
-<span class="co">#&gt; 32127  (10,15] 1239.5086</span>
-<span class="co">#&gt; 6301  (-Inf,0] 5362.7588</span>
-<span class="co">#&gt; 12990 (-Inf,0] 2077.7137</span>
-<span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">samp.A</span><span class="op">$</span><span class="va">c.neti</span><span class="op">)</span>   <span class="co"># Repartition of c.neti in the sample</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  (-Inf,0]    (0,10]   (10,15]   (15,20]   (20,25]   (25,35] (35, Inf] </span>
-<span class="co">#&gt;       564       671       541       500       307       272       154</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">samp.A</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 3009   13</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">samp.A</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        HH.P.id area5 urb hsize hsize5 age    c.age sex marital edu7 n.income</span></span>
+<span><span class="co">#&gt; 21384 10149.01    NE   1     1      1  85 (64,104]   2       3    3     1677</span></span>
+<span><span class="co">#&gt; 35973 17154.02    NE   1     2      2  78 (64,104]   1       2    3    13520</span></span>
+<span><span class="co">#&gt; 11774  5628.01    NO   2     1      1  48  (44,54]   1       3    3    20000</span></span>
+<span><span class="co">#&gt; 32127 15319.01     S   1     2      2  78 (64,104]   1       2    1    12428</span></span>
+<span><span class="co">#&gt; 6301   2973.05     S   2     5    &gt;=5  17  [16,34]   1       1    1        0</span></span>
+<span><span class="co">#&gt; 12990  6206.02     C   2     2      2  28  [16,34]   2       2    5        0</span></span>
+<span><span class="co">#&gt;         c.neti        ww</span></span>
+<span><span class="co">#&gt; 21384   (0,10] 3591.8939</span></span>
+<span><span class="co">#&gt; 35973  (10,15]  415.1592</span></span>
+<span><span class="co">#&gt; 11774  (15,20] 2735.4029</span></span>
+<span><span class="co">#&gt; 32127  (10,15] 1239.5086</span></span>
+<span><span class="co">#&gt; 6301  (-Inf,0] 5362.7588</span></span>
+<span><span class="co">#&gt; 12990 (-Inf,0] 2077.7137</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">samp.A</span><span class="op">$</span><span class="va">c.neti</span><span class="op">)</span>   <span class="co"># Repartition of c.neti in the sample</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  (-Inf,0]    (0,10]   (10,15]   (15,20]   (20,25]   (25,35] (35, Inf] </span></span>
+<span><span class="co">#&gt;       564       671       541       500       307       272       154</span></span></code></pre></div>
 <p align="justify">
 </p>
 <p>To construct a standard recoding problem in data fusion, the <em>samp.A</em> database has been transformed as follows:</p>
@@ -140,29 +140,29 @@ For this example, we have transformed an available database called <em>samp.A</e
 The R code related to these transformations was:
 
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">c.neti</span>            <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">samp.A</span><span class="op">$</span><span class="va">c.neti</span><span class="op">)</span>
-<span class="va">samp.A</span><span class="op">$</span><span class="va">c.neti.bis</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">c.neti</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="fl">1</span>, 
-                              <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">c.neti</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fl">2</span>, 
-                              <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">c.neti</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> 
-<span class="va">data1</span> <span class="op">=</span> <span class="va">samp.A</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>,<span class="fl">5</span>,<span class="fl">7</span><span class="op">:</span><span class="fl">9</span>,<span class="fl">12</span><span class="op">:</span><span class="fl">13</span><span class="op">)</span><span class="op">]</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">data1</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">=</span> <span class="st">"age"</span> 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data1</span><span class="op">)</span>
-<span class="co">#&gt;       area5 urb hsize5      age sex marital   c.neti        ww</span>
-<span class="co">#&gt; 21384    NE   1      1 (64,104]   2       3   (0,10] 3591.8939</span>
-<span class="co">#&gt; 35973    NE   1      2 (64,104]   1       2  (10,15]  415.1592</span>
-<span class="co">#&gt; 11774    NO   2      1  (44,54]   1       3  (15,20] 2735.4029</span>
-<span class="co">#&gt; 32127     S   1      2 (64,104]   1       2  (10,15] 1239.5086</span>
-<span class="co">#&gt; 6301      S   2    &gt;=5  [16,34]   1       1 (-Inf,0] 5362.7588</span>
-<span class="co">#&gt; 12990     C   2      2  [16,34]   2       2 (-Inf,0] 2077.7137</span>
-<span class="va">data2</span> <span class="op">=</span> <span class="va">samp.A</span><span class="op">[</span><span class="fl">201</span><span class="op">:</span><span class="fl">350</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">8</span><span class="op">:</span><span class="fl">11</span>,<span class="fl">13</span><span class="op">:</span><span class="fl">14</span><span class="op">)</span><span class="op">]</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data2</span><span class="op">)</span>
-<span class="co">#&gt;       urb hsize5 age sex marital edu7 n.income       ww c.neti.bis</span>
-<span class="co">#&gt; 39565   3      2  81   2       2    1     6448 1129.274          1</span>
-<span class="co">#&gt; 36490   1    &gt;=5  48   1       3    2    16423 3082.331          2</span>
-<span class="co">#&gt; 27529   2      2  66   1       2    3    15600 2433.020          2</span>
-<span class="co">#&gt; 201     2      4  26   1       1    3    12876 1869.286          2</span>
-<span class="co">#&gt; 31375   2      2  53   1       2    3    25633 2125.361          3</span>
-<span class="co">#&gt; 3226    3      1  45   2       3    3     2611 1855.230          1</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">c.neti</span>            <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">samp.A</span><span class="op">$</span><span class="va">c.neti</span><span class="op">)</span></span>
+<span><span class="va">samp.A</span><span class="op">$</span><span class="va">c.neti.bis</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">c.neti</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="fl">1</span>, </span>
+<span>                              <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">c.neti</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fl">2</span>, </span>
+<span>                              <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">c.neti</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="va">data1</span> <span class="op">=</span> <span class="va">samp.A</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>,<span class="fl">5</span>,<span class="fl">7</span><span class="op">:</span><span class="fl">9</span>,<span class="fl">12</span><span class="op">:</span><span class="fl">13</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">data1</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">=</span> <span class="st">"age"</span> </span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data1</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       area5 urb hsize5      age sex marital   c.neti        ww</span></span>
+<span><span class="co">#&gt; 21384    NE   1      1 (64,104]   2       3   (0,10] 3591.8939</span></span>
+<span><span class="co">#&gt; 35973    NE   1      2 (64,104]   1       2  (10,15]  415.1592</span></span>
+<span><span class="co">#&gt; 11774    NO   2      1  (44,54]   1       3  (15,20] 2735.4029</span></span>
+<span><span class="co">#&gt; 32127     S   1      2 (64,104]   1       2  (10,15] 1239.5086</span></span>
+<span><span class="co">#&gt; 6301      S   2    &gt;=5  [16,34]   1       1 (-Inf,0] 5362.7588</span></span>
+<span><span class="co">#&gt; 12990     C   2      2  [16,34]   2       2 (-Inf,0] 2077.7137</span></span>
+<span><span class="va">data2</span> <span class="op">=</span> <span class="va">samp.A</span><span class="op">[</span><span class="fl">201</span><span class="op">:</span><span class="fl">350</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">8</span><span class="op">:</span><span class="fl">11</span>,<span class="fl">13</span><span class="op">:</span><span class="fl">14</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       urb hsize5 age sex marital edu7 n.income       ww c.neti.bis</span></span>
+<span><span class="co">#&gt; 39565   3      2  81   2       2    1     6448 1129.274          1</span></span>
+<span><span class="co">#&gt; 36490   1    &gt;=5  48   1       3    2    16423 3082.331          2</span></span>
+<span><span class="co">#&gt; 27529   2      2  66   1       2    3    15600 2433.020          2</span></span>
+<span><span class="co">#&gt; 201     2      4  26   1       1    3    12876 1869.286          2</span></span>
+<span><span class="co">#&gt; 31375   2      2  53   1       2    3    25633 2125.361          3</span></span>
+<span><span class="co">#&gt; 3226    3      1  45   2       3    3     2611 1855.230          1</span></span></code></pre></div>
 <p align="justify">
 </p>
 <p>In conclusion, after transformation, we had:</p>
@@ -175,22 +175,26 @@ The R code related to these transformations was:
 </li>
 </ul>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">data1</span><span class="op">$</span><span class="va">c.neti</span><span class="op">)</span>        <span class="co"># 7 levels in data1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  (-Inf,0]    (0,10]   (10,15]   (15,20]   (20,25]   (25,35] (35, Inf] </span>
-<span class="co">#&gt;        37        40        34        49        18        13         9</span>
-<span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">data2</span><span class="op">$</span><span class="va">c.neti.bis</span><span class="op">)</span>    <span class="co"># 4 levels in data2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  1  2  3  4 </span>
-<span class="co">#&gt; 60 57 26  7</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">data1</span><span class="op">)</span>
-<span class="co">#&gt; [1] "area5"   "urb"     "hsize5"  "age"     "sex"     "marital" "c.neti" </span>
-<span class="co">#&gt; [8] "ww"</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">data2</span><span class="op">)</span>
-<span class="co">#&gt; [1] "urb"        "hsize5"     "age"        "sex"        "marital"   </span>
-<span class="co">#&gt; [6] "edu7"       "n.income"   "ww"         "c.neti.bis"</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">data1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">data2</span><span class="op">)</span><span class="op">)</span>   <span class="co"># the susbet of a priori shared variables</span>
-<span class="co">#&gt; [1] "urb"     "hsize5"  "age"     "sex"     "marital" "ww"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">data1</span><span class="op">$</span><span class="va">c.neti</span><span class="op">)</span>        <span class="co"># 7 levels in data1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  (-Inf,0]    (0,10]   (10,15]   (15,20]   (20,25]   (25,35] (35, Inf] </span></span>
+<span><span class="co">#&gt;        37        40        34        49        18        13         9</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">data2</span><span class="op">$</span><span class="va">c.neti.bis</span><span class="op">)</span>    <span class="co"># 4 levels in data2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  1  2  3  4 </span></span>
+<span><span class="co">#&gt; 60 57 26  7</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">data1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "area5"   "urb"     "hsize5"  "age"     "sex"     "marital" "c.neti" </span></span>
+<span><span class="co">#&gt; [8] "ww"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">data2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "urb"        "hsize5"     "age"        "sex"        "marital"   </span></span>
+<span><span class="co">#&gt; [6] "edu7"       "n.income"   "ww"         "c.neti.bis"</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">data1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">data2</span><span class="op">)</span><span class="op">)</span>   <span class="co"># the susbet of a priori shared variables</span></span>
+<span><span class="co">#&gt; [1] "urb"     "hsize5"  "age"     "sex"     "marital" "ww"</span></span></code></pre></div>
 <strong>OBJECTIVE</strong>
 <p align="justify">
 <strong>Assuming that the encoding of <em>c.neti</em> is unknown for the subjects of <em>data2</em> and that the encoding of <em>c.neti.bis</em> is unknown for the subjects of <em>data1</em>, the functions of the OTrecod package solve this recoding problem by predicting the missing scale of the persons net income in one or the two databases. This solution allows the user to fusion his two databases and finally works with a bigger, unique and synthetic dataset.</strong>
@@ -201,9 +205,9 @@ The R code related to these transformations was:
 
 <p> </p>
 </div>
-<div id="ii--harmonization-of-the-data-sources" class="section level2">
-<h2 class="hasAnchor">
-<a href="#ii--harmonization-of-the-data-sources" class="anchor" aria-hidden="true"></a>II. Harmonization of the data sources</h2>
+<div class="section level2">
+<h2 id="ii--harmonization-of-the-data-sources">II. Harmonization of the data sources<a class="anchor" aria-label="anchor" href="#ii--harmonization-of-the-data-sources"></a>
+</h2>
 <p align="justify">
 </p>
 <p>Knowing the objective of the study, we first prepare the 2 databases to data fusion. The two functions dedicated to this data fusion in the <strong>OTrecod</strong> package expect a specific structure of database as argument. The <strong>merge_dbs</strong> function assists user in this task by:</p>
@@ -215,52 +219,58 @@ The R code related to these transformations was:
 For this, we fill in the arguments of the <strong>merge_dbs</strong> function by declaring as follows, the column indexes of all the ordinal variables in <em>data1</em> and <em>data2</em> (including the target variables indexes). Here there is no need to handle missing information because all the shared variables are complete, but note that it exists a specific argument (<em>impute</em>) in the function to take them into account when necessary.
 
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">db_test</span>  <span class="op">=</span> <span class="fu"><a href="../reference/merge_dbs.html">merge_dbs</a></span><span class="op">(</span><span class="va">data1</span>, <span class="va">data2</span>, NAME_Y <span class="op">=</span> <span class="st">"c.neti"</span>, NAME_Z <span class="op">=</span> <span class="st">"c.neti.bis"</span>,
-                     ordinal_DB1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">7</span><span class="op">)</span>, ordinal_DB2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,<span class="fl">6</span>,<span class="fl">9</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; DBS MERGING in progress. Please wait ...</span>
-<span class="co">#&gt; DBS MERGING OK</span>
-<span class="co">#&gt; -----------------------</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; SUMMARY OF DBS MERGING:</span>
-<span class="co">#&gt; Nb of removed subjects due to NA on targets: 0(0%)</span>
-<span class="co">#&gt; Nb of removed covariates due to differences between the 2 bases: 1</span>
-<span class="co">#&gt; Nb of remained covariates: 5</span>
-<span class="co">#&gt; Imputation on incomplete covariates: NO</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">db_test</span><span class="op">)</span>
-<span class="co">#&gt;               Length Class      Mode     </span>
-<span class="co">#&gt; DB_READY      8      data.frame list     </span>
-<span class="co">#&gt; ID1_drop      0      -none-     character</span>
-<span class="co">#&gt; ID2_drop      0      -none-     character</span>
-<span class="co">#&gt; Y_LEVELS      7      -none-     character</span>
-<span class="co">#&gt; Z_LEVELS      4      -none-     character</span>
-<span class="co">#&gt; REMOVE1       1      -none-     character</span>
-<span class="co">#&gt; REMOVE2       0      -none-     NULL     </span>
-<span class="co">#&gt; REMAINING_VAR 5      -none-     character</span>
-<span class="co">#&gt; IMPUTE_TYPE   1      -none-     character</span>
-<span class="co">#&gt; DB1_raw       8      data.frame list     </span>
-<span class="co">#&gt; DB2_raw       9      data.frame list     </span>
-<span class="co">#&gt; SEED          1      -none-     numeric</span>
-<span class="va">db_test</span><span class="op">$</span><span class="va">REMAINING_VAR</span>
-<span class="co">#&gt; [1] "hsize5"  "marital" "sex"     "urb"     "ww"</span>
-<span class="va">db_test</span><span class="op">$</span><span class="va">REMOVE1</span>
-<span class="co">#&gt; [1] "age"</span>
-<span class="va">db_test</span><span class="op">$</span><span class="va">REMOVE2</span>
-<span class="co">#&gt; NULL</span>
-<span class="va">db_test</span><span class="op">$</span><span class="va">ID1_drop</span>; <span class="va">db_test</span><span class="op">$</span><span class="va">ID2_drop</span>
-<span class="co">#&gt; character(0)</span>
-<span class="co">#&gt; character(0)</span>
-<span class="va">db_test</span><span class="op">$</span><span class="va">DB_READY</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">201</span><span class="op">:</span><span class="fl">205</span><span class="op">)</span>,<span class="op">]</span>   <span class="co"># The 5 1st subjects of the two databases </span>
-<span class="co">#&gt;       DB        Y    Z hsize5 marital sex urb        ww</span>
-<span class="co">#&gt; 21384  1   (0,10] &lt;NA&gt;      1       3   2   1 3591.8939</span>
-<span class="co">#&gt; 35973  1  (10,15] &lt;NA&gt;      2       2   1   1  415.1592</span>
-<span class="co">#&gt; 11774  1  (15,20] &lt;NA&gt;      1       3   1   2 2735.4029</span>
-<span class="co">#&gt; 32127  1  (10,15] &lt;NA&gt;      2       2   1   1 1239.5086</span>
-<span class="co">#&gt; 6301   1 (-Inf,0] &lt;NA&gt;    &gt;=5       1   1   2 5362.7588</span>
-<span class="co">#&gt; 39565  2     &lt;NA&gt;    1      2       2   2   3 1129.2739</span>
-<span class="co">#&gt; 36490  2     &lt;NA&gt;    2    &gt;=5       3   1   1 3082.3314</span>
-<span class="co">#&gt; 27529  2     &lt;NA&gt;    2      2       2   1   2 2433.0201</span>
-<span class="co">#&gt; 201    2     &lt;NA&gt;    2      4       1   1   2 1869.2859</span>
-<span class="co">#&gt; 31375  2     &lt;NA&gt;    3      2       2   1   2 2125.3614</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">db_test</span>  <span class="op">=</span> <span class="fu"><a href="../reference/merge_dbs.html">merge_dbs</a></span><span class="op">(</span><span class="va">data1</span>, <span class="va">data2</span>, NAME_Y <span class="op">=</span> <span class="st">"c.neti"</span>, NAME_Z <span class="op">=</span> <span class="st">"c.neti.bis"</span>,</span>
+<span>                     ordinal_DB1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">7</span><span class="op">)</span>, ordinal_DB2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,<span class="fl">6</span>,<span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; DBS MERGING in progress. Please wait ...</span></span>
+<span><span class="co">#&gt; DBS MERGING OK</span></span>
+<span><span class="co">#&gt; -----------------------</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; SUMMARY OF DBS MERGING:</span></span>
+<span><span class="co">#&gt; Nb of removed subjects due to NA on targets: 0(0%)</span></span>
+<span><span class="co">#&gt; Nb of removed covariates due to differences between the 2 bases: 1</span></span>
+<span><span class="co">#&gt; Nb of remained covariates: 5</span></span>
+<span><span class="co">#&gt; Imputation on incomplete covariates: NO</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">db_test</span><span class="op">)</span></span>
+<span><span class="co">#&gt;               Length Class      Mode     </span></span>
+<span><span class="co">#&gt; DB_READY      8      data.frame list     </span></span>
+<span><span class="co">#&gt; ID1_drop      0      -none-     character</span></span>
+<span><span class="co">#&gt; ID2_drop      0      -none-     character</span></span>
+<span><span class="co">#&gt; Y_LEVELS      7      -none-     character</span></span>
+<span><span class="co">#&gt; Z_LEVELS      4      -none-     character</span></span>
+<span><span class="co">#&gt; REMOVE1       1      -none-     character</span></span>
+<span><span class="co">#&gt; REMOVE2       0      -none-     NULL     </span></span>
+<span><span class="co">#&gt; REMAINING_VAR 5      -none-     character</span></span>
+<span><span class="co">#&gt; IMPUTE_TYPE   1      -none-     character</span></span>
+<span><span class="co">#&gt; DB1_raw       8      data.frame list     </span></span>
+<span><span class="co">#&gt; DB2_raw       9      data.frame list     </span></span>
+<span><span class="co">#&gt; SEED          1      -none-     numeric</span></span>
+<span></span>
+<span><span class="va">db_test</span><span class="op">$</span><span class="va">REMAINING_VAR</span></span>
+<span><span class="co">#&gt; [1] "hsize5"  "marital" "sex"     "urb"     "ww"</span></span>
+<span></span>
+<span><span class="va">db_test</span><span class="op">$</span><span class="va">REMOVE1</span></span>
+<span><span class="co">#&gt; [1] "age"</span></span>
+<span></span>
+<span><span class="va">db_test</span><span class="op">$</span><span class="va">REMOVE2</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span></span>
+<span><span class="va">db_test</span><span class="op">$</span><span class="va">ID1_drop</span>; <span class="va">db_test</span><span class="op">$</span><span class="va">ID2_drop</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span></span>
+<span><span class="va">db_test</span><span class="op">$</span><span class="va">DB_READY</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">201</span><span class="op">:</span><span class="fl">205</span><span class="op">)</span>,<span class="op">]</span>   <span class="co"># The 5 1st subjects of the two databases </span></span>
+<span><span class="co">#&gt;       DB        Y    Z hsize5 marital sex urb        ww</span></span>
+<span><span class="co">#&gt; 21384  1   (0,10] &lt;NA&gt;      1       3   2   1 3591.8939</span></span>
+<span><span class="co">#&gt; 35973  1  (10,15] &lt;NA&gt;      2       2   1   1  415.1592</span></span>
+<span><span class="co">#&gt; 11774  1  (15,20] &lt;NA&gt;      1       3   1   2 2735.4029</span></span>
+<span><span class="co">#&gt; 32127  1  (10,15] &lt;NA&gt;      2       2   1   1 1239.5086</span></span>
+<span><span class="co">#&gt; 6301   1 (-Inf,0] &lt;NA&gt;    &gt;=5       1   1   2 5362.7588</span></span>
+<span><span class="co">#&gt; 39565  2     &lt;NA&gt;    1      2       2   2   3 1129.2739</span></span>
+<span><span class="co">#&gt; 36490  2     &lt;NA&gt;    2    &gt;=5       3   1   1 3082.3314</span></span>
+<span><span class="co">#&gt; 27529  2     &lt;NA&gt;    2      2       2   1   2 2433.0201</span></span>
+<span><span class="co">#&gt; 201    2     &lt;NA&gt;    2      4       1   1   2 1869.2859</span></span>
+<span><span class="co">#&gt; 31375  2     &lt;NA&gt;    3      2       2   1   2 2125.3614</span></span></code></pre></div>
 <p align="justify">
 </p>
 <p>In output:</p>
@@ -275,9 +285,9 @@ The variable <em>Y</em> now corresponds to the target variable <em>c.neti</em> w
 
 <p> </p>
 </div>
-<div id="iii--selection-of-the-matching-variables" class="section level2">
-<h2 class="hasAnchor">
-<a href="#iii--selection-of-the-matching-variables" class="anchor" aria-hidden="true"></a>III. Selection of the matching variables</h2>
+<div class="section level2">
+<h2 id="iii--selection-of-the-matching-variables">III. Selection of the matching variables<a class="anchor" aria-label="anchor" href="#iii--selection-of-the-matching-variables"></a>
+</h2>
 <p align="justify">
 Among the set of shared variables kept in the output <em>DB.READY</em> database of the <strong>merge_dbs</strong>, it is important to discard those that never appear not good predictors of the persons net income whatever the considered database. The subset of remaining variables will be the matching variables. This selection of matching variables can be done using the <strong>select_pred</strong> function of the package.
 </p>
@@ -294,23 +304,24 @@ At this step, the choice of the recoding algorithm (see (2)) to use a posteriori
 The selection of the best predictors of the persons net income must be done in the two databases separately but the <strong>selec_pred</strong> functions allowed overlayed databases as arguments using the following code:
 </p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># for data1</span>
-<span class="va">test_DB1</span> <span class="op">=</span> <span class="fu"><a href="../reference/select_pred.html">select_pred</a></span><span class="op">(</span><span class="va">db_test</span><span class="op">$</span><span class="va">DB_READY</span>,Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="st">"Z"</span>, ID <span class="op">=</span> <span class="fl">1</span>, OUT <span class="op">=</span> <span class="st">"Y"</span>,
-                       quanti <span class="op">=</span> <span class="fl">8</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">7</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,
-                       convert_num <span class="op">=</span> <span class="fl">8</span>, convert_clss <span class="op">=</span> <span class="fl">4</span>,
-                       thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.10</span>,
-                       RF <span class="op">=</span> <span class="cn">TRUE</span>, RF_SEED <span class="op">=</span> <span class="fl">3017</span><span class="op">)</span>
-<span class="co">#&gt; The select_pred function is running. Please wait ...</span>
-<span class="co">#&gt; Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span>
-<span class="co"># for data2</span>
-<span class="va">test_DB2</span> <span class="op">=</span> <span class="fu"><a href="../reference/select_pred.html">select_pred</a></span><span class="op">(</span><span class="va">db_test</span><span class="op">$</span><span class="va">DB_READY</span>,Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="st">"Z"</span>, ID <span class="op">=</span> <span class="fl">1</span>, OUT <span class="op">=</span> <span class="st">"Z"</span>,
-                       quanti <span class="op">=</span> <span class="fl">8</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">7</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,
-                       convert_num <span class="op">=</span> <span class="fl">8</span>, convert_clss <span class="op">=</span> <span class="fl">4</span>,
-                       thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.10</span>,
-                       RF <span class="op">=</span> <span class="cn">TRUE</span>, RF_SEED <span class="op">=</span> <span class="fl">3017</span><span class="op">)</span>
-<span class="co">#&gt; The select_pred function is running. Please wait ...</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># for data1</span></span>
+<span><span class="va">test_DB1</span> <span class="op">=</span> <span class="fu"><a href="../reference/select_pred.html">select_pred</a></span><span class="op">(</span><span class="va">db_test</span><span class="op">$</span><span class="va">DB_READY</span>,Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="st">"Z"</span>, ID <span class="op">=</span> <span class="fl">1</span>, OUT <span class="op">=</span> <span class="st">"Y"</span>,</span>
+<span>                       quanti <span class="op">=</span> <span class="fl">8</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">7</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span>
+<span>                       convert_num <span class="op">=</span> <span class="fl">8</span>, convert_clss <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>                       thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.10</span>,</span>
+<span>                       RF <span class="op">=</span> <span class="cn">TRUE</span>, RF_SEED <span class="op">=</span> <span class="fl">3017</span><span class="op">)</span></span>
+<span><span class="co">#&gt; The select_pred function is running. Please wait ...</span></span>
+<span><span class="co">#&gt; Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span></span>
+<span></span>
+<span><span class="co"># for data2</span></span>
+<span><span class="va">test_DB2</span> <span class="op">=</span> <span class="fu"><a href="../reference/select_pred.html">select_pred</a></span><span class="op">(</span><span class="va">db_test</span><span class="op">$</span><span class="va">DB_READY</span>,Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="st">"Z"</span>, ID <span class="op">=</span> <span class="fl">1</span>, OUT <span class="op">=</span> <span class="st">"Z"</span>,</span>
+<span>                       quanti <span class="op">=</span> <span class="fl">8</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">6</span>,<span class="fl">7</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span>,</span>
+<span>                       convert_num <span class="op">=</span> <span class="fl">8</span>, convert_clss <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>                       thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.10</span>,</span>
+<span>                       RF <span class="op">=</span> <span class="cn">TRUE</span>, RF_SEED <span class="op">=</span> <span class="fl">3017</span><span class="op">)</span></span>
+<span><span class="co">#&gt; The select_pred function is running. Please wait ...</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span></span></code></pre></div>
 <p align="justify">
 </p>
 <p>As input:</p>
@@ -326,85 +337,93 @@ Notice that it is important to keep the same arguments in the two selections (<e
 </p>
 <p>Let see the result for <em>data1</em>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test_DB1</span><span class="op">)</span>
-<span class="co">#&gt;               Length Class      Mode     </span>
-<span class="co">#&gt; seed          1      -none-     numeric  </span>
-<span class="co">#&gt; outc          1      -none-     character</span>
-<span class="co">#&gt; thresh        3      -none-     numeric  </span>
-<span class="co">#&gt; convert_num   1      -none-     character</span>
-<span class="co">#&gt; DB_USED       8      data.frame list     </span>
-<span class="co">#&gt; vcrm_OUTC_cat 5      data.frame list     </span>
-<span class="co">#&gt; cor_OUTC_num  5      data.frame list     </span>
-<span class="co">#&gt; vcrm_X_cat    5      data.frame list     </span>
-<span class="co">#&gt; cor_X_num     5      data.frame list     </span>
-<span class="co">#&gt; FG_test       3      -none-     numeric  </span>
-<span class="co">#&gt; collinear_PB  2      -none-     list     </span>
-<span class="co">#&gt; drop_var      1      -none-     character</span>
-<span class="co">#&gt; RF_PRED       4      -none-     numeric  </span>
-<span class="co">#&gt; RF_best       2      -none-     character</span>
-<span class="va">test_DB1</span><span class="op">$</span><span class="va">vcrm_OUTC_cat</span>
-<span class="co">#&gt;   name1   name2 V_Cramer CorrV_Cramer   N</span>
-<span class="co">#&gt; 4     Y     sex   0.4384       0.4036 200</span>
-<span class="co">#&gt; 3     Y marital   0.2452       0.1740 200</span>
-<span class="co">#&gt; 5     Y     urb   0.1703       0.0000 200</span>
-<span class="co">#&gt; 2     Y  hsize5   0.1634       0.0000 200</span>
-<span class="co">#&gt; 6     Y      ww   0.1465       0.0000 200</span>
-<span class="va">test_DB1</span><span class="op">$</span><span class="va">collinear_PB</span>
-<span class="co">#&gt; $VCRAM</span>
-<span class="co">#&gt;     name1   name2 V_Cramer CorrV_Cramer   N</span>
-<span class="co">#&gt; 21 hsize5 marital   0.5038       0.4858 200</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $SPEARM</span>
-<span class="co">#&gt; [1] name1       name2       RANK_COR    pv_COR_test N          </span>
-<span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span>
-<span class="co"># Results from RF</span>
-<span class="va">test_DB1</span><span class="op">$</span><span class="va">drop_var</span>
-<span class="co">#&gt; [1] "marital"</span>
-<span class="va">test_DB1</span><span class="op">$</span><span class="va">RF_PRED</span>
-<span class="co">#&gt;     sex  hsize5     urb      ww </span>
-<span class="co">#&gt; 86.8886  7.9677  5.1437  0.0000</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test_DB1</span><span class="op">)</span></span>
+<span><span class="co">#&gt;               Length Class      Mode     </span></span>
+<span><span class="co">#&gt; seed          1      -none-     numeric  </span></span>
+<span><span class="co">#&gt; outc          1      -none-     character</span></span>
+<span><span class="co">#&gt; thresh        3      -none-     numeric  </span></span>
+<span><span class="co">#&gt; convert_num   1      -none-     character</span></span>
+<span><span class="co">#&gt; DB_USED       8      data.frame list     </span></span>
+<span><span class="co">#&gt; vcrm_OUTC_cat 5      data.frame list     </span></span>
+<span><span class="co">#&gt; cor_OUTC_num  5      data.frame list     </span></span>
+<span><span class="co">#&gt; vcrm_X_cat    5      data.frame list     </span></span>
+<span><span class="co">#&gt; cor_X_num     5      data.frame list     </span></span>
+<span><span class="co">#&gt; FG_test       3      -none-     numeric  </span></span>
+<span><span class="co">#&gt; collinear_PB  2      -none-     list     </span></span>
+<span><span class="co">#&gt; drop_var      1      -none-     character</span></span>
+<span><span class="co">#&gt; RF_PRED       4      -none-     numeric  </span></span>
+<span><span class="co">#&gt; RF_best       2      -none-     character</span></span>
+<span></span>
+<span><span class="va">test_DB1</span><span class="op">$</span><span class="va">vcrm_OUTC_cat</span></span>
+<span><span class="co">#&gt;   name1   name2 V_Cramer CorrV_Cramer   N</span></span>
+<span><span class="co">#&gt; 4     Y     sex   0.4384       0.4036 200</span></span>
+<span><span class="co">#&gt; 3     Y marital   0.2452       0.1740 200</span></span>
+<span><span class="co">#&gt; 5     Y     urb   0.1703       0.0000 200</span></span>
+<span><span class="co">#&gt; 2     Y  hsize5   0.1634       0.0000 200</span></span>
+<span><span class="co">#&gt; 6     Y      ww   0.1465       0.0000 200</span></span>
+<span></span>
+<span><span class="va">test_DB1</span><span class="op">$</span><span class="va">collinear_PB</span></span>
+<span><span class="co">#&gt; $VCRAM</span></span>
+<span><span class="co">#&gt;     name1   name2 V_Cramer CorrV_Cramer   N</span></span>
+<span><span class="co">#&gt; 21 hsize5 marital   0.5038       0.4858 200</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $SPEARM</span></span>
+<span><span class="co">#&gt; [1] name1       name2       RANK_COR    pv_COR_test N          </span></span>
+<span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span>
+<span></span>
+<span><span class="co"># Results from RF</span></span>
+<span><span class="va">test_DB1</span><span class="op">$</span><span class="va">drop_var</span></span>
+<span><span class="co">#&gt; [1] "marital"</span></span>
+<span></span>
+<span><span class="va">test_DB1</span><span class="op">$</span><span class="va">RF_PRED</span></span>
+<span><span class="co">#&gt;     sex  hsize5     urb      ww </span></span>
+<span><span class="co">#&gt; 86.8886  7.9677  5.1437  0.0000</span></span></code></pre></div>
 <p align="justify">
 In the set of shared variables, all variables are now categorical (factors or ordered factors). According to the <em>vcrm_OUTC_cat</em> output object, the best predictors of <em>c.neti</em> are: <em>sex</em>, <em>marital</em>, <em>urb</em>, <em>hsize5</em>, and <em>ww</em> in that order. Nevertheless, a risk of collinearity is detected between <em>marital</em> and <em>hsize5</em>. The RF process finally suggests to drop <em>marital</em> and to keep only <em>sex</em>, <em>hsize5</em> and eventually <em>urb</em> as matching variables.
 </p>
 <p>Let see the result for <em>data2</em>:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test_DB2</span><span class="op">)</span>
-<span class="co">#&gt;               Length Class      Mode     </span>
-<span class="co">#&gt; seed          1      -none-     numeric  </span>
-<span class="co">#&gt; outc          1      -none-     character</span>
-<span class="co">#&gt; thresh        3      -none-     numeric  </span>
-<span class="co">#&gt; convert_num   1      -none-     character</span>
-<span class="co">#&gt; DB_USED       8      data.frame list     </span>
-<span class="co">#&gt; vcrm_OUTC_cat 5      data.frame list     </span>
-<span class="co">#&gt; cor_OUTC_num  5      data.frame list     </span>
-<span class="co">#&gt; vcrm_X_cat    5      data.frame list     </span>
-<span class="co">#&gt; cor_X_num     5      data.frame list     </span>
-<span class="co">#&gt; FG_test       3      -none-     numeric  </span>
-<span class="co">#&gt; collinear_PB  2      -none-     list     </span>
-<span class="co">#&gt; drop_var      1      -none-     character</span>
-<span class="co">#&gt; RF_PRED       4      -none-     numeric  </span>
-<span class="co">#&gt; RF_best       2      -none-     character</span>
-<span class="va">test_DB2</span><span class="op">$</span><span class="va">vcrm_OUTC_cat</span>
-<span class="co">#&gt;   name1   name2 V_Cramer CorrV_Cramer   N</span>
-<span class="co">#&gt; 4     Z     sex   0.4783       0.4583 150</span>
-<span class="co">#&gt; 2     Z  hsize5   0.2343       0.1693 150</span>
-<span class="co">#&gt; 3     Z marital   0.1828       0.1160 150</span>
-<span class="co">#&gt; 5     Z     urb   0.1386       0.0000 150</span>
-<span class="co">#&gt; 6     Z      ww   0.0949       0.0000 150</span>
-<span class="va">test_DB2</span><span class="op">$</span><span class="va">collinear_PB</span>
-<span class="co">#&gt; $VCRAM</span>
-<span class="co">#&gt;     name1   name2 V_Cramer CorrV_Cramer   N</span>
-<span class="co">#&gt; 21 hsize5 marital   0.3555       0.3177 150</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $SPEARM</span>
-<span class="co">#&gt; [1] name1       name2       RANK_COR    pv_COR_test N          </span>
-<span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span>
-<span class="co"># Results from RF</span>
-<span class="va">test_DB2</span><span class="op">$</span><span class="va">drop_var</span>
-<span class="co">#&gt; [1] "marital"</span>
-<span class="va">test_DB2</span><span class="op">$</span><span class="va">RF_PRED</span>
-<span class="co">#&gt;     sex  hsize5      ww     urb </span>
-<span class="co">#&gt; 86.1852 13.1555  0.6593  0.0000</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test_DB2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;               Length Class      Mode     </span></span>
+<span><span class="co">#&gt; seed          1      -none-     numeric  </span></span>
+<span><span class="co">#&gt; outc          1      -none-     character</span></span>
+<span><span class="co">#&gt; thresh        3      -none-     numeric  </span></span>
+<span><span class="co">#&gt; convert_num   1      -none-     character</span></span>
+<span><span class="co">#&gt; DB_USED       8      data.frame list     </span></span>
+<span><span class="co">#&gt; vcrm_OUTC_cat 5      data.frame list     </span></span>
+<span><span class="co">#&gt; cor_OUTC_num  5      data.frame list     </span></span>
+<span><span class="co">#&gt; vcrm_X_cat    5      data.frame list     </span></span>
+<span><span class="co">#&gt; cor_X_num     5      data.frame list     </span></span>
+<span><span class="co">#&gt; FG_test       3      -none-     numeric  </span></span>
+<span><span class="co">#&gt; collinear_PB  2      -none-     list     </span></span>
+<span><span class="co">#&gt; drop_var      1      -none-     character</span></span>
+<span><span class="co">#&gt; RF_PRED       4      -none-     numeric  </span></span>
+<span><span class="co">#&gt; RF_best       2      -none-     character</span></span>
+<span></span>
+<span><span class="va">test_DB2</span><span class="op">$</span><span class="va">vcrm_OUTC_cat</span></span>
+<span><span class="co">#&gt;   name1   name2 V_Cramer CorrV_Cramer   N</span></span>
+<span><span class="co">#&gt; 4     Z     sex   0.4783       0.4583 150</span></span>
+<span><span class="co">#&gt; 2     Z  hsize5   0.2343       0.1693 150</span></span>
+<span><span class="co">#&gt; 3     Z marital   0.1828       0.1160 150</span></span>
+<span><span class="co">#&gt; 5     Z     urb   0.1386       0.0000 150</span></span>
+<span><span class="co">#&gt; 6     Z      ww   0.0949       0.0000 150</span></span>
+<span></span>
+<span><span class="va">test_DB2</span><span class="op">$</span><span class="va">collinear_PB</span></span>
+<span><span class="co">#&gt; $VCRAM</span></span>
+<span><span class="co">#&gt;     name1   name2 V_Cramer CorrV_Cramer   N</span></span>
+<span><span class="co">#&gt; 21 hsize5 marital   0.3555       0.3177 150</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $SPEARM</span></span>
+<span><span class="co">#&gt; [1] name1       name2       RANK_COR    pv_COR_test N          </span></span>
+<span><span class="co">#&gt; &lt;0 rows&gt; (or 0-length row.names)</span></span>
+<span></span>
+<span><span class="co"># Results from RF</span></span>
+<span><span class="va">test_DB2</span><span class="op">$</span><span class="va">drop_var</span></span>
+<span><span class="co">#&gt; [1] "marital"</span></span>
+<span></span>
+<span><span class="va">test_DB2</span><span class="op">$</span><span class="va">RF_PRED</span></span>
+<span><span class="co">#&gt;     sex  hsize5      ww     urb </span></span>
+<span><span class="co">#&gt; 86.1852 13.1555  0.6593  0.0000</span></span></code></pre></div>
 <p align="justify">
 According to the <em>vcrm_OUTC_cat</em> output object, the best predictors of <em>c.neti.bis</em> are: <em>sex</em>, <em>hsize5</em>, <em>marital</em>, <em>urb</em>, and <em>ww</em> in that order. A risk of collinearity is also detected between <em>marital</em> and <em>hsize5</em>. The RF process here suggests to drop <em>marital</em> and to keep only <em>sex</em>, <em>hsize5</em> as matching variables.
 </p>
@@ -431,25 +450,25 @@ According to the <em>vcrm_OUTC_cat</em> output object, the best predictors of <e
 <strong>We finally keep the last group and dropped the other ones for the rest of the example.</strong>
 </p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">match_var</span> <span class="op">=</span> <span class="va">db_test</span><span class="op">$</span><span class="va">DB_READY</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">8</span><span class="op">)</span><span class="op">]</span>
-<span class="va">match_var</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">201</span><span class="op">:</span><span class="fl">205</span><span class="op">)</span>,<span class="op">]</span>
-<span class="co">#&gt;       DB        Y    Z hsize5 sex urb</span>
-<span class="co">#&gt; 21384  1   (0,10] &lt;NA&gt;      1   2   1</span>
-<span class="co">#&gt; 35973  1  (10,15] &lt;NA&gt;      2   1   1</span>
-<span class="co">#&gt; 11774  1  (15,20] &lt;NA&gt;      1   1   2</span>
-<span class="co">#&gt; 32127  1  (10,15] &lt;NA&gt;      2   1   1</span>
-<span class="co">#&gt; 6301   1 (-Inf,0] &lt;NA&gt;    &gt;=5   1   2</span>
-<span class="co">#&gt; 39565  2     &lt;NA&gt;    1      2   2   3</span>
-<span class="co">#&gt; 36490  2     &lt;NA&gt;    2    &gt;=5   1   1</span>
-<span class="co">#&gt; 27529  2     &lt;NA&gt;    2      2   1   2</span>
-<span class="co">#&gt; 201    2     &lt;NA&gt;    2      4   1   2</span>
-<span class="co">#&gt; 31375  2     &lt;NA&gt;    3      2   1   2</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">match_var</span> <span class="op">=</span> <span class="va">db_test</span><span class="op">$</span><span class="va">DB_READY</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">8</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">match_var</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">201</span><span class="op">:</span><span class="fl">205</span><span class="op">)</span>,<span class="op">]</span></span>
+<span><span class="co">#&gt;       DB        Y    Z hsize5 sex urb</span></span>
+<span><span class="co">#&gt; 21384  1   (0,10] &lt;NA&gt;      1   2   1</span></span>
+<span><span class="co">#&gt; 35973  1  (10,15] &lt;NA&gt;      2   1   1</span></span>
+<span><span class="co">#&gt; 11774  1  (15,20] &lt;NA&gt;      1   1   2</span></span>
+<span><span class="co">#&gt; 32127  1  (10,15] &lt;NA&gt;      2   1   1</span></span>
+<span><span class="co">#&gt; 6301   1 (-Inf,0] &lt;NA&gt;    &gt;=5   1   2</span></span>
+<span><span class="co">#&gt; 39565  2     &lt;NA&gt;    1      2   2   3</span></span>
+<span><span class="co">#&gt; 36490  2     &lt;NA&gt;    2    &gt;=5   1   1</span></span>
+<span><span class="co">#&gt; 27529  2     &lt;NA&gt;    2      2   1   2</span></span>
+<span><span class="co">#&gt; 201    2     &lt;NA&gt;    2      4   1   2</span></span>
+<span><span class="co">#&gt; 31375  2     &lt;NA&gt;    3      2   1   2</span></span></code></pre></div>
 <p><strong>This overlayed database is now ready for recoding.</strong></p>
 <p> </p>
 </div>
-<div id="iv--predicting-the-missing-scales-in-the-databases" class="section level2">
-<h2 class="hasAnchor">
-<a href="#iv--predicting-the-missing-scales-in-the-databases" class="anchor" aria-hidden="true"></a>IV. Predicting the missing scales in the databases</h2>
+<div class="section level2">
+<h2 id="iv--predicting-the-missing-scales-in-the-databases">IV. Predicting the missing scales in the databases<a class="anchor" aria-label="anchor" href="#iv--predicting-the-missing-scales-in-the-databases"></a>
+</h2>
 <p align="justify">
 The <strong>OTrecod</strong> package proposes actually two algorithms using optimal transportation theory (see (3) for details) to solve the recoding problem previously introduced. Each algorithm is stored in a unique function called <strong>OT_outcome</strong> and <strong>OT_joint</strong>. These two functions can predict the missing values of <em>c.neti</em> in <em>data2</em>, the missing values of <em>c.neti.bis</em> in <em>data1</em> or the both using a same argument called <em>which.DB</em>.
 </p>
@@ -458,9 +477,9 @@ As with the <strong>select_pred</strong> function, it is possible to transform d
 </p>
 <p>Let see the R approach for the prediction of <em>c.neti.bis</em> in <em>data1</em>.</p>
 <p> </p>
-<div id="a-transporting-target-variables-to-predict-the-missing-scales" class="section level3">
-<h3 class="hasAnchor">
-<a href="#a-transporting-target-variables-to-predict-the-missing-scales" class="anchor" aria-hidden="true"></a>A) Transporting target variables to predict the missing scales</h3>
+<div class="section level3">
+<h3 id="a-transporting-target-variables-to-predict-the-missing-scales">A) Transporting target variables to predict the missing scales<a class="anchor" aria-label="anchor" href="#a-transporting-target-variables-to-predict-the-missing-scales"></a>
+</h3>
 <p align="justify">
 The algorithm from <strong>OT_outcome</strong> function solves an optimization problem to transfer the distributions of the target variables (or outcome) from one database to another. Using this result, the initial version of the algorithm (see (2)) transfers the distribution of <em>c.neti.bis</em> in <em>data2</em> to the distribution of <em>c.neti.bis</em> in <em>data1</em>, and (inversely for <em>c.neti</em> if necessary). The algorithm executes in another distinct step, a nearest neighbor procedure to affect the indidividual predictions of <em>c.neti.bis</em> in <em>data1</em>. This version of the algorithm is actually available by writing <em>sequential</em> as argument <em>method</em> of the <strong>OT_outcome</strong> function.
 </p>
@@ -471,72 +490,76 @@ The algorithm assumes the strong hypothesis that the variable <em>c.neti.bis</em
 Enrichments have been thus proposed (see (2)) to relax this hypothesis via the <em>maxrelax</em> argument of <strong>OT_outcome</strong> and directly provides the individual predictions without using the nearest neighbor process. This algorithm is actually available by assigning the <em>method</em> argument to <em>optimal</em> in input of the <strong>OT_outcome</strong> function. For our example, the corresponding R code for the prediction of <em>c.neti.bis</em> in <em>data1</em> is:
 </p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># sequential algorithm</span>
-<span class="va">mod1_seq</span> <span class="op">=</span> <span class="fu"><a href="../reference/OT_outcome.html">OT_outcome</a></span><span class="op">(</span><span class="va">match_var</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, dist.choice <span class="op">=</span> <span class="st">"E"</span>,
-                      maxrelax <span class="op">=</span> <span class="fl">0</span> , indiv.method <span class="op">=</span> <span class="st">"sequential"</span>, which.DB <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span>
-<span class="co">#&gt; ---------------------------------------</span>
-<span class="co">#&gt; OT PROCEDURE in progress ...</span>
-<span class="co">#&gt; ---------------------------------------</span>
-<span class="co">#&gt; Type                     = OUTCOME</span>
-<span class="co">#&gt; Distance                 = Euclidean</span>
-<span class="co">#&gt; Percent closest knn      = 100%</span>
-<span class="co">#&gt; Relaxation parameter     = NO</span>
-<span class="co">#&gt; Relaxation value         = 0</span>
-<span class="co">#&gt; Individual pred process  = Sequential</span>
-<span class="co">#&gt; DB imputed               = A</span>
-<span class="co">#&gt; ---------------------------------------</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mod1_seq</span><span class="op">)</span>
-<span class="co">#&gt;             Length Class      Mode   </span>
-<span class="co">#&gt; time_exe      1    difftime   numeric</span>
-<span class="co">#&gt; gamma_A      28    -none-     numeric</span>
-<span class="co">#&gt; gamma_B      28    -none-     numeric</span>
-<span class="co">#&gt; profile       5    data.frame list   </span>
-<span class="co">#&gt; res_prox     16    -none-     list   </span>
-<span class="co">#&gt; estimatorZA 812    -none-     numeric</span>
-<span class="co">#&gt; estimatorYB   0    -none-     NULL   </span>
-<span class="co">#&gt; DATA1_OT      8    data.frame list   </span>
-<span class="co">#&gt; DATA2_OT      7    data.frame list</span>
-<span class="co"># optimal algorithm with no relaxation term</span>
-<span class="va">mod2_opt</span> <span class="op">=</span> <span class="fu"><a href="../reference/OT_outcome.html">OT_outcome</a></span><span class="op">(</span><span class="va">match_var</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, dist.choice <span class="op">=</span> <span class="st">"E"</span>,
-                      maxrelax <span class="op">=</span> <span class="fl">0</span>, indiv.method <span class="op">=</span> <span class="st">"optimal"</span>, which.DB <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span>
-<span class="co">#&gt; ---------------------------------------</span>
-<span class="co">#&gt; OT PROCEDURE in progress ...</span>
-<span class="co">#&gt; ---------------------------------------</span>
-<span class="co">#&gt; Type                     = R-OUTCOME</span>
-<span class="co">#&gt; Distance                 = Euclidean</span>
-<span class="co">#&gt; Percent closest knn      = 100%</span>
-<span class="co">#&gt; Relaxation parameter     = NO</span>
-<span class="co">#&gt; Relaxation value         = 0</span>
-<span class="co">#&gt; Individual pred process  = Optimal</span>
-<span class="co">#&gt; DB imputed               = A</span>
-<span class="co">#&gt; ---------------------------------------</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mod2_opt</span><span class="op">$</span><span class="va">profile</span><span class="op">)</span>
-<span class="co">#&gt;        ID sex_2 urb_2 urb_3 hsize5</span>
-<span class="co">#&gt; 21384 P_1     1     0     0      1</span>
-<span class="co">#&gt; 35973 P_2     0     0     0      2</span>
-<span class="co">#&gt; 11774 P_3     0     1     0      1</span>
-<span class="co">#&gt; 6301  P_4     0     1     0      5</span>
-<span class="co">#&gt; 12990 P_5     1     1     0      2</span>
-<span class="co">#&gt; 39835 P_6     1     1     0      4</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">mod2_opt</span><span class="op">$</span><span class="va">profile</span><span class="op">)</span>
-<span class="co">#&gt; [1] 29  5</span>
-<span class="va">mod2_opt</span><span class="op">$</span><span class="va">gamma_A</span>
-<span class="co">#&gt;       [,1]  [,2]       [,3]        [,4]</span>
-<span class="co">#&gt; [1,] 0.185 0.000 0.00000000 0.000000000</span>
-<span class="co">#&gt; [2,] 0.200 0.000 0.00000000 0.000000000</span>
-<span class="co">#&gt; [3,] 0.015 0.155 0.00000000 0.000000000</span>
-<span class="co">#&gt; [4,] 0.000 0.225 0.02000000 0.000000000</span>
-<span class="co">#&gt; [5,] 0.000 0.000 0.09000000 0.000000000</span>
-<span class="co">#&gt; [6,] 0.000 0.000 0.06333333 0.001666667</span>
-<span class="co">#&gt; [7,] 0.000 0.000 0.00000000 0.045000000</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mod2_opt</span><span class="op">$</span><span class="va">DATA1_OT</span><span class="op">)</span>
-<span class="co">#&gt;       DB        Y    Z sex_2 urb_2 urb_3 hsize5 OTpred</span>
-<span class="co">#&gt; 21384  1   (0,10] &lt;NA&gt;     1     0     0      1      1</span>
-<span class="co">#&gt; 35973  1  (10,15] &lt;NA&gt;     0     0     0      2      2</span>
-<span class="co">#&gt; 11774  1  (15,20] &lt;NA&gt;     0     1     0      1      2</span>
-<span class="co">#&gt; 32127  1  (10,15] &lt;NA&gt;     0     0     0      2      2</span>
-<span class="co">#&gt; 6301   1 (-Inf,0] &lt;NA&gt;     0     1     0      5      1</span>
-<span class="co">#&gt; 12990  1 (-Inf,0] &lt;NA&gt;     1     1     0      2      1</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># sequential algorithm</span></span>
+<span><span class="va">mod1_seq</span> <span class="op">=</span> <span class="fu"><a href="../reference/OT_outcome.html">OT_outcome</a></span><span class="op">(</span><span class="va">match_var</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, dist.choice <span class="op">=</span> <span class="st">"E"</span>,</span>
+<span>                      maxrelax <span class="op">=</span> <span class="fl">0</span> , indiv.method <span class="op">=</span> <span class="st">"sequential"</span>, which.DB <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ---------------------------------------</span></span>
+<span><span class="co">#&gt; OT PROCEDURE in progress ...</span></span>
+<span><span class="co">#&gt; ---------------------------------------</span></span>
+<span><span class="co">#&gt; Type                     = OUTCOME</span></span>
+<span><span class="co">#&gt; Distance                 = Euclidean</span></span>
+<span><span class="co">#&gt; Percent closest knn      = 100%</span></span>
+<span><span class="co">#&gt; Relaxation parameter     = NO</span></span>
+<span><span class="co">#&gt; Relaxation value         = 0</span></span>
+<span><span class="co">#&gt; Individual pred process  = Sequential</span></span>
+<span><span class="co">#&gt; DB imputed               = A</span></span>
+<span><span class="co">#&gt; ---------------------------------------</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mod1_seq</span><span class="op">)</span></span>
+<span><span class="co">#&gt;             Length Class      Mode   </span></span>
+<span><span class="co">#&gt; time_exe      1    difftime   numeric</span></span>
+<span><span class="co">#&gt; gamma_A      28    -none-     numeric</span></span>
+<span><span class="co">#&gt; gamma_B      28    -none-     numeric</span></span>
+<span><span class="co">#&gt; profile       5    data.frame list   </span></span>
+<span><span class="co">#&gt; res_prox     16    -none-     list   </span></span>
+<span><span class="co">#&gt; estimatorZA 812    -none-     numeric</span></span>
+<span><span class="co">#&gt; estimatorYB   0    -none-     NULL   </span></span>
+<span><span class="co">#&gt; DATA1_OT      8    data.frame list   </span></span>
+<span><span class="co">#&gt; DATA2_OT      7    data.frame list</span></span>
+<span></span>
+<span><span class="co"># optimal algorithm with no relaxation term</span></span>
+<span><span class="va">mod2_opt</span> <span class="op">=</span> <span class="fu"><a href="../reference/OT_outcome.html">OT_outcome</a></span><span class="op">(</span><span class="va">match_var</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, dist.choice <span class="op">=</span> <span class="st">"E"</span>,</span>
+<span>                      maxrelax <span class="op">=</span> <span class="fl">0</span>, indiv.method <span class="op">=</span> <span class="st">"optimal"</span>, which.DB <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ---------------------------------------</span></span>
+<span><span class="co">#&gt; OT PROCEDURE in progress ...</span></span>
+<span><span class="co">#&gt; ---------------------------------------</span></span>
+<span><span class="co">#&gt; Type                     = R-OUTCOME</span></span>
+<span><span class="co">#&gt; Distance                 = Euclidean</span></span>
+<span><span class="co">#&gt; Percent closest knn      = 100%</span></span>
+<span><span class="co">#&gt; Relaxation parameter     = NO</span></span>
+<span><span class="co">#&gt; Relaxation value         = 0</span></span>
+<span><span class="co">#&gt; Individual pred process  = Optimal</span></span>
+<span><span class="co">#&gt; DB imputed               = A</span></span>
+<span><span class="co">#&gt; ---------------------------------------</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mod2_opt</span><span class="op">$</span><span class="va">profile</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        ID sex_2 urb_2 urb_3 hsize5</span></span>
+<span><span class="co">#&gt; 21384 P_1     1     0     0      1</span></span>
+<span><span class="co">#&gt; 35973 P_2     0     0     0      2</span></span>
+<span><span class="co">#&gt; 11774 P_3     0     1     0      1</span></span>
+<span><span class="co">#&gt; 6301  P_4     0     1     0      5</span></span>
+<span><span class="co">#&gt; 12990 P_5     1     1     0      2</span></span>
+<span><span class="co">#&gt; 39835 P_6     1     1     0      4</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">mod2_opt</span><span class="op">$</span><span class="va">profile</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 29  5</span></span>
+<span></span>
+<span><span class="va">mod2_opt</span><span class="op">$</span><span class="va">gamma_A</span></span>
+<span><span class="co">#&gt;       [,1]  [,2]       [,3]        [,4]</span></span>
+<span><span class="co">#&gt; [1,] 0.185 0.000 0.00000000 0.000000000</span></span>
+<span><span class="co">#&gt; [2,] 0.200 0.000 0.00000000 0.000000000</span></span>
+<span><span class="co">#&gt; [3,] 0.015 0.155 0.00000000 0.000000000</span></span>
+<span><span class="co">#&gt; [4,] 0.000 0.225 0.02000000 0.000000000</span></span>
+<span><span class="co">#&gt; [5,] 0.000 0.000 0.09000000 0.000000000</span></span>
+<span><span class="co">#&gt; [6,] 0.000 0.000 0.06333333 0.001666667</span></span>
+<span><span class="co">#&gt; [7,] 0.000 0.000 0.00000000 0.045000000</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mod2_opt</span><span class="op">$</span><span class="va">DATA1_OT</span><span class="op">)</span></span>
+<span><span class="co">#&gt;       DB        Y    Z sex_2 urb_2 urb_3 hsize5 OTpred</span></span>
+<span><span class="co">#&gt; 21384  1   (0,10] &lt;NA&gt;     1     0     0      1      1</span></span>
+<span><span class="co">#&gt; 35973  1  (10,15] &lt;NA&gt;     0     0     0      2      2</span></span>
+<span><span class="co">#&gt; 11774  1  (15,20] &lt;NA&gt;     0     1     0      1      2</span></span>
+<span><span class="co">#&gt; 32127  1  (10,15] &lt;NA&gt;     0     0     0      2      2</span></span>
+<span><span class="co">#&gt; 6301   1 (-Inf,0] &lt;NA&gt;     0     1     0      5      1</span></span>
+<span><span class="co">#&gt; 12990  1 (-Inf,0] &lt;NA&gt;     1     1     0      2      1</span></span></code></pre></div>
 <p>As input:</p>
 <ul>
 <li>The target <em>c.neti.bis</em> is here considered as an ordinal scale but sometimes this information can be unknown: In the situation where there is no information about the encoding, is recommended to consider it as nominal.</li>
@@ -554,9 +577,9 @@ Enrichments have been thus proposed (see (2)) to relax this hypothesis via the <
 </ul>
 <p> </p>
 </div>
-<div id="b-transporting-target-and-shared-variables-to-predict-the-missing-scales" class="section level3">
-<h3 class="hasAnchor">
-<a href="#b-transporting-target-and-shared-variables-to-predict-the-missing-scales" class="anchor" aria-hidden="true"></a>B) Transporting target and shared variables to predict the missing scales</h3>
+<div class="section level3">
+<h3 id="b-transporting-target-and-shared-variables-to-predict-the-missing-scales">B) Transporting target and shared variables to predict the missing scales<a class="anchor" aria-label="anchor" href="#b-transporting-target-and-shared-variables-to-predict-the-missing-scales"></a>
+</h3>
 <p align="justify">
 The objective of the algorithm integrated in the <strong>OT_joint</strong> function is the same as that of the <strong>OT_outcome</strong> function, but unlike <strong>OT_outcome</strong> transfers only the distributions of the target variables to solve the optimization problem, the <strong>OT_joint</strong> function now transports the joint distribution of outcomes and covariates: This approach makes it possible to no longer assumes the strong distributional hypothesis mentionned previously.
 </p>
@@ -573,103 +596,113 @@ Nevertheless, as with the <strong>OT_outcome</strong> function, enrichments have
 For our example, the corresponding R code for the prediction of <em>c.neti.bis</em> in <em>data1</em> is:
 
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Algorithms with no enrichments</span>
-<span class="va">mod3_joint</span> <span class="op">=</span> <span class="fu"><a href="../reference/OT_joint.html">OT_joint</a></span><span class="op">(</span><span class="va">match_var</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">6</span><span class="op">)</span>, dist.choice <span class="op">=</span> <span class="st">"E"</span>, which.DB <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span>
-<span class="co">#&gt; ---------------------------------------</span>
-<span class="co">#&gt; OT JOINT PROCEDURE in progress ...</span>
-<span class="co">#&gt; ---------------------------------------</span>
-<span class="co">#&gt; Type                  = JOINT</span>
-<span class="co">#&gt; Distance              = Euclidean</span>
-<span class="co">#&gt; Percent closest       = 100%</span>
-<span class="co">#&gt; Relaxation term       = 0</span>
-<span class="co">#&gt; Regularization term   = 0</span>
-<span class="co">#&gt; Aggregation tol cov   = 0.1</span>
-<span class="co">#&gt; DB imputed            = A</span>
-<span class="co">#&gt; ---------------------------------------</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mod3_joint</span><span class="op">)</span>
-<span class="co">#&gt;             Length Class      Mode   </span>
-<span class="co">#&gt; time_exe      1    difftime   numeric</span>
-<span class="co">#&gt; gamma_A      28    -none-     numeric</span>
-<span class="co">#&gt; gamma_B       0    -none-     NULL   </span>
-<span class="co">#&gt; profile       4    data.frame list   </span>
-<span class="co">#&gt; res_prox     16    -none-     list   </span>
-<span class="co">#&gt; estimatorZA 812    -none-     numeric</span>
-<span class="co">#&gt; estimatorYB   0    -none-     NULL   </span>
-<span class="co">#&gt; DATA1_OT      7    data.frame list   </span>
-<span class="co">#&gt; DATA2_OT      6    data.frame list</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Algorithms with no enrichments</span></span>
+<span><span class="va">mod3_joint</span> <span class="op">=</span> <span class="fu"><a href="../reference/OT_joint.html">OT_joint</a></span><span class="op">(</span><span class="va">match_var</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">5</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">6</span><span class="op">)</span>, dist.choice <span class="op">=</span> <span class="st">"E"</span>, which.DB <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ---------------------------------------</span></span>
+<span><span class="co">#&gt; OT JOINT PROCEDURE in progress ...</span></span>
+<span><span class="co">#&gt; ---------------------------------------</span></span>
+<span><span class="co">#&gt; Type                  = JOINT</span></span>
+<span><span class="co">#&gt; Distance              = Euclidean</span></span>
+<span><span class="co">#&gt; Percent closest       = 100%</span></span>
+<span><span class="co">#&gt; Relaxation term       = 0</span></span>
+<span><span class="co">#&gt; Regularization term   = 0</span></span>
+<span><span class="co">#&gt; Aggregation tol cov   = 0.1</span></span>
+<span><span class="co">#&gt; DB imputed            = A</span></span>
+<span><span class="co">#&gt; ---------------------------------------</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mod3_joint</span><span class="op">)</span></span>
+<span><span class="co">#&gt;             Length Class      Mode   </span></span>
+<span><span class="co">#&gt; time_exe      1    difftime   numeric</span></span>
+<span><span class="co">#&gt; gamma_A      28    -none-     numeric</span></span>
+<span><span class="co">#&gt; gamma_B       0    -none-     NULL   </span></span>
+<span><span class="co">#&gt; profile       4    data.frame list   </span></span>
+<span><span class="co">#&gt; res_prox     16    -none-     list   </span></span>
+<span><span class="co">#&gt; estimatorZA 812    -none-     numeric</span></span>
+<span><span class="co">#&gt; estimatorYB   0    -none-     NULL   </span></span>
+<span><span class="co">#&gt; DATA1_OT      7    data.frame list   </span></span>
+<span><span class="co">#&gt; DATA2_OT      6    data.frame list</span></span></code></pre></div>
 <p align="justify">
 For a better understanding, the input arguments and output objects of the <strong>OT_joint</strong> function have been thought to be similar to those proposed by the <strong>OT_outcome</strong> function. As previously, the <em>OTpred</em> variable of the <em>DATA1_OT</em> object stores the individual predictions of <em>c.neti.bis</em> in <em>data1</em>.
 </p>
 <p> </p>
 </div>
 </div>
-<div id="v--validation-of-the-individual-predictions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#v--validation-of-the-individual-predictions" class="anchor" aria-hidden="true"></a>V. Validation of the individual predictions</h2>
+<div class="section level2">
+<h2 id="v--validation-of-the-individual-predictions">V. Validation of the individual predictions<a class="anchor" aria-label="anchor" href="#v--validation-of-the-individual-predictions"></a>
+</h2>
 <p align="justify">
 The <strong>verif_OT</strong> function gives access to different tools for assessing the reliability of the individual predictions proposed by the <strong>OT_outcome</strong> and <strong>OT_joint</strong> functions.
 </p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Validation of the mod1_seq model</span>
-<span class="va">verif_out1</span> <span class="op">=</span> <span class="fu"><a href="../reference/verif_OT.html">verif_OT</a></span><span class="op">(</span><span class="va">mod1_seq</span>, stab.prob <span class="op">=</span> <span class="cn">TRUE</span>, min.neigb <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-<span class="va">verif_out1</span><span class="op">$</span><span class="va">conf.mat</span>
-<span class="co">#&gt;            predZ</span>
-<span class="co">#&gt; Y             1   2   3   4 Sum</span>
-<span class="co">#&gt;   (-Inf,0]   37   0   0   0  37</span>
-<span class="co">#&gt;   (0,10]     40   0   0   0  40</span>
-<span class="co">#&gt;   (10,15]     3  31   0   0  34</span>
-<span class="co">#&gt;   (15,20]     1  45   3   0  49</span>
-<span class="co">#&gt;   (20,25]     1   1  16   0  18</span>
-<span class="co">#&gt;   (25,35]     1   1  11   0  13</span>
-<span class="co">#&gt;   (35, Inf]   1   1   1   6   9</span>
-<span class="co">#&gt;   Sum        84  79  31   6 200</span>
-<span class="va">verif_out1</span><span class="op">$</span><span class="va">res.prox</span>
-<span class="co">#&gt;        N   V_cram rank_cor </span>
-<span class="co">#&gt;  200.000    0.860    0.871</span>
-<span class="va">verif_out1</span><span class="op">$</span><span class="va">res.stab</span>
-<span class="co">#&gt;          N min.N  mean    sd</span>
-<span class="co">#&gt; 1st DB 112     3 0.976 0.107</span>
-<span class="co"># Validation of the mod2_seq model</span>
-<span class="va">verif_out2</span> <span class="op">=</span> <span class="fu"><a href="../reference/verif_OT.html">verif_OT</a></span><span class="op">(</span><span class="va">mod2_opt</span>, stab.prob <span class="op">=</span> <span class="cn">TRUE</span>, min.neigb <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-<span class="va">verif_out2</span><span class="op">$</span><span class="va">conf.mat</span>
-<span class="co">#&gt;            predZ</span>
-<span class="co">#&gt; Y             1   2   3   4 Sum</span>
-<span class="co">#&gt;   (-Inf,0]   37   0   0   0  37</span>
-<span class="co">#&gt;   (0,10]     40   0   0   0  40</span>
-<span class="co">#&gt;   (10,15]     3  31   0   0  34</span>
-<span class="co">#&gt;   (15,20]     0  45   4   0  49</span>
-<span class="co">#&gt;   (20,25]     0   0  18   0  18</span>
-<span class="co">#&gt;   (25,35]     0   0  13   0  13</span>
-<span class="co">#&gt;   (35, Inf]   0   0   0   9   9</span>
-<span class="co">#&gt;   Sum        80  76  35   9 200</span>
-<span class="va">rate_good_pred</span> <span class="op">=</span> <span class="op">(</span><span class="fl">37</span><span class="op">+</span><span class="fl">40</span><span class="op">+</span><span class="fl">31</span><span class="op">+</span><span class="fl">45</span><span class="op">+</span><span class="fl">18</span><span class="op">+</span><span class="fl">13</span><span class="op">+</span><span class="fl">9</span><span class="op">)</span><span class="op">/</span><span class="fl">200</span>
-<span class="va">rate_good_pred</span>
-<span class="co">#&gt; [1] 0.965</span>
-<span class="va">verif_out2</span><span class="op">$</span><span class="va">res.prox</span>
-<span class="co">#&gt;        N   V_cram rank_cor </span>
-<span class="co">#&gt;  200.000    0.960    0.939</span>
-<span class="va">verif_out2</span><span class="op">$</span><span class="va">res.stab</span>
-<span class="co">#&gt;          N min.N  mean    sd</span>
-<span class="co">#&gt; 1st DB 112     3 0.986 0.084</span>
-<span class="co"># Validation of the mod3_opt model</span>
-<span class="va">verif_jt</span>   <span class="op">=</span> <span class="fu"><a href="../reference/verif_OT.html">verif_OT</a></span><span class="op">(</span><span class="va">mod3_joint</span>, stab.prob <span class="op">=</span> <span class="cn">TRUE</span>, min.neigb <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-<span class="va">verif_jt</span><span class="op">$</span><span class="va">conf.mat</span>
-<span class="co">#&gt;            predZ</span>
-<span class="co">#&gt; Y             1   2   3   4 Sum</span>
-<span class="co">#&gt;   (-Inf,0]   33   4   0   0  37</span>
-<span class="co">#&gt;   (0,10]     32   8   0   0  40</span>
-<span class="co">#&gt;   (10,15]     4  29   1   0  34</span>
-<span class="co">#&gt;   (15,20]    11  19  19   0  49</span>
-<span class="co">#&gt;   (20,25]     0  10   5   3  18</span>
-<span class="co">#&gt;   (25,35]     1   2  10   0  13</span>
-<span class="co">#&gt;   (35, Inf]   6   1   0   2   9</span>
-<span class="co">#&gt;   Sum        87  73  35   5 200</span>
-<span class="va">verif_jt</span><span class="op">$</span><span class="va">res.prox</span>
-<span class="co">#&gt;        N   V_cram rank_cor </span>
-<span class="co">#&gt;  200.000    0.550    0.613</span>
-<span class="va">verif_jt</span><span class="op">$</span><span class="va">res.stab</span>
-<span class="co">#&gt;          N min.N  mean    sd</span>
-<span class="co">#&gt; 1st DB 112     3 0.869 0.175</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Validation of the mod1_seq model</span></span>
+<span><span class="va">verif_out1</span> <span class="op">=</span> <span class="fu"><a href="../reference/verif_OT.html">verif_OT</a></span><span class="op">(</span><span class="va">mod1_seq</span>, stab.prob <span class="op">=</span> <span class="cn">TRUE</span>, min.neigb <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">verif_out1</span><span class="op">$</span><span class="va">conf.mat</span></span>
+<span><span class="co">#&gt;            predZ</span></span>
+<span><span class="co">#&gt; Y             1   2   3   4 Sum</span></span>
+<span><span class="co">#&gt;   (-Inf,0]   37   0   0   0  37</span></span>
+<span><span class="co">#&gt;   (0,10]     40   0   0   0  40</span></span>
+<span><span class="co">#&gt;   (10,15]     3  31   0   0  34</span></span>
+<span><span class="co">#&gt;   (15,20]     1  45   3   0  49</span></span>
+<span><span class="co">#&gt;   (20,25]     1   1  16   0  18</span></span>
+<span><span class="co">#&gt;   (25,35]     1   1  11   0  13</span></span>
+<span><span class="co">#&gt;   (35, Inf]   1   1   1   6   9</span></span>
+<span><span class="co">#&gt;   Sum        84  79  31   6 200</span></span>
+<span></span>
+<span><span class="va">verif_out1</span><span class="op">$</span><span class="va">res.prox</span></span>
+<span><span class="co">#&gt;        N   V_cram rank_cor </span></span>
+<span><span class="co">#&gt;  200.000    0.860    0.871</span></span>
+<span></span>
+<span><span class="va">verif_out1</span><span class="op">$</span><span class="va">res.stab</span></span>
+<span><span class="co">#&gt;          N min.N  mean    sd</span></span>
+<span><span class="co">#&gt; 1st DB 112     3 0.976 0.107</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Validation of the mod2_seq model</span></span>
+<span><span class="va">verif_out2</span> <span class="op">=</span> <span class="fu"><a href="../reference/verif_OT.html">verif_OT</a></span><span class="op">(</span><span class="va">mod2_opt</span>, stab.prob <span class="op">=</span> <span class="cn">TRUE</span>, min.neigb <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">verif_out2</span><span class="op">$</span><span class="va">conf.mat</span></span>
+<span><span class="co">#&gt;            predZ</span></span>
+<span><span class="co">#&gt; Y             1   2   3   4 Sum</span></span>
+<span><span class="co">#&gt;   (-Inf,0]   37   0   0   0  37</span></span>
+<span><span class="co">#&gt;   (0,10]     40   0   0   0  40</span></span>
+<span><span class="co">#&gt;   (10,15]     3  31   0   0  34</span></span>
+<span><span class="co">#&gt;   (15,20]     0  45   4   0  49</span></span>
+<span><span class="co">#&gt;   (20,25]     0   0  18   0  18</span></span>
+<span><span class="co">#&gt;   (25,35]     0   0  13   0  13</span></span>
+<span><span class="co">#&gt;   (35, Inf]   0   0   0   9   9</span></span>
+<span><span class="co">#&gt;   Sum        80  76  35   9 200</span></span>
+<span><span class="va">rate_good_pred</span> <span class="op">=</span> <span class="op">(</span><span class="fl">37</span><span class="op">+</span><span class="fl">40</span><span class="op">+</span><span class="fl">31</span><span class="op">+</span><span class="fl">45</span><span class="op">+</span><span class="fl">18</span><span class="op">+</span><span class="fl">13</span><span class="op">+</span><span class="fl">9</span><span class="op">)</span><span class="op">/</span><span class="fl">200</span></span>
+<span><span class="va">rate_good_pred</span></span>
+<span><span class="co">#&gt; [1] 0.965</span></span>
+<span></span>
+<span><span class="va">verif_out2</span><span class="op">$</span><span class="va">res.prox</span></span>
+<span><span class="co">#&gt;        N   V_cram rank_cor </span></span>
+<span><span class="co">#&gt;  200.000    0.960    0.939</span></span>
+<span></span>
+<span><span class="va">verif_out2</span><span class="op">$</span><span class="va">res.stab</span></span>
+<span><span class="co">#&gt;          N min.N  mean    sd</span></span>
+<span><span class="co">#&gt; 1st DB 112     3 0.986 0.084</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Validation of the mod3_opt model</span></span>
+<span><span class="va">verif_jt</span>   <span class="op">=</span> <span class="fu"><a href="../reference/verif_OT.html">verif_OT</a></span><span class="op">(</span><span class="va">mod3_joint</span>, stab.prob <span class="op">=</span> <span class="cn">TRUE</span>, min.neigb <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">verif_jt</span><span class="op">$</span><span class="va">conf.mat</span></span>
+<span><span class="co">#&gt;            predZ</span></span>
+<span><span class="co">#&gt; Y             1   2   3   4 Sum</span></span>
+<span><span class="co">#&gt;   (-Inf,0]   33   4   0   0  37</span></span>
+<span><span class="co">#&gt;   (0,10]     32   8   0   0  40</span></span>
+<span><span class="co">#&gt;   (10,15]     4  29   1   0  34</span></span>
+<span><span class="co">#&gt;   (15,20]    11  19  19   0  49</span></span>
+<span><span class="co">#&gt;   (20,25]     0  10   5   3  18</span></span>
+<span><span class="co">#&gt;   (25,35]     1   2  10   0  13</span></span>
+<span><span class="co">#&gt;   (35, Inf]   6   1   0   2   9</span></span>
+<span><span class="co">#&gt;   Sum        87  73  35   5 200</span></span>
+<span></span>
+<span><span class="va">verif_jt</span><span class="op">$</span><span class="va">res.prox</span></span>
+<span><span class="co">#&gt;        N   V_cram rank_cor </span></span>
+<span><span class="co">#&gt;  200.000    0.550    0.613</span></span>
+<span></span>
+<span><span class="va">verif_jt</span><span class="op">$</span><span class="va">res.stab</span></span>
+<span><span class="co">#&gt;          N min.N  mean    sd</span></span>
+<span><span class="co">#&gt; 1st DB 112     3 0.869 0.175</span></span></code></pre></div>
 <p align="justify">
 </p>
 <p>As input:</p>
@@ -692,9 +725,9 @@ The <strong>verif_OT</strong> function gives access to different tools for asses
 <strong>The two first models are here more adapted when the strong distributional hypothesis previously introduced holds.</strong> <strong>Nevertheless, the mod3_jt model could be significantly improved by adding appropriate relaxation and regularization terms, so now, R user,</strong> <strong>test it by yourself !</strong>
 </p>
 </div>
-<div id="references" class="section level2">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor" aria-hidden="true"></a>References</h2>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <ol style="list-style-type: decimal">
 <li><p>Gares V, Dimeglio C, Guernec G, Fantin F, Lepage B, Korosok MR, savy N (2019). On the use of optimal transportation theory to recode variables and application to database merging. The International Journal of Biostatistics.Volume 16, Issue 1, 20180106, eISSN 1557-4679.</p></li>
 <li><p>Gares V, Omer J (2020). Regularized optimal transport of covariates and outcomes in data recoding. Journal of the American Statistical Association.</p></li>
@@ -722,7 +755,7 @@ The <strong>verif_OT</strong> function gives access to different tools for asses
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.9000.</p>
 </div>
 
       </footer>
