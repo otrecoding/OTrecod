@@ -98,109 +98,106 @@
 #' ### Some transformations will be made beforehand on variables to generate
 #' ### heterogeneities between the two bases.
 #' data(simu_data)
-#' data_A = simu_data[simu_data$DB == "A",c(2,4:8)]
-#' data_B = simu_data[simu_data$DB == "B",c(3,4:8)]
+#' data_A <- simu_data[simu_data$DB == "A", c(2, 4:8)]
+#' data_B <- simu_data[simu_data$DB == "B", c(3, 4:8)]
 #'
 #' # For the example, a covariate is added (Weight) only in data_A
-#' data_A$Weight = rnorm(300,70,5)
+#' data_A$Weight <- rnorm(300, 70, 5)
 #'
 #' # Be careful: the target variables must be in factor (or ordered) in the 2 databases
 #' # Because it is not the case for Yb2 in data_B, the function will convert it.
-#' data_B$Yb2    = as.factor(data_B$Yb2)
+#' data_B$Yb2 <- as.factor(data_B$Yb2)
 #'
 #' # Moreover, the Dosage covariate is stored in 3 classes in data_B (instead of 4 classes in data_B)
 #' # to make the encoding of this covariate specific to each database.
-#' data_B$Dosage = as.character(data_B$Dosage)
-#' data_B$Dosage = as.factor(ifelse(data_B$Dosage %in% c("Dos 1","Dos 2"),"D1",
-#'                           ifelse(data_B$Dosage == "Dos 3","D3","D4")))
+#' data_B$Dosage <- as.character(data_B$Dosage)
+#' data_B$Dosage <- as.factor(ifelse(data_B$Dosage %in% c("Dos 1", "Dos 2"), "D1",
+#'   ifelse(data_B$Dosage == "Dos 3", "D3", "D4")
+#' ))
 #'
 #' # For more diversity, this covariate iis placed at the last column of the data_B
-#' data_B        = data_B[,c(1:3,5,6,4)]
+#' data_B <- data_B[, c(1:3, 5, 6, 4)]
 #'
 #' # Ex 1: The two databases are merged and incomplete covariates are imputed using MICE
-#' soluc1  = merge_dbs(data_A,data_B,
-#'                     NAME_Y = "Yb1",NAME_Z = "Yb2",
-#'                     ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
-#'                     impute = "MICE",R_MICE = 2, seed_func = 3011)
+#' soluc1 <- merge_dbs(data_A, data_B,
+#'   NAME_Y = "Yb1", NAME_Z = "Yb2",
+#'   ordinal_DB1 = c(1, 4), ordinal_DB2 = c(1, 6),
+#'   impute = "MICE", R_MICE = 2, seed_func = 3011
+#' )
 #' summary(soluc1$DB_READY)
 #'
 #'
 #' # Ex 2: The two databases are merged and missing values are kept
-#' soluc2  = merge_dbs(data_A,data_B,
-#'                     NAME_Y = "Yb1",NAME_Z = "Yb2",
-#'                     ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
-#'                     impute = "NO",seed_func = 3011)
+#' soluc2 <- merge_dbs(data_A, data_B,
+#'   NAME_Y = "Yb1", NAME_Z = "Yb2",
+#'   ordinal_DB1 = c(1, 4), ordinal_DB2 = c(1, 6),
+#'   impute = "NO", seed_func = 3011
+#' )
 #'
 #' # Ex 3: The two databases are merged by only keeping the complete cases
-#' soluc3  = merge_dbs(data_A,data_B,
-#'                     NAME_Y = "Yb1",NAME_Z = "Yb2",
-#'                     ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
-#'                     impute = "CC",seed_func = 3011)
+#' soluc3 <- merge_dbs(data_A, data_B,
+#'   NAME_Y = "Yb1", NAME_Z = "Yb2",
+#'   ordinal_DB1 = c(1, 4), ordinal_DB2 = c(1, 6),
+#'   impute = "CC", seed_func = 3011
+#' )
 #'
 #' # Ex 4: The two databases are merged and incomplete covariates are imputed using FAMD
-#' soluc4  = merge_dbs(data_A,data_B,
-#'                     NAME_Y = "Yb1",NAME_Z = "Yb2",
-#'                     ordinal_DB1 = c(1,4), ordinal_DB2 = c(1,6),
-#'                     impute = "FAMD",NCP_FAMD = 4,seed_func = 2096)
+#' soluc4 <- merge_dbs(data_A, data_B,
+#'   NAME_Y = "Yb1", NAME_Z = "Yb2",
+#'   ordinal_DB1 = c(1, 4), ordinal_DB2 = c(1, 6),
+#'   impute = "FAMD", NCP_FAMD = 4, seed_func = 2096
+#' )
 #'
 #' # Conclusion:
 #' # The data fusion is successful in each situation.
 #' # The Dosage and Weight covariates have been normally excluded from the fusion.
 #' # The covariates have been imputed when required.
 #'
-merge_dbs = function(DB1,
-                     DB2,
-                     row_ID1 = NULL,
-                     row_ID2 = NULL,
-                     NAME_Y,
-                     NAME_Z,
-                     order_levels_Y = levels(DB1[, NAME_Y]),
-                     order_levels_Z = levels(DB2[, NAME_Z]),
-                     ordinal_DB1 = NULL,
-                     ordinal_DB2 = NULL,
-                     impute = "NO",
-                     R_MICE = 5,
-                     NCP_FAMD = 3,
-                     seed_func = sample(1:1000000, 1)) {
+merge_dbs <- function(DB1,
+                      DB2,
+                      row_ID1 = NULL,
+                      row_ID2 = NULL,
+                      NAME_Y,
+                      NAME_Z,
+                      order_levels_Y = levels(DB1[, NAME_Y]),
+                      order_levels_Z = levels(DB2[, NAME_Z]),
+                      ordinal_DB1 = NULL,
+                      ordinal_DB2 = NULL,
+                      impute = "NO",
+                      R_MICE = 5,
+                      NCP_FAMD = 3,
+                      seed_func = sample(1:1000000, 1)) {
   message("DBS MERGING in progress. Please wait ...", "\n")
 
-  if ((length(row_ID1)>1)|(length(row_ID2)>1)){
-
+  if ((length(row_ID1) > 1) | (length(row_ID2) > 1)) {
     stop("Improper argument for row_IDs")
-
   } else {}
 
-  if ((is.character(row_ID1))|(is.character(row_ID2))){
-
+  if ((is.character(row_ID1)) | (is.character(row_ID2))) {
     stop("Improper argument for row_IDs")
-
   } else {}
 
-  DB1_row     = DB1[!is.na(DB1[,NAME_Y]),]
-  DB2_row     = DB2[!is.na(DB2[,NAME_Z]),]
-  ID1         = row.names(DB1)[is.na(DB1[,NAME_Y])]
-  ID2         = row.names(DB1)[is.na(DB2[,NAME_Z])]
+  DB1_row <- DB1[!is.na(DB1[, NAME_Y]), ]
+  DB2_row <- DB2[!is.na(DB2[, NAME_Z]), ]
+  ID1 <- row.names(DB1)[is.na(DB1[, NAME_Y])]
+  ID2 <- row.names(DB1)[is.na(DB2[, NAME_Z])]
 
-  if (!is.null(row_ID1)){
+  if (!is.null(row_ID1)) {
+    ID1 <- DB1[, row_ID1]
 
-     ID1         = DB1[,row_ID1]
-
-     ordinal_DB1 = setdiff(ordinal_DB1,row_ID1)
-     ordinal_DB1 = ordinal_DB1 - as.numeric(row_ID1 < ordinal_DB1)
-     DB1         = DB1[,-row_ID1]
-     ID1         = ID1[is.na(DB1[,NAME_Y])]
-
+    ordinal_DB1 <- setdiff(ordinal_DB1, row_ID1)
+    ordinal_DB1 <- ordinal_DB1 - as.numeric(row_ID1 < ordinal_DB1)
+    DB1 <- DB1[, -row_ID1]
+    ID1 <- ID1[is.na(DB1[, NAME_Y])]
   } else {}
 
-  if (!is.null(row_ID2)){
+  if (!is.null(row_ID2)) {
+    ID2 <- DB2[, row_ID2]
 
-     ID2         = DB2[,row_ID2]
-
-     ordinal_DB2 = setdiff(ordinal_DB2,row_ID2)
-     ordinal_DB2 = ordinal_DB2 - as.numeric(row_ID2 < ordinal_DB2)
-     DB2         = DB2[,-row_ID2]
-     ID2         = ID2[is.na(DB2[, NAME_Z])]
-
+    ordinal_DB2 <- setdiff(ordinal_DB2, row_ID2)
+    ordinal_DB2 <- ordinal_DB2 - as.numeric(row_ID2 < ordinal_DB2)
+    DB2 <- DB2[, -row_ID2]
+    ID2 <- ID2[is.na(DB2[, NAME_Z])]
   } else {}
 
 
@@ -209,65 +206,54 @@ merge_dbs = function(DB1,
 
   if ((!is.data.frame(DB1)) | (!is.data.frame(DB2))) {
     stop("At least one of your two objects is not a data.frame!")
-
   } else {}
 
 
   if ((is.character(NAME_Y) != TRUE) |
-      (is.character(NAME_Z) != TRUE)) {
-    stop ("NAME_Y and NAME_Z must be declared as strings of characters with quotes")
-
+    (is.character(NAME_Z) != TRUE)) {
+    stop("NAME_Y and NAME_Z must be declared as strings of characters with quotes")
   } else {}
 
 
   if ((length(NAME_Y) != 1) | (length(NAME_Z) != 1)) {
-    stop ("No or more than one target declared by DB !")
-
+    stop("No or more than one target declared by DB !")
   } else {}
 
-  if ((is.null(levels(DB1[, NAME_Y])))|(is.null(levels(DB2[, NAME_Z])))){
-
-    stop ("Your target variable must be a factor in the 2 databases")
-
+  if ((is.null(levels(DB1[, NAME_Y]))) | (is.null(levels(DB2[, NAME_Z])))) {
+    stop("Your target variable must be a factor in the 2 databases")
   } else {}
 
 
-  if ((!(is.numeric(R_MICE)))|(!(is.numeric(NCP_FAMD)))){
-
-    stop ("The options R_MICE and NCP_FAMD must contain numeric values")
-
+  if ((!(is.numeric(R_MICE))) | (!(is.numeric(NCP_FAMD)))) {
+    stop("The options R_MICE and NCP_FAMD must contain numeric values")
   } else {}
 
-  if (!(impute %in% c("CC","FAMD","MICE","NO"))){
-
+  if (!(impute %in% c("CC", "FAMD", "MICE", "NO"))) {
     stop("Invalid character in the impute option: You must choose between NO, FAMD, CC and MICE")
-
   } else {}
 
-  if ((length(ordinal_DB1)>ncol(DB1))|(length(ordinal_DB2)>ncol(DB2))){
-
+  if ((length(ordinal_DB1) > ncol(DB1)) | (length(ordinal_DB2) > ncol(DB2))) {
     stop("The number of column indexes exceeds the number of columns of your DB")
-
   } else {}
 
 
   # Remove subjects in DB1 (resp. DB2) with Y (resp.Z) missing
   #-------------------------------------------------------------
 
-  NB1_1 = nrow(DB1)
-  NB2_1 = nrow(DB2)
+  NB1_1 <- nrow(DB1)
+  NB2_1 <- nrow(DB2)
 
 
-  DB1   = DB1[!is.na(DB1[, NAME_Y]), ]
-  DB2   = DB2[!is.na(DB2[, NAME_Z]), ]
+  DB1 <- DB1[!is.na(DB1[, NAME_Y]), ]
+  DB2 <- DB2[!is.na(DB2[, NAME_Z]), ]
 
 
-  NB1_2 = nrow(DB1)
-  NB2_2 = nrow(DB2)
+  NB1_2 <- nrow(DB1)
+  NB2_2 <- nrow(DB2)
 
 
-  REMOVE_SUBJECT1 = NB1_1 - NB1_2
-  REMOVE_SUBJECT2 = NB2_1 - NB2_2
+  REMOVE_SUBJECT1 <- NB1_1 - NB1_2
+  REMOVE_SUBJECT2 <- NB2_1 - NB2_2
 
 
 
@@ -278,93 +264,88 @@ merge_dbs = function(DB1,
   # Impute NA in covariates from DB1 and DB2 if necessary
 
 
-  count_lev1  = apply(DB1, 2, function(x){
+  count_lev1 <- apply(DB1, 2, function(x) {
     length(names(table(x)))
   })
-  num_lev1    = sapply(DB1, is.numeric)
+  num_lev1 <- sapply(DB1, is.numeric)
 
-  typ_cov_DB1 = ifelse (((1:ncol(DB1)) %in% ordinal_DB1) &
-                          (count_lev1 > 2),
-                        "polr",
-                        ifelse ((count_lev1 == 2) &
-                                  (num_lev1 == FALSE),
-                                "logreg",
-                                ifelse (num_lev1 == TRUE, "pmm", "polyreg")
-                        ))
+  typ_cov_DB1 <- ifelse(((1:ncol(DB1)) %in% ordinal_DB1) &
+    (count_lev1 > 2),
+  "polr",
+  ifelse((count_lev1 == 2) &
+    (num_lev1 == FALSE),
+  "logreg",
+  ifelse(num_lev1 == TRUE, "pmm", "polyreg")
+  )
+  )
 
 
-  count_lev2  = apply(DB2, 2, function(x) {
+  count_lev2 <- apply(DB2, 2, function(x) {
     length(names(table(x)))
   })
-  num_lev2    = sapply(DB2, is.numeric)
+  num_lev2 <- sapply(DB2, is.numeric)
 
-  typ_cov_DB2 = ifelse (((1:ncol(DB2)) %in% ordinal_DB2) &
-                          (count_lev2 > 2),
-                        "polr",
-                        ifelse ((count_lev2 == 2) &
-                                  (num_lev2 == FALSE),
-                                "logreg",
-                                ifelse (num_lev2 == TRUE, "pmm", "polyreg")
-                        ))
+  typ_cov_DB2 <- ifelse(((1:ncol(DB2)) %in% ordinal_DB2) &
+    (count_lev2 > 2),
+  "polr",
+  ifelse((count_lev2 == 2) &
+    (num_lev2 == FALSE),
+  "logreg",
+  ifelse(num_lev2 == TRUE, "pmm", "polyreg")
+  )
+  )
 
-  typ_cov_DB1b = typ_cov_DB1[setdiff(names(DB1), NAME_Y)]
-  typ_cov_DB2b = typ_cov_DB2[setdiff(names(DB2), NAME_Z)]
+  typ_cov_DB1b <- typ_cov_DB1[setdiff(names(DB1), NAME_Y)]
+  typ_cov_DB2b <- typ_cov_DB2[setdiff(names(DB2), NAME_Z)]
 
 
   if ((setequal(DB1, stats::na.omit(DB1))) &
-      (setequal(DB2, stats::na.omit(DB2))) & (impute != "NO")) {
-    message("No missing values in covariates: No imputation methods required","\n")
-    impute = "NO"
-
+    (setequal(DB2, stats::na.omit(DB2))) & (impute != "NO")) {
+    message("No missing values in covariates: No imputation methods required", "\n")
+    impute <- "NO"
   } else {
   }
 
 
   if (impute == "CC") {
-    DB1 = stats::na.omit(DB1)
-    DB2 = stats::na.omit(DB2)
+    DB1 <- stats::na.omit(DB1)
+    DB2 <- stats::na.omit(DB2)
 
-    DB1_new = stats::na.omit(DB1[, setdiff(names(DB1), NAME_Y)])
-    DB2_new = stats::na.omit(DB2[, setdiff(names(DB2), NAME_Z)])
-
+    DB1_new <- stats::na.omit(DB1[, setdiff(names(DB1), NAME_Y)])
+    DB2_new <- stats::na.omit(DB2[, setdiff(names(DB2), NAME_Z)])
   } else if (impute == "MICE") {
-    DB1bis       = imput_cov(
+    DB1bis <- imput_cov(
       DB1[, setdiff(names(DB1), NAME_Y)],
       R_mice = R_MICE,
       meth = typ_cov_DB1b,
       missMDA = FALSE,
       seed_choice = seed_func
     )
-    DB2bis       = imput_cov(
+    DB2bis <- imput_cov(
       DB2[, setdiff(names(DB2), NAME_Z)],
       R_mice = R_MICE,
       meth = typ_cov_DB2b,
       missMDA = FALSE,
       seed_choice = seed_func
     )
-
-
   } else if (impute == "FAMD") {
-    DB1bis       = imput_cov(
+    DB1bis <- imput_cov(
       DB1[, setdiff(names(DB1), NAME_Y)],
       meth = typ_cov_DB1b,
       missMDA = TRUE,
       NB_COMP = NCP_FAMD,
       seed_choice = seed_func
     )
-    DB2bis       = imput_cov(
+    DB2bis <- imput_cov(
       DB2[, setdiff(names(DB2), NAME_Z)],
       meth = typ_cov_DB2b,
       missMDA = TRUE,
       NB_COMP = NCP_FAMD,
       seed_choice = seed_func
     )
-
-
   } else if (impute == "NO") {
-    DB1_new = DB1[, setdiff(names(DB1), NAME_Y)]
-    DB2_new = DB2[, setdiff(names(DB2), NAME_Z)]
-
+    DB1_new <- DB1[, setdiff(names(DB1), NAME_Y)]
+    DB2_new <- DB2[, setdiff(names(DB2), NAME_Z)]
   } else {
     stop("The specification of the impute option is false: NO, CC, MICE, MDA only")
   }
@@ -373,12 +354,11 @@ merge_dbs = function(DB1,
   # Transform Y
   #-------------
 
-  Y            = transfo_target(DB1[, NAME_Y], levels_order = order_levels_Y)$NEW
-  Z            = transfo_target(DB2[, NAME_Z], levels_order = order_levels_Z)$NEW
+  Y <- transfo_target(DB1[, NAME_Y], levels_order = order_levels_Y)$NEW
+  Z <- transfo_target(DB2[, NAME_Z], levels_order = order_levels_Z)$NEW
 
   if (setequal(levels(Y), levels(Z))) {
     stop("Your target has identical labels in the 2 databases !")
-
   } else {
   }
 
@@ -388,49 +368,47 @@ merge_dbs = function(DB1,
   # Y and Z extracted from DB1 and DB2
 
   if (impute %in% c("MICE", "FAMD")) {
-    DB1_new = DB1bis$DATA_IMPUTE
-    DB2_new = DB2bis$DATA_IMPUTE
-
+    DB1_new <- DB1bis$DATA_IMPUTE
+    DB2_new <- DB2bis$DATA_IMPUTE
   } else {
   }
 
 
   # Covariates re-ordered by their names in each DB
 
-  DB1_new          = DB1_new[, order(names(DB1_new))]
-  DB2_new          = DB2_new[, order(names(DB2_new))]
+  DB1_new <- DB1_new[, order(names(DB1_new))]
+  DB2_new <- DB2_new[, order(names(DB2_new))]
 
 
   # Names of the shared variables between the two DB
 
-  same_cov      = intersect(names(DB1_new), names(DB2_new))
-  n_col         = length(same_cov)
+  same_cov <- intersect(names(DB1_new), names(DB2_new))
+  n_col <- length(same_cov)
 
 
   # Remaining shared variables in each DB
 
-  DB1_4FUS     = DB1_new[, same_cov]
-  DB2_4FUS     = DB2_new[, same_cov]
+  DB1_4FUS <- DB1_new[, same_cov]
+  DB2_4FUS <- DB2_new[, same_cov]
 
 
   # Removed covariate(s) because of their different types from DB1 to DB2
 
-  list1   = as.list(lapply(DB1_4FUS, class))
-  list1   = lapply(list1, paste, collapse = " ")
-  l1      = unlist(list1)
+  list1 <- as.list(lapply(DB1_4FUS, class))
+  list1 <- lapply(list1, paste, collapse = " ")
+  l1 <- unlist(list1)
 
-  list2   = as.list(lapply(DB2_4FUS, class))
-  list2   = lapply(list2, paste, collapse = " ")
-  l2      = unlist(list2)
+  list2 <- as.list(lapply(DB2_4FUS, class))
+  list2 <- lapply(list2, paste, collapse = " ")
+  l2 <- unlist(list2)
 
 
-  ind_typ       = (l1 != l2)
+  ind_typ <- (l1 != l2)
 
   if (sum(ind_typ) != 0) {
-    remove_var1 = same_cov[ind_typ]
-
+    remove_var1 <- same_cov[ind_typ]
   } else {
-    remove_var1 = NULL
+    remove_var1 <- NULL
   }
 
 
@@ -438,46 +416,44 @@ merge_dbs = function(DB1,
   # Removed factor(s) because of their different levels from DB1 to DB2
 
   # modif_factor = (1:n_col)[l1 %in% c("factor", "ordered factor")]
-  modif_factor = (1:n_col)[(l1 %in% c("factor", "ordered factor"))&(l2 %in% c("factor", "ordered factor"))]
+  modif_factor <- (1:n_col)[(l1 %in% c("factor", "ordered factor")) & (l2 %in% c("factor", "ordered factor"))]
 
-  same_cov2 = same_cov[modif_factor]
+  same_cov2 <- same_cov[modif_factor]
 
-  levels_DB1 = sapply(DB1_4FUS[, modif_factor], levels)
-  levels_DB2 = sapply(DB2_4FUS[, modif_factor], levels)
+  levels_DB1 <- sapply(DB1_4FUS[, modif_factor], levels)
+  levels_DB2 <- sapply(DB2_4FUS[, modif_factor], levels)
 
 
-  ind_fac = compare_lists(levels_DB1, levels_DB2)
+  ind_fac <- compare_lists(levels_DB1, levels_DB2)
 
   if (sum(ind_fac) != 0) {
-    remove_var2 = same_cov2[ind_fac]
-
+    remove_var2 <- same_cov2[ind_fac]
   } else {
-    remove_var2 = NULL
+    remove_var2 <- NULL
   }
 
 
   # Names of variables removed before merging
 
-  remove_var = c(remove_var1, remove_var2)
+  remove_var <- c(remove_var1, remove_var2)
 
 
   # Names of variables remained before merging
 
-  remain_var = setdiff(same_cov, remove_var)
+  remain_var <- setdiff(same_cov, remove_var)
 
   if (length(remain_var) == 0) {
     stop("no common variable selected in the 2 DBS")
-
   } else {
   }
 
 
-  DB1_4FUS = DB1_4FUS[, remain_var]
-  DB2_4FUS = DB2_4FUS[, remain_var]
+  DB1_4FUS <- DB1_4FUS[, remain_var]
+  DB2_4FUS <- DB2_4FUS[, remain_var]
 
-  Zb = sample(Z, length(Y), replace = T)
+  Zb <- sample(Z, length(Y), replace = T)
 
-  DB_COV = rbind(
+  DB_COV <- rbind(
     data.frame(DB = rep(1, nrow(DB1_4FUS)), Y, Z = Zb, DB1_4FUS),
     data.frame(
       DB = rep(2, nrow(DB2_4FUS)),
@@ -485,10 +461,9 @@ merge_dbs = function(DB1,
       Z,
       DB2_4FUS
     )
-
   )
 
-  DB_COV$Z[1:nrow(DB1_4FUS)] = rep(NA, nrow(DB1_4FUS))
+  DB_COV$Z[1:nrow(DB1_4FUS)] <- rep(NA, nrow(DB1_4FUS))
 
   message("DBS MERGING OK", "\n")
   message(rep("-", 23), sep = "")
@@ -502,11 +477,13 @@ merge_dbs = function(DB1,
     "%)",
     "\n"
   )
-  message("Nb of removed covariates due to differences between the 2 bases: ",
-      length(remove_var),
-      "\n")
+  message(
+    "Nb of removed covariates due to differences between the 2 bases: ",
+    length(remove_var),
+    "\n"
+  )
   message("Nb of remained covariates: ", ncol(DB_COV) - 3, "\n")
-  message("Imputation on incomplete covariates: ",impute,"\n")
+  message("Imputation on incomplete covariates: ", impute, "\n")
 
   if (impute %in% c("NO", "CC", "FAMD")) {
     return(
@@ -524,7 +501,6 @@ merge_dbs = function(DB1,
         SEED = seed_func
       )
     )
-
   } else if (impute == "MICE") {
     return(
       list(
@@ -545,7 +521,5 @@ merge_dbs = function(DB1,
         SEED = seed_func
       )
     )
-
   }
-
 }

@@ -148,10 +148,12 @@
 #' #-----
 #'
 #' data(simu_data)
-#' test_DB1 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Y",
-#'                        quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
-#'                        RF = FALSE)
+#' test_DB1 <- select_pred(simu_data,
+#'   Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Y",
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+#'   RF = FALSE
+#' )
 #'
 #' ### Example 2
 #' #-----
@@ -159,10 +161,12 @@
 #' # - Searching for the best predictors of "Yb2"
 #' #-----
 #'
-#' test_DB2 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
-#'                        quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
-#'                        RF = FALSE)
+#' test_DB2 <- select_pred(simu_data,
+#'   Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+#'   RF = FALSE
+#' )
 #'
 #' \donttest{
 #' ### Example 3
@@ -173,10 +177,12 @@
 #' # - Here a seed is required
 #' #-----
 #'
-#' test_DB3 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Y",
-#'                        quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
-#'                        RF = TRUE, RF_condi = FALSE, RF_SEED = 3023)
+#' test_DB3 <- select_pred(simu_data,
+#'   Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Y",
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+#'   RF = TRUE, RF_condi = FALSE, RF_SEED = 3023
+#' )
 #'
 #' ### Example 4
 #' #-----
@@ -187,23 +193,27 @@
 #' #   discretized in 3 levels
 #' #-----
 #'
-#' test_DB4 = select_pred(simu_data,Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
-#'                        quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                        convert_num = 8, convert_clss = 3,
-#'                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
-#'                        RF = TRUE, RF_condi = TRUE, RF_condi_thr = 0.60, RF_SEED = 3023)
+#' test_DB4 <- select_pred(simu_data,
+#'   Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'   convert_num = 8, convert_clss = 3,
+#'   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+#'   RF = TRUE, RF_condi = TRUE, RF_condi_thr = 0.60, RF_SEED = 3023
+#' )
 #'
 #' ### Example 5
 #' #-----
 #' # - Starting with a unique database
 #' # - Same conditions as example 1
 #' #-----
-#' simu_A = simu_data[simu_data$DB == "A",-3]    # Base A
+#' simu_A <- simu_data[simu_data$DB == "A", -3] # Base A
 #'
-#' test_DB5 = select_pred(simu_A, Y = "Yb1",
-#'                        quanti = 7, nominal = c(1,3:4,6), ordinal = c(2,5),
-#'                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
-#'                        RF = FALSE)
+#' test_DB5 <- select_pred(simu_A,
+#'   Y = "Yb1",
+#'   quanti = 7, nominal = c(1, 3:4, 6), ordinal = c(2, 5),
+#'   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+#'   RF = FALSE
+#' )
 #'
 #' ### Example 6
 #' #-----
@@ -214,71 +224,60 @@
 #' #   discretized in 3 levels
 #' #-----
 #'
-#' simu_B = simu_data[simu_data$DB == "B",-2]    # Base B
+#' simu_B <- simu_data[simu_data$DB == "B", -2] # Base B
 #'
-#' test_DB6 = select_pred(simu_B, Y = "Yb2",
-#'                        quanti = 7, nominal = c(1,3:4,6), ordinal = c(2,5),
-#'                        convert_num = 7, convert_clss = 3,
-#'                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
-#'                        RF = TRUE, RF_condi = TRUE, RF_condi_thr = 0.60, RF_SEED = 3023)
-#'
+#' test_DB6 <- select_pred(simu_B,
+#'   Y = "Yb2",
+#'   quanti = 7, nominal = c(1, 3:4, 6), ordinal = c(2, 5),
+#'   convert_num = 7, convert_clss = 3,
+#'   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+#'   RF = TRUE, RF_condi = TRUE, RF_condi_thr = 0.60, RF_SEED = 3023
+#' )
 #' }
 #'
-select_pred = function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
-                       quanti = NULL, nominal = NULL, ordinal = NULL, logic = NULL,
-                       convert_num = NULL, convert_clss = NULL,
-                       thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
-                       RF = TRUE, RF_ntree = 500, RF_condi = FALSE, RF_condi_thr = 0.20, RF_SEED = sample(1:1000000, 1)){
-
-  if (!(OUT %in% c("Y","Z"))){
-
+select_pred <- function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
+                        quanti = NULL, nominal = NULL, ordinal = NULL, logic = NULL,
+                        convert_num = NULL, convert_clss = NULL,
+                        thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+                        RF = TRUE, RF_ntree = 500, RF_condi = FALSE, RF_condi_thr = 0.20, RF_SEED = sample(1:1000000, 1)) {
+  if (!(OUT %in% c("Y", "Z"))) {
     stop("Improper argument for OUT: Y or Z only")
-
   } else {}
 
-  if ((OUT == "Y") & (is.null(Y))){
-
+  if ((OUT == "Y") & (is.null(Y))) {
     stop("When OUT = Y, Y can not be null")
-
   } else {}
 
-  if ((OUT == "Z") & (is.null(Z))){
-
+  if ((OUT == "Z") & (is.null(Z))) {
     stop("When OUT = Z, Z can not be null")
-
   } else {}
 
 
   # Exclude ID from arguments
 
-  quanti  = setdiff(quanti ,ID)
-  nominal = setdiff(nominal,ID)
-  ordinal = setdiff(ordinal,ID)
-  logic   = setdiff(logic  ,ID)
+  quanti <- setdiff(quanti, ID)
+  nominal <- setdiff(nominal, ID)
+  ordinal <- setdiff(ordinal, ID)
+  logic <- setdiff(logic, ID)
 
 
   # Convert boolean covariates
 
-  if (length(logic) != 0){
+  if (length(logic) != 0) {
 
     # Verification
 
-    if (all(sapply(as.data.frame(databa[,logic]),is.logical))!=TRUE){
-
+    if (all(sapply(as.data.frame(databa[, logic]), is.logical)) != TRUE) {
       stop("At least one logical variable is not boolean")
-
     } else {}
 
     # Conversion
 
-    for (j in logic){
-
-      databa[,j]   = as.factor(databa[,j])
-      nominal      = unique(sort(c(nominal,logic)))
-      logic        = NULL
-
+    for (j in logic) {
+      databa[, j] <- as.factor(databa[, j])
+      nominal <- unique(sort(c(nominal, logic)))
+      logic <- NULL
     }
-
   } else {}
 
 
@@ -286,17 +285,23 @@ select_pred = function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
 
   stopifnot(is.data.frame(databa))
   stopifnot(is.data.frame(databa))
-  stopifnot(thresh_cat   <= 1)   ; stopifnot(thresh_cat   >=0)
-  stopifnot(thresh_num   <= 1)   ; stopifnot(thresh_num   >=0)
-  stopifnot(thresh_Y     <= 1)   ; stopifnot(thresh_Y     >=0)
-  stopifnot(RF_condi_thr <= 1)   ; stopifnot(RF_condi_thr >= 0)
-  stopifnot(!is.character(ordinal)); stopifnot(!is.character(quanti));
-  stopifnot(!is.character(nominal)); stopifnot(!is.character(logic))
-  stopifnot(!is.character(convert_num));
-  stopifnot(!is.character(convert_clss));
-  stopifnot(length(intersect(ordinal,quanti))  == 0);
-  stopifnot(length(intersect(ordinal,nominal)) == 0);
-  stopifnot(length(intersect(ordinal,quanti))  == 0);
+  stopifnot(thresh_cat <= 1)
+  stopifnot(thresh_cat >= 0)
+  stopifnot(thresh_num <= 1)
+  stopifnot(thresh_num >= 0)
+  stopifnot(thresh_Y <= 1)
+  stopifnot(thresh_Y >= 0)
+  stopifnot(RF_condi_thr <= 1)
+  stopifnot(RF_condi_thr >= 0)
+  stopifnot(!is.character(ordinal))
+  stopifnot(!is.character(quanti))
+  stopifnot(!is.character(nominal))
+  stopifnot(!is.character(logic))
+  stopifnot(!is.character(convert_num))
+  stopifnot(!is.character(convert_clss))
+  stopifnot(length(intersect(ordinal, quanti)) == 0)
+  stopifnot(length(intersect(ordinal, nominal)) == 0)
+  stopifnot(length(intersect(ordinal, quanti)) == 0)
   stopifnot(is.logical(RF_condi))
   stopifnot(is.numeric(ID))
 
@@ -304,513 +309,414 @@ select_pred = function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
 
   # Inconsistencies options
 
-  idglob = unique(c(ID,quanti,ordinal,nominal,logic))
+  idglob <- unique(c(ID, quanti, ordinal, nominal, logic))
 
-  if (length(setdiff(1:ncol(databa),idglob))!=0){
-
+  if (length(setdiff(1:ncol(databa), idglob)) != 0) {
     stop("Invalid indexes: No intersection allowed between the indexes of the ID, quanti, ordinal, nominal, and logic arguments")
-
   } else {}
 
 
-  if (length(convert_clss)>length(convert_num)){
-
+  if (length(convert_clss) > length(convert_num)) {
     stop("Inconsistencies between convert_num and convert_clss")
-
   } else {}
 
 
-  if ((length(convert_clss)>1)&(length(convert_clss)!=length(convert_num))){
-
+  if ((length(convert_clss) > 1) & (length(convert_clss) != length(convert_num))) {
     stop("Inconsistencies between convert_num and convert_clss")
-
   } else {}
 
 
-  if (length(convert_clss) == 1){
-
-    convert_clss = rep(convert_clss,length(convert_num))
-
+  if (length(convert_clss) == 1) {
+    convert_clss <- rep(convert_clss, length(convert_num))
   } else {}
 
 
-  message("The select_pred function is running. Please wait ...","\n")
+  message("The select_pred function is running. Please wait ...", "\n")
 
 
   # Exclude systematically ID and Y and Z before discretization
 
-  indexY       = (1:ncol(databa))[colnames(databa)== Y]
-  indexZ       = (1:ncol(databa))[colnames(databa)== Z]
-  index_DB_Y_Z = c(ID,indexY,indexZ)
+  indexY <- (1:ncol(databa))[colnames(databa) == Y]
+  indexZ <- (1:ncol(databa))[colnames(databa) == Z]
+  index_DB_Y_Z <- c(ID, indexY, indexZ)
 
-  convert_clss = convert_clss[!(convert_num %in% index_DB_Y_Z)]
-  convert_num  = setdiff(convert_num,index_DB_Y_Z)
+  convert_clss <- convert_clss[!(convert_num %in% index_DB_Y_Z)]
+  convert_num <- setdiff(convert_num, index_DB_Y_Z)
 
 
   ### Re-classmt to avoid NAs in complete levels of factors
 
-  if (length(ordinal)!=0){
-
-    for (k in ordinal){
-
-      databa[,k] = ordered(databa[,k])
-
+  if (length(ordinal) != 0) {
+    for (k in ordinal) {
+      databa[, k] <- ordered(databa[, k])
     }
-
   } else {}
 
-  if (length(nominal)!=0){
-
-    for (k in nominal){
-
-      databa[,k] = factor(databa[,k])
-
+  if (length(nominal) != 0) {
+    for (k in nominal) {
+      databa[, k] <- factor(databa[, k])
     }
-
   } else {}
 
 
 
   ### Y and Z must be nominal or ordinal: conversion
 
-  indY    = which(colnames(databa)== Y)
-  indZ    = which(colnames(databa)== Z)
+  indY <- which(colnames(databa) == Y)
+  indZ <- which(colnames(databa) == Z)
 
 
-  if (OUT == "Y"){
+  if (OUT == "Y") {
+    outc <- Y
+    ordinal <- setdiff(ordinal, indZ)
+    quanti <- setdiff(quanti, indZ)
+    nominal <- setdiff(nominal, indZ)
 
-    outc          = Y
-    ordinal       = setdiff(ordinal,indZ)
-    quanti        = setdiff(quanti ,indZ)
-    nominal       = setdiff(nominal,indZ)
-
-    if (indY %in% quanti){
-
-      databa[,indY] = ordered(databa[,indY])
-      ordinal       = sort(c(ordinal,indY))
-      quanti        = setdiff(quanti,indY)
-
+    if (indY %in% quanti) {
+      databa[, indY] <- ordered(databa[, indY])
+      ordinal <- sort(c(ordinal, indY))
+      quanti <- setdiff(quanti, indY)
     } else {}
+  } else if (OUT == "Z") {
+    outc <- Z
+    ordinal <- setdiff(ordinal, indY)
+    quanti <- setdiff(quanti, indY)
+    nominal <- setdiff(nominal, indY)
 
-  } else if (OUT == "Z"){
-
-    outc          = Z
-    ordinal       = setdiff(ordinal,indY)
-    quanti        = setdiff(quanti ,indY)
-    nominal       = setdiff(nominal,indY)
-
-    if (indY %in% quanti){
-
-      databa[,indZ] = ordered(databa[,indZ])
-      ordinal       = sort(c(ordinal,indZ))
-      quanti        = setdiff(quanti,indZ)
-
+    if (indY %in% quanti) {
+      databa[, indZ] <- ordered(databa[, indZ])
+      ordinal <- sort(c(ordinal, indZ))
+      quanti <- setdiff(quanti, indZ)
     } else {}
-
   } else {
-
     stop("Improper argument for OUT: Y or Z only")
-
   }
 
 
 
   ### new indexes without Y and Z indexes
 
-  indNOM  = setdiff(nominal,c(indY,indZ))
-  indORD  = setdiff(ordinal,c(indY,indZ))
-  indNUM  = setdiff(quanti ,c(indY,indZ))
+  indNOM <- setdiff(nominal, c(indY, indZ))
+  indORD <- setdiff(ordinal, c(indY, indZ))
+  indNUM <- setdiff(quanti, c(indY, indZ))
 
 
-  convert_nm = convert_num
+  convert_nm <- convert_num
 
   ### Turn continuous predictors into ordered categorical factors ?
 
-  if (length(convert_num) != 0){
-
-    tt = 0
-    for (k in convert_num){
-      tt = tt + 1
-      databa[,k]  = cut(databa[,k],breaks = stats::quantile(databa[,k],
-                                                            probs = seq(0,1,by = 1/convert_clss[tt]),na.rm = TRUE),
-                        include.lowest = TRUE, ordered_result = TRUE)
+  if (length(convert_num) != 0) {
+    tt <- 0
+    for (k in convert_num) {
+      tt <- tt + 1
+      databa[, k] <- cut(databa[, k],
+        breaks = stats::quantile(databa[, k],
+          probs = seq(0, 1, by = 1 / convert_clss[tt]), na.rm = TRUE
+        ),
+        include.lowest = TRUE, ordered_result = TRUE
+      )
     }
 
-    indORD      = sort(c(indORD,convert_num))
-    indNUM      = sort(setdiff(indNUM,convert_num))
-    convert_num = NULL
-
+    indORD <- sort(c(indORD, convert_num))
+    indNUM <- sort(setdiff(indNUM, convert_num))
+    convert_num <- NULL
   } else {}
 
-  if (OUT == "Y"){
-
-    databa = databa[!is.na(databa[,indY]),]
-
+  if (OUT == "Y") {
+    databa <- databa[!is.na(databa[, indY]), ]
   } else {
-
-    databa = databa[!is.na(databa[,indZ]),]
-
+    databa <- databa[!is.na(databa[, indZ]), ]
   }
 
   ### Pairwise relationships between categorical predictors ordered or not and between the outcome Y and
   ### each categorical covariates
 
-  indCAT  = sort(c(indORD,indNOM))
+  indCAT <- sort(c(indORD, indNOM))
 
-  if (length(indCAT)!=0){
+  if (length(indCAT) != 0) {
+    bbb <- as.data.frame(databa[, indCAT])
 
-    bbb     = as.data.frame(databa[,indCAT])
-
-    #for (k in 1:ncol(bbb)){
+    # for (k in 1:ncol(bbb)){
     #  bbb[,k] = factor(bbb[,k])
-    #}
+    # }
 
-    colnames(bbb) = colnames(databa)[indCAT]
+    colnames(bbb) <- colnames(databa)[indCAT]
 
-    if (OUT == "Y"){
-
-      datacov = data.frame(Y = factor(databa[,indY]),bbb)
-
+    if (OUT == "Y") {
+      datacov <- data.frame(Y = factor(databa[, indY]), bbb)
     } else {
-
-      datacov = data.frame(Y = factor(databa[,indZ]),bbb)
-
+      datacov <- data.frame(Y = factor(databa[, indZ]), bbb)
     }
 
-    datacov = datacov[!is.na(datacov$Y),]
+    datacov <- datacov[!is.na(datacov$Y), ]
 
 
-    N_cat = ncol(datacov)
+    N_cat <- ncol(datacov)
 
 
     # CRAMER'S V
 
-    tab_cor2    = NULL
-    kk = 0
-    for (j in 1:(N_cat-1)){
+    tab_cor2 <- NULL
+    kk <- 0
+    for (j in 1:(N_cat - 1)) {
+      name1 <- rep(colnames(datacov)[j], N_cat - kk)
+      name2 <- colnames(datacov)[j:N_cat]
+      tab_cor <- data.frame(name1, name2)
+      tab_cor <- tab_cor[as.character(tab_cor$name1) != as.character(tab_cor$name2), ]
+      kk <- kk + 1
 
-      name1       = rep(colnames(datacov)[j],N_cat-kk)
-      name2       = colnames(datacov)[j:N_cat]
-      tab_cor     = data.frame(name1,name2)
-      tab_cor     = tab_cor[as.character(tab_cor$name1) != as.character(tab_cor$name2),]
-      kk          = kk + 1
-
-      for (k in (j+1):(N_cat)){
-
-        XX              = datacov[,j]
-        vars            = datacov[,k]
-        datacov2        = na.omit(data.frame(XX, vars))
-        datacov2$vars   = as.factor(as.character(datacov2$vars))
-        datacov2$XX     = as.factor(as.character(datacov2$XX))
-        regression      = paste(colnames(datacov2)[1], "~", colnames(datacov2)[2],sep="")
-        tab_cor[k-kk,3] = round(suppressWarnings(StatMatch::pw.assoc(formula(regression), data = datacov2)$V),4)
-        tab_cor[k-kk,4] = round(suppressWarnings(StatMatch::pw.assoc(formula(regression), data = datacov2)$bcV),4)
-        tab_cor[k-kk,5] = nrow(datacov2)
-
+      for (k in (j + 1):(N_cat)) {
+        XX <- datacov[, j]
+        vars <- datacov[, k]
+        datacov2 <- na.omit(data.frame(XX, vars))
+        datacov2$vars <- as.factor(as.character(datacov2$vars))
+        datacov2$XX <- as.factor(as.character(datacov2$XX))
+        regression <- paste(colnames(datacov2)[1], "~", colnames(datacov2)[2], sep = "")
+        tab_cor[k - kk, 3] <- round(suppressWarnings(StatMatch::pw.assoc(formula(regression), data = datacov2)$V), 4)
+        tab_cor[k - kk, 4] <- round(suppressWarnings(StatMatch::pw.assoc(formula(regression), data = datacov2)$bcV), 4)
+        tab_cor[k - kk, 5] <- nrow(datacov2)
       }
 
-      tab_cor2 = rbind(tab_cor2,tab_cor)
-
+      tab_cor2 <- rbind(tab_cor2, tab_cor)
     }
 
-    colnames(tab_cor2)[3] = "V_Cramer"
-    colnames(tab_cor2)[4] = "CorrV_Cramer"
-    colnames(tab_cor2)[5] = "N"
+    colnames(tab_cor2)[3] <- "V_Cramer"
+    colnames(tab_cor2)[4] <- "CorrV_Cramer"
+    colnames(tab_cor2)[5] <- "N"
 
 
-    tab_cor2   = tab_cor2[order(tab_cor2$V_Cramer,decreasing=TRUE),]
-    tab_cor2_Y = tab_cor2[as.character(tab_cor2$name1) == "Y",]
-    tab_cor2_X = tab_cor2[as.character(tab_cor2$name1) != "Y",]
-    tab_cor3_X = tab_cor2_X[tab_cor2_X$V_Cramer> thresh_cat,]
-
+    tab_cor2 <- tab_cor2[order(tab_cor2$V_Cramer, decreasing = TRUE), ]
+    tab_cor2_Y <- tab_cor2[as.character(tab_cor2$name1) == "Y", ]
+    tab_cor2_X <- tab_cor2[as.character(tab_cor2$name1) != "Y", ]
+    tab_cor3_X <- tab_cor2_X[tab_cor2_X$V_Cramer > thresh_cat, ]
   } else {
-
-    tab_cor2_Y = NULL
-    tab_cor3_X = NULL
-
+    tab_cor2_Y <- NULL
+    tab_cor3_X <- NULL
   }
 
 
   ### Pairwise relationships between continuous predictors and between the outcome Y and
   ### each continuous covariates
 
-  indNUM2  = sort(c(indORD,indNUM))
+  indNUM2 <- sort(c(indORD, indNUM))
 
-  if (length(indNUM2)!=0){
-
-    if (OUT == "Y"){
-
-      datacov3 = data.frame(Y = as.factor(databa[,indY]),databa[,sort(indNUM)],databa[,sort(indORD)])
-      datacov3 = datacov3[!is.na(datacov3$Y),]
-      colnames(datacov3) = c("Y",colnames(databa)[sort(indNUM)],colnames(databa)[sort(indORD)])
-
+  if (length(indNUM2) != 0) {
+    if (OUT == "Y") {
+      datacov3 <- data.frame(Y = as.factor(databa[, indY]), databa[, sort(indNUM)], databa[, sort(indORD)])
+      datacov3 <- datacov3[!is.na(datacov3$Y), ]
+      colnames(datacov3) <- c("Y", colnames(databa)[sort(indNUM)], colnames(databa)[sort(indORD)])
     } else {
-
-      datacov3 = data.frame(Y = as.factor(databa[,indZ]),databa[,sort(indNUM)],databa[,sort(indORD)])
-      datacov3 = datacov3[!is.na(datacov3$Y),]
-      colnames(datacov3) = c("Y",colnames(databa)[sort(indNUM)],colnames(databa)[sort(indORD)])
-
+      datacov3 <- data.frame(Y = as.factor(databa[, indZ]), databa[, sort(indNUM)], databa[, sort(indORD)])
+      datacov3 <- datacov3[!is.na(datacov3$Y), ]
+      colnames(datacov3) <- c("Y", colnames(databa)[sort(indNUM)], colnames(databa)[sort(indORD)])
     }
 
-    N_num = ncol(datacov3)
+    N_num <- ncol(datacov3)
 
 
     # Spearman's Rank correlation
 
-    tab_cor4       = NULL
-    mat_cor4       = matrix(ncol = N_num, nrow = N_num)
-    diag(mat_cor4) = 1
-    kk = 0
-    for (j in 1:(N_num-1)){
+    tab_cor4 <- NULL
+    mat_cor4 <- matrix(ncol = N_num, nrow = N_num)
+    diag(mat_cor4) <- 1
+    kk <- 0
+    for (j in 1:(N_num - 1)) {
+      name1 <- rep(colnames(datacov3)[j], N_num - kk)
+      name2 <- colnames(datacov3)[j:N_num]
+      tab_cor <- data.frame(name1, name2)
+      tab_cor <- tab_cor[as.character(tab_cor$name1) != as.character(tab_cor$name2), ]
+      kk <- kk + 1
 
-      name1       = rep(colnames(datacov3)[j],N_num-kk)
-      name2       = colnames(datacov3)[j:N_num]
-      tab_cor     = data.frame(name1,name2)
-      tab_cor     = tab_cor[as.character(tab_cor$name1) != as.character(tab_cor$name2),]
-      kk          = kk+1
-
-      for (k in (j+1):(N_num)){
-
-        XX              = datacov3[,j]
-        vars            = datacov3[,k]
-        datacv          = na.omit(data.frame(XX, vars))
-        rescor          = suppressWarnings(cor(rank(datacv$XX),rank(datacv$vars)))
-        mat_cor4[j,k]   = rescor
-        mat_cor4[k,j]   = rescor
+      for (k in (j + 1):(N_num)) {
+        XX <- datacov3[, j]
+        vars <- datacov3[, k]
+        datacv <- na.omit(data.frame(XX, vars))
+        rescor <- suppressWarnings(cor(rank(datacv$XX), rank(datacv$vars)))
+        mat_cor4[j, k] <- rescor
+        mat_cor4[k, j] <- rescor
         # tab_cor[k-kk,3] = round(abs(rescor),4)
-        tab_cor[k-kk,3] = round(rescor,4)
-        tab_cor[k-kk,4] = round(suppressWarnings(stats::cor.test(rank(datacv$XX),rank(datacv$vars)))$p.value,4)
-        tab_cor[k-kk,5] = nrow(datacv)
-
+        tab_cor[k - kk, 3] <- round(rescor, 4)
+        tab_cor[k - kk, 4] <- round(suppressWarnings(stats::cor.test(rank(datacv$XX), rank(datacv$vars)))$p.value, 4)
+        tab_cor[k - kk, 5] <- nrow(datacv)
       }
 
-      tab_cor4 = rbind(tab_cor4,tab_cor)
-
+      tab_cor4 <- rbind(tab_cor4, tab_cor)
     }
 
 
     # colnames(tab_cor4)[3] = "ABS_COR"
-    colnames(tab_cor4)[3] = "RANK_COR"
-    colnames(tab_cor4)[4] = "pv_COR_test"
-    colnames(tab_cor4)[5] = "N"
-    colnames(mat_cor4)    = colnames(datacov3)
-    row.names(mat_cor4)   = colnames(datacov3)
+    colnames(tab_cor4)[3] <- "RANK_COR"
+    colnames(tab_cor4)[4] <- "pv_COR_test"
+    colnames(tab_cor4)[5] <- "N"
+    colnames(mat_cor4) <- colnames(datacov3)
+    row.names(mat_cor4) <- colnames(datacov3)
 
-    mat_cor4 = mat_cor4[2:nrow(mat_cor4),2:ncol(mat_cor4)]
+    mat_cor4 <- mat_cor4[2:nrow(mat_cor4), 2:ncol(mat_cor4)]
 
     # tab_cor4    = tab_cor4[order(tab_cor4$ABS_COR,decreasing=TRUE),]
-    tab_cor4    = tab_cor4[order(abs(tab_cor4$RANK_COR), decreasing=TRUE),]
-    tab_cor4_Y  = tab_cor4[as.character(tab_cor4$name1) == "Y",]
-    tab_cor4_X  = tab_cor4[as.character(tab_cor4$name1) != "Y",]
+    tab_cor4 <- tab_cor4[order(abs(tab_cor4$RANK_COR), decreasing = TRUE), ]
+    tab_cor4_Y <- tab_cor4[as.character(tab_cor4$name1) == "Y", ]
+    tab_cor4_X <- tab_cor4[as.character(tab_cor4$name1) != "Y", ]
 
-    tab_cor5_X = tab_cor4_X[abs(tab_cor4_X$RANK_COR)> thresh_num,]
-
+    tab_cor5_X <- tab_cor4_X[abs(tab_cor4_X$RANK_COR) > thresh_num, ]
   } else {
-
-    tab_cor4_Y = NULL
-    tab_cor5_X = NULL
-
+    tab_cor4_Y <- NULL
+    tab_cor5_X <- NULL
   }
 
-  if (OUT == "Z"){
-
-    tab_cor2_Y[,1] = rep("Z",nrow(tab_cor2_Y))
-    tab_cor4_Y[,1] = rep("Z",nrow(tab_cor4_Y))
-
+  if (OUT == "Z") {
+    tab_cor2_Y[, 1] <- rep("Z", nrow(tab_cor2_Y))
+    tab_cor4_Y[, 1] <- rep("Z", nrow(tab_cor4_Y))
   } else {}
 
   # Farrar and Glauber test
 
-  if (!is.null(ncol(mat_cor4))){
+  if (!is.null(ncol(mat_cor4))) {
+    ddl <- (N_num + 1) * N_num / 2
+    FG_stat <- -(nrow(datacov3) - 1 - (2 * (N_num + 1) + 5) / 6) * log(det(mat_cor4))
+    pval_FG <- 1 - stats::pchisq(FG_stat, ddl)
 
-    ddl     = (N_num+1)*N_num/2
-    FG_stat = - (nrow(datacov3)-1-(2*(N_num+1)+5)/6)*log(det(mat_cor4))
-    pval_FG = 1-stats::pchisq(FG_stat,ddl)
+    FG_stat_approx <- sqrt(2 * FG_stat) - sqrt(2 * ddl - 1)
+    pval_FG_approx <- 2 * (1 - stats::pnorm(abs(FG_stat_approx), 0, 1))
 
-    FG_stat_approx = sqrt(2*FG_stat) - sqrt(2*ddl-1)
-    pval_FG_approx = 2*(1-stats::pnorm(abs(FG_stat_approx),0,1))
-
-    FG_synt = c(DET_X = det(mat_cor4), pv_FG_test = pval_FG, pv_FG_test_appr = pval_FG)
-
+    FG_synt <- c(DET_X = det(mat_cor4), pv_FG_test = pval_FG, pv_FG_test_appr = pval_FG)
   } else {
-
-    FG_synt = NULL
-
+    FG_synt <- NULL
   }
 
   ### Finding the best predictors of Y using Random Forest
 
-  if (RF == TRUE){
+  if (RF == TRUE) {
+    databa2 <- databa[, -ID]
 
-    databa2 = databa[,-ID]
-
-    if (OUT == "Y"){
-
-      databa2 = databa2[,c(which(colnames(databa2)==Y),setdiff(1:ncol(databa2),c(which(colnames(databa2) %in% c(Y,Z)))))]
-      colnames(databa2)[1] = "Y"
-
+    if (OUT == "Y") {
+      databa2 <- databa2[, c(which(colnames(databa2) == Y), setdiff(1:ncol(databa2), c(which(colnames(databa2) %in% c(Y, Z)))))]
+      colnames(databa2)[1] <- "Y"
     } else {
-
-      databa2 = databa2[,c(which(colnames(databa2)==Z),setdiff(1:ncol(databa2),c(which(colnames(databa2)%in% c(Y,Z)))))]
-      colnames(databa2)[1] = "Y"
-
+      databa2 <- databa2[, c(which(colnames(databa2) == Z), setdiff(1:ncol(databa2), c(which(colnames(databa2) %in% c(Y, Z)))))]
+      colnames(databa2)[1] <- "Y"
     }
 
-    if (length(indNUM)!=0){
-
-      RF_condi = FALSE
-
+    if (length(indNUM) != 0) {
+      RF_condi <- FALSE
     } else {}
 
 
     # Conditional importance variable on complete or imputed databases only
 
-    if (RF_condi == TRUE){
-
-      databa2bis = na.omit(databa2)
-      set.seed(RF_SEED); stocres = party::cforest(Y~., data=databa2bis, control = cforest_unbiased(mtry = (ncol(databa2bis)-1)^(1/2), ntree = RF_ntree))
-
+    if (RF_condi == TRUE) {
+      databa2bis <- na.omit(databa2)
+      set.seed(RF_SEED)
+      stocres <- party::cforest(Y ~ ., data = databa2bis, control = cforest_unbiased(mtry = (ncol(databa2bis) - 1)^(1 / 2), ntree = RF_ntree))
     } else {
-
-      set.seed(RF_SEED); stocres = party::cforest(Y~., data=databa2,control = cforest_unbiased(mtry = (ncol(databa2)-1)^(1/2), ntree = RF_ntree))
-
+      set.seed(RF_SEED)
+      stocres <- party::cforest(Y ~ ., data = databa2, control = cforest_unbiased(mtry = (ncol(databa2) - 1)^(1 / 2), ntree = RF_ntree))
     }
 
-    stocimp = sort(party::varimp(stocres,conditional= RF_condi, threshold = RF_condi_thr),decreasing=TRUE)
-    nomlist = names(stocimp)
+    stocimp <- sort(party::varimp(stocres, conditional = RF_condi, threshold = RF_condi_thr), decreasing = TRUE)
+    nomlist <- names(stocimp)
 
 
     ### Groups of highly correlated covariates
 
-    candidates     = rbind(tab_cor3_X[,1:2],tab_cor5_X[,1:2])
+    candidates <- rbind(tab_cor3_X[, 1:2], tab_cor5_X[, 1:2])
 
-    if (nrow(candidates)!=0){
-
-      message("Risk of collinearity between predictors detected: Some predictors will be dropped during RF process","\n")
+    if (nrow(candidates) != 0) {
+      message("Risk of collinearity between predictors detected: Some predictors will be dropped during RF process", "\n")
 
       # } else {}
 
-      candidates[,1] = as.character(candidates[,1])
-      candidates[,2] = as.character(candidates[,2])
+      candidates[, 1] <- as.character(candidates[, 1])
+      candidates[, 2] <- as.character(candidates[, 2])
 
-      candid = list()
-      kk = 1
+      candid <- list()
+      kk <- 1
 
-      while (nrow(candidates)!=0){
-
-        candid[[kk]] = as.character(candidates[1,])
-        tt = 1
+      while (nrow(candidates) != 0) {
+        candid[[kk]] <- as.character(candidates[1, ])
+        tt <- 1
 
         repeat{
+          ncandid <- length(candid[[kk]])
 
-          ncandid      = length(candid[[kk]])
 
-
-          for (k in 2:nrow(candidates)){
-
-            if (length(intersect(candid[[kk]],candidates[k,]))!=0){
-
-              tt = unique(c(tt,k))
-              candid[[kk]] = unique(c(candid[[kk]],as.character(candidates[k,])))
-
+          for (k in 2:nrow(candidates)) {
+            if (length(intersect(candid[[kk]], candidates[k, ])) != 0) {
+              tt <- unique(c(tt, k))
+              candid[[kk]] <- unique(c(candid[[kk]], as.character(candidates[k, ])))
             } else {}
-
           }
 
-          if (length(candid[[kk]])==ncandid){
-
+          if (length(candid[[kk]]) == ncandid) {
             break
-
           }
         }
 
-        candidates = candidates[-tt,]
-        kk = kk + 1
-
+        candidates <- candidates[-tt, ]
+        kk <- kk + 1
       }
 
       ### Selection of uncorrelated covariates
 
-      for (kk in 1:length(candid)){
-
-        for (k in 1:length(nomlist)){
-
-          if (nomlist[k] %in% candid[[kk]]){
-
-            candid[[kk]] = setdiff(candid[[kk]],nomlist[k])
+      for (kk in 1:length(candid)) {
+        for (k in 1:length(nomlist)) {
+          if (nomlist[k] %in% candid[[kk]]) {
+            candid[[kk]] <- setdiff(candid[[kk]], nomlist[k])
             break()
-
           } else {}
-
         }
-
       }
 
-      drop_var   = unlist(candid)
-      remain_var = setdiff(nomlist,drop_var)
+      drop_var <- unlist(candid)
+      remain_var <- setdiff(nomlist, drop_var)
 
 
       ### Best predictors for Y
 
-      new_var = intersect(c("Y",remain_var),colnames(databa2))
+      new_var <- intersect(c("Y", remain_var), colnames(databa2))
       # databa3 = databa2[,intersect(c("Y",remain_var),colnames(databa2))]
 
-      if (RF_condi == TRUE){
-
-        databa3bis = databa2bis[,intersect(c("Y",remain_var),colnames(databa2))]
-        set.seed(RF_SEED); stocres = party::cforest(Y~.,data=databa3bis,control = party::cforest_unbiased(mtry = (ncol(databa3bis)-1)^(1/2), ntree = RF_ntree))
-
+      if (RF_condi == TRUE) {
+        databa3bis <- databa2bis[, intersect(c("Y", remain_var), colnames(databa2))]
+        set.seed(RF_SEED)
+        stocres <- party::cforest(Y ~ ., data = databa3bis, control = party::cforest_unbiased(mtry = (ncol(databa3bis) - 1)^(1 / 2), ntree = RF_ntree))
       } else {
-
-        databa3 = databa2[,intersect(c("Y",remain_var),colnames(databa2))]
-        set.seed(RF_SEED); stocres = party::cforest(Y~.,data=databa3, control = party::cforest_unbiased(mtry = (ncol(databa3)-1)^(1/2), ntree = RF_ntree))
-
+        databa3 <- databa2[, intersect(c("Y", remain_var), colnames(databa2))]
+        set.seed(RF_SEED)
+        stocres <- party::cforest(Y ~ ., data = databa3, control = party::cforest_unbiased(mtry = (ncol(databa3) - 1)^(1 / 2), ntree = RF_ntree))
       }
 
-      stocimp2 = sort(party::varimp(stocres,conditional= RF_condi, threshold = RF_condi_thr),decreasing=TRUE)
-
+      stocimp2 <- sort(party::varimp(stocres, conditional = RF_condi, threshold = RF_condi_thr), decreasing = TRUE)
     } else {
-
-      stocimp2   = stocimp
-      drop_var   = NULL
-      remain_var = nomlist
-
+      stocimp2 <- stocimp
+      drop_var <- NULL
+      remain_var <- nomlist
     }
 
-    if (min(stocimp2)<0){
-
-      stocimp2 = stocimp2 - min(stocimp2)
-
+    if (min(stocimp2) < 0) {
+      stocimp2 <- stocimp2 - min(stocimp2)
     } else {}
 
 
-    resY = round(prop.table(stocimp2)*100,4)
+    resY <- round(prop.table(stocimp2) * 100, 4)
 
-    resYbis   = cumsum(rev(resY))
-    best_pred = rev(names(resYbis)[resYbis>=(thresh_Y*100)])
+    resYbis <- cumsum(rev(resY))
+    best_pred <- rev(names(resYbis)[resYbis >= (thresh_Y * 100)])
 
 
-    out1 = list(seed = RF_SEED, outc = outc, thresh = c(CATEG = thresh_cat, NUM = thresh_num, RF_IMP = thresh_Y), convert_num = colnames(databa)[convert_nm], DB_USED = databa,
-                vcrm_OUTC_cat = tab_cor2_Y, cor_OUTC_num = tab_cor4_Y, vcrm_X_cat = tab_cor2_X, cor_X_num = tab_cor4_X, FG_test = FG_synt,
-                collinear_PB = list(VCRAM = tab_cor3_X,SPEARM = tab_cor5_X),
-                drop_var = drop_var, RF_PRED = resY, RF_best = best_pred)
-
+    out1 <- list(
+      seed = RF_SEED, outc = outc, thresh = c(CATEG = thresh_cat, NUM = thresh_num, RF_IMP = thresh_Y), convert_num = colnames(databa)[convert_nm], DB_USED = databa,
+      vcrm_OUTC_cat = tab_cor2_Y, cor_OUTC_num = tab_cor4_Y, vcrm_X_cat = tab_cor2_X, cor_X_num = tab_cor4_X, FG_test = FG_synt,
+      collinear_PB = list(VCRAM = tab_cor3_X, SPEARM = tab_cor5_X),
+      drop_var = drop_var, RF_PRED = resY, RF_best = best_pred
+    )
   } else {
-
-    out1 = list(seed = RF_SEED, outc = outc, thresh = c(CATEG = thresh_cat, NUM = thresh_num, RF_IMP = thresh_Y), convert_num = colnames(databa)[convert_nm], DB_USED = databa,
-                vcrm_OUTC_cat = tab_cor2_Y, cor_OUTC_num = tab_cor4_Y, vcrm_X_cat = tab_cor2_X, cor_X_num = tab_cor4_X, FG_test = FG_synt,
-                collinear_PB = list(VCRAM = tab_cor3_X,SPEARM = tab_cor5_X))
-
+    out1 <- list(
+      seed = RF_SEED, outc = outc, thresh = c(CATEG = thresh_cat, NUM = thresh_num, RF_IMP = thresh_Y), convert_num = colnames(databa)[convert_nm], DB_USED = databa,
+      vcrm_OUTC_cat = tab_cor2_Y, cor_OUTC_num = tab_cor4_Y, vcrm_X_cat = tab_cor2_X, cor_X_num = tab_cor4_X, FG_test = FG_synt,
+      collinear_PB = list(VCRAM = tab_cor3_X, SPEARM = tab_cor5_X)
+    )
   }
 
   return(out1)
-
 }
-
-
-
-
-
-
-
-

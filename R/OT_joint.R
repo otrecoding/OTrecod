@@ -171,11 +171,13 @@
 #' #-----
 #'
 #' data(tab_test)
-#' tab_test2 = tab_test[c(1:40,5001:5040),1:5]
+#' tab_test2 <- tab_test[c(1:40, 5001:5040), 1:5]
 #'
 #'
-#' try1J = OT_joint(tab_test2, nominal = c(1,4:5), ordinal = c(2,3),
-#'                  dist.choice = "G", which.DB = "B")
+#' try1J <- OT_joint(tab_test2,
+#'   nominal = c(1, 4:5), ordinal = c(2, 3),
+#'   dist.choice = "G", which.DB = "B"
+#' )
 #'
 #' \donttest{
 #'
@@ -188,18 +190,22 @@
 #' # Predictions are assessed for Y1 AND Y2 in A and B respectively
 #' #-----
 #'
-#' try1RJ = OT_joint(tab_test2, nominal = c(1,4:5), ordinal = c(2,3),
-#'                   dist.choice = "G", maxrelax = 0.4,
-#'                   which.DB = "BOTH")
+#' try1RJ <- OT_joint(tab_test2,
+#'   nominal = c(1, 4:5), ordinal = c(2, 3),
+#'   dist.choice = "G", maxrelax = 0.4,
+#'   which.DB = "BOTH"
+#' )
 #'
 #' ### The previous example of R-JOINT algorithm with:
 #' # - Adding a regularization term
 #' # Predictions are assessed for Y1 and Y2 in A and B respectively
 #' #-----
 #'
-#' try2RJ = OT_joint(tab_test2, nominal = c(1,4:5), ordinal = c(2,3),
-#'                   dist.choice = "G", maxrelax = 0.4, lambda.reg = 0.9,
-#'                   which.DB = "BOTH")
+#' try2RJ <- OT_joint(tab_test2,
+#'   nominal = c(1, 4:5), ordinal = c(2, 3),
+#'   dist.choice = "G", maxrelax = 0.4, lambda.reg = 0.9,
+#'   which.DB = "BOTH"
+#' )
 #'
 #'
 #'
@@ -216,117 +222,103 @@
 #' #-----
 #'
 #' data(simu_data)
-#' simu_data2 = simu_data[c(1:100,401:500),c(1:4,7:8)]
-#' simu_data3 = simu_data2[!is.na(simu_data2$Age),]
+#' simu_data2 <- simu_data[c(1:100, 401:500), c(1:4, 7:8)]
+#' simu_data3 <- simu_data2[!is.na(simu_data2$Age), ]
 #'
-#' try2J = OT_joint(simu_data3, convert.num = 6, convert.clss = 3,
-#'                  nominal = c(1,4:5), ordinal = 2:3,
-#'                  dist.choice = "H", which.DB = "BOTH")
-#'
+#' try2J <- OT_joint(simu_data3,
+#'   convert.num = 6, convert.clss = 3,
+#'   nominal = c(1, 4:5), ordinal = 2:3,
+#'   dist.choice = "H", which.DB = "BOTH"
+#' )
 #' }
-
-OT_joint = function(datab, index_DB_Y_Z = 1:3,
-                    nominal = NULL, ordinal = NULL,logic = NULL,
-                    convert.num = NULL, convert.clss = NULL, dist.choice = "E", percent.knn = 1,
-                    maxrelax = 0, lambda.reg = 0.0, prox.X = 0.10, solvR = "glpk", which.DB = "BOTH"){
-
-  if (dist.choice %in% c("M","Manhattan","manhattan")){
-
-    dist.choice = "M"
-
-  } else if (dist.choice %in% c("E","Euclidean","euclidean")){
-
-    dist.choice = "E"
-
-  } else if (dist.choice %in% c("G","Gower","gower")){
-
-    dist.choice = "G"
-
-  } else if (dist.choice %in% c("H","Hamming","hamming")){
-
-    dist.choice = "H"
-
+#'
+OT_joint <- function(datab, index_DB_Y_Z = 1:3,
+                     nominal = NULL, ordinal = NULL, logic = NULL,
+                     convert.num = NULL, convert.clss = NULL, dist.choice = "E", percent.knn = 1,
+                     maxrelax = 0, lambda.reg = 0.0, prox.X = 0.10, solvR = "glpk", which.DB = "BOTH") {
+  if (dist.choice %in% c("M", "Manhattan", "manhattan")) {
+    dist.choice <- "M"
+  } else if (dist.choice %in% c("E", "Euclidean", "euclidean")) {
+    dist.choice <- "E"
+  } else if (dist.choice %in% c("G", "Gower", "gower")) {
+    dist.choice <- "G"
+  } else if (dist.choice %in% c("H", "Hamming", "hamming")) {
+    dist.choice <- "H"
   } else {
-
     stop("Invalid dist.choice argument")
-
   }
 
 
-  if (!(which.DB %in% c("A","B","BOTH"))){
-
+  if (!(which.DB %in% c("A", "B", "BOTH"))) {
     stop("Invalid which.DB argument")
-
   } else {}
 
 
-  if (percent.knn > 1){
-
+  if (percent.knn > 1) {
     stop("Improper value for percent.knn")
-
   } else {}
 
-  if (prox.X > 1){
-
+  if (prox.X > 1) {
     stop("Improper value for prox.X")
-
   } else {}
 
-  if (length(convert.num) < length(convert.clss)){
-
+  if (length(convert.num) < length(convert.clss)) {
     stop("The arguments quanti and convert.num must be equal because the algorithm does not handle continuous covariates")
-
   } else {}
 
-  message("---------------------------------------","\n")
-  message("OT JOINT PROCEDURE in progress ..."     ,"\n")
-  message("---------------------------------------","\n")
-  message("Type                  = ", ifelse((maxrelax == 0)&(lambda.reg == 0),"JOINT","R-JOINT"),"\n")
-  message("Distance              = ", ifelse(dist.choice == "H","Hamming",ifelse(dist.choice == "M","Manhattan",ifelse(dist.choice == "E","Euclidean","Gower"))),"\n")
-  message("Percent closest       = ", 100.0*percent.knn, "%","\n")
+  message("---------------------------------------", "\n")
+  message("OT JOINT PROCEDURE in progress ...", "\n")
+  message("---------------------------------------", "\n")
+  message("Type                  = ", ifelse((maxrelax == 0) & (lambda.reg == 0), "JOINT", "R-JOINT"), "\n")
+  message("Distance              = ", ifelse(dist.choice == "H", "Hamming", ifelse(dist.choice == "M", "Manhattan", ifelse(dist.choice == "E", "Euclidean", "Gower"))), "\n")
+  message("Percent closest       = ", 100.0 * percent.knn, "%", "\n")
   message("Relaxation term       = ", maxrelax, "\n")
-  message("Regularization term   = ", lambda.reg  ,"\n")
-  message("Aggregation tol cov   = ", prox.X,"\n")
-  message("DB imputed            = ", which.DB,"\n")
-  message("---------------------------------------","\n")
+  message("Regularization term   = ", lambda.reg, "\n")
+  message("Aggregation tol cov   = ", prox.X, "\n")
+  message("DB imputed            = ", which.DB, "\n")
+  message("---------------------------------------", "\n")
 
 
-  tstart = Sys.time()
+  tstart <- Sys.time()
 
-  dataB = transfo_dist(datab,index_DB_Y_Z = index_DB_Y_Z,
-                       quanti = convert.num, nominal = nominal, ordinal = ordinal, logic = logic,
-                       convert_num = convert.num, convert_clss = convert.clss,
-                       prep_choice = dist.choice)
+  dataB <- transfo_dist(datab,
+    index_DB_Y_Z = index_DB_Y_Z,
+    quanti = convert.num, nominal = nominal, ordinal = ordinal, logic = logic,
+    convert_num = convert.num, convert_clss = convert.clss,
+    prep_choice = dist.choice
+  )
 
-  if (dist.choice == "H"){
+  if (dist.choice == "H") {
+    datac <- dataB[, -index_DB_Y_Z]
 
-    datac  = dataB[,-index_DB_Y_Z]
+    test_H <- apply(as.data.frame(datac), 2, function(x) {
+      length(table(x))
+    })
 
-    test_H = apply(as.data.frame(datac),2,function(x){length(table(x))})
-
-    if (max(test_H)>2){stop("With Hamming distance, all your covariates must be binaries !")} else {}
-
+    if (max(test_H) > 2) {
+      stop("With Hamming distance, all your covariates must be binaries !")
+    } else {}
   } else {}
 
 
-  inst = proxim_dist(dataB, norm = dist.choice, prox = 0)
+  inst <- proxim_dist(dataB, norm = dist.choice, prox = 0)
 
 
   # Local redefinitions of parameters of  the instance
-  nA      = inst$nA;
-  nB      = inst$nB;
-  A       = 1:nA;
-  B       = 1:nB;
-  Y       = inst$Y;
-  Z       = inst$Z;
-  indY    = inst$indY;
-  indZ    = inst$indZ;
-  Xobserv = inst$Xobserv;
-  Yobserv = inst$Yobserv;
-  Zobserv = inst$Zobserv;
+  nA <- inst$nA
+  nB <- inst$nB
+  A <- 1:nA
+  B <- 1:nB
+  Y <- inst$Y
+  Z <- inst$Z
+  indY <- inst$indY
+  indZ <- inst$indZ
+  Xobserv <- inst$Xobserv
+  Yobserv <- inst$Yobserv
+  Zobserv <- inst$Zobserv
   # prof    = do.call(paste0,unique(inst$Xobserv))
-  prof    = as.data.frame(unique(inst$Xobserv))
-  ID_prof = paste(rep("P",nrow(prof)),1:nrow(prof),sep="_")
+  prof <- as.data.frame(unique(inst$Xobserv))
+  ID_prof <- paste(rep("P", nrow(prof)), 1:nrow(prof), sep = "_")
 
 
   # Create a model for the optimal transport of individuals
@@ -339,92 +331,76 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
   ###########################################################################
   # println("... aggregating individuals")
 
-  indXA = inst$indXA
-  indXB = inst$indXB
-  nbX   = length(indXA)
+  indXA <- inst$indXA
+  indXB <- inst$indXB
+  nbX <- length(indXA)
 
   # compute the neighbors of the covariates for regularization
-  Xvalues = unique(Xobserv)
+  Xvalues <- unique(Xobserv)
 
-  if (dist.choice == "M"){
-
-    dist_X  = proxy::dist(Xvalues,Xvalues, method = "manhattan")
-
-  } else if (dist.choice == "E"){
-
-    dist_X  = proxy::dist(Xvalues,Xvalues, method = "euclidean")
-
-  } else if (dist.choice == "H"){
-
-    if (nrow(dataB[,4:ncol(dataB)])== nrow(na.omit(dataB[,4:ncol(dataB)]))){
-
-      dist_X  = rdist::cdist(Xvalues,Xvalues, metric = "hamming")
-
+  if (dist.choice == "M") {
+    dist_X <- proxy::dist(Xvalues, Xvalues, method = "manhattan")
+  } else if (dist.choice == "E") {
+    dist_X <- proxy::dist(Xvalues, Xvalues, method = "euclidean")
+  } else if (dist.choice == "H") {
+    if (nrow(dataB[, 4:ncol(dataB)]) == nrow(na.omit(dataB[, 4:ncol(dataB)]))) {
+      dist_X <- rdist::cdist(Xvalues, Xvalues, metric = "hamming")
     } else {
-
-      dist_X  = ham(Xvalues,Xvalues)
-
+      dist_X <- ham(Xvalues, Xvalues)
     }
-
-  } else if (dist.choice == "G"){
-
-    dist_X  = StatMatch::gower.dist(Xvalues,Xvalues)
-
+  } else if (dist.choice == "G") {
+    dist_X <- StatMatch::gower.dist(Xvalues, Xvalues)
   }
 
-  tol.X        = prox.X * max(dist_X)
-  voisins_X    = dist_X <= tol.X
-  C            = avg_dist_closest(inst, percent_closest = percent.knn)[[1]]
+  tol.X <- prox.X * max(dist_X)
+  voisins_X <- dist_X <= tol.X
+  C <- avg_dist_closest(inst, percent_closest = percent.knn)[[1]]
 
   ###########################################################################
   # Compute the estimators that appear in the model
   ###########################################################################
 
-  estim_XA = estim_XB = estim_XA_YA =  estim_XB_ZB = list()
+  estim_XA <- estim_XB <- estim_XA_YA <- estim_XB_ZB <- list()
 
-  for (x in 1:nbX){
-
-    estim_XA[[x]] = length(indXA[[x]])/nA
-    estim_XB[[x]] = length(indXB[[x]])/nB
+  for (x in 1:nbX) {
+    estim_XA[[x]] <- length(indXA[[x]]) / nA
+    estim_XB[[x]] <- length(indXB[[x]]) / nB
 
     # estim_XA[[x]] = length(indXA[[x]])/length(unlist(indXA))
     # estim_XB[[x]] = length(indXB[[x]])/length(unlist(indXB))
-
   }
 
-  for (x in 1:nbX){
+  for (x in 1:nbX) {
+    estim_XA_YA[[x]] <- estim_XB_ZB[[x]] <- numeric(0)
 
-    estim_XA_YA[[x]] = estim_XB_ZB[[x]] = numeric(0)
 
-
-    for (y in Y){
-      estim_XA_YA[[x]][y] = length(indXA[[x]][Yobserv[indXA[[x]]] == y])/nA
+    for (y in Y) {
+      estim_XA_YA[[x]][y] <- length(indXA[[x]][Yobserv[indXA[[x]]] == y]) / nA
       # estim_XA_YA[[x]][y] = length(indXA[[x]][Yobserv[indXA[[x]]] == y])/length(unlist(indXA))
     }
 
-    for (z in Z){
-      estim_XB_ZB[[x]][z] = length(indXB[[x]][Zobserv[indXB[[x]] + nA] == z])/nB
+    for (z in Z) {
+      estim_XB_ZB[[x]][z] <- length(indXB[[x]][Zobserv[indXB[[x]] + nA] == z]) / nB
       # estim_XB_ZB[[x]][z] = length(indXB[[x]][Zobserv[indXB[[x]] + nA] == z])/length(unlist(indXB))
     }
-
   }
 
 
-  Cf <- function(y,z) {
-    return(C[y,z])
+  Cf <- function(y, z) {
+    return(C[y, z])
   }
 
   estim_XBf <- function(x) {
     return(estim_XB[[x]])
   }
 
-  voisin = function(x1){lambda.reg *(1/length(voisins_X[x1,]))}
+  voisin <- function(x1) {
+    lambda.reg * (1 / length(voisins_X[x1, ]))
+  }
 
-  ind_voisins = list()
-  for (x1 in 1:nrow(voisins_X)){
-
-    ind_voisins[[x1]] = which(voisins_X[x1,])
-
+  ind_voisins <- list()
+  for (x1 in 1:nrow(voisins_X)) {
+    ind_voisins[[x1]] <- which(voisins_X[x1, ])
   }
 
 
@@ -432,231 +408,206 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
   # Basic part of the model
   ###########################################################################
 
-  if (which.DB %in% c("A","BOTH")){
+  if (which.DB %in% c("A", "BOTH")) {
 
     # COMPLETE Z IN DATABASE A
 
-    result <-  MIPModel() %>%
+    result <- MIPModel() %>%
       # DEFINE VARIABLES ----------------------------------------------------------------------
-    # gammaA[x,y,z]: joint probability of X=x, Y=y and Z=z in base A
-    ompr::add_variable(gammaA[x,y,z]       , x = 1:nbX, y = Y, z= Z, type = "continuous", lb = 0, ub =1) %>%
-      ompr::add_variable(errorA_XY[x,y]      , x = 1:nbX, y = Y,       type = "continuous") %>%
-      ompr::add_variable(abserrorA_XY[x,y]   , x = 1:nbX, y = Y,       type = "continuous", lb = 0, ub =1) %>%
-      ompr::add_variable(errorA_XZ[x,z]      , x = 1:nbX, z = Z,       type = "continuous") %>%
-      ompr::add_variable(abserrorA_XZ[x,z]   , x = 1:nbX, z = Z,       type = "continuous", lb = 0, ub =1) %>%
+      # gammaA[x,y,z]: joint probability of X=x, Y=y and Z=z in base A
+      ompr::add_variable(gammaA[x, y, z], x = 1:nbX, y = Y, z = Z, type = "continuous", lb = 0, ub = 1) %>%
+      ompr::add_variable(errorA_XY[x, y], x = 1:nbX, y = Y, type = "continuous") %>%
+      ompr::add_variable(abserrorA_XY[x, y], x = 1:nbX, y = Y, type = "continuous", lb = 0, ub = 1) %>%
+      ompr::add_variable(errorA_XZ[x, z], x = 1:nbX, z = Z, type = "continuous") %>%
+      ompr::add_variable(abserrorA_XZ[x, z], x = 1:nbX, z = Z, type = "continuous", lb = 0, ub = 1) %>%
       # REGULARIZATION ---------------------------------------------------------------------------------
-    # ompr::add_variable(reg_absA[x1,x2,y,z] , x1 = 1:nbX, x2 = 1:nbX, y= Y, z= Z, type = "continuous") %>%
-    ompr::add_variable(reg_absA[x1,x2,y,z]   , x1 = 1:nbX, x2 = ind_voisins[[x1]], y= Y, z= Z, type = "continuous", lb = 0) %>%
+      # ompr::add_variable(reg_absA[x1,x2,y,z] , x1 = 1:nbX, x2 = 1:nbX, y= Y, z= Z, type = "continuous") %>%
+      ompr::add_variable(reg_absA[x1, x2, y, z], x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z, type = "continuous", lb = 0) %>%
       # OBJECTIVE ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    ompr::set_objective(sum_expr(Cf(y,z) * gammaA[x,y,z], y = Y, z = Z, x = 1:nbX) +
-                          sum_expr(voisin(x1)*reg_absA[x1,x2,y,z], x1 = 1:nbX, x2 = ind_voisins[[x1]],y=Y,z= Z), "min") %>%
+      ompr::set_objective(sum_expr(Cf(y, z) * gammaA[x, y, z], y = Y, z = Z, x = 1:nbX) +
+        sum_expr(voisin(x1) * reg_absA[x1, x2, y, z], x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z), "min") %>%
       # CONSTRAINTS ----------------------------------------------------------------------------------------------------
-    ompr::add_constraint(sum_expr(gammaA[x,y,z], z = Z) - errorA_XY[x,y] == estim_XA_YA[[x]][y] , x = 1:nbX,y =Y) %>%
-      ompr::add_constraint(estim_XBf(x)*sum_expr(gammaA[x,y,z],y = Y)  - estim_XBf(x)*errorA_XZ[x,z]== estim_XB_ZB[[x]][z] * estim_XA[[x]] ,
-                           x = 1:nbX, z = Z) %>%
-
-      ompr::add_constraint( errorA_XY[x,y] <= abserrorA_XY[x,y], x = 1:nbX,y =Y) %>%
-      ompr::add_constraint(-errorA_XY[x,y] <= abserrorA_XY[x,y], x = 1:nbX,y =Y) %>%
-
-      ompr::add_constraint(sum_expr(abserrorA_XY[x,y], x = 1:nbX, y = Y)<= maxrelax/2.0) %>%
-      ompr::add_constraint(sum_expr(errorA_XY[x,y]   , x = 1:nbX, y = Y) == 0.0) %>%
-
-      ompr::add_constraint( errorA_XZ[x,z] <= abserrorA_XZ[x,z], x = 1:nbX, z =Z) %>%
-      ompr::add_constraint(-errorA_XZ[x,z] <= abserrorA_XZ[x,z], x = 1:nbX, z =Z) %>%
-
-      ompr::add_constraint(sum_expr(abserrorA_XZ[x,z], x = 1:nbX, z = Z)<= maxrelax/2.0) %>%
-      ompr::add_constraint(sum_expr(errorA_XZ[x,z]   , x = 1:nbX, z = Z) == 0) %>%
+      ompr::add_constraint(sum_expr(gammaA[x, y, z], z = Z) - errorA_XY[x, y] == estim_XA_YA[[x]][y], x = 1:nbX, y = Y) %>%
+      ompr::add_constraint(estim_XBf(x) * sum_expr(gammaA[x, y, z], y = Y) - estim_XBf(x) * errorA_XZ[x, z] == estim_XB_ZB[[x]][z] * estim_XA[[x]],
+        x = 1:nbX, z = Z
+      ) %>%
+      ompr::add_constraint(errorA_XY[x, y] <= abserrorA_XY[x, y], x = 1:nbX, y = Y) %>%
+      ompr::add_constraint(-errorA_XY[x, y] <= abserrorA_XY[x, y], x = 1:nbX, y = Y) %>%
+      ompr::add_constraint(sum_expr(abserrorA_XY[x, y], x = 1:nbX, y = Y) <= maxrelax / 2.0) %>%
+      ompr::add_constraint(sum_expr(errorA_XY[x, y], x = 1:nbX, y = Y) == 0.0) %>%
+      ompr::add_constraint(errorA_XZ[x, z] <= abserrorA_XZ[x, z], x = 1:nbX, z = Z) %>%
+      ompr::add_constraint(-errorA_XZ[x, z] <= abserrorA_XZ[x, z], x = 1:nbX, z = Z) %>%
+      ompr::add_constraint(sum_expr(abserrorA_XZ[x, z], x = 1:nbX, z = Z) <= maxrelax / 2.0) %>%
+      ompr::add_constraint(sum_expr(errorA_XZ[x, z], x = 1:nbX, z = Z) == 0) %>%
       # ompr::add_constraint(sum_expr(errorA_XZ[x,z]   , x = 1:nbX, z = Z)<= maxrelax/2.0) %>%
 
       # Constraints regularization - Ajout GG
-      ompr::add_constraint(reg_absA[x1,x2,y,z] + gammaA[x2,y,z]/(max(1,length(indXA[[x2]]))/nA) >= gammaA[x1,y,z]/(max(1,length(indXA[[x1]]))/nA),
-                           x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z) %>%
-      ompr::add_constraint(reg_absA[x1,x2,y,z] + gammaA[x1,y,z]/(max(1,length(indXA[[x1]]))/nA) >= gammaA[x2,y,z]/(max(1,length(indXA[[x2]]))/nA),
-                           x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z) %>%
-
-    # SOLUTION -------------------------------------------------------
-    ompr::solve_model(with_ROI(solver = solvR))
-    solution  = ompr::get_solution(result, gammaA[x,y,z])
-    gammaA_val= array(solution$value,dim = c(nbX,length(Y),length(Z)))
+      ompr::add_constraint(reg_absA[x1, x2, y, z] + gammaA[x2, y, z] / (max(1, length(indXA[[x2]])) / nA) >= gammaA[x1, y, z] / (max(1, length(indXA[[x1]])) / nA),
+        x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z
+      ) %>%
+      ompr::add_constraint(reg_absA[x1, x2, y, z] + gammaA[x1, y, z] / (max(1, length(indXA[[x1]])) / nA) >= gammaA[x2, y, z] / (max(1, length(indXA[[x2]])) / nA),
+        x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z
+      ) %>%
+      # SOLUTION -------------------------------------------------------
+      ompr::solve_model(with_ROI(solver = solvR))
+    solution <- ompr::get_solution(result, gammaA[x, y, z])
+    gammaA_val <- array(solution$value, dim = c(nbX, length(Y), length(Z)))
     #------------ END OPTIMIZATION STEP ------------------------------
 
 
     ### Compute the resulting estimators for the distributions of Z conditional to X and Y in base A
 
-    estimatorZA = 1/length(Z) * array(rep(1,nbX*length(Y)*length(Z)),dim = c(nbX,length(Y),length(Z)))
+    estimatorZA <- 1 / length(Z) * array(rep(1, nbX * length(Y) * length(Z)), dim = c(nbX, length(Y), length(Z)))
 
-    for (x in 1:nbX){
+    for (x in 1:nbX) {
+      for (y in Y) {
+        proba_c_mA <- apply(gammaA_val, c(1, 2), sum)[x, y]
 
-      for (y in Y){
-
-        proba_c_mA = apply(gammaA_val,c(1,2),sum)[x,y]
-
-        if (proba_c_mA > 1.0e-6){
-
-          estimatorZA[x,y,] = 1/proba_c_mA * gammaA_val[x,y,];
-
+        if (proba_c_mA > 1.0e-6) {
+          estimatorZA[x, y, ] <- 1 / proba_c_mA * gammaA_val[x, y, ]
         } else {}
       }
     }
 
-    row.names(estimatorZA) =  ID_prof
-    colnames(estimatorZA)  = as.character(levels(dataB[,2]))
+    row.names(estimatorZA) <- ID_prof
+    colnames(estimatorZA) <- as.character(levels(dataB[, 2]))
 
 
     ### Deduce the individual distributions of probability for each individual
 
-    probaZindivA = matrix(0,nA,length(Z))
+    probaZindivA <- matrix(0, nA, length(Z))
 
-    for (x in 1:nbX){
-
-      for (i in indXA[[x]]){
-
-        probaZindivA[i,] = estimatorZA[x,Yobserv[i],]
-
+    for (x in 1:nbX) {
+      for (i in indXA[[x]]) {
+        probaZindivA[i, ] <- estimatorZA[x, Yobserv[i], ]
       }
-
     }
 
 
     # Transport the probability that maximizes frequency
 
-    predZA = apply(probaZindivA,1,function(x)which.max(x))
+    predZA <- apply(probaZindivA, 1, function(x) which.max(x))
 
-    DATA1_OT         = dataB[dataB[,1] == unique(dataB[,1])[1],]
+    DATA1_OT <- dataB[dataB[, 1] == unique(dataB[, 1])[1], ]
 
 
-    if (index_DB_Y_Z[3] %in% nominal){
-
-      DATA1_OT$OTpred  = factor(plyr::mapvalues(predZA,
-                                                from    = sort(unique(predZA)),
-                                                to      = levels(dataB[,3])[sort(unique(predZA))]),
-                                levels  = levels(dataB[,3])[sort(unique(predZA))])
+    if (index_DB_Y_Z[3] %in% nominal) {
+      DATA1_OT$OTpred <- factor(plyr::mapvalues(predZA,
+        from    = sort(unique(predZA)),
+        to      = levels(dataB[, 3])[sort(unique(predZA))]
+      ),
+      levels = levels(dataB[, 3])[sort(unique(predZA))]
+      )
     } else {
-
-      DATA1_OT$OTpred  = ordered(plyr::mapvalues(predZA,
-                                                 from   = sort(unique(predZA)),
-                                                 to     = levels(dataB[,3])[sort(unique(predZA))]),
-                                 levels = levels(dataB[,3])[sort(unique(predZA))])
-
+      DATA1_OT$OTpred <- ordered(plyr::mapvalues(predZA,
+        from   = sort(unique(predZA)),
+        to     = levels(dataB[, 3])[sort(unique(predZA))]
+      ),
+      levels = levels(dataB[, 3])[sort(unique(predZA))]
+      )
     }
-
   } else {}
 
   #--->  END FOR DATABASE A
 
 
-  if (which.DB %in% c("B","BOTH")){
+  if (which.DB %in% c("B", "BOTH")) {
 
     # COMPLETE Y IN DATABASE B
 
-    result <-  ompr::MIPModel() %>%
+    result <- ompr::MIPModel() %>%
       # DEFINE VARIABLES -----------------------------------------------------------------------------------
-    # gammaA[x,y,z]: joint probability of X=x, Y=y and Z=z in base B
+      # gammaA[x,y,z]: joint probability of X=x, Y=y and Z=z in base B
 
-    ompr::add_variable(gammaB[x,y,z]    , x = 1:nbX, y = Y, z = Z,type = "continuous", lb = 0, ub = 1) %>%
-
-      ompr::add_variable(errorB_XY[x,y]   , x = 1:nbX, y = Y,       type = "continuous") %>%
-      ompr::add_variable(abserrorB_XY[x,y], x = 1:nbX, y = Y,       type = "continuous", lb = 0, ub = 1) %>%
-      ompr::add_variable(errorB_XZ[x,z]   , x = 1:nbX,        z = Z,type = "continuous") %>%
-      ompr::add_variable(abserrorB_XZ[x,z], x = 1:nbX,        z = Z,type = "continuous", lb = 0, ub = 1) %>%
-
+      ompr::add_variable(gammaB[x, y, z], x = 1:nbX, y = Y, z = Z, type = "continuous", lb = 0, ub = 1) %>%
+      ompr::add_variable(errorB_XY[x, y], x = 1:nbX, y = Y, type = "continuous") %>%
+      ompr::add_variable(abserrorB_XY[x, y], x = 1:nbX, y = Y, type = "continuous", lb = 0, ub = 1) %>%
+      ompr::add_variable(errorB_XZ[x, z], x = 1:nbX, z = Z, type = "continuous") %>%
+      ompr::add_variable(abserrorB_XZ[x, z], x = 1:nbX, z = Z, type = "continuous", lb = 0, ub = 1) %>%
       # REGULARIZATION ------------------------------------------------------------------------------------------
 
-    # ompr::add_variable(reg_absB[x1, x2,y,z], x1 = 1:nbX, x2 = 1:nbX, y = Y, z = Z, type = "continuous") %>%
-    ompr::add_variable(reg_absB[x1,x2,y,z], x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z, type = "continuous", lb = 0) %>%
-
+      # ompr::add_variable(reg_absB[x1, x2,y,z], x1 = 1:nbX, x2 = 1:nbX, y = Y, z = Z, type = "continuous") %>%
+      ompr::add_variable(reg_absB[x1, x2, y, z], x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z, type = "continuous", lb = 0) %>%
       # OBJECTIVE ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    ompr::set_objective(sum_expr(Cf(y,z) * gammaB[x,y,z],y = Y, z = Z, x = 1:nbX)  + sum_expr(voisin(x1)*reg_absB[x1,x2,y,z],x1=1:nbX, x2= ind_voisins[[x1]],y=Y,z= Z), "min")  %>%
-
+      ompr::set_objective(sum_expr(Cf(y, z) * gammaB[x, y, z], y = Y, z = Z, x = 1:nbX) + sum_expr(voisin(x1) * reg_absB[x1, x2, y, z], x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z), "min") %>%
       # CONSTRAINTS ----------------------------------------------------------------------------------------------------
 
-    ompr::add_constraint(sum_expr(gammaB[x,y,z], y = Y) -errorB_XZ[x,z]  == estim_XB_ZB[[x]][z] , x = 1:nbX, z = Z) %>%
-
-      ompr::add_constraint(estim_XA[[x]]*sum_expr(gammaB[x,y,z] ,z = Z) - estim_XA[[x]] * errorB_XY[x,y] == estim_XA_YA[[x]][y] * estim_XB[[x]] , x = 1:nbX, y = Y) %>%
-
-      ompr::add_constraint( errorB_XY[x,y] <= abserrorB_XY[x,y], x = 1:nbX,y =Y) %>%
-      ompr::add_constraint(-errorB_XY[x,y] <= abserrorB_XY[x,y], x = 1:nbX,y =Y) %>%
-
-      ompr::add_constraint(sum_expr(abserrorB_XY[x,y], x = 1:nbX, y = Y)<= maxrelax/2.0) %>%
-      ompr::add_constraint(sum_expr(errorB_XY[x,y]   , x = 1:nbX, y = Y) == 0.0) %>%
-
-      ompr::add_constraint( errorB_XZ[x,z] <= abserrorB_XZ[x,z], x = 1:nbX,z =Z) %>%
-      ompr::add_constraint(-errorB_XZ[x,z] <= abserrorB_XZ[x,z], x = 1:nbX,z =Z) %>%
-
-      ompr::add_constraint(sum_expr(abserrorB_XZ[x,z], x = 1:nbX, z = Z)<= maxrelax/2.0) %>%
-      ompr::add_constraint(sum_expr(errorB_XZ[x,z]   , x = 1:nbX, z = Z) == 0) %>%
+      ompr::add_constraint(sum_expr(gammaB[x, y, z], y = Y) - errorB_XZ[x, z] == estim_XB_ZB[[x]][z], x = 1:nbX, z = Z) %>%
+      ompr::add_constraint(estim_XA[[x]] * sum_expr(gammaB[x, y, z], z = Z) - estim_XA[[x]] * errorB_XY[x, y] == estim_XA_YA[[x]][y] * estim_XB[[x]], x = 1:nbX, y = Y) %>%
+      ompr::add_constraint(errorB_XY[x, y] <= abserrorB_XY[x, y], x = 1:nbX, y = Y) %>%
+      ompr::add_constraint(-errorB_XY[x, y] <= abserrorB_XY[x, y], x = 1:nbX, y = Y) %>%
+      ompr::add_constraint(sum_expr(abserrorB_XY[x, y], x = 1:nbX, y = Y) <= maxrelax / 2.0) %>%
+      ompr::add_constraint(sum_expr(errorB_XY[x, y], x = 1:nbX, y = Y) == 0.0) %>%
+      ompr::add_constraint(errorB_XZ[x, z] <= abserrorB_XZ[x, z], x = 1:nbX, z = Z) %>%
+      ompr::add_constraint(-errorB_XZ[x, z] <= abserrorB_XZ[x, z], x = 1:nbX, z = Z) %>%
+      ompr::add_constraint(sum_expr(abserrorB_XZ[x, z], x = 1:nbX, z = Z) <= maxrelax / 2.0) %>%
+      ompr::add_constraint(sum_expr(errorB_XZ[x, z], x = 1:nbX, z = Z) == 0) %>%
       # ompr::add_constraint(sum_expr(errorB_XZ[x,z]   , x = 1:nbX, z = Z)<= maxrelax/2.0) %>%
 
       # Constraints regularization - Ajout GG
-      ompr::add_constraint(reg_absB[x1,x2,y,z] + gammaB[x2,y,z]/(max(1,length(indXB[[x2]]))/nB) >= gammaB[x1,y,z]/(max(1,length(indXB[[x1]]))/nB), x1 = 1:nbX, x2 = ind_voisins[[x1]], y= Y, z = Z) %>%
-      ompr::add_constraint(reg_absB[x1,x2,y,z] + gammaB[x1,y,z]/(max(1,length(indXB[[x1]]))/nB) >= gammaB[x2,y,z]/(max(1,length(indXB[[x2]]))/nB), x1 = 1:nbX, x2 = ind_voisins[[x1]], y= Y, z = Z) %>%
-
+      ompr::add_constraint(reg_absB[x1, x2, y, z] + gammaB[x2, y, z] / (max(1, length(indXB[[x2]])) / nB) >= gammaB[x1, y, z] / (max(1, length(indXB[[x1]])) / nB), x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z) %>%
+      ompr::add_constraint(reg_absB[x1, x2, y, z] + gammaB[x1, y, z] / (max(1, length(indXB[[x1]])) / nB) >= gammaB[x2, y, z] / (max(1, length(indXB[[x2]])) / nB), x1 = 1:nbX, x2 = ind_voisins[[x1]], y = Y, z = Z) %>%
       # SOLUTION ------------------------------------------------------
-    ompr::solve_model(with_ROI(solver = solvR))
+      ompr::solve_model(with_ROI(solver = solvR))
 
-    solution   = get_solution(result, gammaB[x,y,z])
-    gammaB_val = array(solution$value,dim = c(nbX,length(Y),length(Z)))
+    solution <- get_solution(result, gammaB[x, y, z])
+    gammaB_val <- array(solution$value, dim = c(nbX, length(Y), length(Z)))
     #------------ END OPTIMIZATION STEP -------------------------------
 
 
     ### compute the resulting estimators for the distributions of Y conditional to X and Z in base B
 
-    estimatorYB = 1/length(Y) * array(rep(1,nbX*length(Y)*length(Z)),dim = c(nbX,length(Z),length(Y)))
+    estimatorYB <- 1 / length(Y) * array(rep(1, nbX * length(Y) * length(Z)), dim = c(nbX, length(Z), length(Y)))
 
-    for (x in 1:nbX){
+    for (x in 1:nbX) {
+      for (z in Z) {
+        proba_c_mB <- apply(gammaB_val, c(1, 3), sum)[x, z]
 
-      for (z in Z){
-
-        proba_c_mB = apply(gammaB_val,c(1,3),sum)[x,z]
-
-        if (proba_c_mB > 1.0e-6){
-
-          estimatorYB[x,z,] = 1/proba_c_mB * gammaB_val[x,,z];
-
+        if (proba_c_mB > 1.0e-6) {
+          estimatorYB[x, z, ] <- 1 / proba_c_mB * gammaB_val[x, , z]
         } else {}
       }
     }
 
-    row.names(estimatorYB) = ID_prof
-    colnames(estimatorYB)  = as.character(levels(dataB[,3]))
+    row.names(estimatorYB) <- ID_prof
+    colnames(estimatorYB) <- as.character(levels(dataB[, 3]))
 
 
     ### Deduce the individual distributions of probability for each individual
 
-    probaZindivA = matrix(0,nA,length(Z))
-    probaYindivB = matrix(0,nB,length(Y))
+    probaZindivA <- matrix(0, nA, length(Z))
+    probaYindivB <- matrix(0, nB, length(Y))
 
-    for (x in 1:nbX){
-
-      for (i in indXB[[x]]){
-
-        probaYindivB[i,] = estimatorYB[x,Zobserv[i+nA],]
-
+    for (x in 1:nbX) {
+      for (i in indXB[[x]]) {
+        probaYindivB[i, ] <- estimatorYB[x, Zobserv[i + nA], ]
       }
     }
 
 
     ### Transport the Ylity that maximizes frequency
 
-    predYB = apply(probaYindivB,1,function(x)which.max(x))
+    predYB <- apply(probaYindivB, 1, function(x) which.max(x))
 
 
-    DATA2_OT         = dataB[dataB[,1] == unique(dataB[,1])[2],]
+    DATA2_OT <- dataB[dataB[, 1] == unique(dataB[, 1])[2], ]
 
-    if (index_DB_Y_Z[2] %in% nominal){
-
-      DATA2_OT$OTpred  = factor(plyr::mapvalues(predYB,from = sort(unique(predYB)),
-                                                to = levels(dataB[,2])[sort(unique(predYB))]),
-                                levels = levels(dataB[,2])[sort(unique(predYB))])
+    if (index_DB_Y_Z[2] %in% nominal) {
+      DATA2_OT$OTpred <- factor(plyr::mapvalues(predYB,
+        from = sort(unique(predYB)),
+        to = levels(dataB[, 2])[sort(unique(predYB))]
+      ),
+      levels = levels(dataB[, 2])[sort(unique(predYB))]
+      )
     } else {
-
-      DATA2_OT$OTpred  = ordered(plyr::mapvalues(predYB,from = sort(unique(predYB)),
-                                                 to = levels(dataB[,2])[sort(unique(predYB))]),
-                                 levels = levels(dataB[,2])[sort(unique(predYB))])
+      DATA2_OT$OTpred <- ordered(plyr::mapvalues(predYB,
+        from = sort(unique(predYB)),
+        to = levels(dataB[, 2])[sort(unique(predYB))]
+      ),
+      levels = levels(dataB[, 2])[sort(unique(predYB))]
+      )
     }
-
-
   } else {}
 
   # ---> END DATABASE B
@@ -664,49 +615,43 @@ OT_joint = function(datab, index_DB_Y_Z = 1:3,
 
   # OUTPUT OBJECTS -------------------------------------------------
 
-  if (which.DB == "A"){
-
-    GAMMA_B            = NULL
-    estimatorYB        = NULL
-    DATA2_OT           = dataB[dataB[,1] == unique(dataB[,1])[2],]
-    GAMMA_A            = apply(gammaA_val,c(2,3),sum)
-    colnames(GAMMA_A)  = levels(dataB[,3])
-    row.names(GAMMA_A) = levels(dataB[,2])
-
-  } else if (which.DB == "B"){
-
-    GAMMA_A            = NULL
-    estimatorZA        = NULL
-    DATA1_OT           = dataB[dataB[,1] == unique(dataB[,1])[1],]
-    GAMMA_B            = apply(gammaB_val,c(2,3),sum)
-    colnames(GAMMA_B)  = levels(dataB[,3])
-    row.names(GAMMA_B) = levels(dataB[,2])
-
+  if (which.DB == "A") {
+    GAMMA_B <- NULL
+    estimatorYB <- NULL
+    DATA2_OT <- dataB[dataB[, 1] == unique(dataB[, 1])[2], ]
+    GAMMA_A <- apply(gammaA_val, c(2, 3), sum)
+    colnames(GAMMA_A) <- levels(dataB[, 3])
+    row.names(GAMMA_A) <- levels(dataB[, 2])
+  } else if (which.DB == "B") {
+    GAMMA_A <- NULL
+    estimatorZA <- NULL
+    DATA1_OT <- dataB[dataB[, 1] == unique(dataB[, 1])[1], ]
+    GAMMA_B <- apply(gammaB_val, c(2, 3), sum)
+    colnames(GAMMA_B) <- levels(dataB[, 3])
+    row.names(GAMMA_B) <- levels(dataB[, 2])
   } else {
-
-    GAMMA_A            = apply(gammaA_val,c(2,3),sum)
-    GAMMA_B            = apply(gammaB_val,c(2,3),sum)
-    colnames(GAMMA_A)  = colnames(GAMMA_B)  = levels(dataB[,3])
-    row.names(GAMMA_A) = row.names(GAMMA_B) = levels(dataB[,2])
-
+    GAMMA_A <- apply(gammaA_val, c(2, 3), sum)
+    GAMMA_B <- apply(gammaB_val, c(2, 3), sum)
+    colnames(GAMMA_A) <- colnames(GAMMA_B) <- levels(dataB[, 3])
+    row.names(GAMMA_A) <- row.names(GAMMA_B) <- levels(dataB[, 2])
   }
 
-  tend = Sys.time()
+  tend <- Sys.time()
 
-  res_OT = list(time_exe    = difftime(tend,tstart),
-                gamma_A     = GAMMA_A,
-                gamma_B     = GAMMA_B,
-                profile     = data.frame(ID = ID_prof,prof),
-                res_prox    = inst,
-                estimatorZA = estimatorZA,
-                estimatorYB = estimatorYB,
-                DATA1_OT    = DATA1_OT,
-                DATA2_OT    = DATA2_OT)
+  res_OT <- list(
+    time_exe = difftime(tend, tstart),
+    gamma_A = GAMMA_A,
+    gamma_B = GAMMA_B,
+    profile = data.frame(ID = ID_prof, prof),
+    res_prox = inst,
+    estimatorZA = estimatorZA,
+    estimatorYB = estimatorYB,
+    DATA1_OT = DATA1_OT,
+    DATA2_OT = DATA2_OT
+  )
 
   # otres class object
-  class(res_OT) = "otres"
+  class(res_OT) <- "otres"
 
   return(res_OT)
-
 }
-

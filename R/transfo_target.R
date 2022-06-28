@@ -40,90 +40,63 @@
 #' @export
 #'
 #' @examples
-#' y      = rnorm(100,30,10)
-#' aa     = transfo_target(y)
+#' y <- rnorm(100, 30, 10)
+#' aa <- transfo_target(y)
 #'
-#' newlev  = unique(as.integer(y))
-#' bb      = transfo_target(y,levels_order = newlev)
-#' newlev2 = newlev[-1]
-#' cc      = transfo_target(y,levels_order = newlev2)
+#' newlev <- unique(as.integer(y))
+#' bb <- transfo_target(y, levels_order = newlev)
+#' newlev2 <- newlev[-1]
+#' cc <- transfo_target(y, levels_order = newlev2)
 #'
-#' outco   = c(rep("A",25),rep("B",50),rep("C",25))
-#' dd      = transfo_target(outco,levels_order = c("B","C","A"))
-#' ee      = transfo_target(outco,levels_order = c("E","C","A","F"))
-#' ff      = transfo_target(outco)
+#' outco <- c(rep("A", 25), rep("B", 50), rep("C", 25))
+#' dd <- transfo_target(outco, levels_order = c("B", "C", "A"))
+#' ee <- transfo_target(outco, levels_order = c("E", "C", "A", "F"))
+#' ff <- transfo_target(outco)
 #'
-#' outco2  = c(rep("A",25),NA,rep("B",50),rep("C",25),NA,NA)
-#' gg      = transfo_target(outco2)
-#' hh      = transfo_target(outco2,levels_order = c("B","C","A"))
+#' outco2 <- c(rep("A", 25), NA, rep("B", 50), rep("C", 25), NA, NA)
+#' gg <- transfo_target(outco2)
+#' hh <- transfo_target(outco2, levels_order = c("B", "C", "A"))
+#'
+transfo_target <- function(z, levels_order = NULL) {
+  nlev <- length(levels_order)
 
 
-transfo_target = function(z,levels_order=NULL){
-
-
-  nlev = length(levels_order)
-
-
-  if ((class(z)[1] %in% c("character","factor","ordered"))&(nlev == 0)){
-
-    z = as.factor(z)
-
-  } else if ((class(z)[1] %in% c("character","factor","ordered"))&(nlev != 0)){
-
-    z = as.factor(z)
+  if ((class(z)[1] %in% c("character", "factor", "ordered")) & (nlev == 0)) {
+    z <- as.factor(z)
+  } else if ((class(z)[1] %in% c("character", "factor", "ordered")) & (nlev != 0)) {
+    z <- as.factor(z)
 
     # if (length(union(levels(z),levels_order)) == nlev){
-      if (nlevels(z) == nlev){
-
-      z = ordered(z,levels = levels_order)
-
+    if (nlevels(z) == nlev) {
+      z <- ordered(z, levels = levels_order)
     } else {
-
-      z = as.factor(z)
-      message("Inappropriate number or declared labels of levels","\n")
-      message("The default levels have been kept","\n")
-
+      z <- as.factor(z)
+      message("Inappropriate number or declared labels of levels", "\n")
+      message("The default levels have been kept", "\n")
     }
-
   }
 
 
 
-  if ((is.numeric(z))&(nlev == 0)){
+  if ((is.numeric(z)) & (nlev == 0)) {
 
     # cat("Your target was numeric ... By default, it has been converted in factor of integers","\n")
-    message(paste("Your target",deparse(substitute(z)),"was numeric ... By default, it has been converted in factor of integers",sep=" "),"\n")
-    z = as.factor(as.integer(z))
-    message(paste(nlevels(z),"remaining levels",sep=" "),"\n")
+    message(paste("Your target", deparse(substitute(z)), "was numeric ... By default, it has been converted in factor of integers", sep = " "), "\n")
+    z <- as.factor(as.integer(z))
+    message(paste(nlevels(z), "remaining levels", sep = " "), "\n")
+  } else if ((is.numeric(z)) & (nlev != 0)) {
+    message(paste("Your target", deparse(substitute(z)), "was numeric ... By default, it has been converted in factor of integers", sep = " "), "\n")
+    z <- as.factor(as.integer(z))
 
-
-  } else if ((is.numeric(z))&(nlev!=0)){
-
-    message(paste("Your target",deparse(substitute(z)),"was numeric ... By default, it has been converted in factor of integers",sep=" "),"\n")
-    z = as.factor(as.integer(z))
-
-    if (length(union(levels(z),levels_order)) == nlev){
-
-      z = ordered(z,levels = levels_order)
-
+    if (length(union(levels(z), levels_order)) == nlev) {
+      z <- ordered(z, levels = levels_order)
     } else {
-
-      z = as.factor(as.integer(z))
-      message("Inappropriate number or declared labels of levels","\n")
-      message("The default labels have been kept","\n")
-
+      z <- as.factor(as.integer(z))
+      message("Inappropriate number or declared labels of levels", "\n")
+      message("The default labels have been kept", "\n")
     }
-
   }
 
 
-  return(list(NEW = z,LEVELS_NEW = levels(z)))
-
+  return(list(NEW = z, LEVELS_NEW = levels(z)))
 }
-
-
-
-
-
-
-

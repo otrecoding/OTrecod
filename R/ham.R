@@ -40,61 +40,53 @@
 #' @aliases ham
 #'
 #' @examples
-#' set.seed(3010); aaa = sample(c(0,1),12,replace = TRUE)
-#' set.seed(3007); bbb = sample(c(0,1),15,replace = TRUE)
-#' A = matrix(aaa, ncol = 3)
-#' B = matrix(bbb, ncol = 3)
+#' set.seed(3010)
+#' aaa <- sample(c(0, 1), 12, replace = TRUE)
+#' set.seed(3007)
+#' bbb <- sample(c(0, 1), 15, replace = TRUE)
+#' A <- matrix(aaa, ncol = 3)
+#' B <- matrix(bbb, ncol = 3)
 #'
 #' # These 2 matrices have no missing values
 #'
 #' # Matrix of pairwise distances with A:
-#' ham(A,A)
+#' ham(A, A)
 #'
 #' # Matrix of distances between the rows of A and the rows of B:
-#' ham(A,B)
+#' ham(A, B)
 #'
 #' # If mat_1 is a vector of binary values:
-#' ham(c(0,1,0),B)
+#' ham(c(0, 1, 0), B)
 #'
 #' # Now by considering A_NA and B_NA two matrices built from A and B respectively,
 #' # where missing values have been manually added:
-#' A_NA        = A
-#' A_NA[3,1]   = NA
-#' A_NA[2,2:3] = rep(NA,2)
+#' A_NA <- A
+#' A_NA[3, 1] <- NA
+#' A_NA[2, 2:3] <- rep(NA, 2)
 #'
-#' B_NA = B
-#' B_NA[2,2] = NA
+#' B_NA <- B
+#' B_NA[2, 2] <- NA
 #'
-#' ham(A_NA,B_NA)
+#' ham(A_NA, B_NA)
 #'
-ham = function(mat_1,mat_2){
-
-  if ((is.null(dim(mat_1)))&(!is.null(dim(mat_2)))){
-
-    mat_1 = matrix(mat_1,nrow = 1)
-
-  } else if ((!is.null(dim(mat_1)))&(is.null(dim(mat_2)))){
-
-    mat_2 = matrix(mat_2,nrow = 1)
-
-  } else if ((is.null(dim(mat_1)))&(is.null(dim(mat_2)))){
-
-    mat_1 = matrix(mat_1,ncol = 1)
-    mat_2 = matrix(mat_2,ncol = 1)
-
+ham <- function(mat_1, mat_2) {
+  if ((is.null(dim(mat_1))) & (!is.null(dim(mat_2)))) {
+    mat_1 <- matrix(mat_1, nrow = 1)
+  } else if ((!is.null(dim(mat_1))) & (is.null(dim(mat_2)))) {
+    mat_2 <- matrix(mat_2, nrow = 1)
+  } else if ((is.null(dim(mat_1))) & (is.null(dim(mat_2)))) {
+    mat_1 <- matrix(mat_1, ncol = 1)
+    mat_2 <- matrix(mat_2, ncol = 1)
   } else {}
 
-  d_fun = function(x_1, x_2) (sum(x_1 != x_2,na.rm=TRUE)/length(x_1))*length(x_1)/sum(is.na(x_1)+is.na(x_2)==0)
-  matr  = apply(mat_2,1,function(x) sapply(1:nrow(mat_1),function(j) d_fun(x,mat_1[j,])))
+  d_fun <- function(x_1, x_2) (sum(x_1 != x_2, na.rm = TRUE) / length(x_1)) * length(x_1) / sum(is.na(x_1) + is.na(x_2) == 0)
+  matr <- apply(mat_2, 1, function(x) sapply(1:nrow(mat_1), function(j) d_fun(x, mat_1[j, ])))
 
-  if (sum(is.na(matr))!=0){
-
-    vec1 = as.vector(matr)
-    vec1[which(is.na(vec1))] = NA
-    matr = matrix(vec1, ncol = ncol(matr))
-
-  } else{}
+  if (sum(is.na(matr)) != 0) {
+    vec1 <- as.vector(matr)
+    vec1[which(is.na(vec1))] <- NA
+    matr <- matrix(vec1, ncol = ncol(matr))
+  } else {}
 
   return(matr)
-
 }

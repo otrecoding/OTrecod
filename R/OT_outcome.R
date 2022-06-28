@@ -162,14 +162,14 @@
 #'
 #' @export
 #'
-#'@examples
+#' @examples
 #'
 #' ### Using a sample of simu_data dataset
 #' ### Y and Z are a same variable encoded in 2 different forms:
 #' ### (3 levels for Y and 5 levels for Z)
 #' #--------
 #' data(simu_data)
-#' simu_dat  = simu_data[c(1:200,301:500),]
+#' simu_dat <- simu_data[c(1:200, 301:500), ]
 #'
 #' ### An example of OUTCOME algorithm that uses:
 #' #-----
@@ -180,23 +180,24 @@
 #' # Predictions are assessed for Y in B and Z in A
 #' #-----
 #'
-#' try1 = OT_outcome(simu_dat, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                   dist.choice = "M", maxrelax = 0,
-#'                   indiv.method = "sequential")
-#' head(try1$DATA1_OT)  # Part of the completed database A
-#' head(try1$DATA2_OT)  # Part of the completed database B
+#' try1 <- OT_outcome(simu_dat,
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'   dist.choice = "M", maxrelax = 0,
+#'   indiv.method = "sequential"
+#' )
+#' head(try1$DATA1_OT) # Part of the completed database A
+#' head(try1$DATA2_OT) # Part of the completed database B
 #'
-#' head(try1$estimatorZA[,,1])
+#' head(try1$estimatorZA[, , 1])
 #' # ... Corresponds to P[Z = 1|Y,P1] when P1 corresponds to the 1st profile of covariates (P_1)
 #' # detailed in the 1st row of the profile object:
-#' try1$profile[1,]   # Details of P_1
+#' try1$profile[1, ] # Details of P_1
 #'
 #' # So estimatorZA[1,1,1]= 0.2 corresponds to an estimation of:
 #' # P[Z = 1|Y=[20-40],Gender_2=0,Treatment_2=1,Treatment_3=0,Smoking_2=1,Dosage=3,Age=65.44]
 #' # Thus, we can conclude that all individuals with the P_1 profile of covariates have
 #' # 20% of chance to be affected to the 1st level of Z in database A.
 #' # ... And so on, the reasoning is the same for the estimatorYB object.
-#'
 #'
 #' \donttest{
 #'
@@ -205,12 +206,14 @@
 #' # - The continuous covariates "age" (related index = 8) will be converted in an ordinal factors
 #' #   of 3 balanced classes (tertiles)
 #' # - The Gower distance is now used
-#' ###-----
+#' ### -----
 #'
-#' try2 = OT_outcome(simu_dat, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                   dist.choice = "G", maxrelax = 0,
-#'                   convert.num = 8, convert.clss = 3,
-#'                   indiv.method = "sequential", which.DB = "B")
+#' try2 <- OT_outcome(simu_dat,
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'   dist.choice = "G", maxrelax = 0,
+#'   convert.num = 8, convert.clss = 3,
+#'   indiv.method = "sequential", which.DB = "B"
+#' )
 #'
 #'
 #' ### An example of OUTCOME algorithm with same conditions as the first example, excepted that;
@@ -220,34 +223,40 @@
 #' # - Here, the Hamming distance can be applied because, after conversion, all covariates are factors.
 #' #   Disjunctive tables of each covariates will be automatically used to work with a set of binary
 #' #   variables.
-#' ###-----
+#' ### -----
 #'
-#' try3 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                   dist.choice = "H", maxrelax = 0,
-#'                   convert.num = 8, convert.clss = 3,
-#'                   indiv.method = "sequential",which.DB = "B")
+#' try3 <- OT_outcome(simu_data,
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'   dist.choice = "H", maxrelax = 0,
+#'   convert.num = 8, convert.clss = 3,
+#'   indiv.method = "sequential", which.DB = "B"
+#' )
 #'
 #'
 #' ### An example of R-OUTCOME algorithm using:
 #' # - An optimization procedure for individual predictions on the 2 databases
 #' # - The Manhattan distance
 #' # - Raw covariates
-#' ###-----
-#' try4 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                   dist.choice = "M", maxrelax = 0,
-#'                   indiv.method = "optimal")
+#' ### -----
+#' try4 <- OT_outcome(simu_data,
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'   dist.choice = "M", maxrelax = 0,
+#'   indiv.method = "optimal"
+#' )
 #'
 #'
 #' ### An example of R-OUTCOME algorithm with:
 #' # - An optimization procedure for individual predictions on the 2 databases
 #' # - The use of Euclidean distance on coordinates from FAMD
 #' # - Raw covariates
-#' ###-----
+#' ### -----
 #'
-#' try5 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                   dist.choice = "E",
-#'                   FAMD.coord = "YES", FAMD.perc = 0.8,
-#'                   indiv.method = "optimal")
+#' try5 <- OT_outcome(simu_data,
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'   dist.choice = "E",
+#'   FAMD.coord = "YES", FAMD.perc = 0.8,
+#'   indiv.method = "optimal"
+#' )
 #'
 #'
 #' ### An example of R-OUTCOME algorithm with relaxation on marginal distributions and:
@@ -257,139 +266,126 @@
 #' # - Raw covariates
 #' #-----
 #'
-#' try6 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                   dist.choice = "E", maxrelax = 0.4,
-#'                   indiv.method = "optimal")
-#'
-#'
+#' try6 <- OT_outcome(simu_data,
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'   dist.choice = "E", maxrelax = 0.4,
+#'   indiv.method = "optimal"
+#' )
 #' }
 #'
-OT_outcome = function(datab, index_DB_Y_Z = 1:3,
-                      quanti = NULL, nominal = NULL, ordinal = NULL,logic = NULL,
-                      convert.num = NULL, convert.clss = NULL, FAMD.coord = "NO", FAMD.perc = 0.8,
-                      dist.choice = "E", percent.knn = 1,
-                      maxrelax = 0, indiv.method = "sequential", prox.dist = 0,
-                      solvR = "glpk", which.DB = "BOTH"){
+OT_outcome <- function(datab, index_DB_Y_Z = 1:3,
+                       quanti = NULL, nominal = NULL, ordinal = NULL, logic = NULL,
+                       convert.num = NULL, convert.clss = NULL, FAMD.coord = "NO", FAMD.perc = 0.8,
+                       dist.choice = "E", percent.knn = 1,
+                       maxrelax = 0, indiv.method = "sequential", prox.dist = 0,
+                       solvR = "glpk", which.DB = "BOTH") {
+  tstart <- Sys.time()
+
+  message("---------------------------------------", "\n")
+  message("OT PROCEDURE in progress ...", "\n")
+  message("---------------------------------------", "\n")
+  message("Type                     = ", ifelse((maxrelax == 0) & (indiv.method == "sequential"), "OUTCOME", "R-OUTCOME"), "\n")
+  message("Distance                 = ", ifelse(dist.choice == "H", "Hamming", ifelse(dist.choice == "M", "Manhattan", ifelse(dist.choice == "E", "Euclidean", "Gower"))), "\n")
+  message("Percent closest knn      = ", 100.0 * percent.knn, "%", "\n")
+  message("Relaxation parameter     = ", ifelse(maxrelax == 0, "NO", "YES"), "\n")
+  message("Relaxation value         = ", maxrelax, "\n")
+  message("Individual pred process  = ", ifelse(indiv.method == "sequential", "Sequential", "Optimal"), "\n")
+  message("DB imputed               = ", which.DB, "\n")
+  message("---------------------------------------", "\n")
 
 
-
-  tstart = Sys.time()
-
-  message("---------------------------------------","\n")
-  message("OT PROCEDURE in progress ..."           ,"\n")
-  message("---------------------------------------","\n")
-  message("Type                     = ", ifelse((maxrelax == 0) & (indiv.method == "sequential"),"OUTCOME","R-OUTCOME"),"\n")
-  message("Distance                 = ", ifelse(dist.choice == "H","Hamming",ifelse(dist.choice == "M","Manhattan",ifelse(dist.choice == "E","Euclidean","Gower"))),"\n")
-  message("Percent closest knn      = ", 100.0*percent.knn,"%","\n")
-  message("Relaxation parameter     = ", ifelse(maxrelax == 0,"NO","YES"),"\n")
-  message("Relaxation value         = ", maxrelax,"\n")
-  message("Individual pred process  = ", ifelse(indiv.method == "sequential","Sequential","Optimal"),"\n")
-  message("DB imputed               = ", which.DB,"\n")
-  message("---------------------------------------","\n")
-
-
-  if (index_DB_Y_Z[2] %in% quanti){
-
-    datab[,index_DB_Y_Z[2]] = ordered(datab[,index_DB_Y_Z[2]])
-    quanti                  = setdiff(quanti,index_DB_Y_Z[2])
-    ordinal                 = sort(c(ordinal,index_DB_Y_Z[2]))
-
+  if (index_DB_Y_Z[2] %in% quanti) {
+    datab[, index_DB_Y_Z[2]] <- ordered(datab[, index_DB_Y_Z[2]])
+    quanti <- setdiff(quanti, index_DB_Y_Z[2])
+    ordinal <- sort(c(ordinal, index_DB_Y_Z[2]))
   } else {}
 
-  if (index_DB_Y_Z[3] %in% quanti){
-
-    datab[,index_DB_Y_Z[3]] = ordered(datab[,index_DB_Y_Z[3]])
-    quanti                  = setdiff(quanti,index_DB_Y_Z[3])
-    ordinal                 = sort(c(ordinal,index_DB_Y_Z[3]))
-
+  if (index_DB_Y_Z[3] %in% quanti) {
+    datab[, index_DB_Y_Z[3]] <- ordered(datab[, index_DB_Y_Z[3]])
+    quanti <- setdiff(quanti, index_DB_Y_Z[3])
+    ordinal <- sort(c(ordinal, index_DB_Y_Z[3]))
   } else {}
 
 
 
-  if (!(which.DB %in% c("A","B","BOTH"))){
-
+  if (!(which.DB %in% c("A", "B", "BOTH"))) {
     stop("Invalid which.DB argument")
-
   } else {}
 
-  if (!(dist.choice %in% c("E","M","H","G"))){
-
+  if (!(dist.choice %in% c("E", "M", "H", "G"))) {
     stop("Invalid dist.choice argument")
-
   } else {}
 
-  if (!(indiv.method %in% c("sequential","optimal"))){
-
+  if (!(indiv.method %in% c("sequential", "optimal"))) {
     stop("Invalid indiv.method argument")
-
   } else {}
 
-  if (!(FAMD.coord %in% c("YES","NO","Y","N"))){
-
+  if (!(FAMD.coord %in% c("YES", "NO", "Y", "N"))) {
     stop("Invalid FAMD.coord argument")
-
   } else {}
 
-  prep.choice = ifelse(FAMD.coord %in% c("YES","Y"), "FAMD", dist.choice)
+  prep.choice <- ifelse(FAMD.coord %in% c("YES", "Y"), "FAMD", dist.choice)
 
-  dataB = transfo_dist(datab,index_DB_Y_Z = index_DB_Y_Z,
-                       quanti = quanti, nominal = nominal, ordinal = ordinal, logic = logic,
-                       convert_num = convert.num, convert_clss = convert.clss,
-                       prep_choice = dist.choice, info = FAMD.perc)
+  dataB <- transfo_dist(datab,
+    index_DB_Y_Z = index_DB_Y_Z,
+    quanti = quanti, nominal = nominal, ordinal = ordinal, logic = logic,
+    convert_num = convert.num, convert_clss = convert.clss,
+    prep_choice = dist.choice, info = FAMD.perc
+  )
 
 
-  if (prep.choice == "H"){
+  if (prep.choice == "H") {
+    datac <- dataB[, -index_DB_Y_Z]
 
-    datac  = dataB[,-index_DB_Y_Z]
+    test_H <- apply(as.data.frame(datac), 2, function(x) {
+      length(table(x))
+    })
 
-    test_H = apply(as.data.frame(datac),2,function(x){length(table(x))})
-
-    if (max(test_H)>2){stop("With Hamming distance, all your covariates must be binaries !")} else {}
-
+    if (max(test_H) > 2) {
+      stop("With Hamming distance, all your covariates must be binaries !")
+    } else {}
   } else {}
 
 
-  inst = proxim_dist(dataB, norm = dist.choice, prox = prox.dist)
+  inst <- proxim_dist(dataB, norm = dist.choice, prox = prox.dist)
 
 
   # Redefine A and B for the model
-  nA      = inst$nA
-  nB      = inst$nB
-  A       = 1:inst$nA
-  B       = 1:inst$nB
-  Y       = inst$Y
-  Z       = inst$Z
-  indY    = inst$indY
-  indZ    = inst$indZ
-  indXA   = inst$indXA
-  indXB   = inst$indXB
-  nbX     = length(indXA)
+  nA <- inst$nA
+  nB <- inst$nB
+  A <- 1:inst$nA
+  B <- 1:inst$nB
+  Y <- inst$Y
+  Z <- inst$Z
+  indY <- inst$indY
+  indZ <- inst$indZ
+  indXA <- inst$indXA
+  indXB <- inst$indXB
+  nbX <- length(indXA)
 
-  #prof  = do.call(paste0,unique(inst$Xobserv))
-  prof    = as.data.frame(unique(inst$Xobserv))
-  ID_prof = paste(rep("P",nrow(prof)),1:nrow(prof),sep="_")
+  # prof  = do.call(paste0,unique(inst$Xobserv))
+  prof <- as.data.frame(unique(inst$Xobserv))
+  ID_prof <- paste(rep("P", nrow(prof)), 1:nrow(prof), sep = "_")
 
-  nbindY = numeric(0)
+  nbindY <- numeric(0)
 
-  for (y in Y){
+  for (y in Y) {
+    nbindY <- c(nbindY, length(inst$indY[[y]]))
+  }
+  nbindZ <- numeric(0)
 
-    nbindY  = c(nbindY,length(inst$indY[[y]]))}
-  nbindZ  = numeric(0)
+  for (z in Z) {
+    nbindZ <- c(nbindZ, length(inst$indZ[[z]]))
+  }
+  freqY <- numeric(0)
 
-  for (z in Z){
+  for (y in Y) {
+    freqY <- c(freqY, nbindY[y] / length(A))
+  }
+  freqZ <- numeric(0)
 
-    nbindZ  = c(nbindZ,length(inst$indZ[[z]]))}
-  freqY   = numeric(0)
-
-  for (y in Y){
-
-    freqY   = c(freqY,nbindY[y] / length(A))}
-  freqZ   = numeric(0)
-
-  for (z in Z){
-
-    freqZ = c(freqZ,nbindZ[z] / length(B))
-
+  for (z in Z) {
+    freqZ <- c(freqZ, nbindZ[z] / length(B))
   }
 
 
@@ -397,167 +393,143 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
   # Compute data for aggregation of the individuals
   ###########################################################################
 
-  nbX = length(indXA);
+  nbX <- length(indXA)
 
   # Computation of the cost matrix as average distances between the
   # individuals of two groups
-  C = avg_dist_closest(inst, percent_closest = percent.knn)[[1]]
+  C <- avg_dist_closest(inst, percent_closest = percent.knn)[[1]]
 
   # absdevA = absdevB = deviationA = deviationB = transport = transportA = transportB = NULL
 
-  if (maxrelax == 0){
+  if (maxrelax == 0) {
 
     # Objective: minimize the distance between individuals of A and B
 
-    Min = c(as.numeric(C),rep(0,2*length(Y)+2*length(Z)))
+    Min <- c(as.numeric(C), rep(0, 2 * length(Y) + 2 * length(Z)))
 
 
-    result          = ompr::MIPModel() %>%
-
-      ompr::add_variable(transport[y,z], y = Y, z = Z, type = "continuous") %>%
-      ompr::add_variable(deviationA[y] , y = Y       , type = "continuous") %>%
-      ompr::add_variable(absdevA[y]    , y = Y       , type = "continuous") %>%
-      ompr::add_variable(deviationB[z]        , z = Z, type = "continuous") %>%
-      ompr::add_variable(absdevB[z]           , z = Z, type = "continuous") %>%
-
-      ompr::set_objective(sum_expr(C[y,z]*transport[y,z], y = Y, z = Z) , "min") %>%
-
-      ompr::add_constraint(sum_expr(transport[y,z]       , z = Z) == freqY[y] + deviationA[y], y = Y) %>%
-      ompr::add_constraint(sum_expr(transport[y,z], y = Y       ) == freqZ[z] + deviationB[z], z = Z) %>%
-      ompr::add_constraint(sum_expr(deviationA[y] , y = Y) == 0 ) %>%
-      ompr::add_constraint(sum_expr(deviationB[z]        ,z = Z )== 0) %>%
-      ompr::add_constraint(deviationB[z]<= absdevB[z]    , z = Z) %>%
-      ompr::add_constraint(deviationB[z]>= -absdevB[z]   , z = Z) %>%
-      ompr::add_constraint(sum_expr(absdevB[z],z=Z)<= maxrelax/2.0) %>%
-      ompr::add_constraint(deviationA[y] <= absdevA[y],y =Y) %>%
-      ompr::add_constraint(deviationA[y] >= -absdevA[y],y =Y) %>%
-      ompr::add_constraint(sum_expr(absdevA[y],y = Y)<= maxrelax/2.0) %>%
-
+    result <- ompr::MIPModel() %>%
+      ompr::add_variable(transport[y, z], y = Y, z = Z, type = "continuous") %>%
+      ompr::add_variable(deviationA[y], y = Y, type = "continuous") %>%
+      ompr::add_variable(absdevA[y], y = Y, type = "continuous") %>%
+      ompr::add_variable(deviationB[z], z = Z, type = "continuous") %>%
+      ompr::add_variable(absdevB[z], z = Z, type = "continuous") %>%
+      ompr::set_objective(sum_expr(C[y, z] * transport[y, z], y = Y, z = Z), "min") %>%
+      ompr::add_constraint(sum_expr(transport[y, z], z = Z) == freqY[y] + deviationA[y], y = Y) %>%
+      ompr::add_constraint(sum_expr(transport[y, z], y = Y) == freqZ[z] + deviationB[z], z = Z) %>%
+      ompr::add_constraint(sum_expr(deviationA[y], y = Y) == 0) %>%
+      ompr::add_constraint(sum_expr(deviationB[z], z = Z) == 0) %>%
+      ompr::add_constraint(deviationB[z] <= absdevB[z], z = Z) %>%
+      ompr::add_constraint(deviationB[z] >= -absdevB[z], z = Z) %>%
+      ompr::add_constraint(sum_expr(absdevB[z], z = Z) <= maxrelax / 2.0) %>%
+      ompr::add_constraint(deviationA[y] <= absdevA[y], y = Y) %>%
+      ompr::add_constraint(deviationA[y] >= -absdevA[y], y = Y) %>%
+      ompr::add_constraint(sum_expr(absdevA[y], y = Y) <= maxrelax / 2.0) %>%
       ompr::solve_model(with_ROI(solver = solvR))
 
     # Solve the problem
 
-    solution       = ompr::get_solution(result, transport[y,z])
+    solution <- ompr::get_solution(result, transport[y, z])
 
     # Extract the values of the solution
 
-    transportA_val = matrix(solution[,4], length(Y),length(Z))
-    transportB_val = transportA_val
-
-
+    transportA_val <- matrix(solution[, 4], length(Y), length(Z))
+    transportB_val <- transportA_val
   } else {
+    b2 <- numeric(length(Z))
 
-    b2 = numeric(length(Z))
+    for (z in Z) {
+      stc_sum2 <- vector(length = nbX)
 
-    for (z in Z){
-
-      stc_sum2 = vector(length = nbX)
-
-      for (i in 1:nbX){
-
-        stc_sum2[i] = ifelse(length(indXB[[i]])==0,1/length(Z),length(indXB[[i]][inst$Zobserv[indXB[[i]]+nA] == z])/ length(indXB[[i]]))*length(indXA[[i]])/nA
-
+      for (i in 1:nbX) {
+        stc_sum2[i] <- ifelse(length(indXB[[i]]) == 0, 1 / length(Z), length(indXB[[i]][inst$Zobserv[indXB[[i]] + nA] == z]) / length(indXB[[i]])) * length(indXA[[i]]) / nA
       }
-      b2[z]= sum(stc_sum2)
+      b2[z] <- sum(stc_sum2)
     }
-    b2   = b2/sum(b2)
+    b2 <- b2 / sum(b2)
 
 
-    result <-  MIPModel() %>%
-
-      ompr::add_variable(transportA[y,z],y = Y, z = Z, type = "continuous",lb=0) %>%
-      ompr::add_variable(deviationB[z]  ,       z = Z, type = "continuous") %>%
-      ompr::add_variable(absdevB[z]     ,       z = Z, type = "continuous",lb=0) %>%
-
-      ompr::set_objective(sum_expr(C[y,z]*transportA[y,z],y = Y,z=Z) , "min") %>%
-
-      ompr::add_constraint(sum_expr(transportA[y,z], z = Z) == freqY[y], y =Y) %>%
-      ompr::add_constraint(sum_expr(transportA[y,z],y = Y) - deviationB[z] == b2[z], z = Z) %>%
-      ompr::add_constraint(sum_expr(deviationB[z],z = Z)== 0) %>%
-      ompr::add_constraint(deviationB[z]<= absdevB[z], z = Z) %>%
-      ompr::add_constraint(deviationB[z]>= -absdevB[z], z = Z) %>%
-      ompr::add_constraint(sum_expr(absdevB[z],z=Z)<= maxrelax/2.0) %>%
-
+    result <- MIPModel() %>%
+      ompr::add_variable(transportA[y, z], y = Y, z = Z, type = "continuous", lb = 0) %>%
+      ompr::add_variable(deviationB[z], z = Z, type = "continuous") %>%
+      ompr::add_variable(absdevB[z], z = Z, type = "continuous", lb = 0) %>%
+      ompr::set_objective(sum_expr(C[y, z] * transportA[y, z], y = Y, z = Z), "min") %>%
+      ompr::add_constraint(sum_expr(transportA[y, z], z = Z) == freqY[y], y = Y) %>%
+      ompr::add_constraint(sum_expr(transportA[y, z], y = Y) - deviationB[z] == b2[z], z = Z) %>%
+      ompr::add_constraint(sum_expr(deviationB[z], z = Z) == 0) %>%
+      ompr::add_constraint(deviationB[z] <= absdevB[z], z = Z) %>%
+      ompr::add_constraint(deviationB[z] >= -absdevB[z], z = Z) %>%
+      ompr::add_constraint(sum_expr(absdevB[z], z = Z) <= maxrelax / 2.0) %>%
       ompr::solve_model(with_ROI(solver = solvR))
 
-    solution       = ompr::get_solution(result, transportA[y,z])
+    solution <- ompr::get_solution(result, transportA[y, z])
 
-    transportA_val = matrix(solution$value, length(Y),length(Z))
+    transportA_val <- matrix(solution$value, length(Y), length(Z))
 
 
-    b1 = numeric(length(Y))
+    b1 <- numeric(length(Y))
 
-    for (y in Y){
+    for (y in Y) {
+      stc_sum2 <- vector(length = nbX)
 
-      stc_sum2 = vector(length = nbX)
-
-      for (i in 1:nbX){
-
-        stc_sum2[i] = ifelse(length(indXA[[i]])==0,1/length(Y),length(indXA[[i]][inst$Yobserv[indXA[[i]]] == y])/ length(indXA[[i]]))*length(indXB[[i]])/nB
-
+      for (i in 1:nbX) {
+        stc_sum2[i] <- ifelse(length(indXA[[i]]) == 0, 1 / length(Y), length(indXA[[i]][inst$Yobserv[indXA[[i]]] == y]) / length(indXA[[i]])) * length(indXB[[i]]) / nB
       }
 
-      b1[y]= sum(stc_sum2)}
-    b1   = b1/sum(b1)
+      b1[y] <- sum(stc_sum2)
+    }
+    b1 <- b1 / sum(b1)
 
-    result <-  MIPModel() %>%
-
-      ompr::add_variable(transportB[y,z],y = Y, z= Z, type = "continuous",lb=0) %>%
-      ompr::add_variable(deviationA[y]  , y = Y     , type = "continuous") %>%
-      ompr::add_variable(absdevA[y]     , y = Y     , type = "continuous",lb=0) %>%
-
-      ompr::set_objective(sum_expr(C[y,z]*transportB[y,z],y = Y,z=Z) , "min") %>%
-
-      ompr::add_constraint(sum_expr(transportB[y,z], z = Z) - deviationA[y] == b1[y], y =Y) %>%
-      ompr::add_constraint(sum_expr(transportB[y,z],y = Y) == freqZ[z], z = Z) %>%
-      ompr::add_constraint(sum_expr(deviationA[y],y = Y)== 0) %>%
-      ompr::add_constraint(deviationA[y] <= absdevA[y],y =Y) %>%
-      ompr::add_constraint(deviationA[y] >= -absdevA[y],y =Y) %>%
-      ompr::add_constraint(sum_expr(absdevA[y],y = Y)<= maxrelax/2.0) %>%
-
+    result <- MIPModel() %>%
+      ompr::add_variable(transportB[y, z], y = Y, z = Z, type = "continuous", lb = 0) %>%
+      ompr::add_variable(deviationA[y], y = Y, type = "continuous") %>%
+      ompr::add_variable(absdevA[y], y = Y, type = "continuous", lb = 0) %>%
+      ompr::set_objective(sum_expr(C[y, z] * transportB[y, z], y = Y, z = Z), "min") %>%
+      ompr::add_constraint(sum_expr(transportB[y, z], z = Z) - deviationA[y] == b1[y], y = Y) %>%
+      ompr::add_constraint(sum_expr(transportB[y, z], y = Y) == freqZ[z], z = Z) %>%
+      ompr::add_constraint(sum_expr(deviationA[y], y = Y) == 0) %>%
+      ompr::add_constraint(deviationA[y] <= absdevA[y], y = Y) %>%
+      ompr::add_constraint(deviationA[y] >= -absdevA[y], y = Y) %>%
+      ompr::add_constraint(sum_expr(absdevA[y], y = Y) <= maxrelax / 2.0) %>%
       ompr::solve_model(with_ROI(solver = solvR))
 
 
-    solution       = ompr::get_solution(result, transportB[y,z])
-    transportB_val = matrix(solution$value, length(Y),length(Z))
-
-
+    solution <- ompr::get_solution(result, transportB[y, z])
+    transportB_val <- matrix(solution$value, length(Y), length(Z))
   }
 
   ####
   # Get the individual transport from the group transport
 
-  if (indiv.method == "sequential"){
-
-    indpred = indiv_grp_closest(inst, transportA_val, transportB_val, percent_closest = percent.knn, which.DB = which.DB)
-
-  } else if (indiv.method == "optimal"){
-
-    indpred = indiv_grp_optimal(inst, transportA_val, transportB_val, percent_closest = percent.knn, solvr = solvR, which.DB = which.DB)
-
+  if (indiv.method == "sequential") {
+    indpred <- indiv_grp_closest(inst, transportA_val, transportB_val, percent_closest = percent.knn, which.DB = which.DB)
+  } else if (indiv.method == "optimal") {
+    indpred <- indiv_grp_optimal(inst, transportA_val, transportB_val, percent_closest = percent.knn, solvr = solvR, which.DB = which.DB)
   } else {}
 
-  if (which.DB == "A"){
+  if (which.DB == "A") {
+    YApred <- NULL
+    YBpred <- indpred$ZBtrans
+    estimatorZA <- array(rep(0, nbX * length(Y) * length(Z)), dim = c(nbX, length(Y), length(Z)))
+    estimatorYB <- NULL
 
-    YApred      = NULL
-    YBpred      = indpred$ZBtrans
-    estimatorZA = array(rep(0,nbX*length(Y)*length(Z)),dim = c(nbX,length(Y),length(Z)))
-    estimatorYB = NULL
+    DATA1_OT <- dataB[dataB[, 1] == unique(dataB[, 1])[1], ]
+    DATA2_OT <- dataB[dataB[, 1] == unique(dataB[, 1])[2], ]
 
-    DATA1_OT         = dataB[dataB[,1] == unique(dataB[,1])[1],]
-    DATA2_OT         = dataB[dataB[,1] == unique(dataB[,1])[2],]
-
-    if (index_DB_Y_Z[3] %in% nominal){
-
-      DATA1_OT$OTpred  = factor(plyr::mapvalues(YBpred,from = sort(unique(YBpred)),
-                                                to = levels(dataB[,3])[sort(unique(YBpred))]),
-                                                levels = levels(dataB[,3])[sort(unique(YBpred))])
+    if (index_DB_Y_Z[3] %in% nominal) {
+      DATA1_OT$OTpred <- factor(plyr::mapvalues(YBpred,
+        from = sort(unique(YBpred)),
+        to = levels(dataB[, 3])[sort(unique(YBpred))]
+      ),
+      levels = levels(dataB[, 3])[sort(unique(YBpred))]
+      )
     } else {
-
-      DATA1_OT$OTpred  = ordered(plyr::mapvalues(YBpred,from = sort(unique(YBpred)),
-                                                 to = levels(dataB[,3])[sort(unique(YBpred))]),
-                                                 levels = levels(dataB[,3])[sort(unique(YBpred))])
-
+      DATA1_OT$OTpred <- ordered(plyr::mapvalues(YBpred,
+        from = sort(unique(YBpred)),
+        to = levels(dataB[, 3])[sort(unique(YBpred))]
+      ),
+      levels = levels(dataB[, 3])[sort(unique(YBpred))]
+      )
     }
 
 
@@ -566,71 +538,77 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
     #    DATA1_OT$OTpred = as.ordered(DATA1_OT$OTpred)
 
     # } else {}
-
-
-  } else if (which.DB == "B"){
-
-    YApred = indpred$YAtrans
-    YBpred = NULL
+  } else if (which.DB == "B") {
+    YApred <- indpred$YAtrans
+    YBpred <- NULL
     # Compute the estimated probability distributions from predictions
-    estimatorZA = NULL
-    estimatorYB = array(rep(0,nbX*length(Y)*length(Z)),dim = c(nbX,length(Z),length(Y)))
+    estimatorZA <- NULL
+    estimatorYB <- array(rep(0, nbX * length(Y) * length(Z)), dim = c(nbX, length(Z), length(Y)))
 
-    DATA1_OT         = dataB[dataB[,1] == unique(dataB[,1])[1],]
-    DATA2_OT         = dataB[dataB[,1] == unique(dataB[,1])[2],]
+    DATA1_OT <- dataB[dataB[, 1] == unique(dataB[, 1])[1], ]
+    DATA2_OT <- dataB[dataB[, 1] == unique(dataB[, 1])[2], ]
 
-    if (index_DB_Y_Z[2] %in% nominal){
-
-        DATA2_OT$OTpred  = factor(plyr::mapvalues(YApred,from = sort(unique(YApred)),
-                                                  to = levels(dataB[,2])[sort(unique(YApred))]),
-                                                  levels = levels(dataB[,2])[sort(unique(YApred))])
+    if (index_DB_Y_Z[2] %in% nominal) {
+      DATA2_OT$OTpred <- factor(plyr::mapvalues(YApred,
+        from = sort(unique(YApred)),
+        to = levels(dataB[, 2])[sort(unique(YApred))]
+      ),
+      levels = levels(dataB[, 2])[sort(unique(YApred))]
+      )
     } else {
-
-        DATA2_OT$OTpred  = ordered(plyr::mapvalues(YApred,from = sort(unique(YApred)),
-                                                   to = levels(dataB[,2])[sort(unique(YApred))]),
-                                                   levels = levels(dataB[,2])[sort(unique(YApred))])
+      DATA2_OT$OTpred <- ordered(plyr::mapvalues(YApred,
+        from = sort(unique(YApred)),
+        to = levels(dataB[, 2])[sort(unique(YApred))]
+      ),
+      levels = levels(dataB[, 2])[sort(unique(YApred))]
+      )
     }
 
-    #if (is.ordered(dataB[,2])){
+    # if (is.ordered(dataB[,2])){
 
     #  DATA2_OT$OTpred = as.ordered(DATA2_OT$OTpred)
 
     # } else {}
-
   } else {
-
-    YApred = indpred$YAtrans
-    YBpred = indpred$ZBtrans
+    YApred <- indpred$YAtrans
+    YBpred <- indpred$ZBtrans
     # Compute the estimated probability distributions from predictions
-    estimatorZA = array(rep(0,nbX*length(Y)*length(Z)),dim = c(nbX,length(Y),length(Z)))
-    estimatorYB = array(rep(0,nbX*length(Y)*length(Z)),dim = c(nbX,length(Z),length(Y)))
+    estimatorZA <- array(rep(0, nbX * length(Y) * length(Z)), dim = c(nbX, length(Y), length(Z)))
+    estimatorYB <- array(rep(0, nbX * length(Y) * length(Z)), dim = c(nbX, length(Z), length(Y)))
 
-    DATA1_OT         = dataB[dataB[,1] == unique(dataB[,1])[1],]
-    DATA2_OT         = dataB[dataB[,1] == unique(dataB[,1])[2],]
+    DATA1_OT <- dataB[dataB[, 1] == unique(dataB[, 1])[1], ]
+    DATA2_OT <- dataB[dataB[, 1] == unique(dataB[, 1])[2], ]
 
-    if (index_DB_Y_Z[3] %in% nominal){
-
-      DATA1_OT$OTpred  = factor(plyr::mapvalues(YBpred,from = sort(unique(YBpred)),
-                                                to = levels(dataB[,3])[sort(unique(YBpred))]),
-                                                levels = levels(dataB[,3])[sort(unique(YBpred))])
+    if (index_DB_Y_Z[3] %in% nominal) {
+      DATA1_OT$OTpred <- factor(plyr::mapvalues(YBpred,
+        from = sort(unique(YBpred)),
+        to = levels(dataB[, 3])[sort(unique(YBpred))]
+      ),
+      levels = levels(dataB[, 3])[sort(unique(YBpred))]
+      )
     } else {
-
-      DATA1_OT$OTpred  = ordered(plyr::mapvalues(YBpred,from = sort(unique(YBpred)),
-                                                 to = levels(dataB[,3])[sort(unique(YBpred))]),
-                                                 levels = levels(dataB[,3])[sort(unique(YBpred))])
-
+      DATA1_OT$OTpred <- ordered(plyr::mapvalues(YBpred,
+        from = sort(unique(YBpred)),
+        to = levels(dataB[, 3])[sort(unique(YBpred))]
+      ),
+      levels = levels(dataB[, 3])[sort(unique(YBpred))]
+      )
     }
 
-    if (index_DB_Y_Z[2] %in% nominal){
-
-      DATA2_OT$OTpred  = factor(plyr::mapvalues(YApred,from = sort(unique(YApred)),
-                                                to = levels(dataB[,2])[sort(unique(YApred))]),
-                                levels = levels(dataB[,2])[sort(unique(YApred))])
+    if (index_DB_Y_Z[2] %in% nominal) {
+      DATA2_OT$OTpred <- factor(plyr::mapvalues(YApred,
+        from = sort(unique(YApred)),
+        to = levels(dataB[, 2])[sort(unique(YApred))]
+      ),
+      levels = levels(dataB[, 2])[sort(unique(YApred))]
+      )
     } else {
-
-      DATA2_OT$OTpred  = ordered(plyr::mapvalues(YApred,from = sort(unique(YApred)),
-                                                 to = levels(dataB[,2])[sort(unique(YApred))]),
-                                 levels = levels(dataB[,2])[sort(unique(YApred))])
+      DATA2_OT$OTpred <- ordered(plyr::mapvalues(YApred,
+        from = sort(unique(YApred)),
+        to = levels(dataB[, 2])[sort(unique(YApred))]
+      ),
+      levels = levels(dataB[, 2])[sort(unique(YApred))]
+      )
     }
 
     # DATA1_OT$OTpred  = as.factor(plyr::mapvalues(YBpred,from = sort(unique(YBpred)), to = levels(dataB[,3])[sort(unique(YBpred))]))
@@ -638,78 +616,63 @@ OT_outcome = function(datab, index_DB_Y_Z = 1:3,
 
     # if (is.ordered(dataB[,3])){
 
-      # DATA1_OT$OTpred = as.ordered(DATA1_OT$OTpred)
+    # DATA1_OT$OTpred = as.ordered(DATA1_OT$OTpred)
 
-    #} else {}
+    # } else {}
 
-    #if (is.ordered(dataB[,2])){
+    # if (is.ordered(dataB[,2])){
 
     #  DATA2_OT$OTpred = as.ordered(DATA2_OT$OTpred)
 
     # } else {}
-
   }
 
-  for (x in 1:nbX){
-
-    if (which.DB %in% c("BOTH","A")){
-
-      for (i in indXA[[x]]){
-
-        estimatorZA[x,inst$Yobserv[i],YBpred[i]] = estimatorZA[x,inst$Yobserv[i],YBpred[i]] +  1/sum(inst$Yobserv[indXA[[x]]] == inst$Yobserv[i])
+  for (x in 1:nbX) {
+    if (which.DB %in% c("BOTH", "A")) {
+      for (i in indXA[[x]]) {
+        estimatorZA[x, inst$Yobserv[i], YBpred[i]] <- estimatorZA[x, inst$Yobserv[i], YBpred[i]] + 1 / sum(inst$Yobserv[indXA[[x]]] == inst$Yobserv[i])
       }
 
 
-      for (y in Y){
-
-        if (sum(inst$Yobserv[indXA[[x]]] == y) == 0){
-
-          estimatorZA[x,y,] = 1/length(Z)*rep(1,length(Z))
+      for (y in Y) {
+        if (sum(inst$Yobserv[indXA[[x]]] == y) == 0) {
+          estimatorZA[x, y, ] <- 1 / length(Z) * rep(1, length(Z))
         }
-
       }
 
-      row.names(estimatorZA) = ID_prof
-      colnames(estimatorZA)  = as.character(levels(dataB[,2]))
-
+      row.names(estimatorZA) <- ID_prof
+      colnames(estimatorZA) <- as.character(levels(dataB[, 2]))
     } else {}
 
-    if (which.DB %in% c("BOTH","B")){
-
-      for (i in indXB[[x]]){
+    if (which.DB %in% c("BOTH", "B")) {
+      for (i in indXB[[x]]) {
 
         # estimatorYB[x,YApred[i],inst$Zobserv[i+nA]] = estimatorYB[x,YApred[i],inst$Zobserv[i+nA]] + 1/ sum(inst$Zobserv[indXB[[x]] + nA] == inst$Zobserv[i + nA])
-        estimatorYB[x,inst$Zobserv[i+nA],YApred[i]] = estimatorYB[x,inst$Zobserv[i+nA],YApred[i]] + 1/ sum(inst$Zobserv[indXB[[x]] + nA] == inst$Zobserv[i + nA])
+        estimatorYB[x, inst$Zobserv[i + nA], YApred[i]] <- estimatorYB[x, inst$Zobserv[i + nA], YApred[i]] + 1 / sum(inst$Zobserv[indXB[[x]] + nA] == inst$Zobserv[i + nA])
       }
 
-      for (z in Z){
-
-        if (sum(inst$Zobserv[indXB[[x]]+inst$nA] == z) == 0){
+      for (z in Z) {
+        if (sum(inst$Zobserv[indXB[[x]] + inst$nA] == z) == 0) {
 
           # estimatorYB[x,,z] = 1/length(Y)*rep(1,length(Y))
-          estimatorYB[x,z,] = 1/length(Y)*rep(1,length(Y))
-
+          estimatorYB[x, z, ] <- 1 / length(Y) * rep(1, length(Y))
         }
       }
 
-      row.names(estimatorYB) = ID_prof
-      colnames(estimatorYB)  = as.character(levels(dataB[,3]))
-
+      row.names(estimatorYB) <- ID_prof
+      colnames(estimatorYB) <- as.character(levels(dataB[, 3]))
     } else {}
-
   }
 
-  tend = Sys.time()
+  tend <- Sys.time()
 
-  res_OT = list(time_exe = difftime(tend,tstart), gamma_A = transportA_val,gamma_B = transportB_val,
-                profile = data.frame(ID = ID_prof,prof),res_prox = inst, estimatorZA= estimatorZA,estimatorYB = estimatorYB,DATA1_OT = DATA1_OT,DATA2_OT  = DATA2_OT)
+  res_OT <- list(
+    time_exe = difftime(tend, tstart), gamma_A = transportA_val, gamma_B = transportB_val,
+    profile = data.frame(ID = ID_prof, prof), res_prox = inst, estimatorZA = estimatorZA, estimatorYB = estimatorYB, DATA1_OT = DATA1_OT, DATA2_OT = DATA2_OT
+  )
 
   # otres class object
-  class(res_OT) = "otres"
+  class(res_OT) <- "otres"
 
   return(res_OT)
-
 }
-
-
-

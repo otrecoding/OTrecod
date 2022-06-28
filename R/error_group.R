@@ -60,16 +60,19 @@
 #' @examples
 #'
 #' # Basic examples:
-#' Z1 = as.factor(sample(1:3,50,replace = TRUE)); length(Z1)
-#' Z3 = as.factor(sample(1:2,50,replace = TRUE)); length(Z3)
-#' Z2 = as.factor(sample(c("A","B","C","D"),50, replace = TRUE)); length(Z2)
-#' Z4 = as.factor(sample(c("A","B","C","D","E"),50, replace = TRUE)); length(Z4)
+#' Z1 <- as.factor(sample(1:3, 50, replace = TRUE))
+#' length(Z1)
+#' Z3 <- as.factor(sample(1:2, 50, replace = TRUE))
+#' length(Z3)
+#' Z2 <- as.factor(sample(c("A", "B", "C", "D"), 50, replace = TRUE))
+#' length(Z2)
+#' Z4 <- as.factor(sample(c("A", "B", "C", "D", "E"), 50, replace = TRUE))
+#' length(Z4)
 #'
 #' # By only grouping consecutive levels of Z1:
-#' error_group(Z1,Z4)
+#' error_group(Z1, Z4)
 #' # By only all possible levels of Z1, consecutive or not:
-#' error_group(Z3,Z1,FALSE)
-#'
+#' error_group(Z3, Z1, FALSE)
 #'
 #' \donttest{
 #'
@@ -79,64 +82,56 @@
 #'
 #' data(tab_test)
 #' # Example with n1 = n2 = 70 and only X1 and X2 as covariates
-#' tab_test2 = tab_test[c(1:70,5001:5070),1:5]
+#' tab_test2 <- tab_test[c(1:70, 5001:5070), 1:5]
 #'
 #' ### An example of JOINT model (Manhattan distance)
 #' # Suppose we want to impute the missing parts of Y1 in DB2 only ...
-#' try1J = OT_joint(tab_test2, nominal = c(1,4:5), ordinal = c(2,3),
-#'                  dist.choice = "M", which.DB = "B")
+#' try1J <- OT_joint(tab_test2,
+#'   nominal = c(1, 4:5), ordinal = c(2, 3),
+#'   dist.choice = "M", which.DB = "B"
+#' )
 #'
 #' # Error rates between Y2 and the predictions of Y1 in the DB 2
 #' # by grouping the levels of Y1:
-#' error_group(try1J$DATA2_OT$Z,try1J$DATA2_OT$OTpred)
-#' table(try1J$DATA2_OT$Z,try1J$DATA2_OT$OTpred)
-#'
+#' error_group(try1J$DATA2_OT$Z, try1J$DATA2_OT$OTpred)
+#' table(try1J$DATA2_OT$Z, try1J$DATA2_OT$OTpred)
 #' }
 #'
-#'
-error_group = function(REF,Z,ord = TRUE){
-
-  if ((is.null(levels(REF)))|(is.null(levels(Z)))){
-
+error_group <- function(REF, Z, ord = TRUE) {
+  if ((is.null(levels(REF))) | (is.null(levels(Z)))) {
     stop("REF and Z must be factors")
-
   } else {}
 
 
-  if (length(levels(REF))>length(levels(Z))){
-
+  if (length(levels(REF)) > length(levels(Z))) {
     stop("The number of levels for Z must be greater than the number of levels for REF")
-
   } else {}
 
-  cc      = try_group(Z,REF,ordin = ord)
+  cc <- try_group(Z, REF, ordin = ord)
 
-  error_g = vcram = kap = rankor = vector(length = nrow(cc[[1]]))
+  error_g <- vcram <- kap <- rankor <- vector(length = nrow(cc[[1]]))
 
-  for (k in 1:nrow(cc[[1]])){
+  for (k in 1:nrow(cc[[1]])) {
+    Zbis <- as.character(Z)
 
-    Zbis = as.character(Z)
-
-    for (j in 1:ncol(cc[[1]])){
-
-      Zbis[Zbis %in% cc[[2]][[cc[[1]][k,j]]]] = levels(REF)[j]
-
+    for (j in 1:ncol(cc[[1]])) {
+      Zbis[Zbis %in% cc[[2]][[cc[[1]][k, j]]]] <- levels(REF)[j]
     }
 
-    Zbis = ordered(as.factor(Zbis),levels = levels(REF))
+    Zbis <- ordered(as.factor(Zbis), levels = levels(REF))
 
-    stoc      = data.frame(REF,Zbis)
-    vcram[k]  = round(suppressWarnings(StatMatch::pw.assoc(REF~Zbis,data = stoc)$V),2)
-    kap[k]    = round(vcd::Kappa(table(REF,Zbis))[[1]][1],3)
-    rankor[k] = round(stats::cor(rank(REF),rank(Zbis)),3)
+    stoc <- data.frame(REF, Zbis)
+    vcram[k] <- round(suppressWarnings(StatMatch::pw.assoc(REF ~ Zbis, data = stoc)$V), 2)
+    kap[k] <- round(vcd::Kappa(table(REF, Zbis))[[1]][1], 3)
+    rankor[k] <- round(stats::cor(rank(REF), rank(Zbis)), 3)
 
-    error_g[k]  = 100 - round(sum(diag(table(REF,Zbis)))*100/sum(table(REF,Zbis)),1)
-    error_combi = data.frame(combi = row.names(cc[[1]]),error_rate= error_g,
-                             Kappa = kap, Vcramer = vcram, RankCor = rankor)
-    error_combi = error_combi[sort.list(error_combi[,2]),]
-
+    error_g[k] <- 100 - round(sum(diag(table(REF, Zbis))) * 100 / sum(table(REF, Zbis)), 1)
+    error_combi <- data.frame(
+      combi = row.names(cc[[1]]), error_rate = error_g,
+      Kappa = kap, Vcramer = vcram, RankCor = rankor
+    )
+    error_combi <- error_combi[sort.list(error_combi[, 2]), ]
   }
 
   return(error_combi)
-
 }
