@@ -55,10 +55,10 @@
 #'
 #' Continuous shared variables (predictors) with infinite numbers of values have to be categorized before being introduced in the function.
 #' To assist users in this task, the function \code{OT_joint} integrates in its syntax a process dedicated to the categorization of continuous covariates. For this, it is necessary to rigorously fill in
-#' the arguments \code{quanti} and \code{convert.clss}.
+#' the arguments \code{quanti} and \code{convert.class}.
 #' The first one informs about the column indexes of the continuous variables to be transformed in ordered factor while the second one specifies the corresponding number of desired balanced levels (for unbalanced levels, users must do transformations by themselves).
-#' Therefore \code{convert.num} and \code{convert.clss} must be vectors of same length, but if the length of \code{quanti} exceeds 1, while the length of \code{convert.clss} is 1, then, by default, all the covariates to convert will have the same number of classes (transformation by quantiles),
-#' that corresponds to the value specified in the argument \code{convert.clss}.
+#' Therefore \code{convert.num} and \code{convert.class} must be vectors of same length, but if the length of \code{quanti} exceeds 1, while the length of \code{convert.class} is 1, then, by default, all the covariates to convert will have the same number of classes (transformation by quantiles),
+#' that corresponds to the value specified in the argument \code{convert.class}.
 #' Notice that only covariates can be transformed (not target variables) and that any incomplete information must have been taken into account beforehand (via the dedicated functions \code{\link{merge_dbs}} or \code{\link{imput_cov}} for examples).
 #' Moreover, all the indexes informed in the argument \code{convert.num} must also be informed in the argument \code{quanti}.
 #' Finally, it is recommended to declare all discrete covariates as ordinal factors using the argument \code{ordinal}.
@@ -101,7 +101,7 @@
 #' @param ordinal a vector of column indexes of all the ordinal variables (database identifier and target variables included if it is the case for them).
 #' @param logic a vector of column indexes of all the boolean variables of the data.frame.
 #' @param convert.num indexes of the continuous (quantitative) variables. They will be automatically converted in ordered factors. By default, no continuous variables is assumed in the database.
-#' @param convert.clss a vector indicating for each continuous variable to convert, the corresponding desired number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} equals 1 (only one integer),
+#' @param convert.class a vector indicating for each continuous variable to convert, the corresponding desired number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_class} equals 1 (only one integer),
 #' each discretization will count the same number of levels (quantiles).
 #' @param dist.choice a character string (with quotes) corresponding to the distance function chosen between: the euclidean distance ("E", by default), the Manhattan distance ("M"),
 #' the Gower distance ("G"), and the Hamming distance ("H") for binary covariates only.
@@ -226,7 +226,7 @@
 #' simu_data3 <- simu_data2[!is.na(simu_data2$Age), ]
 #'
 #' try2J <- OT_joint(simu_data3,
-#'   convert.num = 6, convert.clss = 3,
+#'   convert.num = 6, convert.class = 3,
 #'   nominal = c(1, 4:5), ordinal = 2:3,
 #'   dist.choice = "H", which.DB = "BOTH"
 #' )
@@ -234,7 +234,7 @@
 #'
 OT_joint <- function(datab, index_DB_Y_Z = 1:3,
                      nominal = NULL, ordinal = NULL, logic = NULL,
-                     convert.num = NULL, convert.clss = NULL, dist.choice = "E", percent.knn = 1,
+                     convert.num = NULL, convert.class = NULL, dist.choice = "E", percent.knn = 1,
                      maxrelax = 0, lambda.reg = 0.0, prox.X = 0.10, solvR = "glpk", which.DB = "BOTH") {
   if (dist.choice %in% c("M", "Manhattan", "manhattan")) {
     dist.choice <- "M"
@@ -262,7 +262,7 @@ OT_joint <- function(datab, index_DB_Y_Z = 1:3,
     stop("Improper value for prox.X")
   } else {}
 
-  if (length(convert.num) < length(convert.clss)) {
+  if (length(convert.num) < length(convert.class)) {
     stop("The arguments quanti and convert.num must be equal because the algorithm does not handle continuous covariates")
   } else {}
 
@@ -284,7 +284,7 @@ OT_joint <- function(datab, index_DB_Y_Z = 1:3,
   dataB <- transfo_dist(datab,
     index_DB_Y_Z = index_DB_Y_Z,
     quanti = convert.num, nominal = nominal, ordinal = ordinal, logic = logic,
-    convert_num = convert.num, convert_clss = convert.clss,
+    convert_num = convert.num, convert_class = convert.class,
     prep_choice = dist.choice
   )
 

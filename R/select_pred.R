@@ -11,11 +11,11 @@
 #' The expected input database is a data.frame that especially requires a specific column of row identifier and a target variable (or outcome) having a finite number of values or classes (ordinal, nominal or discrete type). Notice that if the chosen outcome is in numeric form, it will be automatically converted in ordinal type.
 #' The number of predictors is not a constraint for \code{select_pred} (even if, with less than three variables a process of variables selection has no real sense...), and can exceed the number of rows (no problem of high dimensionality here).
 #' The predictors can be continuous (quantitative), boolean, nominal or ordinal with or without missing values.
-#' In presence of numeric variables, users can decide to discretize them or a part of them by themselves beforehand. They can also choose to use the internal process directly integrated in the function. Indeed, to assist users in this task, two arguments called \code{convert_num} and \code{convert_clss} dedicated to these transformations are available in input of the function.
+#' In presence of numeric variables, users can decide to discretize them or a part of them by themselves beforehand. They can also choose to use the internal process directly integrated in the function. Indeed, to assist users in this task, two arguments called \code{convert_num} and \code{convert_class} dedicated to these transformations are available in input of the function.
 #' These options make the function \code{select_pred} particularly adapted to the function \code{\link{OT_joint}} which only allows data.frame with categorical covariates.
-#' With the argument \code{convert_num}, users choose the continuous variables to convert and the related argument \code{convert_clss} specifies the corresponding number of classes chosen for each discretization.
-#' It is the reason why these two arguments must be two vectors of indexes of same length. Nevertheless, an unique exception exists when \code{convert_clss} is equalled to a scalar \eqn{S}. In this case, all the continuous predictors selected for conversion will be discretized with a same number of classes S.
-#' By example, if \code{convert_clss = 4}, all the continuous variables specified in the \code{convert_num} argument will be discretized by quartiles. Moreover, notice that missing values from incomplete predictors to convert are not taken into account during the conversion, and that each predictor specified in the argument \code{convert_num}
+#' With the argument \code{convert_num}, users choose the continuous variables to convert and the related argument \code{convert_class} specifies the corresponding number of classes chosen for each discretization.
+#' It is the reason why these two arguments must be two vectors of indexes of same length. Nevertheless, an unique exception exists when \code{convert_class} is equalled to a scalar \eqn{S}. In this case, all the continuous predictors selected for conversion will be discretized with a same number of classes S.
+#' By example, if \code{convert_class = 4}, all the continuous variables specified in the \code{convert_num} argument will be discretized by quartiles. Moreover, notice that missing values from incomplete predictors to convert are not taken into account during the conversion, and that each predictor specified in the argument \code{convert_num}
 #' must be also specified in the argument \code{quanti}.
 #' In this situation, the label of the outcome must be entered in the argument \code{Y}, and the arguments \code{Z} and \code{OUT} must keep their default values.
 #' Finally, the order of the column indexes related to the identifier and the outcome have no importance.
@@ -84,7 +84,7 @@
 #' @param ordinal a vector of integers which corresponds to the column indexes of all the categorical ordinal predictors.
 #' @param logic a vector of integers indicating the indexes of logical predictors. No index remained by default
 #' @param convert_num a vector of integers indicating the indexes of quantitative variables to convert in ordered factors. No index remained by default. Each index selected has to be defined as quantitative in the argument \code{quanti}.
-#' @param convert_clss a vector of integers indicating the number of classes related to each transformation of quantitative variable in ordered factor. The length of this vector can not exceed the length of the argument \code{convert_num}. Nevertheless, if length(\code{convert_num}) > 1 and length(\code{convert_clss}) = 1,
+#' @param convert_class a vector of integers indicating the number of classes related to each transformation of quantitative variable in ordered factor. The length of this vector can not exceed the length of the argument \code{convert_num}. Nevertheless, if length(\code{convert_num}) > 1 and length(\code{convert_class}) = 1,
 #' all quantitative predictors selected for discretization will have by default the same number of classes.
 #' @param thresh_cat a threshold associated to the Cramer's V coefficient (= 0.30 by default)
 #' @param thresh_num a threshold associated to the Spearman's coefficient of correlation (= 0.70 by default)
@@ -196,7 +196,7 @@
 #' test_DB4 <- select_pred(simu_data,
 #'   Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-#'   convert_num = 8, convert_clss = 3,
+#'   convert_num = 8, convert_class = 3,
 #'   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
 #'   RF = TRUE, RF_condi = TRUE, RF_condi_thr = 0.60, RF_SEED = 3023
 #' )
@@ -229,7 +229,7 @@
 #' test_DB6 <- select_pred(simu_B,
 #'   Y = "Yb2",
 #'   quanti = 7, nominal = c(1, 3:4, 6), ordinal = c(2, 5),
-#'   convert_num = 7, convert_clss = 3,
+#'   convert_num = 7, convert_class = 3,
 #'   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
 #'   RF = TRUE, RF_condi = TRUE, RF_condi_thr = 0.60, RF_SEED = 3023
 #' )
@@ -237,7 +237,7 @@
 #'
 select_pred <- function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
                         quanti = NULL, nominal = NULL, ordinal = NULL, logic = NULL,
-                        convert_num = NULL, convert_clss = NULL,
+                        convert_num = NULL, convert_class = NULL,
                         thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
                         RF = TRUE, RF_ntree = 500, RF_condi = FALSE, RF_condi_thr = 0.20, RF_SEED = sample(1:1000000, 1)) {
   if (!(OUT %in% c("Y", "Z"))) {
@@ -298,7 +298,7 @@ select_pred <- function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
   stopifnot(!is.character(nominal))
   stopifnot(!is.character(logic))
   stopifnot(!is.character(convert_num))
-  stopifnot(!is.character(convert_clss))
+  stopifnot(!is.character(convert_class))
   stopifnot(length(intersect(ordinal, quanti)) == 0)
   stopifnot(length(intersect(ordinal, nominal)) == 0)
   stopifnot(length(intersect(ordinal, quanti)) == 0)
@@ -316,18 +316,18 @@ select_pred <- function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
   } else {}
 
 
-  if (length(convert_clss) > length(convert_num)) {
-    stop("Inconsistencies between convert_num and convert_clss")
+  if (length(convert_class) > length(convert_num)) {
+    stop("Inconsistencies between convert_num and convert_class")
   } else {}
 
 
-  if ((length(convert_clss) > 1) & (length(convert_clss) != length(convert_num))) {
-    stop("Inconsistencies between convert_num and convert_clss")
+  if ((length(convert_class) > 1) & (length(convert_class) != length(convert_num))) {
+    stop("Inconsistencies between convert_num and convert_class")
   } else {}
 
 
-  if (length(convert_clss) == 1) {
-    convert_clss <- rep(convert_clss, length(convert_num))
+  if (length(convert_class) == 1) {
+    convert_class <- rep(convert_class, length(convert_num))
   } else {}
 
 
@@ -340,7 +340,7 @@ select_pred <- function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
   indexZ <- (1:ncol(databa))[colnames(databa) == Z]
   index_DB_Y_Z <- c(ID, indexY, indexZ)
 
-  convert_clss <- convert_clss[!(convert_num %in% index_DB_Y_Z)]
+  convert_class <- convert_class[!(convert_num %in% index_DB_Y_Z)]
   convert_num <- setdiff(convert_num, index_DB_Y_Z)
 
 
@@ -411,7 +411,7 @@ select_pred <- function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
       tt <- tt + 1
       databa[, k] <- cut(databa[, k],
         breaks = stats::quantile(databa[, k],
-          probs = seq(0, 1, by = 1 / convert_clss[tt]), na.rm = TRUE
+          probs = seq(0, 1, by = 1 / convert_class[tt]), na.rm = TRUE
         ),
         include.lowest = TRUE, ordered_result = TRUE
       )

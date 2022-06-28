@@ -102,7 +102,7 @@
 #' try1 <- OT_outcome(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
 #'   dist.choice = "G", percent.knn = 0.90, maxrelax = 0,
-#'   convert.num = 8, convert.clss = 3,
+#'   convert.num = 8, convert.class = 3,
 #'   indiv.method = "sequential", which.DB = "BOTH", prox.dist = 0.30
 #' )
 #'
@@ -125,7 +125,7 @@
 #' try2 <- OT_outcome(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
 #'   dist.choice = "G", percent.knn = 0.90, maxrelax = 0, prox.dist = 0.3,
-#'   convert.num = 8, convert.clss = 3,
+#'   convert.num = 8, convert.class = 3,
 #'   indiv.method = "sequential", which.DB = "B"
 #' )
 #'

@@ -61,10 +61,10 @@
 #'
 #' D. TRANSFORMATIONS OF CONTINUOUS COVARIATES
 #'
-#' The function \code{OT_outcome} integrates in its syntax a process dedicated to the categorization of continuous covariates. For this, it is necessary to rigorously fill in the arguments \code{convert.num} and \code{convert.clss}.
+#' The function \code{OT_outcome} integrates in its syntax a process dedicated to the categorization of continuous covariates. For this, it is necessary to rigorously fill in the arguments \code{convert.num} and \code{convert.class}.
 #' The first one informs about the indexes in database of the continuous variables to transform in ordered factor while the second one specifies the corresponding number of desired balanced levels (for unbalanced levels, users must do transformations by themselves).
-#' Therefore \code{convert.num} and \code{convert.clss} must be vectors of same length, but if the length of \code{convert.num} exceeds 1, while the length of \code{convert.clss} is 1, then, by default, all the covariates to convert will have the same number of classes,
-#' that corresponds to the value specified in the argument \code{convert.clss}.
+#' Therefore \code{convert.num} and \code{convert.class} must be vectors of same length, but if the length of \code{convert.num} exceeds 1, while the length of \code{convert.class} is 1, then, by default, all the covariates to convert will have the same number of classes,
+#' that corresponds to the value specified in the argument \code{convert.class}.
 #' Please notice that only covariates can be transformed (not outcomes) and missing informations are not taken into account for the transformations.
 #' Moreover, all the indexes informed in the argument \code{convert.num} must also be informed in the argument \code{quanti}.
 #'
@@ -107,7 +107,7 @@
 #' @param ordinal a vector of column indexes of all the ordinal variables (database identifier and target variables included if it is the case for them).
 #' @param logic a vector of column indexes of all the boolean variables of the data.frame.
 #' @param convert.num indexes of the continuous (quantitative) variables to convert in ordered factors if necessary. All declared indexes in this argument must have been declared in the argument \code{quanti} (no conversion by default).
-#' @param convert.clss a vector indicating for each continuous variable to convert, the corresponding desired number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} equals 1 (only one integer),
+#' @param convert.class a vector indicating for each continuous variable to convert, the corresponding desired number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_class} equals 1 (only one integer),
 #' each discretization will count the same number of levels (quantiles).
 #' @param dist.choice a character string (with quotes) corresponding to the distance function chosen between: the euclidean distance ("E", by default), The Manhattan distance ("M"),
 #' the Gower distance ("G"), the Hamming distance ("H") for binary covariates only, and the Euclidean or Manhattan distance computed from principal components of a factor analysis of mixed data ("FAMD"). See (1) for details.
@@ -211,7 +211,7 @@
 #' try2 <- OT_outcome(simu_dat,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
 #'   dist.choice = "G", maxrelax = 0,
-#'   convert.num = 8, convert.clss = 3,
+#'   convert.num = 8, convert.class = 3,
 #'   indiv.method = "sequential", which.DB = "B"
 #' )
 #'
@@ -228,7 +228,7 @@
 #' try3 <- OT_outcome(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
 #'   dist.choice = "H", maxrelax = 0,
-#'   convert.num = 8, convert.clss = 3,
+#'   convert.num = 8, convert.class = 3,
 #'   indiv.method = "sequential", which.DB = "B"
 #' )
 #'
@@ -275,7 +275,7 @@
 #'
 OT_outcome <- function(datab, index_DB_Y_Z = 1:3,
                        quanti = NULL, nominal = NULL, ordinal = NULL, logic = NULL,
-                       convert.num = NULL, convert.clss = NULL, FAMD.coord = "NO", FAMD.perc = 0.8,
+                       convert.num = NULL, convert.class = NULL, FAMD.coord = "NO", FAMD.perc = 0.8,
                        dist.choice = "E", percent.knn = 1,
                        maxrelax = 0, indiv.method = "sequential", prox.dist = 0,
                        solvR = "glpk", which.DB = "BOTH") {
@@ -329,7 +329,7 @@ OT_outcome <- function(datab, index_DB_Y_Z = 1:3,
   dataB <- transfo_dist(datab,
     index_DB_Y_Z = index_DB_Y_Z,
     quanti = quanti, nominal = nominal, ordinal = ordinal, logic = logic,
-    convert_num = convert.num, convert_clss = convert.clss,
+    convert_num = convert.num, convert_class = convert.class,
     prep_choice = dist.choice, info = FAMD.perc
   )
 

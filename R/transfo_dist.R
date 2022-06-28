@@ -23,7 +23,7 @@
 #' B. TRANSFORMATIONS OF CONTINUOUS COVARIATES
 #'
 #' Because some algorithms dedicated to solving recoding problems like \code{JOINT} and \code{R-JOINT} (see (1) and/or the documentation of \code{\link{OT_joint}}) requires the use of no continuous covariates, the function \code{transfo_dist} integrates in is syntax
-#' a process dedicated to the categorization of continuous variables. For this, it is necessary to rigorously fill in the arguments \code{convert_num} and \code{convert_clss}. The first one specifies the indexes of continuous variables to transform
+#' a process dedicated to the categorization of continuous variables. For this, it is necessary to rigorously fill in the arguments \code{convert_num} and \code{convert_class}. The first one specifies the indexes of continuous variables to transform
 #' in ordered factors while the second one assigns the corresponding desired number of levels.
 #' Only covariates should be transformed (not outcomes) and missing informations are not taken into account for the transformations.
 #' Notice that all the indexes informed in the argument \code{convert_num} must also be informed in the argument \code{quanti}.
@@ -64,7 +64,7 @@
 #' @param ordinal the column indexes of all the ordinal variables (DB identification and target variables included) stored in a vector.
 #' @param logic the column indexes of all the boolean variables stored in a vector.
 #' @param convert_num the column indexes of the continuous (quantitative) variables to convert in ordered factors. All indexes declared in this argument must have been declared in the argument \code{quanti} (no conversion by default).
-#' @param convert_clss according to the argument \code{convert_num}, a vector indicating for each continuous variable to convert the corresponding desired number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_clss} is equal to 1 (only one integer),
+#' @param convert_class according to the argument \code{convert_num}, a vector indicating for each continuous variable to convert the corresponding desired number of levels. If the length of the argument \code{convert_num} exceeds 1 while the length of \code{convert_class} is equal to 1 (only one integer),
 #' each discretization will count the same number of levels.
 #' @param prep_choice a character string corresponding to the distance function chosen between: the euclidean distance ("E", by default), the Manhattan distance ("M"),
 #' the Gower distance ("G"), the Hamming (also called binary) distance ("H"), and a distance computed from principal components of a factor analysis of mixed data ("FAMD").
@@ -140,11 +140,11 @@
 #' # Column indexes related to potential binary covariates or covariates with
 #' # finite number of values must be include in the ordinal option.
 #' # So in simu_data, the discretization of the variable age is required (index=8),
-#' # using the convert_num and convert_clss arguments (for tertiles = 3):
+#' # using the convert_num and convert_class arguments (for tertiles = 3):
 #'
 #' try4 <- transfo_dist(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-#'   convert_num = 8, convert_clss = 3, prep_choice = "H"
+#'   convert_num = 8, convert_class = 3, prep_choice = "H"
 #' )
 #'
 #'
@@ -161,7 +161,7 @@
 #'
 transfo_dist <- function(DB, index_DB_Y_Z = 1:3,
                          quanti = NULL, nominal = NULL, ordinal = NULL, logic = NULL,
-                         convert_num = NULL, convert_clss = NULL,
+                         convert_num = NULL, convert_class = NULL,
                          prep_choice = "E", info = 0.8) {
   if (ncol(DB) < 4) {
     stop("Invalid number of columns in DB: At least 4")
@@ -232,22 +232,22 @@ transfo_dist <- function(DB, index_DB_Y_Z = 1:3,
     stop("Inconsistencies between convert_num and quanti arguments")
   } else {}
 
-  if (length(convert_clss) > length(convert_num)) {
-    stop("Inconsistencies between convert_num and convert_clss")
+  if (length(convert_class) > length(convert_num)) {
+    stop("Inconsistencies between convert_num and convert_class")
   } else {}
 
-  if ((length(convert_clss) > 1) & (length(convert_clss) != length(convert_num))) {
-    stop("Inconsistencies between convert_num and convert_clss")
+  if ((length(convert_class) > 1) & (length(convert_class) != length(convert_num))) {
+    stop("Inconsistencies between convert_num and convert_class")
   } else {}
 
 
-  if (length(convert_clss) == 1) {
-    convert_clss <- rep(convert_clss, length(convert_num))
+  if (length(convert_class) == 1) {
+    convert_class <- rep(convert_class, length(convert_num))
   } else {}
 
   # Exclude systematically Y and Z from discretization
 
-  convert_clss <- convert_clss[convert_num %in% setdiff(convert_num, index_DB_Y_Z)]
+  convert_class <- convert_class[convert_num %in% setdiff(convert_num, index_DB_Y_Z)]
   convert_num <- setdiff(convert_num, index_DB_Y_Z)
 
 
@@ -257,7 +257,7 @@ transfo_dist <- function(DB, index_DB_Y_Z = 1:3,
       tt <- tt + 1
       DB[, k] <- cut(DB[, k],
         breaks = stats::quantile(DB[, k],
-          probs = seq(0, 1, by = 1 / convert_clss[tt]), na.rm = TRUE
+          probs = seq(0, 1, by = 1 / convert_class[tt]), na.rm = TRUE
         ),
         include.lowest = TRUE, ordered_result = TRUE
       )
