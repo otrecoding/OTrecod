@@ -15,7 +15,7 @@
 #' A. PAIRWISE ASSOCIATION BETWEEN \eqn{Y} AND \eqn{Z}
 #'
 #' The first step uses standard criterions (Cramer's V, and Spearman's rank correlation coefficient) to evaluate associations between two ordinal variables in both databases or in only one database.
-#' When the argument \code{group.clss = TRUE}, these informations can be completed by those provided by the function \code{\link{error_group}}, which is directly integrate in the function \code{verif_OT}.
+#' When the argument \code{group.class = TRUE}, these informations can be completed by those provided by the function \code{\link{error_group}}, which is directly integrate in the function \code{verif_OT}.
 #' Assuming that \eqn{n_Y > n_Z}, and that one of the two scales of \eqn{Y} or \eqn{Z} is unknown, this function gives additional informations about the potential link between the levels of the unknown scale.
 #' The function proceeds to this result in two steps. Firsty, \code{\link{error_group}} groups combinations of modalities of \eqn{Y} to build all possible variables \eqn{Y'} verifying \eqn{n_{Y'} = n_Z}.
 #' Secondly, the function studies the fluctuations in the association of \eqn{Z} with each new variable \eqn{Y'} by using adapted comparisons criterions (see the documentation of \code{\link{error_group}} for more details).
@@ -52,8 +52,8 @@
 #' be simply solved by increasing this value.
 #'
 #' @param ot_out an otres object from \code{\link{OT_outcome}} or \code{\link{OT_joint}}
-#' @param group.clss a boolean indicating if the results related to the proximity between outcomes by grouping levels are requested in output (\code{FALSE} by default).
-#' @param ordinal a boolean that indicates if \eqn{Y} and \eqn{Z} are ordinal (\code{TRUE} by default) or not. This argument is only useful in the context of groups of levels (\code{group.clss}=TRUE).
+#' @param group.class a boolean indicating if the results related to the proximity between outcomes by grouping levels are requested in output (\code{FALSE} by default).
+#' @param ordinal a boolean that indicates if \eqn{Y} and \eqn{Z} are ordinal (\code{TRUE} by default) or not. This argument is only useful in the context of groups of levels (\code{group.class}=TRUE).
 #' @param stab.prob a boolean indicating if the results related to the stability of the algorithm are requested in output (\code{FALSE} by default).
 #' @param min.neigb a value indicating the minimal required number of neighbors to consider in the estimation of stability (1 by default).
 #'
@@ -61,7 +61,7 @@
 #' \item{nb.profil}{the number of profiles of covariates}
 #' \item{conf.mat}{the global confusion matrix between \eqn{Y} and \eqn{Z}}
 #' \item{res.prox}{a summary table related to the association measures between \eqn{Y} and \eqn{Z}}
-#' \item{res.grp}{a summary table related to the study of the proximity of \eqn{Y} and \eqn{Z} using group of levels. Only if the \code{group.clss} argument is set to TRUE.}
+#' \item{res.grp}{a summary table related to the study of the proximity of \eqn{Y} and \eqn{Z} using group of levels. Only if the \code{group.class} argument is set to TRUE.}
 #' \item{hell}{Hellinger distances between observed and predicted distributions}
 #' \item{eff.neig}{a table which corresponds to a count of conditional probabilities according to the number of neighbors used in their computation (only the first ten values)}
 #' \item{res.stab}{a summary table related to the stability of the algorithm}
@@ -129,7 +129,7 @@
 #'   indiv.method = "sequential", which.DB = "B"
 #' )
 #'
-#' ver2 <- verif_OT(try2, group.clss = TRUE, ordinal = TRUE)
+#' ver2 <- verif_OT(try2, group.class = TRUE, ordinal = TRUE)
 #' ver2
 #'
 #'
@@ -143,17 +143,17 @@
 #' # - Using an outcome model (individual assignment with knn)
 #' #-----
 #'
-#' ver3 <- verif_OT(try2, group.clss = TRUE, ordinal = TRUE, stab.prob = TRUE, min.neigb = 5)
+#' ver3 <- verif_OT(try2, group.class = TRUE, ordinal = TRUE, stab.prob = TRUE, min.neigb = 5)
 #' ver3
 #' }
 #'
-verif_OT <- function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALSE, min.neigb = 1) {
+verif_OT <- function(ot_out, group.class = FALSE, ordinal = TRUE, stab.prob = FALSE, min.neigb = 1) {
   if (class(ot_out) != "otres") {
     stop("ot_out must be an otres object: output from OT_outcome or OT_joint")
   } else {}
 
 
-  stopifnot(is.logical(group.clss))
+  stopifnot(is.logical(group.class))
   stopifnot(is.logical(ordinal))
   stopifnot(is.logical(stab.prob))
 
@@ -300,7 +300,7 @@ verif_OT <- function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FAL
 
   # Using comparisons by grouping levels: error_group
 
-  if (group.clss == TRUE) {
+  if (group.class == TRUE) {
     n1l <- length(levels(as.factor(predZ)))
     n2l <- length(levels(as.factor(predY)))
 

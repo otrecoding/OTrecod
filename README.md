@@ -21,24 +21,19 @@ The **OTrecod** package gives access to a set of original functions
 dedicated to data fusion.
 
 <p align="justify">
-
 From two separate data sources with no overlapping units, sharing only a
 set of common variables X and a same target information not jointly
 observed in a same encoding from one data source to another (Y in A and
-Z in B), the functions **OT\_outcome** and **OT\_joint** aim at
-providing users a complete synthetic database where the missing
-information is available for every unit.
-
+Z in B), the functions **OT_outcome** and **OT_joint** aim at providing
+users a complete synthetic database where the missing information is
+available for every unit.
 </p>
-
 <p align="justify">
-
 This recoding problem is solved using the optimal transportation theory
 which provides a map that transfers the joint distribution of the first
 target variable and X to the joint distribution of the second one and X,
 or inversely. Algorithms used in these two functions come from the
 references (1) and (2).
-
 </p>
 
  
@@ -72,15 +67,13 @@ devtools::install_github("otrecoding/OTrecod")
 ## Database examples and expected structure before data fusion
 
 <p align="justify">
-
-The available databases called **tab\_test** and **simu\_data**
-correspond to overlayed databases used as examples in the documentation
-of all the functions. Their structures can help users understanding the
-database structure expected as input argument of the functions
-**OT\_outcome** and **OT\_joint**. The first rows of the two overlayed
-data sources of **simu\_data** are visualized as follows to inform about
-the expected database structure:
-
+The available databases called **tab_test** and **simu_data** correspond
+to overlayed databases used as examples in the documentation of all the
+functions. Their structures can help users understanding the database
+structure expected as input argument of the functions **OT_outcome** and
+**OT_joint**. The first rows of the two overlayed data sources of
+**simu_data** are visualized as follows to inform about the expected
+database structure:
 </p>
 
 ``` r
@@ -102,45 +95,34 @@ simu_data[c(1:5,301:305),]
 ```
 
 <p align="justify">
-
 The first column called *DB* corresponds here to the database identifier
 (two data sources called here 1 and 2 with the data source 1 placed
 above the data source 2). The second column called *Yb1* is the target
 variable of the data source 1. The values of *Yb1* in the data source 2
 are missing and will be predicted using an optimal transportation
-algorithm integrated in one of the two functions called **OT\_outcome**
-and **OT\_joint**. In the same way, the variable *Yb2* (third column) is
+algorithm integrated in one of the two functions called **OT_outcome**
+and **OT_joint**. In the same way, the variable *Yb2* (third column) is
 the target variable of the data source 2 whose values in 1 are unknown.
-These missing values can also be predicted using **OT\_outcome** and
-**OT\_joint**.
-
+These missing values can also be predicted using **OT_outcome** and
+**OT_joint**.
 </p>
-
 <p align="justify">
-
 The presence of these three variables is essential in any database
 dedicated to datafusion in the **OTrecod** package whatevever their
 names and whatever their orders in the database. The following columns
 correspond to shared variables of any type, complete or not. Note that
 continuous variables (like age in years) are not allowed with the
-**OT\_joint** function.
-
+**OT_joint** function.
 </p>
-
 <p align="justify">
-
-Support functions are available in the package (**merge\_dbs**,
-**imput\_cov**) to assist user in this preparation.
-
+Support functions are available in the package (**merge_dbs**,
+**imput_cov**) to assist user in this preparation.
 </p>
-
 <p align="justify">
-
 Finally, the supplementary datasets **api29** and **api35** are simple
 datasets extracted from the API program
 (<https://www.cde.ca.gov/re/pr/api.asp>) to allow users to practice with
 convenient databases.
-
 </p>
 
  
@@ -148,34 +130,30 @@ convenient databases.
 ## Support functions
 
 <p align="justify">
-
 Among the available functions, the **OTrecod** package provides a set of
 support functions to assist users in each step of their data fusion
 projects.
-
 </p>
 
-### merge\_dbs
+### merge_dbs
 
 <p align="justify">
 
-The **merge\_dbs** function is a pre-process data fusion function
+The **merge_dbs** function is a pre-process data fusion function
 dedicated to the harmonization of two data sources. By default,
 variables (not target variables) with same labels are considered as
-shared between the two databases. The **merge\_dbs** function detects
+shared between the two databases. The **merge_dbs** function detects
 potential discrepancies between the variables before merging by:
 
-  - firstly excluding variables with different labels from the first
+-   firstly excluding variables with different labels from the first
     database to the second one and inversely.
-  - excluding a priori shared variables with different types.
-  - excluding a priori shared factors with different levels.
+-   excluding a priori shared variables with different types.
+-   excluding a priori shared factors with different levels.
 
 The actual form of the function does not propose automatic
 reconciliation actions to reintroduce the problematic variables but
 gives user enough information in output to do it by himself if
-necessary. The call of the **merge\_dbs** function is
-actually:
-
+necessary. The call of the **merge_dbs** function is actually:
 </p>
 
 ``` r
@@ -184,57 +162,49 @@ merge_dbs = function(DB1, DB2, row_ID1 = NULL, row_ID2 = NULL, NAME_Y, NAME_Z, o
 ```
 
 <p align="justify">
-
-The **merge\_dbs** function notably provides in output an unique
+The **merge_dbs** function notably provides in output an unique
 database, result of the overlayed of the two initial data sources, in
-the structure expected by the **OT\_outcome** and **OT\_joint**
-functions.
-
+the structure expected by the **OT_outcome** and **OT_joint** functions.
 </p>
 
  
 
-### select\_pred
+### select_pred
 
 <p align="justify">
 
-The **select\_pred** function is a pre-process data fusion function
+The **select_pred** function is a pre-process data fusion function
 dedicated to the selection of matching variables. This selection is
 essential when the initial set of shared variables is important, but
 also because the choice of predictors greatly influences the quality of
 the data fusion whatever the optimal transportation algorithms chosen a
 posteriori.
 
-The call of the **select\_pred** function is
-actually:
-
+The call of the **select_pred** function is actually:
 </p>
 
 ``` r
 select_pred = function(databa,Y = NULL, Z = NULL, ID = 1, OUT = "Y", quanti = NULL, nominal = NULL, ordinal = NULL, logic = NULL,
-                       convert_num = NULL, convert_clss = NULL, thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
+                       convert_num = NULL, convert_class = NULL, thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
                        RF = TRUE, RF_ntree = 500, RF_condi = FALSE, RF_condi_thr = 0.20, RF_SEED = sample(1:1000000, 1))
 ```
 
  
 
-### verif\_OT
+### verif_OT
 
 <p align="justify">
-
-The **verif\_OT** function is a post-process data fusion function
+The **verif_OT** function is a post-process data fusion function
 dedicated to the validation of the fusion. The function provides a set
 of tools to assess the quality of the optimal transportation recoding
 proposed by the algorithms to predict the missing information of the
 target variables in one or both datasources.
-
 </p>
 
-The call of the **verif\_OT** function is
-actually:
+The call of the **verif_OT** function is actually:
 
 ``` r
-verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALSE, min.neigb = 1, R = 10, seed.stab = sample(1:1000000, 1))
+verif_OT = function(ot_out, group.class = FALSE, ordinal = TRUE, stab.prob = FALSE, min.neigb = 1, R = 10, seed.stab = sample(1:1000000, 1))
 ```
 
  
@@ -254,51 +224,46 @@ completed.
 Each of the two alogorithms also proposed enrichments by relaxing the
 initial distributional constraints and adding regularization terms as
 described in (2).
-
 </p>
 
  
 
-### OT\_outcome
+### OT_outcome
 
 <p align="justify">
 
-The **OT\_outcome** function can provide individual predictions of the
+The **OT_outcome** function can provide individual predictions of the
 incomplete target variables by considering the recoding problem
 involving only optimal transportation of outcomes (see (1) and (2) for
 more details).
 
-The call of the **OT\_outcome** function
-is:
-
+The call of the **OT_outcome** function is:
 </p>
 
 ``` r
 OT_outcome = function(datab, index_DB_Y_Z = 1:3, quanti = NULL, nominal = NULL, ordinal = NULL,logic = NULL,
-                      convert.num = NULL, convert.clss = NULL, FAMD.coord = "NO", FAMD.perc = 0.8,
+                      convert.num = NULL, convert.class = NULL, FAMD.coord = "NO", FAMD.perc = 0.8,
                       dist.choice = "E", percent.knn = 1, maxrelax = 0, indiv.method = "sequential",
                       prox.dist = 0.30, solvR = "glpk", which.DB = "BOTH")
 ```
 
  
 
-### OT\_joint
+### OT_joint
 
 <p align="justify">
 
-The **OT\_joint** function can provide individual predictions of the
+The **OT_joint** function can provide individual predictions of the
 incomplete target variables by considering the recoding problem
 involving optimal transportation of shared variables and outcomes
 (see(2) for more details).
 
-The call of the **OT\_joint** function
-is:
-
+The call of the **OT_joint** function is:
 </p>
 
 ``` r
 OT_joint = function(datab, index_DB_Y_Z = 1:3, nominal = NULL, ordinal = NULL,logic = NULL,
-                    convert.num = NULL, convert.clss = NULL, dist.choice = "E", percent.knn = 1,
+                    convert.num = NULL, convert.class = NULL, dist.choice = "E", percent.knn = 1,
                     maxrelax = 0, lambda.reg = 0.0, prox.X = 0.10, solvR = "glpk", which.DB = "BOTH")
 ```
 
