@@ -63,7 +63,7 @@ using optimal transportation of the joint distribution of outcomes and covariate
 <span>  ordinal <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  logic <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  convert.num <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  convert.clss <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  convert.class <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dist.choice <span class="op">=</span> <span class="st">"E"</span>,</span>
 <span>  percent.knn <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  maxrelax <span class="op">=</span> <span class="fl">0</span>,</span>
@@ -106,8 +106,8 @@ to the index of the target variable in the first database (A) while the third in
 <dd><p>indexes of the continuous (quantitative) variables. They will be automatically converted in ordered factors. By default, no continuous variables is assumed in the database.</p></dd>
 
 
-<dt>convert.clss</dt>
-<dd><p>a vector indicating for each continuous variable to convert, the corresponding desired number of levels. If the length of the argument <code>convert_num</code> exceeds 1 while the length of <code>convert_clss</code> equals 1 (only one integer),
+<dt>convert.class</dt>
+<dd><p>a vector indicating for each continuous variable to convert, the corresponding desired number of levels. If the length of the argument <code>convert_num</code> exceeds 1 while the length of <code>convert_class</code> equals 1 (only one integer),
 each discretization will count the same number of levels (quantiles).</p></dd>
 
 
@@ -214,10 +214,10 @@ function <code>OT_outcome</code>, please notice, that the function <code>OT_join
 <p>D. TRANSFORMATIONS OF CONTINUOUS COVARIATES</p>
 <p>Continuous shared variables (predictors) with infinite numbers of values have to be categorized before being introduced in the function.
 To assist users in this task, the function <code>OT_joint</code> integrates in its syntax a process dedicated to the categorization of continuous covariates. For this, it is necessary to rigorously fill in
-the arguments <code>quanti</code> and <code>convert.clss</code>.
+the arguments <code>quanti</code> and <code>convert.class</code>.
 The first one informs about the column indexes of the continuous variables to be transformed in ordered factor while the second one specifies the corresponding number of desired balanced levels (for unbalanced levels, users must do transformations by themselves).
-Therefore <code>convert.num</code> and <code>convert.clss</code> must be vectors of same length, but if the length of <code>quanti</code> exceeds 1, while the length of <code>convert.clss</code> is 1, then, by default, all the covariates to convert will have the same number of classes (transformation by quantiles),
-that corresponds to the value specified in the argument <code>convert.clss</code>.
+Therefore <code>convert.num</code> and <code>convert.class</code> must be vectors of same length, but if the length of <code>quanti</code> exceeds 1, while the length of <code>convert.class</code> is 1, then, by default, all the covariates to convert will have the same number of classes (transformation by quantiles),
+that corresponds to the value specified in the argument <code>convert.class</code>.
 Notice that only covariates can be transformed (not target variables) and that any incomplete information must have been taken into account beforehand (via the dedicated functions <code><a href="merge_dbs.html">merge_dbs</a></code> or <code><a href="imput_cov.html">imput_cov</a></code> for examples).
 Moreover, all the indexes informed in the argument <code>convert.num</code> must also be informed in the argument <code>quanti</code>.
 Finally, it is recommended to declare all discrete covariates as ordinal factors using the argument <code>ordinal</code>.</p>
@@ -273,11 +273,13 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-in"><span><span class="co">#-----</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">tab_test</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tab_test2</span> <span class="op">=</span> <span class="va">tab_test</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">40</span>,<span class="fl">5001</span><span class="op">:</span><span class="fl">5040</span><span class="op">)</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">tab_test2</span> <span class="op">&lt;-</span> <span class="va">tab_test</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">40</span>, <span class="fl">5001</span><span class="op">:</span><span class="fl">5040</span><span class="op">)</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">try1J</span> <span class="op">=</span> <span class="fu">OT_joint</span><span class="op">(</span><span class="va">tab_test2</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                 dist.choice <span class="op">=</span> <span class="st">"G"</span>, which.DB <span class="op">=</span> <span class="st">"B"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">try1J</span> <span class="op">&lt;-</span> <span class="fu">OT_joint</span><span class="op">(</span><span class="va">tab_test2</span>,</span></span>
+<span class="r-in"><span>  nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  dist.choice <span class="op">=</span> <span class="st">"G"</span>, which.DB <span class="op">=</span> <span class="st">"B"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OT JOINT PROCEDURE in progress ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
@@ -305,9 +307,11 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-in"><span><span class="co"># Predictions are assessed for Y1 AND Y2 in A and B respectively</span></span></span>
 <span class="r-in"><span><span class="co">#-----</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">try1RJ</span> <span class="op">=</span> <span class="fu">OT_joint</span><span class="op">(</span><span class="va">tab_test2</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                  dist.choice <span class="op">=</span> <span class="st">"G"</span>, maxrelax <span class="op">=</span> <span class="fl">0.4</span>,</span></span>
-<span class="r-in"><span>                  which.DB <span class="op">=</span> <span class="st">"BOTH"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">try1RJ</span> <span class="op">&lt;-</span> <span class="fu">OT_joint</span><span class="op">(</span><span class="va">tab_test2</span>,</span></span>
+<span class="r-in"><span>  nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  dist.choice <span class="op">=</span> <span class="st">"G"</span>, maxrelax <span class="op">=</span> <span class="fl">0.4</span>,</span></span>
+<span class="r-in"><span>  which.DB <span class="op">=</span> <span class="st">"BOTH"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OT JOINT PROCEDURE in progress ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
@@ -329,9 +333,11 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-in"><span><span class="co"># Predictions are assessed for Y1 and Y2 in A and B respectively</span></span></span>
 <span class="r-in"><span><span class="co">#-----</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">try2RJ</span> <span class="op">=</span> <span class="fu">OT_joint</span><span class="op">(</span><span class="va">tab_test2</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                  dist.choice <span class="op">=</span> <span class="st">"G"</span>, maxrelax <span class="op">=</span> <span class="fl">0.4</span>, lambda.reg <span class="op">=</span> <span class="fl">0.9</span>,</span></span>
-<span class="r-in"><span>                  which.DB <span class="op">=</span> <span class="st">"BOTH"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">try2RJ</span> <span class="op">&lt;-</span> <span class="fu">OT_joint</span><span class="op">(</span><span class="va">tab_test2</span>,</span></span>
+<span class="r-in"><span>  nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  dist.choice <span class="op">=</span> <span class="st">"G"</span>, maxrelax <span class="op">=</span> <span class="fl">0.4</span>, lambda.reg <span class="op">=</span> <span class="fl">0.9</span>,</span></span>
+<span class="r-in"><span>  which.DB <span class="op">=</span> <span class="st">"BOTH"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OT JOINT PROCEDURE in progress ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
@@ -363,12 +369,14 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-in"><span><span class="co">#-----</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">simu_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">simu_data2</span> <span class="op">=</span> <span class="va">simu_data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>,<span class="fl">401</span><span class="op">:</span><span class="fl">500</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">simu_data3</span> <span class="op">=</span> <span class="va">simu_data2</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">simu_data2</span><span class="op">$</span><span class="va">Age</span><span class="op">)</span>,<span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">simu_data2</span> <span class="op">&lt;-</span> <span class="va">simu_data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="fl">401</span><span class="op">:</span><span class="fl">500</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">simu_data3</span> <span class="op">&lt;-</span> <span class="va">simu_data2</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">simu_data2</span><span class="op">$</span><span class="va">Age</span><span class="op">)</span>, <span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">try2J</span> <span class="op">=</span> <span class="fu">OT_joint</span><span class="op">(</span><span class="va">simu_data3</span>, convert.num <span class="op">=</span> <span class="fl">6</span>, convert.clss <span class="op">=</span> <span class="fl">3</span>,</span></span>
-<span class="r-in"><span>                 nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>,</span></span>
-<span class="r-in"><span>                 dist.choice <span class="op">=</span> <span class="st">"H"</span>, which.DB <span class="op">=</span> <span class="st">"BOTH"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">try2J</span> <span class="op">&lt;-</span> <span class="fu">OT_joint</span><span class="op">(</span><span class="va">simu_data3</span>,</span></span>
+<span class="r-in"><span>  convert.num <span class="op">=</span> <span class="fl">6</span>, convert.class <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>  nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>,</span></span>
+<span class="r-in"><span>  dist.choice <span class="op">=</span> <span class="st">"H"</span>, which.DB <span class="op">=</span> <span class="st">"BOTH"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OT JOINT PROCEDURE in progress ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
@@ -385,8 +393,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Hamming 1/3</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Hamming 2/3</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Hamming 3/3</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

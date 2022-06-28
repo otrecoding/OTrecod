@@ -56,7 +56,7 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">verif_OT</span><span class="op">(</span></span>
 <span>  <span class="va">ot_out</span>,</span>
-<span>  group.clss <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  group.class <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  ordinal <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  stab.prob <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  min.neigb <span class="op">=</span> <span class="fl">1</span></span>
@@ -69,12 +69,12 @@
 <dd><p>an otres object from <code><a href="OT_outcome.html">OT_outcome</a></code> or <code><a href="OT_joint.html">OT_joint</a></code></p></dd>
 
 
-<dt>group.clss</dt>
+<dt>group.class</dt>
 <dd><p>a boolean indicating if the results related to the proximity between outcomes by grouping levels are requested in output (<code>FALSE</code> by default).</p></dd>
 
 
 <dt>ordinal</dt>
-<dd><p>a boolean that indicates if \(Y\) and \(Z\) are ordinal (<code>TRUE</code> by default) or not. This argument is only useful in the context of groups of levels (<code>group.clss</code>=TRUE).</p></dd>
+<dd><p>a boolean that indicates if \(Y\) and \(Z\) are ordinal (<code>TRUE</code> by default) or not. This argument is only useful in the context of groups of levels (<code>group.class</code>=TRUE).</p></dd>
 
 
 <dt>stab.prob</dt>
@@ -100,7 +100,7 @@
 <dd><p>a summary table related to the association measures between \(Y\) and \(Z\)</p></dd>
 
 <dt>res.grp</dt>
-<dd><p>a summary table related to the study of the proximity of \(Y\) and \(Z\) using group of levels. Only if the <code>group.clss</code> argument is set to TRUE.</p></dd>
+<dd><p>a summary table related to the study of the proximity of \(Y\) and \(Z\) using group of levels. Only if the <code>group.class</code> argument is set to TRUE.</p></dd>
 
 <dt>hell</dt>
 <dd><p>Hellinger distances between observed and predicted distributions</p></dd>
@@ -122,7 +122,7 @@ and from these results, the function <code>verif_OT</code> provides a set of too
 <li><p>the stability of the predictions proposed by the algorithm</p></li>
 </ol><p>A. PAIRWISE ASSOCIATION BETWEEN \(Y\) AND \(Z\)</p>
 <p>The first step uses standard criterions (Cramer's V, and Spearman's rank correlation coefficient) to evaluate associations between two ordinal variables in both databases or in only one database.
-When the argument <code>group.clss = TRUE</code>, these informations can be completed by those provided by the function <code><a href="error_group.html">error_group</a></code>, which is directly integrate in the function <code>verif_OT</code>.
+When the argument <code>group.class = TRUE</code>, these informations can be completed by those provided by the function <code><a href="error_group.html">error_group</a></code>, which is directly integrate in the function <code>verif_OT</code>.
 Assuming that \(n_Y &gt; n_Z\), and that one of the two scales of \(Y\) or \(Z\) is unknown, this function gives additional informations about the potential link between the levels of the unknown scale.
 The function proceeds to this result in two steps. Firsty, <code><a href="error_group.html">error_group</a></code> groups combinations of modalities of \(Y\) to build all possible variables \(Y'\) verifying \(n_{Y'} = n_Z\).
 Secondly, the function studies the fluctuations in the association of \(Z\) with each new variable \(Y'\) by using adapted comparisons criterions (see the documentation of <code><a href="error_group.html">error_group</a></code> for more details).
@@ -179,10 +179,12 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-in"><span><span class="co"># - Using an outcome model (individual assignment with knn)</span></span></span>
 <span class="r-in"><span><span class="co">#-----</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">simu_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">try1</span> <span class="op">=</span> <span class="fu"><a href="OT_outcome.html">OT_outcome</a></span><span class="op">(</span><span class="va">simu_data</span>, quanti <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">8</span><span class="op">)</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">7</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">6</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                 dist.choice <span class="op">=</span> <span class="st">"G"</span>,percent.knn <span class="op">=</span> <span class="fl">0.90</span>, maxrelax <span class="op">=</span> <span class="fl">0</span>,</span></span>
-<span class="r-in"><span>                 convert.num <span class="op">=</span> <span class="fl">8</span>, convert.clss <span class="op">=</span> <span class="fl">3</span>,</span></span>
-<span class="r-in"><span>                 indiv.method <span class="op">=</span> <span class="st">"sequential"</span>,which.DB <span class="op">=</span> <span class="st">"BOTH"</span>,prox.dist <span class="op">=</span> <span class="fl">0.30</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">try1</span> <span class="op">&lt;-</span> <span class="fu"><a href="OT_outcome.html">OT_outcome</a></span><span class="op">(</span><span class="va">simu_data</span>,</span></span>
+<span class="r-in"><span>  quanti <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">8</span><span class="op">)</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">7</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  dist.choice <span class="op">=</span> <span class="st">"G"</span>, percent.knn <span class="op">=</span> <span class="fl">0.90</span>, maxrelax <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>  convert.num <span class="op">=</span> <span class="fl">8</span>, convert.class <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>  indiv.method <span class="op">=</span> <span class="st">"sequential"</span>, which.DB <span class="op">=</span> <span class="st">"BOTH"</span>, prox.dist <span class="op">=</span> <span class="fl">0.30</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OT PROCEDURE in progress ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
@@ -195,7 +197,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-msg co"><span class="r-pr">#&gt;</span> DB imputed               = BOTH</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">ver1</span> <span class="op">=</span> <span class="fu">verif_OT</span><span class="op">(</span><span class="va">try1</span><span class="op">)</span>; <span class="va">ver1</span></span></span>
+<span class="r-in"><span><span class="va">ver1</span> <span class="op">&lt;-</span> <span class="fu">verif_OT</span><span class="op">(</span><span class="va">try1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ver1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nb.profil</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 232</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -227,7 +230,6 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### Example 2</span></span></span>
@@ -241,10 +243,12 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-in"><span><span class="co">#-----</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">simu_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">try2</span> <span class="op">=</span> <span class="fu"><a href="OT_outcome.html">OT_outcome</a></span><span class="op">(</span><span class="va">simu_data</span>, quanti <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">8</span><span class="op">)</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">7</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">6</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                 dist.choice <span class="op">=</span> <span class="st">"G"</span>,percent.knn <span class="op">=</span> <span class="fl">0.90</span>, maxrelax <span class="op">=</span> <span class="fl">0</span>, prox.dist <span class="op">=</span> <span class="fl">0.3</span>,</span></span>
-<span class="r-in"><span>                 convert.num <span class="op">=</span> <span class="fl">8</span>, convert.clss <span class="op">=</span> <span class="fl">3</span>,</span></span>
-<span class="r-in"><span>                 indiv.method <span class="op">=</span> <span class="st">"sequential"</span>,which.DB <span class="op">=</span> <span class="st">"B"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">try2</span> <span class="op">&lt;-</span> <span class="fu"><a href="OT_outcome.html">OT_outcome</a></span><span class="op">(</span><span class="va">simu_data</span>,</span></span>
+<span class="r-in"><span>  quanti <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">8</span><span class="op">)</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">7</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  dist.choice <span class="op">=</span> <span class="st">"G"</span>, percent.knn <span class="op">=</span> <span class="fl">0.90</span>, maxrelax <span class="op">=</span> <span class="fl">0</span>, prox.dist <span class="op">=</span> <span class="fl">0.3</span>,</span></span>
+<span class="r-in"><span>  convert.num <span class="op">=</span> <span class="fl">8</span>, convert.class <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>  indiv.method <span class="op">=</span> <span class="st">"sequential"</span>, which.DB <span class="op">=</span> <span class="st">"B"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OT PROCEDURE in progress ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
@@ -257,7 +261,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-msg co"><span class="r-pr">#&gt;</span> DB imputed               = B</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">ver2</span> <span class="op">=</span> <span class="fu">verif_OT</span><span class="op">(</span><span class="va">try2</span>, group.clss <span class="op">=</span> <span class="cn">TRUE</span>, ordinal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>; <span class="va">ver2</span></span></span>
+<span class="r-in"><span><span class="va">ver2</span> <span class="op">&lt;-</span> <span class="fu">verif_OT</span><span class="op">(</span><span class="va">try2</span>, group.class <span class="op">=</span> <span class="cn">TRUE</span>, ordinal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ver2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nb.profil</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 232</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -304,7 +309,8 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-in"><span><span class="co"># - Using an outcome model (individual assignment with knn)</span></span></span>
 <span class="r-in"><span><span class="co">#-----</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">ver3</span> <span class="op">=</span> <span class="fu">verif_OT</span><span class="op">(</span><span class="va">try2</span>, group.clss <span class="op">=</span> <span class="cn">TRUE</span>, ordinal <span class="op">=</span> <span class="cn">TRUE</span>, stab.prob <span class="op">=</span> <span class="cn">TRUE</span>, min.neigb <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>; <span class="va">ver3</span></span></span>
+<span class="r-in"><span><span class="va">ver3</span> <span class="op">&lt;-</span> <span class="fu">verif_OT</span><span class="op">(</span><span class="va">try2</span>, group.class <span class="op">=</span> <span class="cn">TRUE</span>, ordinal <span class="op">=</span> <span class="cn">TRUE</span>, stab.prob <span class="op">=</span> <span class="cn">TRUE</span>, min.neigb <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ver3</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nb.profil</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 232</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -350,7 +356,6 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-out co"><span class="r-pr">#&gt;</span>          N min.N  mean    sd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2nd DB 386     5 0.866 0.202</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

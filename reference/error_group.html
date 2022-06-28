@@ -127,31 +127,34 @@ Here, the tests permit to conclude that the difference of encodings between \(Y\
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Basic examples:</span></span></span>
-<span class="r-in"><span><span class="va">Z1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,<span class="fl">50</span>,replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Z1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Z1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">50</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Z1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50</span>
-<span class="r-in"><span><span class="va">Z3</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,<span class="fl">50</span>,replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Z3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Z3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="fl">50</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Z3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50</span>
-<span class="r-in"><span><span class="va">Z2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>,<span class="st">"D"</span><span class="op">)</span>,<span class="fl">50</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Z2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Z2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>, <span class="fl">50</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Z2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50</span>
-<span class="r-in"><span><span class="va">Z4</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>,<span class="st">"D"</span>,<span class="st">"E"</span><span class="op">)</span>,<span class="fl">50</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Z4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Z4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span><span class="op">)</span>, <span class="fl">50</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">Z4</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 50</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># By only grouping consecutive levels of Z1:</span></span></span>
-<span class="r-in"><span><span class="fu">error_group</span><span class="op">(</span><span class="va">Z1</span>,<span class="va">Z4</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       combi error_rate  Kappa Vcramer RankCor</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 A/B/C D E         70 -0.117    0.18  -0.212</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 A B C/D/E         76 -0.098    0.26  -0.291</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 A/B C D/E         78 -0.109    0.20  -0.189</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 A/B C/D E         78 -0.190    0.25  -0.249</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 A B/C D/E         80 -0.148    0.23  -0.254</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 A B/C/D E         80 -0.233    0.27  -0.280</span>
+<span class="r-in"><span><span class="fu">error_group</span><span class="op">(</span><span class="va">Z1</span>, <span class="va">Z4</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       combi error_rate Kappa Vcramer RankCor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 A/B C D/E         50 0.248    0.28   0.161</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 A/B/C D E         52 0.218    0.26   0.191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 A/B C/D E         56 0.158    0.22   0.119</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 A B/C D/E         58 0.133    0.19   0.157</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 A B C/D/E         60 0.109    0.19   0.043</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 A B/C/D E         64 0.044    0.14   0.122</span>
 <span class="r-in"><span><span class="co"># By only all possible levels of Z1, consecutive or not:</span></span></span>
-<span class="r-in"><span><span class="fu">error_group</span><span class="op">(</span><span class="va">Z3</span>,<span class="va">Z1</span>,<span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">error_group</span><span class="op">(</span><span class="va">Z3</span>, <span class="va">Z1</span>, <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   combi error_rate  Kappa Vcramer RankCor</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1 2/3         50  0.006    0.00   0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1/2 3         50 -0.076    0.03  -0.079</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1 3/2         58 -0.071    0.04  -0.091</span>
-<span class="r-in"><span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1 3/2         48 -0.040    0.00  -0.040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1 2/3         52 -0.127    0.08  -0.127</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1/2 3         62 -0.141    0.13  -0.170</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span></span></span>
@@ -161,12 +164,14 @@ Here, the tests permit to conclude that the difference of encodings between \(Y\
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">tab_test</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Example with n1 = n2 = 70 and only X1 and X2 as covariates</span></span></span>
-<span class="r-in"><span><span class="va">tab_test2</span> <span class="op">=</span> <span class="va">tab_test</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">70</span>,<span class="fl">5001</span><span class="op">:</span><span class="fl">5070</span><span class="op">)</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">tab_test2</span> <span class="op">&lt;-</span> <span class="va">tab_test</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">70</span>, <span class="fl">5001</span><span class="op">:</span><span class="fl">5070</span><span class="op">)</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### An example of JOINT model (Manhattan distance)</span></span></span>
 <span class="r-in"><span><span class="co"># Suppose we want to impute the missing parts of Y1 in DB2 only ...</span></span></span>
-<span class="r-in"><span><span class="va">try1J</span> <span class="op">=</span> <span class="fu"><a href="OT_joint.html">OT_joint</a></span><span class="op">(</span><span class="va">tab_test2</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                 dist.choice <span class="op">=</span> <span class="st">"M"</span>, which.DB <span class="op">=</span> <span class="st">"B"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">try1J</span> <span class="op">&lt;-</span> <span class="fu"><a href="OT_joint.html">OT_joint</a></span><span class="op">(</span><span class="va">tab_test2</span>,</span></span>
+<span class="r-in"><span>  nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  dist.choice <span class="op">=</span> <span class="st">"M"</span>, which.DB <span class="op">=</span> <span class="st">"B"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> OT JOINT PROCEDURE in progress ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---------------------------------------</span>
@@ -185,20 +190,18 @@ Here, the tests permit to conclude that the difference of encodings between \(Y\
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Error rates between Y2 and the predictions of Y1 in the DB 2</span></span></span>
 <span class="r-in"><span><span class="co"># by grouping the levels of Y1:</span></span></span>
-<span class="r-in"><span><span class="fu">error_group</span><span class="op">(</span><span class="va">try1J</span><span class="op">$</span><span class="va">DATA2_OT</span><span class="op">$</span><span class="va">Z</span>,<span class="va">try1J</span><span class="op">$</span><span class="va">DATA2_OT</span><span class="op">$</span><span class="va">OTpred</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">error_group</span><span class="op">(</span><span class="va">try1J</span><span class="op">$</span><span class="va">DATA2_OT</span><span class="op">$</span><span class="va">Z</span>, <span class="va">try1J</span><span class="op">$</span><span class="va">DATA2_OT</span><span class="op">$</span><span class="va">OTpred</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     combi error_rate  Kappa Vcramer RankCor</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 1/2/3 4       47.1  0.286    0.68   0.844</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 1 2/3/4       60.0  0.098    0.95   0.664</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 1/2 3/4       82.9 -0.182    0.74   0.316</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">try1J</span><span class="op">$</span><span class="va">DATA2_OT</span><span class="op">$</span><span class="va">Z</span>,<span class="va">try1J</span><span class="op">$</span><span class="va">DATA2_OT</span><span class="op">$</span><span class="va">OTpred</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">try1J</span><span class="op">$</span><span class="va">DATA2_OT</span><span class="op">$</span><span class="va">Z</span>, <span class="va">try1J</span><span class="op">$</span><span class="va">DATA2_OT</span><span class="op">$</span><span class="va">OTpred</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      1  2  3  4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1 12 16  0  0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2  2  0  0 15</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   3  0  0 25  0</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

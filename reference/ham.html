@@ -100,15 +100,17 @@ or the information is missing in B, which induces: \(\mbox{ham}(A_i,B_k) = \mbox
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3010</span><span class="op">)</span>; <span class="va">aaa</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,<span class="fl">12</span>,replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3007</span><span class="op">)</span>; <span class="va">bbb</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,<span class="fl">15</span>,replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">A</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">aaa</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">B</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">bbb</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3010</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">aaa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">12</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">3007</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">bbb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">15</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">aaa</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">bbb</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># These 2 matrices have no missing values</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Matrix of pairwise distances with A:</span></span></span>
-<span class="r-in"><span><span class="fu">ham</span><span class="op">(</span><span class="va">A</span>,<span class="va">A</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ham</span><span class="op">(</span><span class="va">A</span>, <span class="va">A</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]      [,2]      [,3]      [,4]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.0000000 0.6666667 0.6666667 1.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.6666667 0.0000000 0.6666667 0.3333333</span>
@@ -116,7 +118,7 @@ or the information is missing in B, which induces: \(\mbox{ham}(A_i,B_k) = \mbox
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 1.0000000 0.3333333 0.3333333 0.0000000</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Matrix of distances between the rows of A and the rows of B:</span></span></span>
-<span class="r-in"><span><span class="fu">ham</span><span class="op">(</span><span class="va">A</span>,<span class="va">B</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ham</span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]      [,2]      [,3]      [,4]      [,5]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1.0000000 0.0000000 0.3333333 0.6666667 0.6666667</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.3333333 0.6666667 1.0000000 0.6666667 0.6666667</span>
@@ -124,19 +126,19 @@ or the information is missing in B, which induces: \(\mbox{ham}(A_i,B_k) = \mbox
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.0000000 1.0000000 0.6666667 0.3333333 0.3333333</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If mat_1 is a vector of binary values:</span></span></span>
-<span class="r-in"><span><span class="fu">ham</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,<span class="va">B</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ham</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, <span class="va">B</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6666667 0.3333333 0.6666667 0.3333333 1.0000000</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Now by considering A_NA and B_NA two matrices built from A and B respectively,</span></span></span>
 <span class="r-in"><span><span class="co"># where missing values have been manually added:</span></span></span>
-<span class="r-in"><span><span class="va">A_NA</span>        <span class="op">=</span> <span class="va">A</span></span></span>
-<span class="r-in"><span><span class="va">A_NA</span><span class="op">[</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">]</span>   <span class="op">=</span> <span class="cn">NA</span></span></span>
-<span class="r-in"><span><span class="va">A_NA</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>,<span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">A_NA</span> <span class="op">&lt;-</span> <span class="va">A</span></span></span>
+<span class="r-in"><span><span class="va">A_NA</span><span class="op">[</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span></span>
+<span class="r-in"><span><span class="va">A_NA</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">B_NA</span> <span class="op">=</span> <span class="va">B</span></span></span>
-<span class="r-in"><span><span class="va">B_NA</span><span class="op">[</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">=</span> <span class="cn">NA</span></span></span>
+<span class="r-in"><span><span class="va">B_NA</span> <span class="op">&lt;-</span> <span class="va">B</span></span></span>
+<span class="r-in"><span><span class="va">B_NA</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">ham</span><span class="op">(</span><span class="va">A_NA</span>,<span class="va">B_NA</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ham</span><span class="op">(</span><span class="va">A_NA</span>, <span class="va">B_NA</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2]      [,3]      [,4]      [,5]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  1.0    0 0.3333333 0.6666667 0.6666667</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.0    1 1.0000000 0.0000000 1.0000000</span>

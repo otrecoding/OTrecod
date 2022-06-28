@@ -155,17 +155,18 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-in"><span><span class="co"># For this example we keep only 200 rows:</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">tab_test</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">tab_test2</span> <span class="op">=</span> <span class="va">tab_test</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">80</span>,<span class="fl">5001</span><span class="op">:</span><span class="fl">5080</span><span class="op">)</span>,<span class="op">]</span>; <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tab_test2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tab_test2</span> <span class="op">&lt;-</span> <span class="va">tab_test</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">80</span>, <span class="fl">5001</span><span class="op">:</span><span class="fl">5080</span><span class="op">)</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">tab_test2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 160   6</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Adding NAs in Y1 and Y2</span></span></span>
-<span class="r-in"><span><span class="va">tab_test2</span><span class="op">[</span><span class="va">tab_test2</span><span class="op">$</span><span class="va">ident</span> <span class="op">==</span> <span class="fl">2</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">=</span> <span class="cn">NA</span></span></span>
-<span class="r-in"><span><span class="va">tab_test2</span><span class="op">[</span><span class="va">tab_test2</span><span class="op">$</span><span class="va">ident</span> <span class="op">==</span> <span class="fl">1</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">=</span> <span class="cn">NA</span></span></span>
+<span class="r-in"><span><span class="va">tab_test2</span><span class="op">[</span><span class="va">tab_test2</span><span class="op">$</span><span class="va">ident</span> <span class="op">==</span> <span class="fl">2</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span></span>
+<span class="r-in"><span><span class="va">tab_test2</span><span class="op">[</span><span class="va">tab_test2</span><span class="op">$</span><span class="va">ident</span> <span class="op">==</span> <span class="fl">1</span>, <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Because all covariates are ordered in numeric form,</span></span></span>
 <span class="r-in"><span><span class="co"># the transfo_dist function is not required here</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">res3</span>      <span class="op">=</span> <span class="fu"><a href="proxim_dist.html">proxim_dist</a></span><span class="op">(</span><span class="va">tab_test2</span>,norm <span class="op">=</span> <span class="st">"M"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu"><a href="proxim_dist.html">proxim_dist</a></span><span class="op">(</span><span class="va">tab_test2</span>, norm <span class="op">=</span> <span class="st">"M"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#' ### Y(Y1) and Z(Y2) are a same variable encoded in 2 different forms:</span></span></span>
 <span class="r-in"><span><span class="co">### 4 levels for Y1 and 3 levels for Y2</span></span></span>
@@ -180,25 +181,29 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># By supposing:</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">val_trans</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.275</span>,<span class="fl">0.115</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0.085</span>,<span class="fl">0.165</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0.095</span>,<span class="fl">0.265</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">transport2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">val_trans</span>,ncol <span class="op">=</span> <span class="fl">3</span>,byrow <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">val_trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.275</span>, <span class="fl">0.115</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0.085</span>, <span class="fl">0.165</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0.095</span>, <span class="fl">0.265</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">transport2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">val_trans</span>, ncol <span class="op">=</span> <span class="fl">3</span>, byrow <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Getting the individual predictions of Z in A (only)</span></span></span>
 <span class="r-in"><span><span class="co"># by computing average distances on 90% of the nearest neighbors of</span></span></span>
 <span class="r-in"><span><span class="co"># each modality of Z in B</span></span></span>
-<span class="r-in"><span><span class="va">res4</span>      <span class="op">=</span> <span class="fu">indiv_grp_optimal</span><span class="op">(</span><span class="va">res3</span>,jointprobaA <span class="op">=</span> <span class="va">transport2</span>,</span></span>
-<span class="r-in"><span>            jointprobaB <span class="op">=</span> <span class="va">transport2</span>, percent_closest<span class="op">=</span> <span class="fl">0.90</span>,</span></span>
-<span class="r-in"><span>            which.DB <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res4</span> <span class="op">&lt;-</span> <span class="fu">indiv_grp_optimal</span><span class="op">(</span><span class="va">res3</span>,</span></span>
+<span class="r-in"><span>  jointprobaA <span class="op">=</span> <span class="va">transport2</span>,</span></span>
+<span class="r-in"><span>  jointprobaB <span class="op">=</span> <span class="va">transport2</span>, percent_closest <span class="op">=</span> <span class="fl">0.90</span>,</span></span>
+<span class="r-in"><span>  which.DB <span class="op">=</span> <span class="st">"A"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co">### Example 2 using The Manhattan distance with incomplete covariates</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">simu_data</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">try1</span> <span class="op">=</span> <span class="fu"><a href="transfo_dist.html">transfo_dist</a></span><span class="op">(</span><span class="va">simu_data</span>,quanti <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">8</span><span class="op">)</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">7</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                    ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">6</span><span class="op">)</span>, logic <span class="op">=</span> <span class="cn">NULL</span>, prep_choice <span class="op">=</span> <span class="st">"M"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">try1</span> <span class="op">&lt;-</span> <span class="fu"><a href="transfo_dist.html">transfo_dist</a></span><span class="op">(</span><span class="va">simu_data</span>,</span></span>
+<span class="r-in"><span>  quanti <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">8</span><span class="op">)</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">7</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">6</span><span class="op">)</span>, logic <span class="op">=</span> <span class="cn">NULL</span>, prep_choice <span class="op">=</span> <span class="st">"M"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 5 remaining levels</span>
-<span class="r-in"><span><span class="va">res1</span> <span class="op">=</span> <span class="fu"><a href="proxim_dist.html">proxim_dist</a></span><span class="op">(</span><span class="va">try1</span>,norm <span class="op">=</span> <span class="st">"M"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res1</span> <span class="op">&lt;-</span> <span class="fu"><a href="proxim_dist.html">proxim_dist</a></span><span class="op">(</span><span class="va">try1</span>, norm <span class="op">=</span> <span class="st">"M"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### Y and Z are a same variable encoded in 2 different forms:</span></span></span>
@@ -212,17 +217,21 @@ Volume 16, Issue 1, 20180106, eISSN 1557-4679. doi:10.1515/ijb-2018-0106</p></li
 <span class="r-in"><span><span class="co"># Note that, in reality this distribution is UNKNOWN and is</span></span></span>
 <span class="r-in"><span><span class="co"># estimated in the OT function by resolving an optimisation problem.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">transport1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.35285714</span>,<span class="fl">0</span>,<span class="fl">0.09142857</span>,<span class="fl">0</span>,<span class="fl">0.03571429</span>,</span></span>
-<span class="r-in"><span>                      <span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0.08285714</span>,<span class="fl">0</span>,<span class="fl">0.07857143</span>,<span class="fl">0.03142857</span>,</span></span>
-<span class="r-in"><span>                      <span class="fl">0.32714286</span>,<span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span>,ncol <span class="op">=</span> <span class="fl">5</span>,byrow <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">transport1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fl">0</span>, <span class="fl">0.35285714</span>, <span class="fl">0</span>, <span class="fl">0.09142857</span>, <span class="fl">0</span>, <span class="fl">0.03571429</span>,</span></span>
+<span class="r-in"><span>  <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0.08285714</span>, <span class="fl">0</span>, <span class="fl">0.07857143</span>, <span class="fl">0.03142857</span>,</span></span>
+<span class="r-in"><span>  <span class="fl">0.32714286</span>, <span class="fl">0</span>, <span class="fl">0</span></span></span>
+<span class="r-in"><span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">5</span>, byrow <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The predicted values of Y in database B and Z in</span></span></span>
 <span class="r-in"><span><span class="co"># database A are stored in the following object:</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">res2</span> <span class="op">=</span> <span class="fu">indiv_grp_optimal</span><span class="op">(</span><span class="va">res1</span>,jointprobaA <span class="op">=</span> <span class="va">transport1</span>,</span></span>
-<span class="r-in"><span>                         jointprobaB <span class="op">=</span> <span class="va">transport1</span>,</span></span>
-<span class="r-in"><span>                         percent_closest<span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res2</span> <span class="op">&lt;-</span> <span class="fu">indiv_grp_optimal</span><span class="op">(</span><span class="va">res1</span>,</span></span>
+<span class="r-in"><span>  jointprobaA <span class="op">=</span> <span class="va">transport1</span>,</span></span>
+<span class="r-in"><span>  jointprobaB <span class="op">=</span> <span class="va">transport1</span>,</span></span>
+<span class="r-in"><span>  percent_closest <span class="op">=</span> <span class="fl">0.90</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Length Class  Mode   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> YAtrans 400    -none- numeric</span>
