@@ -148,7 +148,7 @@
 #' # categorization of the continuous covariates age by tertiles
 #' try4 <- transfo_dist(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-#'   convert_num = 8, convert_clss = 3, prep_choice = "H"
+#'   convert_num = 8, convert_class = 3, prep_choice = "H"
 #' )
 #' res4 <- proxim_dist(try4, norm = "H")
 #' # Be patient ... It could take few minutes
