@@ -52,71 +52,68 @@
 #'
 #' # Here we keep the complete variable "Gender" in the imputation model.
 #' # Using MICE (REP = 3):
-#' imput_mice = imput_cov(simu_data,indcol = 4:8,R_mice = 3,
-#'                        meth = c("logreg","polyreg","polr","logreg","pmm"))
+#' imput_mice <- imput_cov(simu_data,
+#'   indcol = 4:8, R_mice = 3,
+#'   meth = c("logreg", "polyreg", "polr", "logreg", "pmm")
+#' )
 #' summary(imput_mice)
 #'
 #'
 #' # Using FAMD (NB_COMP = 3):
-#' imput_famd = imput_cov(simu_data,indcol = 4:8,
-#'                        meth = c("logreg","polyreg","polr","logreg","pmm"),
-#'                        missMDA = TRUE)
+#' imput_famd <- imput_cov(simu_data,
+#'   indcol = 4:8,
+#'   meth = c("logreg", "polyreg", "polr", "logreg", "pmm"),
+#'   missMDA = TRUE
+#' )
 #' summary(imput_famd)
 #'
-imput_cov = function(dat1,
-                     indcol  = 1:ncol(dat1),
-                     R_mice  = 5,
-                     meth    = rep("pmm", ncol(dat1)),
-                     missMDA = FALSE,
-                     NB_COMP = 3,
-                     seed_choice = sample(1:1000000, 1)){
-
-
+imput_cov <- function(dat1,
+                      indcol = 1:ncol(dat1),
+                      R_mice = 5,
+                      meth = rep("pmm", ncol(dat1)),
+                      missMDA = FALSE,
+                      NB_COMP = 3,
+                      seed_choice = sample(1:1000000, 1)) {
   if (is.data.frame(dat1) == FALSE) {
-    stop ("Your objet must be a data.frame")
-
+    stop("Your objet must be a data.frame")
   } else {
   }
 
 
   if (length(indcol) > ncol(dat1)) {
-    stop (
+    stop(
       "The length of indcol can not be greater than the number of columns of the declared data.frame"
     )
-
   } else {
   }
 
 
   if (length(meth) > length(indcol)) {
-    stop ("The length of meth must be equal to the length of indcol")
-
+    stop("The length of meth must be equal to the length of indcol")
   } else {
   }
 
 
-  datcov = dat1[, indcol]
+  datcov <- dat1[, indcol]
 
-  typ_fact   = c("polr", "polyreg", "logreg")
+  typ_fact <- c("polr", "polyreg", "logreg")
 
   # Numbers of columns corresponding to missing covariates:
 
-  indic_NA   = (1:ncol(datcov))[apply(datcov, 2, function(x) {
+  indic_NA <- (1:ncol(datcov))[apply(datcov, 2, function(x) {
     sum(is.na(x)) != 0
   }) == TRUE]
-  datcov_IMP = datcov
+  datcov_IMP <- datcov
 
 
   # Converting categorical variables to factor before imputation
 
   if (TRUE %in% is.element(typ_fact, meth)) {
-    indic_typ = (1:(length(meth)))[meth %in% typ_fact]
+    indic_typ <- (1:(length(meth)))[meth %in% typ_fact]
 
     for (j in 1:length(indic_typ)) {
-      datcov[, indic_typ[j]] = as.factor(datcov[, indic_typ[j]])
-
+      datcov[, indic_typ[j]] <- as.factor(datcov[, indic_typ[j]])
     }
-
   }
 
 
@@ -124,7 +121,7 @@ imput_cov = function(dat1,
 
     # MICE imputation
 
-    stoc_mice = mice::mice(
+    stoc_mice <- mice::mice(
       as.data.frame(datcov),
       method = meth,
       m = R_mice,
@@ -133,97 +130,79 @@ imput_cov = function(dat1,
       # printFlag = FALSE,
       seed = seed_choice
     )
-    list_mice = mice::complete(stoc_mice, "all")
+    list_mice <- mice::complete(stoc_mice, "all")
 
 
     # Storage of the multiple imputations of the covariate in a data.frame
 
     for (k in 1:length(indic_NA)) {
-      base_mice_IMP = as.data.frame(datcov[, indic_NA[k]])
+      base_mice_IMP <- as.data.frame(datcov[, indic_NA[k]])
 
 
       for (u in 1:R_mice) {
-        base_mice_IMP = data.frame(base_mice_IMP, mice::complete(stoc_mice, u)[, indic_NA[k]])
-
+        base_mice_IMP <- data.frame(base_mice_IMP, mice::complete(stoc_mice, u)[, indic_NA[k]])
       }
 
 
       # Imputation by the most frequent class (for categorical variables)
 
       if (meth[indic_NA[k]] != "pmm") {
-        col_imp = as.factor(apply(base_mice_IMP[, 2:ncol(base_mice_IMP)], 1,
-                                  function(x) {
-                                    as.character(names(table(x))[which.max(table(x))])
-                                  }))
+        col_imp <- as.factor(apply(
+          base_mice_IMP[, 2:ncol(base_mice_IMP)], 1,
+          function(x) {
+            as.character(names(table(x))[which.max(table(x))])
+          }
+        ))
 
-         # NEW
+        # NEW
 
-         if (meth[indic_NA[k]] == "polr"){
-
-          datcov_IMP[, indic_NA[k]] = ordered(col_imp, levels = levels(datcov[, indic_NA[k]]))
-
+        if (meth[indic_NA[k]] == "polr") {
+          datcov_IMP[, indic_NA[k]] <- ordered(col_imp, levels = levels(datcov[, indic_NA[k]]))
         } else {
-
-          datcov_IMP[, indic_NA[k]] = col_imp
-
+          datcov_IMP[, indic_NA[k]] <- col_imp
         }
 
 
         # Imputation by the mean (for continuous vaiables)
-
       } else {
-        datcov_IMP[, indic_NA[k]] = apply(base_mice_IMP[, 2:ncol(base_mice_IMP)], 1, mean)
-
+        datcov_IMP[, indic_NA[k]] <- apply(base_mice_IMP[, 2:ncol(base_mice_IMP)], 1, mean)
       }
-
     }
-
   } else if (missMDA == TRUE) {
+    FAMD_imp <- missMDA::imputeFAMD(datcov, ncp = NB_COMP, seed = seed_choice)$completeObs
 
-    FAMD_imp = missMDA::imputeFAMD(datcov, ncp = NB_COMP, seed = seed_choice)$completeObs
-
-    fact_var = sapply(datcov, is.factor)
-    typ_var  = sapply(datcov, is.integer)
+    fact_var <- sapply(datcov, is.factor)
+    typ_var <- sapply(datcov, is.integer)
 
     for (k in 1:length(typ_var)) {
-
       if (fact_var[k] == TRUE) {
-        datcov_IMP[, k]   = plyr::mapvalues(FAMD_imp[, k],
-                                            from = levels(FAMD_imp[, k]),
-                                            to = sort(levels(datcov[,k])))
+        datcov_IMP[, k] <- plyr::mapvalues(FAMD_imp[, k],
+          from = levels(FAMD_imp[, k]),
+          to = sort(levels(datcov[, k]))
+        )
 
-        if (meth[k] == "polr"){
-            datcov_IMP[, k]   = ordered(datcov_IMP[, k], levels = levels(datcov[, k]))
+        if (meth[k] == "polr") {
+          datcov_IMP[, k] <- ordered(datcov_IMP[, k], levels = levels(datcov[, k]))
         } else {}
-
       } else {
-        datcov_IMP[, k] = FAMD_imp[, k]
-
+        datcov_IMP[, k] <- FAMD_imp[, k]
       }
 
 
       if (typ_var[k] == TRUE) {
-        datcov_IMP[, k] = as.integer(FAMD_imp[, k])
-
+        datcov_IMP[, k] <- as.integer(FAMD_imp[, k])
       } else {
-        datcov_IMP[, k] = datcov_IMP[, k]
-
+        datcov_IMP[, k] <- datcov_IMP[, k]
       }
-
     }
-
   }
 
 
   # Return the imputed database
 
-  if (missMDA == FALSE){
-
-    return(list(RAW = dat1,IMPUTE = "MICE", DATA_IMPUTE = datcov_IMP, MICE_IMPS = list_mice))
-
+  if (missMDA == FALSE) {
+    return(list(RAW = dat1, IMPUTE = "MICE", DATA_IMPUTE = datcov_IMP, MICE_IMPS = list_mice))
   } else {
-
-    return(list(RAW = dat1,IMPUTE = "FAMD", DATA_IMPUTE = datcov_IMP))
-
+    return(list(RAW = dat1, IMPUTE = "FAMD", DATA_IMPUTE = datcov_IMP))
   }
 }

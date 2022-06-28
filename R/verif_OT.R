@@ -99,13 +99,15 @@
 #' # - Using an outcome model (individual assignment with knn)
 #' #-----
 #' data(simu_data)
-#' try1 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                  dist.choice = "G",percent.knn = 0.90, maxrelax = 0,
-#'                  convert.num = 8, convert.clss = 3,
-#'                  indiv.method = "sequential",which.DB = "BOTH",prox.dist = 0.30)
+#' try1 <- OT_outcome(simu_data,
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'   dist.choice = "G", percent.knn = 0.90, maxrelax = 0,
+#'   convert.num = 8, convert.clss = 3,
+#'   indiv.method = "sequential", which.DB = "BOTH", prox.dist = 0.30
+#' )
 #'
-#' ver1 = verif_OT(try1); ver1
-#'
+#' ver1 <- verif_OT(try1)
+#' ver1
 #'
 #' \donttest{
 #'
@@ -120,12 +122,15 @@
 #' #-----
 #'
 #' data(simu_data)
-#' try2 = OT_outcome(simu_data, quanti = c(3,8), nominal = c(1,4:5,7), ordinal = c(2,6),
-#'                  dist.choice = "G",percent.knn = 0.90, maxrelax = 0, prox.dist = 0.3,
-#'                  convert.num = 8, convert.clss = 3,
-#'                  indiv.method = "sequential",which.DB = "B")
+#' try2 <- OT_outcome(simu_data,
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'   dist.choice = "G", percent.knn = 0.90, maxrelax = 0, prox.dist = 0.3,
+#'   convert.num = 8, convert.clss = 3,
+#'   indiv.method = "sequential", which.DB = "B"
+#' )
 #'
-#' ver2 = verif_OT(try2, group.clss = TRUE, ordinal = TRUE); ver2
+#' ver2 <- verif_OT(try2, group.clss = TRUE, ordinal = TRUE)
+#' ver2
 #'
 #'
 #' ### Example 3
@@ -138,17 +143,13 @@
 #' # - Using an outcome model (individual assignment with knn)
 #' #-----
 #'
-#' ver3 = verif_OT(try2, group.clss = TRUE, ordinal = TRUE, stab.prob = TRUE, min.neigb = 5); ver3
-#'
+#' ver3 <- verif_OT(try2, group.clss = TRUE, ordinal = TRUE, stab.prob = TRUE, min.neigb = 5)
+#' ver3
 #' }
 #'
-
-verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALSE, min.neigb = 1){
-
-  if (class(ot_out) != "otres"){
-
+verif_OT <- function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALSE, min.neigb = 1) {
+  if (class(ot_out) != "otres") {
     stop("ot_out must be an otres object: output from OT_outcome or OT_joint")
-
   } else {}
 
 
@@ -159,203 +160,164 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
 
   ### Test 1: Evaluation of the proximity between the distributions of Y and Z
 
-  DATA1_OT = ot_out$DATA1_OT
-  lev1     = levels(DATA1_OT[,2])
-  DATA2_OT = ot_out$DATA2_OT
-  lev2     = levels(DATA2_OT[,3])
-  inst     = ot_out$res_prox
+  DATA1_OT <- ot_out$DATA1_OT
+  lev1 <- levels(DATA1_OT[, 2])
+  DATA2_OT <- ot_out$DATA2_OT
+  lev2 <- levels(DATA2_OT[, 3])
+  inst <- ot_out$res_prox
 
-  yy       = factor(c(as.character(DATA1_OT$Y)     , as.character(DATA2_OT$OTpred)) ,levels = lev1)
-  zz       = factor(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT$Z))      ,levels = lev2)
+  yy <- factor(c(as.character(DATA1_OT$Y), as.character(DATA2_OT$OTpred)), levels = lev1)
+  zz <- factor(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT$Z)), levels = lev2)
 
   # Hellinger distance
-  YA = prop.table(table(yy[1:nrow(DATA1_OT)]))
-  YB = prop.table(table(yy[(nrow(DATA1_OT)+1):(nrow(DATA1_OT)+nrow(DATA2_OT))]))
+  YA <- prop.table(table(yy[1:nrow(DATA1_OT)]))
+  YB <- prop.table(table(yy[(nrow(DATA1_OT) + 1):(nrow(DATA1_OT) + nrow(DATA2_OT))]))
 
-  ZA = prop.table(table(zz[1:nrow(DATA1_OT)]))
-  ZB = prop.table(table(zz[(nrow(DATA1_OT)+1):(nrow(DATA1_OT)+nrow(DATA2_OT))]))
+  ZA <- prop.table(table(zz[1:nrow(DATA1_OT)]))
+  ZB <- prop.table(table(zz[(nrow(DATA1_OT) + 1):(nrow(DATA1_OT) + nrow(DATA2_OT))]))
 
-  if (length(yy) == length(zz)){
-
-    hh = data.frame(
-      YA_YB = round(sqrt(0.5 * sum((sqrt(YA) - sqrt(YB))^2)),3),
-      ZA_ZB = round(sqrt(0.5 * sum((sqrt(ZA) - sqrt(ZB))^2)),3)
+  if (length(yy) == length(zz)) {
+    hh <- data.frame(
+      YA_YB = round(sqrt(0.5 * sum((sqrt(YA) - sqrt(YB))^2)), 3),
+      ZA_ZB = round(sqrt(0.5 * sum((sqrt(ZA) - sqrt(ZB))^2)), 3)
     )
-    row.names(hh) = "Hellinger dist."
-
-  } else if (length(yy) > length(zz)){
-
-    hh            = data.frame(YA_YB  = round(sqrt(0.5 * sum((sqrt(YA) - sqrt(YB))^2)),3),
-                               ZA_ZB  = NA)
-    row.names(hh) = "Hellinger dist."
-
+    row.names(hh) <- "Hellinger dist."
+  } else if (length(yy) > length(zz)) {
+    hh <- data.frame(
+      YA_YB = round(sqrt(0.5 * sum((sqrt(YA) - sqrt(YB))^2)), 3),
+      ZA_ZB = NA
+    )
+    row.names(hh) <- "Hellinger dist."
   } else {
-
-    hh = data.frame(
+    hh <- data.frame(
       YA_YB = NA,
-      ZA_ZB = round(sqrt(0.5 * sum((sqrt(ZA) - sqrt(ZB))^2)),3)
+      ZA_ZB = round(sqrt(0.5 * sum((sqrt(ZA) - sqrt(ZB))^2)), 3)
     )
-    row.names(hh) = "Hellinger dist."
-
+    row.names(hh) <- "Hellinger dist."
   }
 
-  n1 = n2 = nrow(DATA1_OT)
+  n1 <- n2 <- nrow(DATA1_OT)
 
-  if (!("OTpred" %in% colnames(ot_out$DATA2_OT))){
-
-    DATA2_OT = NULL
-
-  } else if (!("OTpred" %in% colnames(ot_out$DATA1_OT))){
-
-    DATA1_OT = NULL
-    n2       = 0
-
+  if (!("OTpred" %in% colnames(ot_out$DATA2_OT))) {
+    DATA2_OT <- NULL
+  } else if (!("OTpred" %in% colnames(ot_out$DATA1_OT))) {
+    DATA1_OT <- NULL
+    n2 <- 0
   } else {}
 
 
-  if (is.null(DATA1_OT)){
+  if (is.null(DATA1_OT)) {
+    predZ <- DATA2_OT[, 3]
 
-    predZ = DATA2_OT[,3]
-
-    if (is.ordered(DATA1_OT[,2])){
-
-      predY = ordered(c(as.character(DATA1_OT[,2]), as.character(DATA2_OT$OTpred)), levels = lev1)
-
+    if (is.ordered(DATA1_OT[, 2])) {
+      predY <- ordered(c(as.character(DATA1_OT[, 2]), as.character(DATA2_OT$OTpred)), levels = lev1)
     } else {
-
-      predY = factor(c(as.character(DATA1_OT[,2]), as.character(DATA2_OT$OTpred)), levels = lev1)
-
+      predY <- factor(c(as.character(DATA1_OT[, 2]), as.character(DATA2_OT$OTpred)), levels = lev1)
     }
-
   } else {}
 
 
-  if (is.null(DATA2_OT)){
+  if (is.null(DATA2_OT)) {
+    predY <- DATA1_OT[, 2]
 
-    predY = DATA1_OT[,2]
-
-    if (is.ordered(DATA1_OT[,2])){
-
-      predZ = ordered(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT[,3])), levels = lev2)
-
+    if (is.ordered(DATA1_OT[, 2])) {
+      predZ <- ordered(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT[, 3])), levels = lev2)
     } else {
-
-      predZ = factor(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT[,3])), levels = lev2)
-
+      predZ <- factor(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT[, 3])), levels = lev2)
     }
   }
 
-  if ((!is.null(DATA1_OT))&(!is.null(DATA2_OT))){
-
-    if (is.ordered(DATA1_OT[,2])){
-
-      predY = ordered(c(as.character(DATA1_OT[,2]), as.character(DATA2_OT$OTpred)), levels = lev1)
-
+  if ((!is.null(DATA1_OT)) & (!is.null(DATA2_OT))) {
+    if (is.ordered(DATA1_OT[, 2])) {
+      predY <- ordered(c(as.character(DATA1_OT[, 2]), as.character(DATA2_OT$OTpred)), levels = lev1)
     } else {
-
-      predY = factor(c(as.character(DATA1_OT[,2]), as.character(DATA2_OT$OTpred)), levels = lev1)
-
+      predY <- factor(c(as.character(DATA1_OT[, 2]), as.character(DATA2_OT$OTpred)), levels = lev1)
     }
 
-    if (is.ordered(DATA1_OT[,2])){
-
-      predZ = ordered(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT[,3])), levels = lev2)
-
+    if (is.ordered(DATA1_OT[, 2])) {
+      predZ <- ordered(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT[, 3])), levels = lev2)
     } else {
-
-      predZ = factor(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT[,3])), levels = lev2)
-
+      predZ <- factor(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT[, 3])), levels = lev2)
     }
-
   }
 
-  ID.DB1 = unique(as.character(DATA1_OT[,1]))
-  ID.DB2 = unique(as.character(DATA2_OT[,1]))
+  ID.DB1 <- unique(as.character(DATA1_OT[, 1]))
+  ID.DB2 <- unique(as.character(DATA2_OT[, 1]))
 
   # predZ = ordered(as.factor(c(as.character(DATA1_OT$OTpred), as.character(DATA2_OT[,3])))   , levels = lev2)
   # predY = ordered(as.factor(c(as.character(DATA1_OT[,2])   , as.character(DATA2_OT$OTpred))), levels = lev1)
-  ID.DB = c(as.character(DATA1_OT[,1]), as.character(DATA2_OT[,1]))
+  ID.DB <- c(as.character(DATA1_OT[, 1]), as.character(DATA2_OT[, 1]))
 
 
-  if ((!is.null(DATA1_OT))&(!is.null(DATA2_OT))){
+  if ((!is.null(DATA1_OT)) & (!is.null(DATA2_OT))) {
 
     # Using standard criterions: Global
 
-    stoc      = data.frame(predY,predZ)
-    N         = nrow(stoc)
-    vcram     = round(suppressWarnings(StatMatch::pw.assoc(predY~predZ,data = stoc)$V),2)
+    stoc <- data.frame(predY, predZ)
+    N <- nrow(stoc)
+    vcram <- round(suppressWarnings(StatMatch::pw.assoc(predY ~ predZ, data = stoc)$V), 2)
     # chisqT    = suppressWarnings(stats::chisq.test(table(predY,predZ))$p.value)
-    rankor    = round(stats::cor(rank(predY),rank(predZ)),3)
+    rankor <- round(stats::cor(rank(predY), rank(predZ)), 3)
 
 
     # Standard criterions: 1st DB
 
-    stoc1     = stoc[ID.DB == ID.DB1,]
-    N1        = nrow(stoc1)
-    vcram1    = round(suppressWarnings(StatMatch::pw.assoc(predY~predZ,data = stoc1)$V),2)
+    stoc1 <- stoc[ID.DB == ID.DB1, ]
+    N1 <- nrow(stoc1)
+    vcram1 <- round(suppressWarnings(StatMatch::pw.assoc(predY ~ predZ, data = stoc1)$V), 2)
     # chisqT1   = suppressWarnings(stats::chisq.test(table(stoc1$predY,stoc1$predZ))$p.value)
-    rankor1   = round(stats::cor(rank(stoc1$predY),rank(stoc1$predZ)),3)
+    rankor1 <- round(stats::cor(rank(stoc1$predY), rank(stoc1$predZ)), 3)
 
 
     # Standard criterions: 2nd DB
 
-    stoc2     = stoc[ID.DB == ID.DB2,]
-    N2        = nrow(stoc2)
-    vcram2    = round(suppressWarnings(StatMatch::pw.assoc(predY~predZ,data = stoc2)$V),2)
+    stoc2 <- stoc[ID.DB == ID.DB2, ]
+    N2 <- nrow(stoc2)
+    vcram2 <- round(suppressWarnings(StatMatch::pw.assoc(predY ~ predZ, data = stoc2)$V), 2)
     # chisqT2   = suppressWarnings(chisq.test(table(stoc2$predY,stoc2$predZ))$p.value)
-    rankor2   = round(stats::cor(rank(stoc2$predY),rank(stoc2$predZ)),3)
+    rankor2 <- round(stats::cor(rank(stoc2$predY), rank(stoc2$predZ)), 3)
 
 
-    restand = rbind(c(N = N , vcram = vcram , rank_cor = rankor),
-                    c(N = N1, vcram = vcram1, rank_cor = rankor1),
-                    c(N = N2, vcram = vcram2, rank_cor = rankor2))
+    restand <- rbind(
+      c(N = N, vcram = vcram, rank_cor = rankor),
+      c(N = N1, vcram = vcram1, rank_cor = rankor1),
+      c(N = N2, vcram = vcram2, rank_cor = rankor2)
+    )
 
-    colnames(restand)[2] = "V_cram"
-    row.names(restand)   = c("Global","1st DB","2nd DB")
-
+    colnames(restand)[2] <- "V_cram"
+    row.names(restand) <- c("Global", "1st DB", "2nd DB")
   } else {
-
-    stoc      = data.frame(predY,predZ)
-    N         = nrow(stoc)
-    vcram     = round(suppressWarnings(StatMatch::pw.assoc(predY~predZ,data = stoc)$V),2)
+    stoc <- data.frame(predY, predZ)
+    N <- nrow(stoc)
+    vcram <- round(suppressWarnings(StatMatch::pw.assoc(predY ~ predZ, data = stoc)$V), 2)
     # chisqT    = suppressWarnings(stats::chisq.test(table(predY,predZ))$p.value)
-    rankor    = round(stats::cor(rank(predY),rank(predZ)),3)
+    rankor <- round(stats::cor(rank(predY), rank(predZ)), 3)
 
-    restand           = c(N = N , vcram = vcram, rank_cor = rankor)
-    names(restand)[2] = "V_cram"
-
+    restand <- c(N = N, vcram = vcram, rank_cor = rankor)
+    names(restand)[2] <- "V_cram"
   }
 
 
   # Using comparisons by grouping levels: error_group
 
-  if (group.clss == TRUE){
+  if (group.clss == TRUE) {
+    n1l <- length(levels(as.factor(predZ)))
+    n2l <- length(levels(as.factor(predY)))
 
-    n1l = length(levels(as.factor(predZ)))
-    n2l = length(levels(as.factor(predY)))
-
-    if (n1l > n2l){
-
-      resgrp = error_group(predY,predZ, ord = ordinal)
-      colnames(resgrp)[1] = paste("combi","Y",paste ="_")
-      colnames(resgrp)[1] = "grp levels Z to Y"
-
+    if (n1l > n2l) {
+      resgrp <- error_group(predY, predZ, ord = ordinal)
+      colnames(resgrp)[1] <- paste("combi", "Y", paste = "_")
+      colnames(resgrp)[1] <- "grp levels Z to Y"
     } else {
-
-      resgrp = error_group(predZ,predY, ord = ordinal)
-      colnames(resgrp)[1] = paste("combi","Z",paste ="_")
-      colnames(resgrp)[1] = "grp levels Y to Z"
-
+      resgrp <- error_group(predZ, predY, ord = ordinal)
+      colnames(resgrp)[1] <- paste("combi", "Z", paste = "_")
+      colnames(resgrp)[1] <- "grp levels Y to Z"
     }
-
-
   } else {
-
-    resgrp = NULL
-
+    resgrp <- NULL
   }
 
-  if (stab.prob == TRUE){
+  if (stab.prob == TRUE) {
 
 
     ### Test 2: Average ability of OT to give a same prediction according to the profile of covariates
@@ -363,165 +325,137 @@ verif_OT = function(ot_out, group.clss = FALSE, ordinal = TRUE, stab.prob = FALS
     ###         number of neigbhors for each profile
 
 
-    inst   = ot_out$res_prox
+    inst <- ot_out$res_prox
 
     # assignment of a profile of covariates to each individual
 
-    row.names(inst$Xobserv) = 1:nrow(inst$Xobserv)
-    aaa    = duplicated(inst$Xobserv)
-    bbb    = inst$Xobserv[aaa == TRUE, ]
-    ccc    = inst$Xobserv[aaa == FALSE,]
-    profil = vector(length = nrow(inst$Xobserv))
+    row.names(inst$Xobserv) <- 1:nrow(inst$Xobserv)
+    aaa <- duplicated(inst$Xobserv)
+    bbb <- inst$Xobserv[aaa == TRUE, ]
+    ccc <- inst$Xobserv[aaa == FALSE, ]
+    profil <- vector(length = nrow(inst$Xobserv))
 
     # A profile for each individual
-    profil[as.numeric(row.names(ccc))] = 1:nrow(ccc)
+    profil[as.numeric(row.names(ccc))] <- 1:nrow(ccc)
 
 
-    xo     = inst$Xobserv
-    incpro = which(profil == 0)
+    xo <- inst$Xobserv
+    incpro <- which(profil == 0)
 
 
-    for (k in 1:length(incpro)){
+    for (k in 1:length(incpro)) {
+      dup <- duplicated(rbind(xo[incpro[k], ], xo[1:(incpro[k] - 1), ]))
+      dup[incpro[0:(k - 1)] + 1] <- FALSE
 
-      dup                    =  duplicated(rbind(xo[incpro[k],],xo[1:(incpro[k]-1),]))
-      dup[incpro[0:(k-1)]+1] = FALSE
-
-      profil[incpro[k]] = profil[min(which(dup))-1]
-
+      profil[incpro[k]] <- profil[min(which(dup)) - 1]
     }
 
 
     # assignment of conditional probabilities to each individual
 
     # seed.stb  = seed.stab
-    simu1_avg = simu2_avg = simuglb_avg = NULL
+    simu1_avg <- simu2_avg <- simuglb_avg <- NULL
 
     # DATABASE A
 
-    if (!is.null(DATA1_OT)){
+    if (!is.null(DATA1_OT)) {
+      estimatorZA <- ot_out$estimatorZA
 
-      estimatorZA = ot_out$estimatorZA
 
+      for (i in 1:nrow(DATA1_OT)) {
+        coord1 <- which(row.names(estimatorZA[profil[i], , ]) == as.character(DATA1_OT$Y)[i])
+        coord2 <- as.numeric(predZ)[i]
 
-      for (i in 1:nrow(DATA1_OT)){
-
-        coord1 = which(row.names(estimatorZA[profil[i],,]) == as.character(DATA1_OT$Y)[i])
-        coord2 = as.numeric(predZ)[i]
-
-        DATA1_OT$prob[i] = estimatorZA[profil[i],coord1,coord2]
-
+        DATA1_OT$prob[i] <- estimatorZA[profil[i], coord1, coord2]
       }
 
-      for (i in 1:nrow(DATA1_OT)){
-
-        profil1   = profil[1:nrow(DATA1_OT)]
-        freq_prof = tapply(rep(1,nrow(DATA1_OT[inst$indXA[[profil1[i]]],])),DATA1_OT[inst$indXA[[profil1[i]]],2],sum)
-        coord1    = as.numeric(DATA1_OT[i,2])
-        DATA1_OT$eff[i] = freq_prof[coord1]
-
+      for (i in 1:nrow(DATA1_OT)) {
+        profil1 <- profil[1:nrow(DATA1_OT)]
+        freq_prof <- tapply(rep(1, nrow(DATA1_OT[inst$indXA[[profil1[i]]], ])), DATA1_OT[inst$indXA[[profil1[i]]], 2], sum)
+        coord1 <- as.numeric(DATA1_OT[i, 2])
+        DATA1_OT$eff[i] <- freq_prof[coord1]
       }
 
-      N1         = length(DATA1_OT$prob[DATA1_OT$eff >= min.neigb])
-      simu1_avg  = mean(DATA1_OT$prob[DATA1_OT$eff >= min.neigb])
-      simu1_sd   = stats::sd(DATA1_OT$prob[DATA1_OT$eff >= min.neigb])
-
+      N1 <- length(DATA1_OT$prob[DATA1_OT$eff >= min.neigb])
+      simu1_avg <- mean(DATA1_OT$prob[DATA1_OT$eff >= min.neigb])
+      simu1_sd <- stats::sd(DATA1_OT$prob[DATA1_OT$eff >= min.neigb])
     }
 
 
     ### DATABASE B
 
 
-    if (!is.null(DATA2_OT)){
+    if (!is.null(DATA2_OT)) {
+      estimatorYB <- ot_out$estimatorYB
 
-      estimatorYB = ot_out$estimatorYB
+      for (i in 1:nrow(DATA2_OT)) {
+        coord1 <- which(row.names(estimatorYB[profil[i + n1], , ]) == as.character(DATA2_OT$Z)[i])
+        # coord2 = as.numeric(DATA2_OT$OTpred)[i]
+        coord2 <- as.numeric(predY)[i + n2]
 
-      for (i in 1:nrow(DATA2_OT)){
-
-        coord1 = which(row.names(estimatorYB[profil[i+n1],,]) == as.character(DATA2_OT$Z)[i])
-        #coord2 = as.numeric(DATA2_OT$OTpred)[i]
-        coord2 = as.numeric(predY)[i+n2]
-
-        DATA2_OT$prob[i] = estimatorYB[profil[i+n1],coord1,coord2]
-
+        DATA2_OT$prob[i] <- estimatorYB[profil[i + n1], coord1, coord2]
       }
 
-      for (i in 1:nrow(DATA2_OT)){
+      for (i in 1:nrow(DATA2_OT)) {
+        profil2 <- profil[(n1 + 1):(n1 + nrow(DATA2_OT))]
 
-
-        profil2   = profil[(n1+1):(n1 + nrow(DATA2_OT))]
-
-        freq_prof       = tapply(rep(1,nrow(DATA2_OT[inst$indXB[[profil2[i]]],])),DATA2_OT[inst$indXB[[profil2[i]]],3],sum)
-        coord1          = as.numeric(DATA2_OT[i,3])
-        DATA2_OT$eff[i] = freq_prof[coord1]
-
+        freq_prof <- tapply(rep(1, nrow(DATA2_OT[inst$indXB[[profil2[i]]], ])), DATA2_OT[inst$indXB[[profil2[i]]], 3], sum)
+        coord1 <- as.numeric(DATA2_OT[i, 3])
+        DATA2_OT$eff[i] <- freq_prof[coord1]
       }
 
 
-       N2         = length(DATA2_OT$prob[DATA2_OT$eff >= min.neigb])
-       simu2_avg  = mean(DATA2_OT$prob[DATA2_OT$eff >= min.neigb])
-       simu2_sd   = stats::sd(DATA2_OT$prob[DATA2_OT$eff >= min.neigb])
-
-      }
-
-
-      simuglb     = c(DATA1_OT$prob[DATA1_OT$eff >= min.neigb], DATA2_OT$prob[DATA2_OT$eff >= min.neigb])
-      Nglob       = length(simuglb)
-      simuglb_avg = mean(simuglb)
-      simuglb_sd  = stats::sd(simuglb)
-
-
-    if (is.null(DATA1_OT)){
-
-      restand3 = data.frame(N = N2, min.N = min.neigb, mean = round(simu2_avg, 3), sd = round(simu2_sd,3))
-      row.names(restand3) = "2nd DB"
-
-    } else if (is.null(DATA2_OT)){
-
-      restand3 = data.frame(N = N1, min.N = min.neigb, mean = round(simu1_avg, 3), sd = round(simu1_sd,3))
-      row.names(restand3) = "1st DB"
-
-    } else {
-
-      restand3 = rbind(c(N = Nglob, min.N = min.neigb,  mean = round(simuglb_avg, 3), sd = round(simuglb_sd,3)),
-                       c(N = N1   , min.N = min.neigb,  mean = round(simu1_avg, 3)  , sd = round(simu1_sd,3)),
-                       c(N = N2   , min.N = min.neigb,  mean = round(simu2_avg, 3)  , sd = round(simu2_sd,3)))
-
-      row.names(restand3)   = c("Global","1st DB","2nd DB")
-
+      N2 <- length(DATA2_OT$prob[DATA2_OT$eff >= min.neigb])
+      simu2_avg <- mean(DATA2_OT$prob[DATA2_OT$eff >= min.neigb])
+      simu2_sd <- stats::sd(DATA2_OT$prob[DATA2_OT$eff >= min.neigb])
     }
 
-    eff              = c(DATA1_OT$eff,DATA2_OT$eff)
-    eft              = table(eff)
-    eff_tb           = data.frame(as.numeric(names(eft)),Nb.Prob = eft)
-    eff_tb           = eff_tb[,-2]
-    colnames(eff_tb) = c("Nb.neighbor","Nb.Prob")
-    eff_tb           = eff_tb[1:10,]
+
+    simuglb <- c(DATA1_OT$prob[DATA1_OT$eff >= min.neigb], DATA2_OT$prob[DATA2_OT$eff >= min.neigb])
+    Nglob <- length(simuglb)
+    simuglb_avg <- mean(simuglb)
+    simuglb_sd <- stats::sd(simuglb)
 
 
+    if (is.null(DATA1_OT)) {
+      restand3 <- data.frame(N = N2, min.N = min.neigb, mean = round(simu2_avg, 3), sd = round(simu2_sd, 3))
+      row.names(restand3) <- "2nd DB"
+    } else if (is.null(DATA2_OT)) {
+      restand3 <- data.frame(N = N1, min.N = min.neigb, mean = round(simu1_avg, 3), sd = round(simu1_sd, 3))
+      row.names(restand3) <- "1st DB"
+    } else {
+      restand3 <- rbind(
+        c(N = Nglob, min.N = min.neigb, mean = round(simuglb_avg, 3), sd = round(simuglb_sd, 3)),
+        c(N = N1, min.N = min.neigb, mean = round(simu1_avg, 3), sd = round(simu1_sd, 3)),
+        c(N = N2, min.N = min.neigb, mean = round(simu2_avg, 3), sd = round(simu2_sd, 3))
+      )
+
+      row.names(restand3) <- c("Global", "1st DB", "2nd DB")
+    }
+
+    eff <- c(DATA1_OT$eff, DATA2_OT$eff)
+    eft <- table(eff)
+    eff_tb <- data.frame(as.numeric(names(eft)), Nb.Prob = eft)
+    eff_tb <- eff_tb[, -2]
+    colnames(eff_tb) <- c("Nb.neighbor", "Nb.Prob")
+    eff_tb <- eff_tb[1:10, ]
   } else {
-
-    restand3 = NULL
-    eff_tb   = NULL
-
+    restand3 <- NULL
+    eff_tb <- NULL
   }
 
-  if (is.null(DATA1_OT)){
-
-    Z    = predZ
-    conf = stats::addmargins(table(predY,Z))
-
-  } else if (is.null(DATA2_OT)){
-
-    Y    = predY
-    conf = stats::addmargins(table(Y,predZ))
-
+  if (is.null(DATA1_OT)) {
+    Z <- predZ
+    conf <- stats::addmargins(table(predY, Z))
+  } else if (is.null(DATA2_OT)) {
+    Y <- predY
+    conf <- stats::addmargins(table(Y, predZ))
   } else {
-
-    conf = stats::addmargins(table(predY,predZ))
-
+    conf <- stats::addmargins(table(predY, predZ))
   }
 
-  out_verif = list(nb.profil = length(inst$indXA), conf.mat = conf,
-                   res.prox = restand, res.grp = resgrp, hell = hh, eff.neig = eff_tb, res.stab = restand3)
-
+  out_verif <- list(
+    nb.profil = length(inst$indXA), conf.mat = conf,
+    res.prox = restand, res.grp = resgrp, hell = hh, eff.neig = eff_tb, res.stab = restand3
+  )
 }

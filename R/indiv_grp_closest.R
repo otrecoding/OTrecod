@@ -66,9 +66,11 @@
 #'
 #' ### Example with the Manhattan distance
 #'
-#' try1 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
-#'                     ordinal = c(2,6), logic = NULL, prep_choice = "M")
-#' res1 = proxim_dist(try1,norm = "M")
+#' try1 <- transfo_dist(simu_data,
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7),
+#'   ordinal = c(2, 6), logic = NULL, prep_choice = "M"
+#' )
+#' res1 <- proxim_dist(try1, norm = "M")
 #'
 #' ### Y(Yb1) and Z(Yb2) are a same information encoded in 2 different forms:
 #' ### (3 levels for Y and 5 levels for Z)
@@ -77,238 +79,205 @@
 #' ### as the marginal distribution of Z in A ...
 #'
 #' # Empirical distribution of Y in database A:
-#' freqY = prop.table(table(try1$Y)); freqY
+#' freqY <- prop.table(table(try1$Y))
+#' freqY
 #'
 #' # Empirical distribution of Z in database B
-#' freqZ = prop.table(table(try1$Z)); freqZ
+#' freqZ <- prop.table(table(try1$Z))
+#' freqZ
 #'
 #' # By supposing that the following matrix called transport symbolizes
 #' # an estimation of the joint distribution L(Y,Z) ...
 #' # Note that, in reality this distribution is UNKNOWN and is
 #' # estimated in the OT function by resolving an optimisation problem.
 #'
-#' transport1 = matrix(c(0,0.35285714,0,0.09142857,0,0.03571429,
-#'                       0,0,0.08285714,0,0.07857143,0.03142857,
-#'                       0.32714286,0,0),ncol = 5,byrow = FALSE)
+#' transport1 <- matrix(c(
+#'   0, 0.35285714, 0, 0.09142857, 0, 0.03571429,
+#'   0, 0, 0.08285714, 0, 0.07857143, 0.03142857,
+#'   0.32714286, 0, 0
+#' ), ncol = 5, byrow = FALSE)
 #'
 #' # ... So that the marginal distributions of this object corresponds to freqY and freqZ:
-#' apply(transport1,1,sum)  # = freqY
-#' apply(transport1,2,sum)  # = freqZ
+#' apply(transport1, 1, sum) # = freqY
+#' apply(transport1, 2, sum) # = freqZ
 #'
 #' # The affectation of the predicted values of Y in database B and Z in database A
 #' # are stored in the following object:
 #'
-#' res2      = indiv_grp_closest(res1,jointprobaA = transport1, jointprobaB = transport1,
-#'                               percent_closest= 0.90)
+#' res2 <- indiv_grp_closest(res1,
+#'   jointprobaA = transport1, jointprobaB = transport1,
+#'   percent_closest = 0.90
+#' )
 #' summary(res2)
 #'
 #' # For the prediction of Z in A only, add the corresponding argument:
-#' res3 = indiv_grp_closest(res1,jointprobaA = transport1, jointprobaB = transport1,
-#' percent_closest= 0.90,which.DB="A")
+#' res3 <- indiv_grp_closest(res1,
+#'   jointprobaA = transport1, jointprobaB = transport1,
+#'   percent_closest = 0.90, which.DB = "A"
+#' )
 #'
-indiv_grp_closest=function(proxim, jointprobaA = NULL, jointprobaB = NULL, percent_closest = 1.0, which.DB = "BOTH"){
-
-  if (!is.list(proxim)){
-
+indiv_grp_closest <- function(proxim, jointprobaA = NULL, jointprobaB = NULL, percent_closest = 1.0, which.DB = "BOTH") {
+  if (!is.list(proxim)) {
     stop("This object must be a list returned by the proxim_dist function")
-
   } else {}
 
-  if ((!is.matrix(jointprobaA))|(!is.matrix(jointprobaA))){
-
+  if ((!is.matrix(jointprobaA)) | (!is.matrix(jointprobaA))) {
     stop("The joint distributions must be store in matrix objects")
-
   } else {}
 
-  if ((ncol(jointprobaA) != ncol(jointprobaB))|(nrow(jointprobaA) != nrow(jointprobaB))){
-
+  if ((ncol(jointprobaA) != ncol(jointprobaB)) | (nrow(jointprobaA) != nrow(jointprobaB))) {
     stop("The joint distributions must be store in matrix of same size")
-
   } else {}
 
 
-  if ((format(sum(jointprobaA)) != "1")| (format(sum(jointprobaB)) != "1")){
-
+  if ((format(sum(jointprobaA)) != "1") | (format(sum(jointprobaB)) != "1")) {
     stop("The sum of the jointprobaA matrix or the sum of the jointprobaB matrix differs from 1 !")
-
   } else {}
 
 
-  if ((percent_closest>1)|(percent_closest <= 0)){
-
+  if ((percent_closest > 1) | (percent_closest <= 0)) {
     stop("Improper value for the percent_closest argument")
-
   } else {}
 
-  if (!(which.DB %in% c("A","B","BOTH"))){
-
+  if (!(which.DB %in% c("A", "B", "BOTH"))) {
     stop("Improper value for the which.DB argument")
-
   } else {}
 
-  if ((which.DB == "BOTH") & (is.null(jointprobaA)|is.null(jointprobaB))){
-
+  if ((which.DB == "BOTH") & (is.null(jointprobaA) | is.null(jointprobaB))) {
     stop("The jointprobaA and B arguments must be filled")
-
   } else {}
 
-  if ((which.DB == "A") & (is.null(jointprobaA))){
-
+  if ((which.DB == "A") & (is.null(jointprobaA))) {
     stop("The jointprobaA argument is missing")
-
   } else {}
 
-  if ((which.DB == "B") & (is.null(jointprobaB))){
-
+  if ((which.DB == "B") & (is.null(jointprobaB))) {
     stop("The jointprobaB argument is missing")
-
   } else {}
 
 
   # Redefine A and B for the model
 
-  A = 1:proxim$nA
-  B = 1:proxim$nB
-  Y = proxim$Y
-  Z = proxim$Z
-  Yobserv = proxim$Yobserv
-  Zobserv = proxim$Zobserv
-  indY = proxim$indY
-  indZ = proxim$indZ
-  nbindY = numeric(0)
-  for (y in Y){
-    nbindY = c(nbindY,length(proxim$indY[[y]]))}
-  nbindZ= numeric(0)
-  for (z in Z){
-    nbindZ = c(nbindZ,length(proxim$indZ[[z]]))}
-  freqY= numeric(0)
-  for (y in Y){
-    freqY = c(freqY,nbindY[y] / length(A))}
-  freqZ= numeric(0)
-  for (z in Z){
-    freqZ = c(freqZ,nbindZ[z] / length(B))}
+  A <- 1:proxim$nA
+  B <- 1:proxim$nB
+  Y <- proxim$Y
+  Z <- proxim$Z
+  Yobserv <- proxim$Yobserv
+  Zobserv <- proxim$Zobserv
+  indY <- proxim$indY
+  indZ <- proxim$indZ
+  nbindY <- numeric(0)
+  for (y in Y) {
+    nbindY <- c(nbindY, length(proxim$indY[[y]]))
+  }
+  nbindZ <- numeric(0)
+  for (z in Z) {
+    nbindZ <- c(nbindZ, length(proxim$indZ[[z]]))
+  }
+  freqY <- numeric(0)
+  for (y in Y) {
+    freqY <- c(freqY, nbindY[y] / length(A))
+  }
+  freqZ <- numeric(0)
+  for (z in Z) {
+    freqZ <- c(freqZ, nbindZ[z] / length(B))
+  }
 
   # In essence, assign to each individual the modality that is closest,
   # where the distance from an individual to a modality is computed as the
   # average distance to the individuals having this modality (in the other base):
 
-  YAtrans          = NULL
-  YBtrans          = NULL
-  average_distance = avg_dist_closest(proxim, percent_closest);
-  Davg             = average_distance$Davg
-  DindivA          = average_distance$DindivA
-  DindivB          = average_distance$DindivB
+  YAtrans <- NULL
+  YBtrans <- NULL
+  average_distance <- avg_dist_closest(proxim, percent_closest)
+  Davg <- average_distance$Davg
+  DindivA <- average_distance$DindivA
+  DindivB <- average_distance$DindivB
 
 
-  DA = DB =  list()
+  DA <- DB <- list()
 
-  for (z in Z){
+  for (z in Z) {
+    DA[[z]] <- vector(length = length(A))
 
-    DA[[z]] = vector(length = length(A))
-
-    for (i in A){
-
-      DA[[z]][i] = DindivA[i,z]
-
+    for (i in A) {
+      DA[[z]][i] <- DindivA[i, z]
     }
   }
 
-  for (y in Y){
+  for (y in Y) {
+    DB[[y]] <- vector(length = length(B))
 
-    DB[[y]] = vector(length = length(B))
-
-    for (i in B){
-
-      DB[[y]][i] = DindivB[i,y]
-
+    for (i in B) {
+      DB[[y]][i] <- DindivB[i, y]
     }
   }
 
-  if (which.DB %in% c("BOTH","A")){
+  if (which.DB %in% c("BOTH", "A")) {
+    YBtrans <- numeric(proxim$nA)
 
-    YBtrans = numeric(proxim$nA);
+    for (y in Y) {
+      indtrans <- indY[[y]]
 
-    for (y in Y){
+      for (z in Z) {
+        nbtrans <- min(round(jointprobaA[y, z] / freqY[y] * nbindY[y]), length(indtrans))
+        distance <- numeric(0)
 
-      indtrans = indY[[y]]
-
-      for (z in Z){
-
-        nbtrans = min(round(jointprobaA[y,z]/freqY[y] * nbindY[y]),length(indtrans));
-        distance = numeric(0)
-
-        for (i in indtrans){
-
-          distance = c(distance,DA[[z]][i])
-
+        for (i in indtrans) {
+          distance <- c(distance, DA[[z]][i])
         }
 
-        names(distance)          = indtrans
-        distance                 = sort(distance)
-        ident_dist               = as.numeric(names(distance))
+        names(distance) <- indtrans
+        distance <- sort(distance)
+        ident_dist <- as.numeric(names(distance))
 
-        for (k in 1:nbtrans){
-
-          YBtrans[ident_dist[k]] = z;
-          indtrans               = setdiff(indtrans,ident_dist[k])
-
+        for (k in 1:nbtrans) {
+          YBtrans[ident_dist[k]] <- z
+          indtrans <- setdiff(indtrans, ident_dist[k])
         }
-
       }
 
 
       # affect potential individuals that have not been transported due to
       # rounding
-      for (i in indtrans){
-
-        YBtrans[i] = Zobserv[which.min(proxim$D[i,])]
-
+      for (i in indtrans) {
+        YBtrans[i] <- Zobserv[which.min(proxim$D[i, ])]
       }
     }
-
   } else {}
 
-  if (which.DB %in% c("BOTH","B")){
+  if (which.DB %in% c("BOTH", "B")) {
+    YAtrans <- numeric(proxim$nB)
 
-    YAtrans = numeric(proxim$nB)
+    for (z in Z) {
+      indtrans <- indZ[[z]]
 
-    for (z in Z){
+      for (y in Y) {
+        nbtrans <- min(round(jointprobaB[y, z] / freqZ[z] * nbindZ[z]), length(indtrans))
+        distance <- numeric(0)
 
-      indtrans = indZ[[z]]
-
-      for (y in Y){
-
-        nbtrans = min(round(jointprobaB[y,z]/freqZ[z] * nbindZ[z]), length(indtrans));
-        distance = numeric(0)
-
-        for (j in indtrans){
-
-          distance = c(distance,DB[[y]][j])
-
+        for (j in indtrans) {
+          distance <- c(distance, DB[[y]][j])
         }
 
-        names(distance)          = indtrans
-        distance                 = sort(distance)
-        ident_dist               = as.numeric(names(distance))
+        names(distance) <- indtrans
+        distance <- sort(distance)
+        ident_dist <- as.numeric(names(distance))
 
-        for (k in 1:nbtrans){
-          YAtrans[ident_dist[k]] = y
-          indtrans = indtrans    = setdiff(indtrans,ident_dist[k])
+        for (k in 1:nbtrans) {
+          YAtrans[ident_dist[k]] <- y
+          indtrans <- indtrans <- setdiff(indtrans, ident_dist[k])
         }
       }
 
       # affect potential individuals that have not been transported due to
       # rounding:
 
-      for (j in indtrans){
-
-        YAtrans[j] = Yobserv[which.min(proxim$D[,j])]
-
+      for (j in indtrans) {
+        YAtrans[j] <- Yobserv[which.min(proxim$D[, j])]
       }
     }
-
   } else {}
 
   return(list(YAtrans = YAtrans, ZBtrans = YBtrans))
-
 }

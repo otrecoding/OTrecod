@@ -19,56 +19,46 @@
 #'
 #' @examples
 #' # Powerset of set of 4 elements
-#' fam  =  power_set(4)
+#' fam <- power_set(4)
 #'
 #' # Powerset of set of 4 elements by only keeping
 #' # subsets of consecutive elements
-#' fam2 =  power_set(4,ordinal = TRUE)
+#' fam2 <- power_set(4, ordinal = TRUE)
+#'
+power_set <- function(n, ordinal = FALSE) {
+  E <- 1:n
 
-power_set = function(n,ordinal = FALSE){
-
-  E        = 1:n
-
-  BDD = rep(rep(1:n,each=n^(n-1)),n^0)
-  for (k in 1:(n-1)){
-
-    BDD = cbind(BDD,rep(rep(1:n,each=n^(n-(k+1))),n^k))
-
+  BDD <- rep(rep(1:n, each = n^(n - 1)), n^0)
+  for (k in 1:(n - 1)) {
+    BDD <- cbind(BDD, rep(rep(1:n, each = n^(n - (k + 1))), n^k))
   }
 
-  recup = list()
+  recup <- list()
 
-  for (i in 1:(n^n)){
-
-    recup[[i]] = unique(BDD[i,])
-
+  for (i in 1:(n^n)) {
+    recup[[i]] <- unique(BDD[i, ])
   }
 
-  recup2 = unique(lapply(recup,sort))
+  recup2 <- unique(lapply(recup, sort))
 
 
-  if (ordinal == TRUE){
+  if (ordinal == TRUE) {
+    recup3 <- lapply(recup2, function(x) setdiff(E, x))
 
-    recup3 = lapply(recup2,function(x) setdiff(E,x))
+    recup2bis <- lapply(recup2, diff)
+    recup3bis <- lapply(recup3, diff)
 
-    recup2bis = lapply(recup2,diff)
-    recup3bis = lapply(recup3,diff)
-
-    indic2 = sapply(recup2bis,function(x) any(x>1))
-    indic3 = sapply(recup2bis,function(x){length(x)==n-1})
-
-
-    recup_new = recup2[(indic2==F) & (indic3==F)]
-    recup_new[[length(recup_new)+1]] = 1:n
+    indic2 <- sapply(recup2bis, function(x) any(x > 1))
+    indic3 <- sapply(recup2bis, function(x) {
+      length(x) == n - 1
+    })
 
 
-
+    recup_new <- recup2[(indic2 == F) & (indic3 == F)]
+    recup_new[[length(recup_new) + 1]] <- 1:n
   } else {
-
-    recup_new = recup2
-
+    recup_new <- recup2
   }
 
   return(recup_new)
-
 }

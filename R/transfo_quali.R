@@ -19,52 +19,38 @@
 #'
 #' @examples
 #'
-#' treat     = as.factor(c(rep("A",10),rep("B",15),rep("C",12)))
-#' treat_bin = transfo_quali(treat,"trt")
+#' treat <- as.factor(c(rep("A", 10), rep("B", 15), rep("C", 12)))
+#' treat_bin <- transfo_quali(treat, "trt")
 #'
-#'
-transfo_quali = function(x,labx = NULL){
-
-  if (is.factor(x)==FALSE){
+transfo_quali <- function(x, labx = NULL) {
+  if (is.factor(x) == FALSE) {
     stop("Your variable needs to be convert in factor !")
   }
 
-  lev_x = levels(x)
+  lev_x <- levels(x)
 
 
 
-  if (length(lev_x) == 1){
-
-    if (lev_x == "0"){
-
-      x_bin = as.matrix(as.numeric(x)-1)
-      colnames(x_bin)[1] = labx
-
-    } else if (lev_x != "0"){
-
-      x_bin = as.matrix(rep(1,length(x)))
-      colnames(x_bin)[1] = labx
-
-
+  if (length(lev_x) == 1) {
+    if (lev_x == "0") {
+      x_bin <- as.matrix(as.numeric(x) - 1)
+      colnames(x_bin)[1] <- labx
+    } else if (lev_x != "0") {
+      x_bin <- as.matrix(rep(1, length(x)))
+      colnames(x_bin)[1] <- labx
     }
-
   } else {
+    x_bin <- matrix(nrow = length(x), ncol = length(lev_x) - 1)
 
-    x_bin = matrix(nrow = length(x), ncol = length(lev_x) - 1)
-
-    for (j in 1:(length(lev_x)-1)){
-
-      x_bin[,j] = ifelse(x == lev_x[j+1],1,0)
-
+    for (j in 1:(length(lev_x) - 1)) {
+      x_bin[, j] <- ifelse(x == lev_x[j + 1], 1, 0)
     }
 
 
     # Names of the binary variables
 
-    colnames(x_bin) = paste(labx,2:(length(lev_x)),sep="_")
-
+    colnames(x_bin) <- paste(labx, 2:(length(lev_x)), sep = "_")
   }
 
   return(x_bin)
-
 }

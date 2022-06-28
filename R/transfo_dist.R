@@ -105,27 +105,35 @@
 #' data(simu_data)
 #'
 #' # 1. the Euclidean distance (same output with Manhattan distance),
-#' try1 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
-#'                     ordinal = c(2,6), logic = NULL, prep_choice = "E")
+#' try1 <- transfo_dist(simu_data,
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7),
+#'   ordinal = c(2, 6), logic = NULL, prep_choice = "E"
+#' )
 #' # Here Yb2 was stored in numeric: It has been automatically converted in factor
 #'
 #' # You can also convert beforehand Yb2 in ordered factor by example:
-#' sim_data     = simu_data
-#' sim_data$Yb2 = as.ordered(sim_data$Yb2)
-#' try1 = transfo_dist(sim_data,quanti = 8, nominal = c(1,4:5,7),
-#'                     ordinal = c(2,3,6), logic = NULL, prep_choice = "E")
+#' sim_data <- simu_data
+#' sim_data$Yb2 <- as.ordered(sim_data$Yb2)
+#' try1 <- transfo_dist(sim_data,
+#'   quanti = 8, nominal = c(1, 4:5, 7),
+#'   ordinal = c(2, 3, 6), logic = NULL, prep_choice = "E"
+#' )
 #'
 #' # 2. The Euclidean distance generated on principal components
 #' #    by a factor analysis for mixed data (FAMD):
-#' try2 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
-#'                     ordinal = c(2,6), logic = NULL, prep_choice = "FAMD")
+#' try2 <- transfo_dist(simu_data,
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7),
+#'   ordinal = c(2, 6), logic = NULL, prep_choice = "FAMD"
+#' )
 #'
 #' # Please notice that this method works only with rows that have complete
 #' # information on covariates.
 #'
 #' # 3. The Gower distance for mixed data:
-#' try3 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),
-#'                     ordinal = c(2,6), logic = NULL, prep_choice = "G")
+#' try3 <- transfo_dist(simu_data,
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7),
+#'   ordinal = c(2, 6), logic = NULL, prep_choice = "G"
+#' )
 #'
 #' # 4. The Hamming distance:
 #' # Here the quanti option could only contain indexes related to targets.
@@ -134,339 +142,255 @@
 #' # So in simu_data, the discretization of the variable age is required (index=8),
 #' # using the convert_num and convert_clss arguments (for tertiles = 3):
 #'
-#' try4 = transfo_dist(simu_data,quanti = c(3,8), nominal = c(1,4:5,7),ordinal = c(2,6),
-#' convert_num = 8, convert_clss = 3, prep_choice = "H")
+#' try4 <- transfo_dist(simu_data,
+#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'   convert_num = 8, convert_clss = 3, prep_choice = "H"
+#' )
 #'
 #'
 #' ### This function works whatever the order of your columns in your database:
 #' # Suppose that we re-order columns in simu_data:
-#' simu_data2 = simu_data[,c(2,4:7,3,8,1)]
+#' simu_data2 <- simu_data[, c(2, 4:7, 3, 8, 1)]
 #'
 #' # By changing the corresponding indexes in the index_DB_Y_Z argument,
 #' # we observe the desired output:
-#' try5 = transfo_dist(simu_data2,index_DB_Y_Z = c(8,1,6),quanti = 6:7, nominal = c(2:3,5,8),
-#'                      ordinal = c(1,4), logic = NULL, prep_choice = "E")
+#' try5 <- transfo_dist(simu_data2,
+#'   index_DB_Y_Z = c(8, 1, 6), quanti = 6:7, nominal = c(2:3, 5, 8),
+#'   ordinal = c(1, 4), logic = NULL, prep_choice = "E"
+#' )
 #'
-transfo_dist = function(DB,index_DB_Y_Z = 1:3,
-                        quanti = NULL, nominal = NULL, ordinal = NULL, logic = NULL,
-                        convert_num = NULL, convert_clss = NULL,
-                        prep_choice = "E", info = 0.8){
-
-
-  if (ncol(DB) < 4){
-
+transfo_dist <- function(DB, index_DB_Y_Z = 1:3,
+                         quanti = NULL, nominal = NULL, ordinal = NULL, logic = NULL,
+                         convert_num = NULL, convert_clss = NULL,
+                         prep_choice = "E", info = 0.8) {
+  if (ncol(DB) < 4) {
     stop("Invalid number of columns in DB: At least 4")
-
   } else {}
 
 
 
-  if (!(prep_choice %in% c("E","M","FAMD","H","G"))){
-
-    stop ("Invalid distance chosen: Please consult the possible options for prep_choice")
-
+  if (!(prep_choice %in% c("E", "M", "FAMD", "H", "G"))) {
+    stop("Invalid distance chosen: Please consult the possible options for prep_choice")
   } else {}
 
 
-  if (length(index_DB_Y_Z)!= 3){
-
+  if (length(index_DB_Y_Z) != 3) {
     stop("Invalid length for index_DB_Y_Z: This argument must contain the column indexes
           related to the identifiation of DBs and of the 2 chosen targets")
-
   } else {}
 
 
-  if (max(index_DB_Y_Z)>ncol(DB)){
-
+  if (max(index_DB_Y_Z) > ncol(DB)) {
     stop("Invalid index in the index_DB_Y_Z argument")
-
   } else {}
 
 
-  if (length(unique(c(quanti,nominal,ordinal,logic)))!= ncol(DB)){
-
+  if (length(unique(c(quanti, nominal, ordinal, logic))) != ncol(DB)) {
     stop("The type of at least one variable is missing")
-
   } else {}
 
-  if (!is.data.frame(DB)){
-
+  if (!is.data.frame(DB)) {
     stop("The DB must be a data.frame!")
-
   } else {}
 
-  if (length(quanti)>0){
-
-    if (max(quanti)>ncol(DB)){
-
+  if (length(quanti) > 0) {
+    if (max(quanti) > ncol(DB)) {
       stop("Incorrect index of columns for quanti")
-
     } else {}
-
   } else {}
 
-  if (length(nominal)>0){
-
-    if (max(nominal)>ncol(DB)){
-
+  if (length(nominal) > 0) {
+    if (max(nominal) > ncol(DB)) {
       stop("Incorrect index of columns for nominal")
-
     } else {}
-
   } else {}
 
-  if (length(ordinal)>0){
-
-    if (max(ordinal)>ncol(DB)){
-
+  if (length(ordinal) > 0) {
+    if (max(ordinal) > ncol(DB)) {
       stop("Incorrect index of columns for ordinal")
-
     } else {}
-
   } else {}
 
-  if (length(logic)>0){
-
-    if (max(logic)>ncol(DB)){
-
+  if (length(logic) > 0) {
+    if (max(logic) > ncol(DB)) {
       stop("Incorrect index of columns for logic")
-
     } else {}
-
   } else {}
 
 
-  if ((length(quanti)>ncol(DB))|(length(nominal)>ncol(DB))|(length(ordinal)>ncol(DB))|(length(logic)>ncol(DB))){
-
-    stop ("The number of at least one type of variables declared exceeds the number of columns of DB")
-
+  if ((length(quanti) > ncol(DB)) | (length(nominal) > ncol(DB)) | (length(ordinal) > ncol(DB)) | (length(logic) > ncol(DB))) {
+    stop("The number of at least one type of variables declared exceeds the number of columns of DB")
   } else {}
 
-  if (length(setdiff(quanti,c(index_DB_Y_Z,convert_num))!=0)&(prep_choice == "H")){
-
+  if (length(setdiff(quanti, c(index_DB_Y_Z, convert_num)) != 0) & (prep_choice == "H")) {
     stop("Incompatible type(s) of covariate(s) with distance chosen: No numeric variable with Hamming distance.
          If your variable is binary or has a finite number of values, please put its corresponding index of column
          in the ordinal option, rather than in the quanti option.If not, categorize it, or change distance function.")
-
   } else {}
 
-  if (all(convert_num %in% quanti) == FALSE){
-
+  if (all(convert_num %in% quanti) == FALSE) {
     stop("Inconsistencies between convert_num and quanti arguments")
-
   } else {}
 
-  if (length(convert_clss)>length(convert_num)){
-
+  if (length(convert_clss) > length(convert_num)) {
     stop("Inconsistencies between convert_num and convert_clss")
-
   } else {}
 
-  if ((length(convert_clss)>1)&(length(convert_clss)!=length(convert_num))){
-
+  if ((length(convert_clss) > 1) & (length(convert_clss) != length(convert_num))) {
     stop("Inconsistencies between convert_num and convert_clss")
-
   } else {}
 
 
-  if (length(convert_clss) == 1){
-
-    convert_clss = rep(convert_clss,length(convert_num))
-
+  if (length(convert_clss) == 1) {
+    convert_clss <- rep(convert_clss, length(convert_num))
   } else {}
 
   # Exclude systematically Y and Z from discretization
 
-  convert_clss = convert_clss[convert_num %in% setdiff(convert_num,index_DB_Y_Z)]
-  convert_num  = setdiff(convert_num,index_DB_Y_Z)
+  convert_clss <- convert_clss[convert_num %in% setdiff(convert_num, index_DB_Y_Z)]
+  convert_num <- setdiff(convert_num, index_DB_Y_Z)
 
 
-  if (length(convert_num) != 0){
-
-    tt = 0
-    for (k in convert_num){
-      tt = tt + 1
-      DB[,k]  = cut(DB[,k],breaks = stats::quantile(DB[,k],
-                                                    probs = seq(0,1,by = 1/convert_clss[tt]),na.rm = TRUE),
-                    include.lowest = TRUE, ordered_result = TRUE)
+  if (length(convert_num) != 0) {
+    tt <- 0
+    for (k in convert_num) {
+      tt <- tt + 1
+      DB[, k] <- cut(DB[, k],
+        breaks = stats::quantile(DB[, k],
+          probs = seq(0, 1, by = 1 / convert_clss[tt]), na.rm = TRUE
+        ),
+        include.lowest = TRUE, ordered_result = TRUE
+      )
     }
 
-    ordinal     = sort(c(ordinal,convert_num))
-    quanti      = sort(setdiff(quanti,convert_num))
-    convert_num = NULL
-
+    ordinal <- sort(c(ordinal, convert_num))
+    quanti <- sort(setdiff(quanti, convert_num))
+    convert_num <- NULL
   } else {}
 
 
-  if (length(Reduce(intersect,list(quanti,nominal,ordinal,logic))) != 0){
-
+  if (length(Reduce(intersect, list(quanti, nominal, ordinal, logic))) != 0) {
     stop("Several types declared for at least one variable. Please consult help to complete the corresponding options")
-
   } else {}
 
 
-  typ_var = sort(unique(c(quanti,nominal,ordinal,logic)))
+  typ_var <- sort(unique(c(quanti, nominal, ordinal, logic)))
 
-  if (length(typ_var) != ncol(DB)){
-
+  if (length(typ_var) != ncol(DB)) {
     stop("The type of at least one variable is missing. Please consult help to complete the corresponding options.")
-
   } else {}
 
 
 
-  colnames(DB)[index_DB_Y_Z[2]] = "Y"
-  colnames(DB)[index_DB_Y_Z[3]] = "Z"
+  colnames(DB)[index_DB_Y_Z[2]] <- "Y"
+  colnames(DB)[index_DB_Y_Z[3]] <- "Z"
 
-  DB$Y            = transfo_target(DB[,"Y"], levels_order = levels(DB[,"Y"]))$NEW
-  DB$Z            = transfo_target(DB[,"Z"], levels_order = levels(DB[,"Z"]))$NEW
+  DB$Y <- transfo_target(DB[, "Y"], levels_order = levels(DB[, "Y"]))$NEW
+  DB$Z <- transfo_target(DB[, "Z"], levels_order = levels(DB[, "Z"]))$NEW
 
 
 
-  if (index_DB_Y_Z[2] %in% nominal){
+  if (index_DB_Y_Z[2] %in% nominal) {
 
     # DB$Y = as.character(DB$Y)
-    DB$Y = factor(as.character(DB$Y), levels = levels(DB$Y))
-
+    DB$Y <- factor(as.character(DB$Y), levels = levels(DB$Y))
   } else {}
 
-  if (index_DB_Y_Z[3] %in% nominal){
+  if (index_DB_Y_Z[3] %in% nominal) {
 
     # DB$Z = as.character(DB$Z)
-    DB$Z = factor(as.character(DB$Z), levels = levels(DB$Z))
-
+    DB$Z <- factor(as.character(DB$Z), levels = levels(DB$Z))
   } else {}
 
-  ordinal2 = setdiff(ordinal,index_DB_Y_Z)
-  nominal2 = setdiff(nominal,index_DB_Y_Z)
-  quanti2  = setdiff(quanti ,index_DB_Y_Z)
+  ordinal2 <- setdiff(ordinal, index_DB_Y_Z)
+  nominal2 <- setdiff(nominal, index_DB_Y_Z)
+  quanti2 <- setdiff(quanti, index_DB_Y_Z)
 
-  if (prep_choice == "H"){
-
-    nominal2 = sort(unique(c(ordinal2,nominal2)))
-    ordinal2 = NULL
-
+  if (prep_choice == "H") {
+    nominal2 <- sort(unique(c(ordinal2, nominal2)))
+    ordinal2 <- NULL
   } else {}
 
 
-  for (j in sort(unique(c(ordinal2,nominal2)))){
-
-    DB[,j] = as.factor(DB[,j])
-
+  for (j in sort(unique(c(ordinal2, nominal2)))) {
+    DB[, j] <- as.factor(DB[, j])
   }
 
 
-  if (prep_choice %in% c("M","E","H")){
-
-
-    if (length(logic) != 0){
-
-      for (j in logic){
-
-        DB[,j]   = as.numeric(DB[,j])
-        ordinal2 = unique(sort(c(ordinal2,logic)))
-        logic    = NULL
-
+  if (prep_choice %in% c("M", "E", "H")) {
+    if (length(logic) != 0) {
+      for (j in logic) {
+        DB[, j] <- as.numeric(DB[, j])
+        ordinal2 <- unique(sort(c(ordinal2, logic)))
+        logic <- NULL
       }
-
     } else {}
 
 
-    if (length(union(ordinal2,quanti2))!=0){
-
-      for (j in sort(unique(c(ordinal2,quanti2)))){
-
-        DB[,j] = as.numeric(DB[,j])
-
+    if (length(union(ordinal2, quanti2)) != 0) {
+      for (j in sort(unique(c(ordinal2, quanti2)))) {
+        DB[, j] <- as.numeric(DB[, j])
       }
-
     } else {}
 
 
     ### Standardization
 
-    if (length(quanti2)!=0){
-
-      for (j in quanti2){
-
-        DB[,j] = round((DB[,j] - mean(DB[,j], na.rm = TRUE))/stats::sd(DB[,j], na.rm = TRUE),4)
-
+    if (length(quanti2) != 0) {
+      for (j in quanti2) {
+        DB[, j] <- round((DB[, j] - mean(DB[, j], na.rm = TRUE)) / stats::sd(DB[, j], na.rm = TRUE), 4)
       }
-
     } else {}
 
 
-    if (length(nominal2)!=0){
-
-      name_quali = colnames(DB)[nominal2]
+    if (length(nominal2) != 0) {
+      name_quali <- colnames(DB)[nominal2]
 
 
       # Transformation des variables qualis a k modalites en (k-1) binaires:
       # The 1st level is taken as reference
 
-      bin_quali     = transfo_quali(DB[,nominal2[1]])
-      nbmod         = length(levels(DB[,nominal2[1]]))
+      bin_quali <- transfo_quali(DB[, nominal2[1]])
+      nbmod <- length(levels(DB[, nominal2[1]]))
 
 
       # Transforming column names
 
-      if (nbmod >=2){
-
-        name_col_quali = paste(name_quali[1],2:nbmod,sep="_")
-
+      if (nbmod >= 2) {
+        name_col_quali <- paste(name_quali[1], 2:nbmod, sep = "_")
       } else {
-
-        name_col_quali = name_quali[1]
-
+        name_col_quali <- name_quali[1]
       }
 
       # Generalization to T variables (T>1)
 
-      if (length(nominal2)>1){
+      if (length(nominal2) > 1) {
+        for (j in 2:length(nominal2)) {
+          bin_quali <- cbind(bin_quali, transfo_quali(DB[, nominal2[j]]))
+          nbmod <- length(levels(DB[, nominal2[j]]))
 
-        for (j in 2:length(nominal2)){
-
-          bin_quali     = cbind(bin_quali,transfo_quali(DB[,nominal2[j]]))
-          nbmod         = length(levels(DB[,nominal2[j]]))
-
-          if (nbmod >=2){
-
-            name_col_quali = c(name_col_quali,paste(name_quali[j],2:nbmod,sep="_"))
-
+          if (nbmod >= 2) {
+            name_col_quali <- c(name_col_quali, paste(name_quali[j], 2:nbmod, sep = "_"))
           } else {
-
-            name_col_quali = c(name_col_quali,name_quali[j])
-
+            name_col_quali <- c(name_col_quali, name_quali[j])
           }
-
         }
-
       } else {}
 
 
-      if((length(quanti2)!=0)|(length(ordinal2)!=0)){
-
-        DB_NEW           = data.frame(DB[,index_DB_Y_Z],bin_quali,DB[,sort(unique(c(quanti2,ordinal2)))])
-        colnames(DB_NEW) = c(colnames(DB)[index_DB_Y_Z],name_col_quali,colnames(DB)[sort(unique(c(quanti2,ordinal2)))])
-
+      if ((length(quanti2) != 0) | (length(ordinal2) != 0)) {
+        DB_NEW <- data.frame(DB[, index_DB_Y_Z], bin_quali, DB[, sort(unique(c(quanti2, ordinal2)))])
+        colnames(DB_NEW) <- c(colnames(DB)[index_DB_Y_Z], name_col_quali, colnames(DB)[sort(unique(c(quanti2, ordinal2)))])
       } else {
-
-        DB_NEW           = data.frame(DB[,index_DB_Y_Z],bin_quali)
-        colnames(DB_NEW) = c(colnames(DB)[index_DB_Y_Z],name_col_quali)
-
+        DB_NEW <- data.frame(DB[, index_DB_Y_Z], bin_quali)
+        colnames(DB_NEW) <- c(colnames(DB)[index_DB_Y_Z], name_col_quali)
       }
-
     } else {
-
-      bin_quali      = NULL
-      name_col_quali = NULL
-      DB_NEW         = DB
-
+      bin_quali <- NULL
+      name_col_quali <- NULL
+      DB_NEW <- DB
     }
-
-
-
-  } else if (prep_choice == "G"){
+  } else if (prep_choice == "G") {
 
     ### Standardization
 
@@ -479,72 +403,60 @@ transfo_dist = function(DB,index_DB_Y_Z = 1:3,
 
     # }
 
-    #} else {}
+    # } else {}
 
-    DB_NEW = DB
+    DB_NEW <- DB
 
-    for (j in ordinal2){
-
-      DB_NEW[,j]   = as.ordered(DB[,j])
-
+    for (j in ordinal2) {
+      DB_NEW[, j] <- as.ordered(DB[, j])
     }
 
-    col_nameDB                       = colnames(DB_NEW)[sort(unique(c(nominal2,quanti2,ordinal2,logic)))]
-    DB_NEW                           = data.frame(DB_NEW[,index_DB_Y_Z],DB_NEW[,sort(unique(c(nominal2,quanti2,ordinal2,logic)))])
-    colnames(DB_NEW)[4:ncol(DB_NEW)] = col_nameDB
+    col_nameDB <- colnames(DB_NEW)[sort(unique(c(nominal2, quanti2, ordinal2, logic)))]
+    DB_NEW <- data.frame(DB_NEW[, index_DB_Y_Z], DB_NEW[, sort(unique(c(nominal2, quanti2, ordinal2, logic)))])
+    colnames(DB_NEW)[4:ncol(DB_NEW)] <- col_nameDB
+  } else if (prep_choice == "FAMD") {
+    DB_NEW <- DB
+    DB_NEW2 <- DB_NEW[, -index_DB_Y_Z]
 
-
-    } else if (prep_choice == "FAMD"){
-
-
-    DB_NEW  = DB
-    DB_NEW2 = DB_NEW[,-index_DB_Y_Z]
-
-    if (nrow(stats::na.omit(DB_NEW2))!= nrow(DB_NEW)){
-
+    if (nrow(stats::na.omit(DB_NEW2)) != nrow(DB_NEW)) {
       warning("Presence of NA on covariates. You should work with complete or imputed DB before using this method.
               By default, only rows with no NA on covariates have been kept.")
 
 
-      countNA = apply(DB_NEW2,1,function(x){sum(is.na(x))})
-      DB_NEW  = DB_NEW[countNA==0,]
-      DB_NEW2 = DB_NEW[,-index_DB_Y_Z]
+      countNA <- apply(DB_NEW2, 1, function(x) {
+        sum(is.na(x))
+      })
+      DB_NEW <- DB_NEW[countNA == 0, ]
+      DB_NEW2 <- DB_NEW[, -index_DB_Y_Z]
 
       message(
         "Only ",
-        nrow(DB_NEW)," rows ",
+        nrow(DB_NEW), " rows ",
         "(",
-        round(nrow(DB_NEW) * 100 / nrow(DB),0),
-        "%)","are kept here corresponding to complete cases",
+        round(nrow(DB_NEW) * 100 / nrow(DB), 0),
+        "%)", "are kept here corresponding to complete cases",
         "\n"
       )
-
     } else {}
 
 
-    res     = FactoMineR::FAMD(DB_NEW2, ncp = 11, graph = F)
+    res <- FactoMineR::FAMD(DB_NEW2, ncp = 11, graph = F)
 
-    nb_CP   = min((1:nrow(res$eig))[res$eig[,3] > info*100])
-    DB_NEW  = data.frame(DB_NEW[,index_DB_Y_Z],res$ind$coord[,1:nb_CP])
-
+    nb_CP <- min((1:nrow(res$eig))[res$eig[, 3] > info * 100])
+    DB_NEW <- data.frame(DB_NEW[, index_DB_Y_Z], res$ind$coord[, 1:nb_CP])
   } else {
-
     stop("Bad specification for prep_choice option: Please choose between E,M,G or FAMD")
-
   }
 
-  DB_NEW[,1] = as.factor(DB_NEW[,1])
-  DB_NEW[DB_NEW[,1] == levels(DB_NEW[,1])[1],3] = NA
-  DB_NEW[DB_NEW[,1] == levels(DB_NEW[,1])[2],2] = NA
+  DB_NEW[, 1] <- as.factor(DB_NEW[, 1])
+  DB_NEW[DB_NEW[, 1] == levels(DB_NEW[, 1])[1], 3] <- NA
+  DB_NEW[DB_NEW[, 1] == levels(DB_NEW[, 1])[2], 2] <- NA
 
-  if (unique(DB_NEW[,1])[1] != levels(DB_NEW[,1])[1]){
-
+  if (unique(DB_NEW[, 1])[1] != levels(DB_NEW[, 1])[1]) {
     stop("Please change the name of your databases in the ID column so that the names of the 2 databases will be alphanumerically ranked in ascending order.
           By example, usee A for data1 and B for data2 or simply 1 and 2.")
-
   } else {}
 
 
   return(DB_NEW)
-
 }
