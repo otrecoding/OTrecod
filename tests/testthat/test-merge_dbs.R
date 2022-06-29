@@ -16,7 +16,7 @@ test_that("the dimensions of the output objects are validated", {
     row_ID2 = 5,
     NAME_Y = "Yb1", NAME_Z = "Yb2",
     ordinal_DB1 = c(1, 4), ordinal_DB2 = c(3, 7),
-    impute = "MICE", R_MICE = 2, seed_func = 2067
+    impute = "MICE", R_MICE = 2, seed_choice = 2067
   )
 
   expect_equal(length(test1), 13)
@@ -50,7 +50,7 @@ test_that("the dimensions of the output objects are validated", {
     row_ID2 = 5,
     NAME_Y = "Yb1", NAME_Z = "Yb2",
     ordinal_DB1 = c(1, 4), ordinal_DB2 = c(3, 7),
-    impute = "MICE", R_MICE = 2, seed_func = 2067
+    impute = "MICE", R_MICE = 2, seed_choice = 2067
   )
 
 
@@ -69,7 +69,7 @@ test_that("the dimensions of the output objects are validated", {
     row_ID2 = 5,
     NAME_Y = "Yb1", NAME_Z = "Yb2",
     ordinal_DB1 = c(1, 4), ordinal_DB2 = c(3, 7),
-    impute = "FAMD", NCP_FAMD = 4, seed_func = 3078
+    impute = "FAMD", NCP_FAMD = 4, seed_choice = 3078
   )
 
   expect_equal(length(test3), 12)
@@ -82,7 +82,7 @@ test_that("the dimensions of the output objects are validated", {
     row_ID2 = 5,
     NAME_Y = "Yb1", NAME_Z = "Yb2",
     ordinal_DB1 = c(1, 4), ordinal_DB2 = c(3, 7),
-    impute = "CC", seed_func = 3078
+    impute = "CC", seed_choice = 3078
   )
 
   expect_equal(length(test4), 12)
@@ -100,7 +100,7 @@ test_that("the dimensions of the output objects are validated", {
     row_ID2 = 5,
     NAME_Y = "Yb1", NAME_Z = "Yb2",
     ordinal_DB1 = c(1, 4), ordinal_DB2 = c(3, 7),
-    impute = "CC", seed_func = 3078
+    impute = "CC", seed_choice = 3078
   )
 
   expect_equal(length(test5$REMOVE1), 1)

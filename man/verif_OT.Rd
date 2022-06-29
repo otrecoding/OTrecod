@@ -96,15 +96,15 @@ be simply solved by increasing this value.
 # - Using an outcome model (individual assignment with knn)
 #-----
 data(simu_data)
-try1 <- OT_outcome(simu_data,
+outc1 <- OT_outcome(simu_data,
   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
   dist.choice = "G", percent.knn = 0.90, maxrelax = 0,
   convert.num = 8, convert.class = 3,
   indiv.method = "sequential", which.DB = "BOTH", prox.dist = 0.30
 )
 
-ver1 <- verif_OT(try1)
-ver1
+verif_outc1 <- verif_OT(outc1)
+verif_outc1
 
 \donttest{
 
@@ -119,15 +119,15 @@ ver1
 #-----
 
 data(simu_data)
-try2 <- OT_outcome(simu_data,
+outc2 <- OT_outcome(simu_data,
   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
   dist.choice = "G", percent.knn = 0.90, maxrelax = 0, prox.dist = 0.3,
   convert.num = 8, convert.class = 3,
   indiv.method = "sequential", which.DB = "B"
 )
 
-ver2 <- verif_OT(try2, group.class = TRUE, ordinal = TRUE)
-ver2
+verif_outc2 <- verif_OT(outc2, group.class = TRUE, ordinal = TRUE)
+verif_outc2
 
 
 ### Example 3
@@ -140,8 +140,8 @@ ver2
 # - Using an outcome model (individual assignment with knn)
 #-----
 
-ver3 <- verif_OT(try2, group.class = TRUE, ordinal = TRUE, stab.prob = TRUE, min.neigb = 5)
-ver3
+verif_outc2b <- verif_OT(outc2, group.class = TRUE, ordinal = TRUE, stab.prob = TRUE, min.neigb = 5)
+verif_outc2b
 }
 
 }

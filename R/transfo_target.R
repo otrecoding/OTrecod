@@ -41,17 +41,17 @@
 #'
 #' @examples
 #' y <- rnorm(100, 30, 10)
-#' aa <- transfo_target(y)
+#' ynew1 <- transfo_target(y)
 #'
 #' newlev <- unique(as.integer(y))
-#' bb <- transfo_target(y, levels_order = newlev)
+#' ynew2 <- transfo_target(y, levels_order = newlev)
 #' newlev2 <- newlev[-1]
-#' cc <- transfo_target(y, levels_order = newlev2)
+#' ynew3 <- transfo_target(y, levels_order = newlev2)
 #'
 #' outco <- c(rep("A", 25), rep("B", 50), rep("C", 25))
-#' dd <- transfo_target(outco, levels_order = c("B", "C", "A"))
-#' ee <- transfo_target(outco, levels_order = c("E", "C", "A", "F"))
-#' ff <- transfo_target(outco)
+#' outco_new1 <- transfo_target(outco, levels_order = c("B", "C", "A"))
+#' outco_new2 <- transfo_target(outco, levels_order = c("E", "C", "A", "F"))
+#' outco_new3 <- transfo_target(outco)
 #'
 #' outco2 <- c(rep("A", 25), NA, rep("B", 50), rep("C", 25), NA, NA)
 #' gg <- transfo_target(outco2)
@@ -61,9 +61,9 @@ transfo_target <- function(z, levels_order = NULL) {
   nlev <- length(levels_order)
 
 
-  if ((class(z)[1] %in% c("character", "factor", "ordered")) & (nlev == 0)) {
+  if ((class(z)[1] %in% c("character", "factor", "ordered")) && (nlev == 0)) {
     z <- as.factor(z)
-  } else if ((class(z)[1] %in% c("character", "factor", "ordered")) & (nlev != 0)) {
+  } else if ((class(z)[1] %in% c("character", "factor", "ordered")) && (nlev != 0)) {
     z <- as.factor(z)
 
     # if (length(union(levels(z),levels_order)) == nlev){
@@ -78,13 +78,13 @@ transfo_target <- function(z, levels_order = NULL) {
 
 
 
-  if ((is.numeric(z)) & (nlev == 0)) {
+  if ((is.numeric(z)) && (nlev == 0)) {
 
     # cat("Your target was numeric ... By default, it has been converted in factor of integers","\n")
     message(paste("Your target", deparse(substitute(z)), "was numeric ... By default, it has been converted in factor of integers", sep = " "), "\n")
     z <- as.factor(as.integer(z))
     message(paste(nlevels(z), "remaining levels", sep = " "), "\n")
-  } else if ((is.numeric(z)) & (nlev != 0)) {
+  } else if ((is.numeric(z)) && (nlev != 0)) {
     message(paste("Your target", deparse(substitute(z)), "was numeric ... By default, it has been converted in factor of integers", sep = " "), "\n")
     z <- as.factor(as.integer(z))
 

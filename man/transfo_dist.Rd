@@ -110,7 +110,7 @@ Please notice that this method supposed complete covariates in input, neverthele
 data(simu_data)
 
 # 1. the Euclidean distance (same output with Manhattan distance),
-try1 <- transfo_dist(simu_data,
+eucl1 <- transfo_dist(simu_data,
   quanti = c(3, 8), nominal = c(1, 4:5, 7),
   ordinal = c(2, 6), logic = NULL, prep_choice = "E"
 )
@@ -119,14 +119,14 @@ try1 <- transfo_dist(simu_data,
 # You can also convert beforehand Yb2 in ordered factor by example:
 sim_data <- simu_data
 sim_data$Yb2 <- as.ordered(sim_data$Yb2)
-try1 <- transfo_dist(sim_data,
+eucl2 <- transfo_dist(sim_data,
   quanti = 8, nominal = c(1, 4:5, 7),
   ordinal = c(2, 3, 6), logic = NULL, prep_choice = "E"
 )
 
 # 2. The Euclidean distance generated on principal components
 #    by a factor analysis for mixed data (FAMD):
-try2 <- transfo_dist(simu_data,
+eucl_famd <- transfo_dist(simu_data,
   quanti = c(3, 8), nominal = c(1, 4:5, 7),
   ordinal = c(2, 6), logic = NULL, prep_choice = "FAMD"
 )
@@ -135,7 +135,7 @@ try2 <- transfo_dist(simu_data,
 # information on covariates.
 
 # 3. The Gower distance for mixed data:
-try3 <- transfo_dist(simu_data,
+gow1 <- transfo_dist(simu_data,
   quanti = c(3, 8), nominal = c(1, 4:5, 7),
   ordinal = c(2, 6), logic = NULL, prep_choice = "G"
 )
@@ -147,7 +147,7 @@ try3 <- transfo_dist(simu_data,
 # So in simu_data, the discretization of the variable age is required (index=8),
 # using the convert_num and convert_class arguments (for tertiles = 3):
 
-try4 <- transfo_dist(simu_data,
+ham1 <- transfo_dist(simu_data,
   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
   convert_num = 8, convert_class = 3, prep_choice = "H"
 )
@@ -159,7 +159,7 @@ simu_data2 <- simu_data[, c(2, 4:7, 3, 8, 1)]
 
 # By changing the corresponding indexes in the index_DB_Y_Z argument,
 # we observe the desired output:
-try5 <- transfo_dist(simu_data2,
+eucl3 <- transfo_dist(simu_data2,
   index_DB_Y_Z = c(8, 1, 6), quanti = 6:7, nominal = c(2:3, 5, 8),
   ordinal = c(1, 4), logic = NULL, prep_choice = "E"
 )

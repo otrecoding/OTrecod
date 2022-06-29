@@ -1,5 +1,6 @@
 count_pos <- function(n, n_grp) {
-  if ((round(n) != n) | (round(n_grp) != n_grp)) {
+
+  if ((round(n) != n) || (round(n_grp) != n_grp)) {
     stop("No decimal values allowed for n and n_grp")
   } else {}
 

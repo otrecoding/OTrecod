@@ -195,18 +195,18 @@ simu_dat <- simu_data[c(1:200, 301:500), ]
 # Predictions are assessed for Y in B and Z in A
 #-----
 
-try1 <- OT_outcome(simu_dat,
-  quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-  dist.choice = "M", maxrelax = 0,
-  indiv.method = "sequential"
+OUTC1 <- OT_outcome(simu_dat,
+                    quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+                    dist.choice = "M", maxrelax = 0,
+                    indiv.method = "sequential"
 )
-head(try1$DATA1_OT) # Part of the completed database A
-head(try1$DATA2_OT) # Part of the completed database B
+head(OUTC1$DATA1_OT) # Part of the completed database A
+head(OUTC1$DATA2_OT) # Part of the completed database B
 
-head(try1$estimatorZA[, , 1])
+head(OUTC1$estimatorZA[, , 1])
 # ... Corresponds to P[Z = 1|Y,P1] when P1 corresponds to the 1st profile of covariates (P_1)
 # detailed in the 1st row of the profile object:
-try1$profile[1, ] # Details of P_1
+OUTC1$profile[1, ] # Details of P_1
 
 # So estimatorZA[1,1,1]= 0.2 corresponds to an estimation of:
 # P[Z = 1|Y=[20-40],Gender_2=0,Treatment_2=1,Treatment_3=0,Smoking_2=1,Dosage=3,Age=65.44]
@@ -223,11 +223,11 @@ try1$profile[1, ] # Details of P_1
 # - The Gower distance is now used
 ### -----
 
-try2 <- OT_outcome(simu_dat,
-  quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-  dist.choice = "G", maxrelax = 0,
-  convert.num = 8, convert.class = 3,
-  indiv.method = "sequential", which.DB = "B"
+OUTC2_B <- OT_outcome(simu_dat,
+                      quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+                      dist.choice = "G", maxrelax = 0,
+                      convert.num = 8, convert.class = 3,
+                      indiv.method = "sequential", which.DB = "B"
 )
 
 
@@ -240,11 +240,11 @@ try2 <- OT_outcome(simu_dat,
 #   variables.
 ### -----
 
-try3 <- OT_outcome(simu_data,
-  quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-  dist.choice = "H", maxrelax = 0,
-  convert.num = 8, convert.class = 3,
-  indiv.method = "sequential", which.DB = "B"
+OUTC3_B <- OT_outcome(simu_data,
+                      quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+                      dist.choice = "H", maxrelax = 0,
+                      convert.num = 8, convert.class = 3,
+                      indiv.method = "sequential", which.DB = "B"
 )
 
 
@@ -253,10 +253,11 @@ try3 <- OT_outcome(simu_data,
 # - The Manhattan distance
 # - Raw covariates
 ### -----
-try4 <- OT_outcome(simu_data,
-  quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-  dist.choice = "M", maxrelax = 0,
-  indiv.method = "optimal"
+
+R_OUTC1 <- OT_outcome(simu_data,
+                      quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+                      dist.choice = "M", maxrelax = 0,
+                      indiv.method = "optimal"
 )
 
 
@@ -266,11 +267,11 @@ try4 <- OT_outcome(simu_data,
 # - Raw covariates
 ### -----
 
-try5 <- OT_outcome(simu_data,
-  quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-  dist.choice = "E",
-  FAMD.coord = "YES", FAMD.perc = 0.8,
-  indiv.method = "optimal"
+R_OUTC2 <- OT_outcome(simu_data,
+                      quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+                      dist.choice = "E",
+                      FAMD.coord = "YES", FAMD.perc = 0.8,
+                      indiv.method = "optimal"
 )
 
 
@@ -281,10 +282,10 @@ try5 <- OT_outcome(simu_data,
 # - Raw covariates
 #-----
 
-try6 <- OT_outcome(simu_data,
-  quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-  dist.choice = "E", maxrelax = 0.4,
-  indiv.method = "optimal"
+R_OUTC3 <- OT_outcome(simu_data,
+                      quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+                      dist.choice = "E", maxrelax = 0.4,
+                      indiv.method = "optimal"
 )
 }
 

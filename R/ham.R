@@ -41,11 +41,11 @@
 #'
 #' @examples
 #' set.seed(3010)
-#' aaa <- sample(c(0, 1), 12, replace = TRUE)
+#' sample_A <- sample(c(0, 1), 12, replace = TRUE)
 #' set.seed(3007)
-#' bbb <- sample(c(0, 1), 15, replace = TRUE)
-#' A <- matrix(aaa, ncol = 3)
-#' B <- matrix(bbb, ncol = 3)
+#' sample_B <- sample(c(0, 1), 15, replace = TRUE)
+#' A <- matrix(sample_A, ncol = 3)
+#' B <- matrix(sample_B, ncol = 3)
 #'
 #' # These 2 matrices have no missing values
 #'
@@ -70,23 +70,61 @@
 #' ham(A_NA, B_NA)
 #'
 ham <- function(mat_1, mat_2) {
-  if ((is.null(dim(mat_1))) & (!is.null(dim(mat_2)))) {
+
+  if ((is.null(dim(mat_1))) && (!is.null(dim(mat_2)))) {
+
     mat_1 <- matrix(mat_1, nrow = 1)
-  } else if ((!is.null(dim(mat_1))) & (is.null(dim(mat_2)))) {
+
+  } else if ((!is.null(dim(mat_1))) && (is.null(dim(mat_2)))) {
+
     mat_2 <- matrix(mat_2, nrow = 1)
-  } else if ((is.null(dim(mat_1))) & (is.null(dim(mat_2)))) {
+
+  } else if ((is.null(dim(mat_1))) && (is.null(dim(mat_2)))) {
+
     mat_1 <- matrix(mat_1, ncol = 1)
     mat_2 <- matrix(mat_2, ncol = 1)
+
   } else {}
 
-  d_fun <- function(x_1, x_2) (sum(x_1 != x_2, na.rm = TRUE) / length(x_1)) * length(x_1) / sum(is.na(x_1) + is.na(x_2) == 0)
+
+  # d_fun <- function(x_1, x_2) (sum(x_1 != x_2, na.rm = TRUE) / length(x_1)) * length(x_1) / sum(is.na(x_1) + is.na(x_2) == 0)
+
+
+  # Insertion of a function dedicated to the calculation the Hamming distance
+  # between two vectors x_1 and x_2 using the detailed formula in the documentation
+
+  d_fun <- function(x_1, x_2) {
+
+    # Expression to the left of the multiplication
+
+    expr_1 <- sum(x_1 != x_2, na.rm=TRUE)/ length(x_1)
+
+
+    # Expression to the right of the multiplication
+
+    expr_2 <- length(x_1)/ sum(is.na(x_1) + is.na(x_2) == 0)
+
+
+    ham_dist <- expr_1 * expr_2
+
+    return(ham_dist)
+
+  }
+
+
+  # Hamming distance matrix
+
   matr <- apply(mat_2, 1, function(x) sapply(1:nrow(mat_1), function(j) d_fun(x, mat_1[j, ])))
 
+
   if (sum(is.na(matr)) != 0) {
+
     vec1 <- as.vector(matr)
     vec1[which(is.na(vec1))] <- NA
     matr <- matrix(vec1, ncol = ncol(matr))
+
   } else {}
 
   return(matr)
+
 }

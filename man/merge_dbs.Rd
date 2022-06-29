@@ -18,7 +18,7 @@ merge_dbs(
   impute = "NO",
   R_MICE = 5,
   NCP_FAMD = 3,
-  seed_func = sample(1:1e+06, 1)
+  seed_choice = sample(1:1e+06, 1)
 )
 }
 \arguments{
@@ -48,7 +48,7 @@ merge_dbs(
 
 \item{NCP_FAMD}{an integer corresponding to the number of components used to predict missing values in FAMD imputation (3 by default)}
 
-\item{seed_func}{an integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default, only useful with MICE)}
+\item{seed_choice}{an integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default, only useful with MICE)}
 }
 \value{
 A list containing 12 elements (13 when \code{impute} equals "MICE"):
@@ -136,33 +136,33 @@ data_B$Dosage <- as.factor(ifelse(data_B$Dosage \%in\% c("Dos 1", "Dos 2"), "D1"
 data_B <- data_B[, c(1:3, 5, 6, 4)]
 
 # Ex 1: The two databases are merged and incomplete covariates are imputed using MICE
-soluc1 <- merge_dbs(data_A, data_B,
+merged_ex1 <- merge_dbs(data_A, data_B,
   NAME_Y = "Yb1", NAME_Z = "Yb2",
   ordinal_DB1 = c(1, 4), ordinal_DB2 = c(1, 6),
-  impute = "MICE", R_MICE = 2, seed_func = 3011
-)
-summary(soluc1$DB_READY)
+  impute = "MICE", R_MICE = 2, seed_choice = 3011)
+
+summary(merged_ex1$DB_READY)
 
 
 # Ex 2: The two databases are merged and missing values are kept
-soluc2 <- merge_dbs(data_A, data_B,
+merged_ex2 <- merge_dbs(data_A, data_B,
   NAME_Y = "Yb1", NAME_Z = "Yb2",
   ordinal_DB1 = c(1, 4), ordinal_DB2 = c(1, 6),
-  impute = "NO", seed_func = 3011
+  impute = "NO", seed_choice = 3011
 )
 
 # Ex 3: The two databases are merged by only keeping the complete cases
-soluc3 <- merge_dbs(data_A, data_B,
+merged_ex3 <- merge_dbs(data_A, data_B,
   NAME_Y = "Yb1", NAME_Z = "Yb2",
   ordinal_DB1 = c(1, 4), ordinal_DB2 = c(1, 6),
-  impute = "CC", seed_func = 3011
+  impute = "CC", seed_choice = 3011
 )
 
 # Ex 4: The two databases are merged and incomplete covariates are imputed using FAMD
-soluc4 <- merge_dbs(data_A, data_B,
+merged_ex4 <- merge_dbs(data_A, data_B,
   NAME_Y = "Yb1", NAME_Z = "Yb2",
   ordinal_DB1 = c(1, 4), ordinal_DB2 = c(1, 6),
-  impute = "FAMD", NCP_FAMD = 4, seed_func = 2096
+  impute = "FAMD", NCP_FAMD = 4, seed_choice = 2096
 )
 
 # Conclusion:

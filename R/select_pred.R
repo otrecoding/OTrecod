@@ -148,7 +148,7 @@
 #' #-----
 #'
 #' data(simu_data)
-#' test_DB1 <- select_pred(simu_data,
+#' sel_ex1 <- select_pred(simu_data,
 #'   Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Y",
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
 #'   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
@@ -161,7 +161,7 @@
 #' # - Searching for the best predictors of "Yb2"
 #' #-----
 #'
-#' test_DB2 <- select_pred(simu_data,
+#' sel_ex2 <- select_pred(simu_data,
 #'   Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
 #'   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
@@ -177,7 +177,7 @@
 #' # - Here a seed is required
 #' #-----
 #'
-#' test_DB3 <- select_pred(simu_data,
+#' sel_ex3 <- select_pred(simu_data,
 #'   Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Y",
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
 #'   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
@@ -193,7 +193,7 @@
 #' #   discretized in 3 levels
 #' #-----
 #'
-#' test_DB4 <- select_pred(simu_data,
+#' sel_ex4 <- select_pred(simu_data,
 #'   Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
 #'   convert_num = 8, convert_class = 3,
@@ -208,7 +208,7 @@
 #' #-----
 #' simu_A <- simu_data[simu_data$DB == "A", -3] # Base A
 #'
-#' test_DB5 <- select_pred(simu_A,
+#' sel_ex5 <- select_pred(simu_A,
 #'   Y = "Yb1",
 #'   quanti = 7, nominal = c(1, 3:4, 6), ordinal = c(2, 5),
 #'   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
@@ -226,7 +226,7 @@
 #'
 #' simu_B <- simu_data[simu_data$DB == "B", -2] # Base B
 #'
-#' test_DB6 <- select_pred(simu_B,
+#' sel_ex6 <- select_pred(simu_B,
 #'   Y = "Yb2",
 #'   quanti = 7, nominal = c(1, 3:4, 6), ordinal = c(2, 5),
 #'   convert_num = 7, convert_class = 3,
@@ -244,11 +244,11 @@ select_pred <- function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
     stop("Improper argument for OUT: Y or Z only")
   } else {}
 
-  if ((OUT == "Y") & (is.null(Y))) {
+  if ((OUT == "Y") && (is.null(Y))) {
     stop("When OUT = Y, Y can not be null")
   } else {}
 
-  if ((OUT == "Z") & (is.null(Z))) {
+  if ((OUT == "Z") && (is.null(Z))) {
     stop("When OUT = Z, Z can not be null")
   } else {}
 
@@ -321,7 +321,7 @@ select_pred <- function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
   } else {}
 
 
-  if ((length(convert_class) > 1) & (length(convert_class) != length(convert_num))) {
+  if ((length(convert_class) > 1) && (length(convert_class) != length(convert_num))) {
     stop("Inconsistencies between convert_num and convert_class")
   } else {}
 
@@ -330,8 +330,6 @@ select_pred <- function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
     convert_class <- rep(convert_class, length(convert_num))
   } else {}
 
-
-  message("The select_pred function is running. Please wait ...", "\n")
 
 
   # Exclude systematically ID and Y and Z before discretization
@@ -392,6 +390,7 @@ select_pred <- function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
     stop("Improper argument for OUT: Y or Z only")
   }
 
+  message("The select_pred function is running for outcome= ", outc,". Please wait ...","\n")
 
 
   ### new indexes without Y and Z indexes
@@ -717,6 +716,15 @@ select_pred <- function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
       collinear_PB = list(VCRAM = tab_cor3_X, SPEARM = tab_cor5_X)
     )
   }
+
+  message("The process is now successfully completed","\n",
+          "---------", "\n",
+          "For comparison with another outcome from two overlayed tables  : ","\n",
+          "just adapt the OUT option keeping all the others unchanged in the function","\n",
+          "---","\n",
+          "For comparison with another outcome from two unoverlayed tables:", "\n",
+          "just adapt the arguments from Y to convert_class","\n",
+          "---------","\n")
 
   return(out1)
 }

@@ -170,7 +170,7 @@ Finally, because all random forest results are subjects to random variation, use
 #-----
 
 data(simu_data)
-test_DB1 <- select_pred(simu_data,
+sel_ex1 <- select_pred(simu_data,
   Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Y",
   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
@@ -183,7 +183,7 @@ test_DB1 <- select_pred(simu_data,
 # - Searching for the best predictors of "Yb2"
 #-----
 
-test_DB2 <- select_pred(simu_data,
+sel_ex2 <- select_pred(simu_data,
   Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
@@ -199,7 +199,7 @@ test_DB2 <- select_pred(simu_data,
 # - Here a seed is required
 #-----
 
-test_DB3 <- select_pred(simu_data,
+sel_ex3 <- select_pred(simu_data,
   Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Y",
   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
@@ -215,7 +215,7 @@ test_DB3 <- select_pred(simu_data,
 #   discretized in 3 levels
 #-----
 
-test_DB4 <- select_pred(simu_data,
+sel_ex4 <- select_pred(simu_data,
   Y = "Yb1", Z = "Yb2", ID = 1, OUT = "Z",
   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
   convert_num = 8, convert_class = 3,
@@ -230,7 +230,7 @@ test_DB4 <- select_pred(simu_data,
 #-----
 simu_A <- simu_data[simu_data$DB == "A", -3] # Base A
 
-test_DB5 <- select_pred(simu_A,
+sel_ex5 <- select_pred(simu_A,
   Y = "Yb1",
   quanti = 7, nominal = c(1, 3:4, 6), ordinal = c(2, 5),
   thresh_cat = 0.30, thresh_num = 0.70, thresh_Y = 0.20,
@@ -248,7 +248,7 @@ test_DB5 <- select_pred(simu_A,
 
 simu_B <- simu_data[simu_data$DB == "B", -2] # Base B
 
-test_DB6 <- select_pred(simu_B,
+sel_ex6 <- select_pred(simu_B,
   Y = "Yb2",
   quanti = 7, nominal = c(1, 3:4, 6), ordinal = c(2, 5),
   convert_num = 7, convert_class = 3,

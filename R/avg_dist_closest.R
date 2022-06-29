@@ -65,11 +65,11 @@
 #'
 #' ### Example with The Manhattan distance
 #'
-#' try1 <- transfo_dist(simu_data,
+#' man1 <- transfo_dist(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7),
 #'   ordinal = c(2, 6), logic = NULL, prep_choice = "M"
 #' )
-#' res1 <- proxim_dist(try1, norm = "M")
+#' mat_man1 <- proxim_dist(man1, norm = "M")
 #'
 #' # proxim_dist() fixes the chosen distance function,
 #' # and defines neighborhoods between profiles and individuals
@@ -77,14 +77,14 @@
 #' # The following row uses only 80 percents of individuals of each level
 #' # of factors for the computation of the average distances:
 #'
-#' res_new <- avg_dist_closest(res1, percent_closest = 0.80)
+#' neig_man1 <- avg_dist_closest(mat_man1, percent_closest = 0.80)
 #'
 avg_dist_closest <- function(proxim, percent_closest = 1) {
   if (!is.list(proxim)) {
     stop("This object must be a list returned by the proxim_dist function")
   } else {}
 
-  if ((percent_closest > 1) | (percent_closest <= 0)) {
+  if ((percent_closest > 1) || (percent_closest <= 0)) {
     stop("Incorrect value for the percent_closest option")
   } else {}
 
