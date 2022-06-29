@@ -291,13 +291,21 @@ Finally, because all random forest results are subjects to random variation, use
 <span class="r-in"><span><span class="co">#-----</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">simu_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">test_DB1</span> <span class="op">&lt;-</span> <span class="fu">select_pred</span><span class="op">(</span><span class="va">simu_data</span>,</span></span>
+<span class="r-in"><span><span class="va">sel_ex1</span> <span class="op">&lt;-</span> <span class="fu">select_pred</span><span class="op">(</span><span class="va">simu_data</span>,</span></span>
 <span class="r-in"><span>  Y <span class="op">=</span> <span class="st">"Yb1"</span>, Z <span class="op">=</span> <span class="st">"Yb2"</span>, ID <span class="op">=</span> <span class="fl">1</span>, OUT <span class="op">=</span> <span class="st">"Y"</span>,</span></span>
 <span class="r-in"><span>  quanti <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">8</span><span class="op">)</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">7</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.20</span>,</span></span>
 <span class="r-in"><span>  RF <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The select_pred function is running. Please wait ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The select_pred function is running for outcome= Yb1. Please wait ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The process is now successfully completed</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> For comparison with another outcome from two overlayed tables  : </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> just adapt the OUT option keeping all the others unchanged in the function</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> For comparison with another outcome from two unoverlayed tables:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> just adapt the arguments from Y to convert_class</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### Example 2</span></span></span>
 <span class="r-in"><span><span class="co">#-----</span></span></span>
@@ -305,13 +313,21 @@ Finally, because all random forest results are subjects to random variation, use
 <span class="r-in"><span><span class="co"># - Searching for the best predictors of "Yb2"</span></span></span>
 <span class="r-in"><span><span class="co">#-----</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">test_DB2</span> <span class="op">&lt;-</span> <span class="fu">select_pred</span><span class="op">(</span><span class="va">simu_data</span>,</span></span>
+<span class="r-in"><span><span class="va">sel_ex2</span> <span class="op">&lt;-</span> <span class="fu">select_pred</span><span class="op">(</span><span class="va">simu_data</span>,</span></span>
 <span class="r-in"><span>  Y <span class="op">=</span> <span class="st">"Yb1"</span>, Z <span class="op">=</span> <span class="st">"Yb2"</span>, ID <span class="op">=</span> <span class="fl">1</span>, OUT <span class="op">=</span> <span class="st">"Z"</span>,</span></span>
 <span class="r-in"><span>  quanti <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">8</span><span class="op">)</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">7</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.20</span>,</span></span>
 <span class="r-in"><span>  RF <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The select_pred function is running. Please wait ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The select_pred function is running for outcome= Yb2. Please wait ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The process is now successfully completed</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> For comparison with another outcome from two overlayed tables  : </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> just adapt the OUT option keeping all the others unchanged in the function</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> For comparison with another outcome from two unoverlayed tables:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> just adapt the arguments from Y to convert_class</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co">### Example 3</span></span></span>
@@ -322,14 +338,22 @@ Finally, because all random forest results are subjects to random variation, use
 <span class="r-in"><span><span class="co"># - Here a seed is required</span></span></span>
 <span class="r-in"><span><span class="co">#-----</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">test_DB3</span> <span class="op">&lt;-</span> <span class="fu">select_pred</span><span class="op">(</span><span class="va">simu_data</span>,</span></span>
+<span class="r-in"><span><span class="va">sel_ex3</span> <span class="op">&lt;-</span> <span class="fu">select_pred</span><span class="op">(</span><span class="va">simu_data</span>,</span></span>
 <span class="r-in"><span>  Y <span class="op">=</span> <span class="st">"Yb1"</span>, Z <span class="op">=</span> <span class="st">"Yb2"</span>, ID <span class="op">=</span> <span class="fl">1</span>, OUT <span class="op">=</span> <span class="st">"Y"</span>,</span></span>
 <span class="r-in"><span>  quanti <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">8</span><span class="op">)</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">7</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.20</span>,</span></span>
 <span class="r-in"><span>  RF <span class="op">=</span> <span class="cn">TRUE</span>, RF_condi <span class="op">=</span> <span class="cn">FALSE</span>, RF_SEED <span class="op">=</span> <span class="fl">3023</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The select_pred function is running. Please wait ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The select_pred function is running for outcome= Yb1. Please wait ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The process is now successfully completed</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> For comparison with another outcome from two overlayed tables  : </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> just adapt the OUT option keeping all the others unchanged in the function</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> For comparison with another outcome from two unoverlayed tables:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> just adapt the arguments from Y to convert_class</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### Example 4</span></span></span>
 <span class="r-in"><span><span class="co">#-----</span></span></span>
@@ -340,15 +364,23 @@ Finally, because all random forest results are subjects to random variation, use
 <span class="r-in"><span><span class="co">#   discretized in 3 levels</span></span></span>
 <span class="r-in"><span><span class="co">#-----</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">test_DB4</span> <span class="op">&lt;-</span> <span class="fu">select_pred</span><span class="op">(</span><span class="va">simu_data</span>,</span></span>
+<span class="r-in"><span><span class="va">sel_ex4</span> <span class="op">&lt;-</span> <span class="fu">select_pred</span><span class="op">(</span><span class="va">simu_data</span>,</span></span>
 <span class="r-in"><span>  Y <span class="op">=</span> <span class="st">"Yb1"</span>, Z <span class="op">=</span> <span class="st">"Yb2"</span>, ID <span class="op">=</span> <span class="fl">1</span>, OUT <span class="op">=</span> <span class="st">"Z"</span>,</span></span>
 <span class="r-in"><span>  quanti <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">8</span><span class="op">)</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">7</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  convert_num <span class="op">=</span> <span class="fl">8</span>, convert_class <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.20</span>,</span></span>
 <span class="r-in"><span>  RF <span class="op">=</span> <span class="cn">TRUE</span>, RF_condi <span class="op">=</span> <span class="cn">TRUE</span>, RF_condi_thr <span class="op">=</span> <span class="fl">0.60</span>, RF_SEED <span class="op">=</span> <span class="fl">3023</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The select_pred function is running. Please wait ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The select_pred function is running for outcome= Yb2. Please wait ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The process is now successfully completed</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> For comparison with another outcome from two overlayed tables  : </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> just adapt the OUT option keeping all the others unchanged in the function</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> For comparison with another outcome from two unoverlayed tables:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> just adapt the arguments from Y to convert_class</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### Example 5</span></span></span>
 <span class="r-in"><span><span class="co">#-----</span></span></span>
@@ -357,13 +389,21 @@ Finally, because all random forest results are subjects to random variation, use
 <span class="r-in"><span><span class="co">#-----</span></span></span>
 <span class="r-in"><span><span class="va">simu_A</span> <span class="op">&lt;-</span> <span class="va">simu_data</span><span class="op">[</span><span class="va">simu_data</span><span class="op">$</span><span class="va">DB</span> <span class="op">==</span> <span class="st">"A"</span>, <span class="op">-</span><span class="fl">3</span><span class="op">]</span> <span class="co"># Base A</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">test_DB5</span> <span class="op">&lt;-</span> <span class="fu">select_pred</span><span class="op">(</span><span class="va">simu_A</span>,</span></span>
+<span class="r-in"><span><span class="va">sel_ex5</span> <span class="op">&lt;-</span> <span class="fu">select_pred</span><span class="op">(</span><span class="va">simu_A</span>,</span></span>
 <span class="r-in"><span>  Y <span class="op">=</span> <span class="st">"Yb1"</span>,</span></span>
 <span class="r-in"><span>  quanti <span class="op">=</span> <span class="fl">7</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.20</span>,</span></span>
 <span class="r-in"><span>  RF <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The select_pred function is running. Please wait ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The select_pred function is running for outcome= Yb1. Please wait ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The process is now successfully completed</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> For comparison with another outcome from two overlayed tables  : </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> just adapt the OUT option keeping all the others unchanged in the function</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> For comparison with another outcome from two unoverlayed tables:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> just adapt the arguments from Y to convert_class</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### Example 6</span></span></span>
 <span class="r-in"><span><span class="co">#-----</span></span></span>
@@ -376,15 +416,23 @@ Finally, because all random forest results are subjects to random variation, use
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">simu_B</span> <span class="op">&lt;-</span> <span class="va">simu_data</span><span class="op">[</span><span class="va">simu_data</span><span class="op">$</span><span class="va">DB</span> <span class="op">==</span> <span class="st">"B"</span>, <span class="op">-</span><span class="fl">2</span><span class="op">]</span> <span class="co"># Base B</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">test_DB6</span> <span class="op">&lt;-</span> <span class="fu">select_pred</span><span class="op">(</span><span class="va">simu_B</span>,</span></span>
+<span class="r-in"><span><span class="va">sel_ex6</span> <span class="op">&lt;-</span> <span class="fu">select_pred</span><span class="op">(</span><span class="va">simu_B</span>,</span></span>
 <span class="r-in"><span>  Y <span class="op">=</span> <span class="st">"Yb2"</span>,</span></span>
 <span class="r-in"><span>  quanti <span class="op">=</span> <span class="fl">7</span>, nominal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span>, ordinal <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  convert_num <span class="op">=</span> <span class="fl">7</span>, convert_class <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>  thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.20</span>,</span></span>
 <span class="r-in"><span>  RF <span class="op">=</span> <span class="cn">TRUE</span>, RF_condi <span class="op">=</span> <span class="cn">TRUE</span>, RF_condi_thr <span class="op">=</span> <span class="fl">0.60</span>, RF_SEED <span class="op">=</span> <span class="fl">3023</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The select_pred function is running. Please wait ...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The select_pred function is running for outcome= Yb2. Please wait ...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The process is now successfully completed</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> For comparison with another outcome from two overlayed tables  : </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> just adapt the OUT option keeping all the others unchanged in the function</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> For comparison with another outcome from two unoverlayed tables:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> just adapt the arguments from Y to convert_class</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ---------</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

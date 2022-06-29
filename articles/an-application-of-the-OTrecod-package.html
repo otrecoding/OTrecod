@@ -310,8 +310,16 @@ The selection of the best predictors of the persons net income must be done in t
 <span>                       convert_num <span class="op">=</span> <span class="fl">8</span>, convert_class <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>                       thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.10</span>,</span>
 <span>                       RF <span class="op">=</span> <span class="cn">TRUE</span>, RF_SEED <span class="op">=</span> <span class="fl">3017</span><span class="op">)</span></span>
-<span><span class="co">#&gt; The select_pred function is running. Please wait ...</span></span>
+<span><span class="co">#&gt; The select_pred function is running for outcome= Y. Please wait ...</span></span>
 <span><span class="co">#&gt; Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span></span>
+<span><span class="co">#&gt; The process is now successfully completed</span></span>
+<span><span class="co">#&gt; ---------</span></span>
+<span><span class="co">#&gt; For comparison with another outcome from two overlayed tables  : </span></span>
+<span><span class="co">#&gt; just adapt the OUT option keeping all the others unchanged in the function</span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; For comparison with another outcome from two unoverlayed tables:</span></span>
+<span><span class="co">#&gt; just adapt the arguments from Y to convert_class</span></span>
+<span><span class="co">#&gt; ---------</span></span>
 <span></span>
 <span><span class="co"># for data2</span></span>
 <span><span class="va">test_DB2</span> <span class="op">=</span> <span class="fu"><a href="../reference/select_pred.html">select_pred</a></span><span class="op">(</span><span class="va">db_test</span><span class="op">$</span><span class="va">DB_READY</span>,Y <span class="op">=</span> <span class="st">"Y"</span>, Z <span class="op">=</span> <span class="st">"Z"</span>, ID <span class="op">=</span> <span class="fl">1</span>, OUT <span class="op">=</span> <span class="st">"Z"</span>,</span>
@@ -319,9 +327,16 @@ The selection of the best predictors of the persons net income must be done in t
 <span>                       convert_num <span class="op">=</span> <span class="fl">8</span>, convert_class <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>                       thresh_cat <span class="op">=</span> <span class="fl">0.30</span>, thresh_num <span class="op">=</span> <span class="fl">0.70</span>, thresh_Y <span class="op">=</span> <span class="fl">0.10</span>,</span>
 <span>                       RF <span class="op">=</span> <span class="cn">TRUE</span>, RF_SEED <span class="op">=</span> <span class="fl">3017</span><span class="op">)</span></span>
-<span><span class="co">#&gt; The select_pred function is running. Please wait ...</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span></span></code></pre></div>
+<span><span class="co">#&gt; The select_pred function is running for outcome= Z. Please wait ...</span></span>
+<span><span class="co">#&gt; Risk of collinearity between predictors detected: Some predictors will be dropped during RF process</span></span>
+<span><span class="co">#&gt; The process is now successfully completed</span></span>
+<span><span class="co">#&gt; ---------</span></span>
+<span><span class="co">#&gt; For comparison with another outcome from two overlayed tables  : </span></span>
+<span><span class="co">#&gt; just adapt the OUT option keeping all the others unchanged in the function</span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; For comparison with another outcome from two unoverlayed tables:</span></span>
+<span><span class="co">#&gt; just adapt the arguments from Y to convert_class</span></span>
+<span><span class="co">#&gt; ---------</span></span></code></pre></div>
 <p align="justify">
 </p>
 <p>As input:</p>
@@ -543,21 +558,21 @@ Enrichments have been thus proposed (see (2)) to relax this hypothesis via the <
 <span><span class="co">#&gt; [1] 29  5</span></span>
 <span></span>
 <span><span class="va">mod2_opt</span><span class="op">$</span><span class="va">gamma_A</span></span>
-<span><span class="co">#&gt;       [,1]  [,2]       [,3]        [,4]</span></span>
-<span><span class="co">#&gt; [1,] 0.185 0.000 0.00000000 0.000000000</span></span>
-<span><span class="co">#&gt; [2,] 0.200 0.000 0.00000000 0.000000000</span></span>
-<span><span class="co">#&gt; [3,] 0.015 0.155 0.00000000 0.000000000</span></span>
-<span><span class="co">#&gt; [4,] 0.000 0.225 0.02000000 0.000000000</span></span>
-<span><span class="co">#&gt; [5,] 0.000 0.000 0.09000000 0.000000000</span></span>
-<span><span class="co">#&gt; [6,] 0.000 0.000 0.06333333 0.001666667</span></span>
-<span><span class="co">#&gt; [7,] 0.000 0.000 0.00000000 0.045000000</span></span>
+<span><span class="co">#&gt;               1     2          3          4</span></span>
+<span><span class="co">#&gt; (-Inf,0]  0.185 0.000 0.00000000 0.00000000</span></span>
+<span><span class="co">#&gt; (0,10]    0.170 0.030 0.00000000 0.00000000</span></span>
+<span><span class="co">#&gt; (10,15]   0.000 0.105 0.06500000 0.00000000</span></span>
+<span><span class="co">#&gt; (15,20]   0.000 0.245 0.00000000 0.00000000</span></span>
+<span><span class="co">#&gt; (20,25]   0.000 0.000 0.04333333 0.04666667</span></span>
+<span><span class="co">#&gt; (25,35]   0.000 0.000 0.06500000 0.00000000</span></span>
+<span><span class="co">#&gt; (35, Inf] 0.045 0.000 0.00000000 0.00000000</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mod2_opt</span><span class="op">$</span><span class="va">DATA1_OT</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       DB        Y    Z sex_2 urb_2 urb_3 hsize5 OTpred</span></span>
 <span><span class="co">#&gt; 21384  1   (0,10] &lt;NA&gt;     1     0     0      1      1</span></span>
-<span><span class="co">#&gt; 35973  1  (10,15] &lt;NA&gt;     0     0     0      2      2</span></span>
+<span><span class="co">#&gt; 35973  1  (10,15] &lt;NA&gt;     0     0     0      2      3</span></span>
 <span><span class="co">#&gt; 11774  1  (15,20] &lt;NA&gt;     0     1     0      1      2</span></span>
-<span><span class="co">#&gt; 32127  1  (10,15] &lt;NA&gt;     0     0     0      2      2</span></span>
+<span><span class="co">#&gt; 32127  1  (10,15] &lt;NA&gt;     0     0     0      2      3</span></span>
 <span><span class="co">#&gt; 6301   1 (-Inf,0] &lt;NA&gt;     0     1     0      5      1</span></span>
 <span><span class="co">#&gt; 12990  1 (-Inf,0] &lt;NA&gt;     1     1     0      2      1</span></span></code></pre></div>
 <p>As input:</p>
@@ -639,21 +654,21 @@ The <strong>verif_OT</strong> function gives access to different tools for asses
 <span><span class="co">#&gt;            predZ</span></span>
 <span><span class="co">#&gt; Y             1   2   3   4 Sum</span></span>
 <span><span class="co">#&gt;   (-Inf,0]   37   0   0   0  37</span></span>
-<span><span class="co">#&gt;   (0,10]     40   0   0   0  40</span></span>
-<span><span class="co">#&gt;   (10,15]     3  31   0   0  34</span></span>
-<span><span class="co">#&gt;   (15,20]     1  45   3   0  49</span></span>
-<span><span class="co">#&gt;   (20,25]     1   1  16   0  18</span></span>
+<span><span class="co">#&gt;   (0,10]     34   6   0   0  40</span></span>
+<span><span class="co">#&gt;   (10,15]     1  21  12   0  34</span></span>
+<span><span class="co">#&gt;   (15,20]     1  48   0   0  49</span></span>
+<span><span class="co">#&gt;   (20,25]     1   1   9   7  18</span></span>
 <span><span class="co">#&gt;   (25,35]     1   1  11   0  13</span></span>
-<span><span class="co">#&gt;   (35, Inf]   1   1   1   6   9</span></span>
-<span><span class="co">#&gt;   Sum        84  79  31   6 200</span></span>
+<span><span class="co">#&gt;   (35, Inf]   9   0   0   0   9</span></span>
+<span><span class="co">#&gt;   Sum        84  77  32   7 200</span></span>
 <span></span>
 <span><span class="va">verif_out1</span><span class="op">$</span><span class="va">res.prox</span></span>
 <span><span class="co">#&gt;        N   V_cram rank_cor </span></span>
-<span><span class="co">#&gt;  200.000    0.860    0.871</span></span>
+<span><span class="co">#&gt;  200.000    0.740    0.645</span></span>
 <span></span>
 <span><span class="va">verif_out1</span><span class="op">$</span><span class="va">res.stab</span></span>
-<span><span class="co">#&gt;          N min.N  mean    sd</span></span>
-<span><span class="co">#&gt; 1st DB 112     3 0.976 0.107</span></span>
+<span><span class="co">#&gt;          N min.N mean    sd</span></span>
+<span><span class="co">#&gt; 1st DB 112     3 0.97 0.119</span></span>
 <span></span>
 <span></span>
 <span><span class="co"># Validation of the mod2_seq model</span></span>
@@ -662,12 +677,12 @@ The <strong>verif_OT</strong> function gives access to different tools for asses
 <span><span class="co">#&gt;            predZ</span></span>
 <span><span class="co">#&gt; Y             1   2   3   4 Sum</span></span>
 <span><span class="co">#&gt;   (-Inf,0]   37   0   0   0  37</span></span>
-<span><span class="co">#&gt;   (0,10]     40   0   0   0  40</span></span>
-<span><span class="co">#&gt;   (10,15]     3  31   0   0  34</span></span>
-<span><span class="co">#&gt;   (15,20]     0  45   4   0  49</span></span>
-<span><span class="co">#&gt;   (20,25]     0   0  18   0  18</span></span>
+<span><span class="co">#&gt;   (0,10]     34   6   0   0  40</span></span>
+<span><span class="co">#&gt;   (10,15]     0  21  13   0  34</span></span>
+<span><span class="co">#&gt;   (15,20]     0  49   0   0  49</span></span>
+<span><span class="co">#&gt;   (20,25]     0   0   9   9  18</span></span>
 <span><span class="co">#&gt;   (25,35]     0   0  13   0  13</span></span>
-<span><span class="co">#&gt;   (35, Inf]   0   0   0   9   9</span></span>
+<span><span class="co">#&gt;   (35, Inf]   9   0   0   0   9</span></span>
 <span><span class="co">#&gt;   Sum        80  76  35   9 200</span></span>
 <span><span class="va">rate_good_pred</span> <span class="op">=</span> <span class="op">(</span><span class="fl">37</span><span class="op">+</span><span class="fl">40</span><span class="op">+</span><span class="fl">31</span><span class="op">+</span><span class="fl">45</span><span class="op">+</span><span class="fl">18</span><span class="op">+</span><span class="fl">13</span><span class="op">+</span><span class="fl">9</span><span class="op">)</span><span class="op">/</span><span class="fl">200</span></span>
 <span><span class="va">rate_good_pred</span></span>
@@ -675,11 +690,11 @@ The <strong>verif_OT</strong> function gives access to different tools for asses
 <span></span>
 <span><span class="va">verif_out2</span><span class="op">$</span><span class="va">res.prox</span></span>
 <span><span class="co">#&gt;        N   V_cram rank_cor </span></span>
-<span><span class="co">#&gt;  200.000    0.960    0.939</span></span>
+<span><span class="co">#&gt;  200.000    0.800    0.688</span></span>
 <span></span>
 <span><span class="va">verif_out2</span><span class="op">$</span><span class="va">res.stab</span></span>
-<span><span class="co">#&gt;          N min.N  mean    sd</span></span>
-<span><span class="co">#&gt; 1st DB 112     3 0.986 0.084</span></span>
+<span><span class="co">#&gt;          N min.N mean sd</span></span>
+<span><span class="co">#&gt; 1st DB 112     3    1  0</span></span>
 <span></span>
 <span></span>
 <span><span class="co"># Validation of the mod3_opt model</span></span>
