@@ -116,76 +116,77 @@
 #'
 #' ### Ex 1: The Manhattan distance
 #'
-#' try1 <- transfo_dist(simu_data,
+#' man1 <- transfo_dist(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7),
 #'   ordinal = c(2, 6), logic = NULL, prep_choice = "M"
 #' )
-#' res1 <- proxim_dist(try1, norm = "M") # try1 compatible with norm = "E" for Euclidean
+#' mat_man1 <- proxim_dist(man1, norm = "M") # man1 compatible with norm = "E" for Euclidean
 #'
 #'
 #' ### Ex 2: The Euclidean and Manhattan distance applied on coordinates from FAMD
 #'
-#' try2 <- transfo_dist(simu_data,
+#' eucl_famd <- transfo_dist(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7),
 #'   ordinal = c(2, 6), logic = NULL, prep_choice = "FAMD", info = 0.80
 #' )
-#' res2_E <- proxim_dist(try2, norm = "E")
+#' mat_e_famd <- proxim_dist(eucl_famd, norm = "E")
+#'
 #' \donttest{
-#' res2_M <- proxim_dist(try2, norm = "M")
+#' mat_m_famd <- proxim_dist(eucl_famd, norm = "M")
 #' }
 #'
 #' ### Ex 3: The Gower distance with mixed covariates
 #'
-#' try3 <- transfo_dist(simu_data[c(1:100, 301:400), ],
+#' gow1 <- transfo_dist(simu_data[c(1:100, 301:400), ],
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7),
 #'   ordinal = c(2, 6), logic = NULL, prep_choice = "G"
 #' )
-#' res3 <- proxim_dist(try3, norm = "G")
+#' mat_gow1 <- proxim_dist(gow1, norm = "G")
 #'
 #' \donttest{
 #' ### Ex 4a: The Hamming distance with binary (but incomplete) covariates only
 #'
 #' # categorization of the continuous covariates age by tertiles
-#' try4 <- transfo_dist(simu_data,
+#' ham1 <- transfo_dist(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
 #'   convert_num = 8, convert_class = 3, prep_choice = "H"
 #' )
-#' res4 <- proxim_dist(try4, norm = "H")
+#' mat_ham1 <- proxim_dist(ham1, norm = "H")
 #' # Be patient ... It could take few minutes
 #'
 #' ### Ex 4b: The Hamming distance with complete cases on nominal and ordinal covariates only
 #' simu_data_CC <- simu_data[(!is.na(simu_data[, 5])) & (!is.na(simu_data[, 6])) &
 #'   (!is.na(simu_data[, 7])), 1:7]
-#' try4b <- transfo_dist(simu_data_CC,
+#' ham2 <- transfo_dist(simu_data_CC,
 #'   quanti = 3, nominal = c(1, 4:5, 7), ordinal = c(2, 6),
 #'   prep_choice = "H"
 #' )
-#' res4b <- proxim_dist(try4b, norm = "H")
+#' mat_ham2 <- proxim_dist(ham2, norm = "H")
 #'
 #'
 #' ### Ex 5: PARTICULAR CASE, If only one covariate with no NAs
 #'
-#' try5 <- try1[, c(1:3, 7)] # Only Smoking variable
-#' try6 <- try5[!is.na(try5[, 4]), ] # Keep complete case
-#' res6_M <- proxim_dist(try6, norm = "M", prox = 0.10)
+#' man2 <- man1[, c(1:3, 7)] # Only Smoking variable
+#' man2_nona <- man2[!is.na(man2[, 4]), ] # Keep complete case
+#' mat_man2_nona <- proxim_dist(man2_nona, norm = "M", prox = 0.10)
 #'
-#' res7_H <- proxim_dist(try6, norm = "H") # Hamming
+#' mat_man2_nona_H <- proxim_dist(man2_nona, norm = "H") # Hamming
 #'
 #'
 #' ### Ex 6: PARTICULAR CASE, many covariates but NAs in distance matrix
 #'
-#' # We generated NAs in the try1 object so that:
+#' # We generated NAs in the man1 object so that:
 #' # dist(A4,B102) and dist(A122,B102) returns NA whatever the norm chosen:
-#' try7 <- try1
-#' try7[4, 7:9] <- NA
-#' try7[122, 6:9] <- NA
-#' try7[300 + 102, 4:6] <- NA
-#' res7 <- proxim_dist(try7, norm = "M")
+#' man1b <- man1
+#' man1b[4, 7:9] <- NA
+#' man1b[122, 6:9] <- NA
+#' man1b[300 + 102, 4:6] <- NA
+#' mat_man3 <- proxim_dist(man1b, norm = "M")
 #' # The process stopped indicates 2 NAs and the corresponding row numbers
-#' # The 2nd output of res7 indicates that removing first the 102th row of the database
+#' # The 2nd output of mat_man3 indicates that removing first the 102th row of the database
 #' # B is enough to solve the pb:
-#' try8 <- try7[-402, ]
-#' res8 <- proxim_dist(try8, norm = "M")
+#' man1c <- man1b[-402, ]
+#' mat_man4 <- proxim_dist(man1c, norm = "M")
 #' }
 #'
 proxim_dist <- function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.30) {
@@ -255,7 +256,7 @@ proxim_dist <- function(data_file, indx_DB_Y_Z = 1:3, norm = "E", prox = 0.30) {
     stop("No covariate in your database. At least 1 covariate is required")
   } else {}
 
-  if ((nbcvar == 1) & (sum(is.na(dat[, 4])) != 0)) {
+  if ((nbcvar == 1) && (sum(is.na(dat[, 4])) != 0)) {
     stop("Only one covariate with NAs: Please impute NAs or work with complete case only")
   } else {}
 

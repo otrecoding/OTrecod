@@ -39,7 +39,7 @@ find_coord <- function(all_ind, all_list, all_coord) {
   sol4 <- t(apply(sol2[test1 == TRUE, ], 1, sort))
   sol4 <- sol4[!duplicated(sol4), ]
 
-  sol5 <- sol3[sol_coord, ]
+  # sol5 <- sol3[sol_coord, ]
 
   return(sol4)
 }

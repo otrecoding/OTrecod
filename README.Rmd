@@ -100,7 +100,7 @@ The call of the **merge\_dbs** function is actually:  </p>
 
 ```{r, eval=FALSE}
 merge_dbs = function(DB1, DB2, row_ID1 = NULL, row_ID2 = NULL, NAME_Y, NAME_Z, order_levels_Y = levels(DB1[, NAME_Y]), order_levels_Z = levels(DB2[, NAME_Z]), ordinal_DB1 = NULL, ordinal_DB2 = NULL,
-                     impute = "NO", R_MICE = 5, NCP_FAMD = 3, seed_func = sample(1:1000000, 1))
+                     impute = "NO", R_MICE = 5, NCP_FAMD = 3, seed_choice = sample(1:1000000, 1))
 ```
 
 <p align="justify"> The **merge\_dbs** function notably provides in output an unique database, result of the overlayed of the two initial data sources, in the structure expected by the **OT\_outcome** and **OT\_joint** functions. </p>

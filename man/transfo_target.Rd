@@ -34,17 +34,17 @@ of a target variable (outcome) according to the following rules:
 }
 \examples{
 y <- rnorm(100, 30, 10)
-aa <- transfo_target(y)
+ynew1 <- transfo_target(y)
 
 newlev <- unique(as.integer(y))
-bb <- transfo_target(y, levels_order = newlev)
+ynew2 <- transfo_target(y, levels_order = newlev)
 newlev2 <- newlev[-1]
-cc <- transfo_target(y, levels_order = newlev2)
+ynew3 <- transfo_target(y, levels_order = newlev2)
 
 outco <- c(rep("A", 25), rep("B", 50), rep("C", 25))
-dd <- transfo_target(outco, levels_order = c("B", "C", "A"))
-ee <- transfo_target(outco, levels_order = c("E", "C", "A", "F"))
-ff <- transfo_target(outco)
+outco_new1 <- transfo_target(outco, levels_order = c("B", "C", "A"))
+outco_new2 <- transfo_target(outco, levels_order = c("E", "C", "A", "F"))
+outco_new3 <- transfo_target(outco)
 
 outco2 <- c(rep("A", 25), NA, rep("B", 50), rep("C", 25), NA, NA)
 gg <- transfo_target(outco2)

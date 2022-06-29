@@ -66,11 +66,11 @@
 #'
 #' ### Example with the Manhattan distance
 #'
-#' try1 <- transfo_dist(simu_data,
+#' man1 <- transfo_dist(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7),
 #'   ordinal = c(2, 6), logic = NULL, prep_choice = "M"
 #' )
-#' res1 <- proxim_dist(try1, norm = "M")
+#' mat_man1 <- proxim_dist(man1, norm = "M")
 #'
 #' ### Y(Yb1) and Z(Yb2) are a same information encoded in 2 different forms:
 #' ### (3 levels for Y and 5 levels for Z)
@@ -79,11 +79,11 @@
 #' ### as the marginal distribution of Z in A ...
 #'
 #' # Empirical distribution of Y in database A:
-#' freqY <- prop.table(table(try1$Y))
+#' freqY <- prop.table(table(man1$Y))
 #' freqY
 #'
 #' # Empirical distribution of Z in database B
-#' freqZ <- prop.table(table(try1$Z))
+#' freqZ <- prop.table(table(man1$Z))
 #' freqZ
 #'
 #' # By supposing that the following matrix called transport symbolizes
@@ -91,11 +91,11 @@
 #' # Note that, in reality this distribution is UNKNOWN and is
 #' # estimated in the OT function by resolving an optimisation problem.
 #'
-#' transport1 <- matrix(c(
-#'   0, 0.35285714, 0, 0.09142857, 0, 0.03571429,
-#'   0, 0, 0.08285714, 0, 0.07857143, 0.03142857,
-#'   0.32714286, 0, 0
-#' ), ncol = 5, byrow = FALSE)
+#'
+#' transport1 <- matrix(c(0.3625, 0, 0, 0.07083333, 0.05666667,
+#'                       0, 0, 0.0875, 0, 0, 0.1075, 0,
+#'                       0, 0.17166667, 0.1433333),
+#'                      ncol = 5, byrow = FALSE)
 #'
 #' # ... So that the marginal distributions of this object corresponds to freqY and freqZ:
 #' apply(transport1, 1, sum) # = freqY
@@ -104,14 +104,14 @@
 #' # The affectation of the predicted values of Y in database B and Z in database A
 #' # are stored in the following object:
 #'
-#' res2 <- indiv_grp_closest(res1,
+#' pred_man1 <- indiv_grp_closest(mat_man1,
 #'   jointprobaA = transport1, jointprobaB = transport1,
 #'   percent_closest = 0.90
 #' )
-#' summary(res2)
+#' summary(pred_man1)
 #'
 #' # For the prediction of Z in A only, add the corresponding argument:
-#' res3 <- indiv_grp_closest(res1,
+#' pred_man1_A <- indiv_grp_closest(mat_man1,
 #'   jointprobaA = transport1, jointprobaB = transport1,
 #'   percent_closest = 0.90, which.DB = "A"
 #' )
@@ -121,21 +121,21 @@ indiv_grp_closest <- function(proxim, jointprobaA = NULL, jointprobaB = NULL, pe
     stop("This object must be a list returned by the proxim_dist function")
   } else {}
 
-  if ((!is.matrix(jointprobaA)) | (!is.matrix(jointprobaA))) {
+  if ((!is.matrix(jointprobaA)) || (!is.matrix(jointprobaA))) {
     stop("The joint distributions must be store in matrix objects")
   } else {}
 
-  if ((ncol(jointprobaA) != ncol(jointprobaB)) | (nrow(jointprobaA) != nrow(jointprobaB))) {
+  if ((ncol(jointprobaA) != ncol(jointprobaB)) || (nrow(jointprobaA) != nrow(jointprobaB))) {
     stop("The joint distributions must be store in matrix of same size")
   } else {}
 
 
-  if ((format(sum(jointprobaA)) != "1") | (format(sum(jointprobaB)) != "1")) {
+  if ((format(sum(jointprobaA)) != "1") || (format(sum(jointprobaB)) != "1")) {
     stop("The sum of the jointprobaA matrix or the sum of the jointprobaB matrix differs from 1 !")
   } else {}
 
 
-  if ((percent_closest > 1) | (percent_closest <= 0)) {
+  if ((percent_closest > 1) || (percent_closest <= 0)) {
     stop("Improper value for the percent_closest argument")
   } else {}
 
@@ -143,15 +143,15 @@ indiv_grp_closest <- function(proxim, jointprobaA = NULL, jointprobaB = NULL, pe
     stop("Improper value for the which.DB argument")
   } else {}
 
-  if ((which.DB == "BOTH") & (is.null(jointprobaA) | is.null(jointprobaB))) {
+  if ((which.DB == "BOTH") && (is.null(jointprobaA) || is.null(jointprobaB))) {
     stop("The jointprobaA and B arguments must be filled")
   } else {}
 
-  if ((which.DB == "A") & (is.null(jointprobaA))) {
+  if ((which.DB == "A") && (is.null(jointprobaA))) {
     stop("The jointprobaA argument is missing")
   } else {}
 
-  if ((which.DB == "B") & (is.null(jointprobaB))) {
+  if ((which.DB == "B") && (is.null(jointprobaB))) {
     stop("The jointprobaB argument is missing")
   } else {}
 

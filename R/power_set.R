@@ -19,13 +19,14 @@
 #'
 #' @examples
 #' # Powerset of set of 4 elements
-#' fam <- power_set(4)
+#' set1 <- power_set(4)
 #'
 #' # Powerset of set of 4 elements by only keeping
 #' # subsets of consecutive elements
-#' fam2 <- power_set(4, ordinal = TRUE)
+#' set2 <- power_set(4, ordinal = TRUE)
 #'
 power_set <- function(n, ordinal = FALSE) {
+
   E <- 1:n
 
   BDD <- rep(rep(1:n, each = n^(n - 1)), n^0)

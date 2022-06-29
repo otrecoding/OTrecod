@@ -180,18 +180,18 @@
 #' # Predictions are assessed for Y in B and Z in A
 #' #-----
 #'
-#' try1 <- OT_outcome(simu_dat,
-#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-#'   dist.choice = "M", maxrelax = 0,
-#'   indiv.method = "sequential"
+#' OUTC1 <- OT_outcome(simu_dat,
+#'                     quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'                     dist.choice = "M", maxrelax = 0,
+#'                     indiv.method = "sequential"
 #' )
-#' head(try1$DATA1_OT) # Part of the completed database A
-#' head(try1$DATA2_OT) # Part of the completed database B
+#' head(OUTC1$DATA1_OT) # Part of the completed database A
+#' head(OUTC1$DATA2_OT) # Part of the completed database B
 #'
-#' head(try1$estimatorZA[, , 1])
+#' head(OUTC1$estimatorZA[, , 1])
 #' # ... Corresponds to P[Z = 1|Y,P1] when P1 corresponds to the 1st profile of covariates (P_1)
 #' # detailed in the 1st row of the profile object:
-#' try1$profile[1, ] # Details of P_1
+#' OUTC1$profile[1, ] # Details of P_1
 #'
 #' # So estimatorZA[1,1,1]= 0.2 corresponds to an estimation of:
 #' # P[Z = 1|Y=[20-40],Gender_2=0,Treatment_2=1,Treatment_3=0,Smoking_2=1,Dosage=3,Age=65.44]
@@ -208,11 +208,11 @@
 #' # - The Gower distance is now used
 #' ### -----
 #'
-#' try2 <- OT_outcome(simu_dat,
-#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-#'   dist.choice = "G", maxrelax = 0,
-#'   convert.num = 8, convert.class = 3,
-#'   indiv.method = "sequential", which.DB = "B"
+#' OUTC2_B <- OT_outcome(simu_dat,
+#'                       quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'                       dist.choice = "G", maxrelax = 0,
+#'                       convert.num = 8, convert.class = 3,
+#'                       indiv.method = "sequential", which.DB = "B"
 #' )
 #'
 #'
@@ -225,11 +225,11 @@
 #' #   variables.
 #' ### -----
 #'
-#' try3 <- OT_outcome(simu_data,
-#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-#'   dist.choice = "H", maxrelax = 0,
-#'   convert.num = 8, convert.class = 3,
-#'   indiv.method = "sequential", which.DB = "B"
+#' OUTC3_B <- OT_outcome(simu_data,
+#'                       quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'                       dist.choice = "H", maxrelax = 0,
+#'                       convert.num = 8, convert.class = 3,
+#'                       indiv.method = "sequential", which.DB = "B"
 #' )
 #'
 #'
@@ -238,10 +238,11 @@
 #' # - The Manhattan distance
 #' # - Raw covariates
 #' ### -----
-#' try4 <- OT_outcome(simu_data,
-#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-#'   dist.choice = "M", maxrelax = 0,
-#'   indiv.method = "optimal"
+#'
+#' R_OUTC1 <- OT_outcome(simu_data,
+#'                       quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'                       dist.choice = "M", maxrelax = 0,
+#'                       indiv.method = "optimal"
 #' )
 #'
 #'
@@ -251,11 +252,11 @@
 #' # - Raw covariates
 #' ### -----
 #'
-#' try5 <- OT_outcome(simu_data,
-#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-#'   dist.choice = "E",
-#'   FAMD.coord = "YES", FAMD.perc = 0.8,
-#'   indiv.method = "optimal"
+#' R_OUTC2 <- OT_outcome(simu_data,
+#'                       quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'                       dist.choice = "E",
+#'                       FAMD.coord = "YES", FAMD.perc = 0.8,
+#'                       indiv.method = "optimal"
 #' )
 #'
 #'
@@ -266,10 +267,10 @@
 #' # - Raw covariates
 #' #-----
 #'
-#' try6 <- OT_outcome(simu_data,
-#'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
-#'   dist.choice = "E", maxrelax = 0.4,
-#'   indiv.method = "optimal"
+#' R_OUTC3 <- OT_outcome(simu_data,
+#'                       quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+#'                       dist.choice = "E", maxrelax = 0.4,
+#'                       indiv.method = "optimal"
 #' )
 #' }
 #'
@@ -279,6 +280,7 @@ OT_outcome <- function(datab, index_DB_Y_Z = 1:3,
                        dist.choice = "E", percent.knn = 1,
                        maxrelax = 0, indiv.method = "sequential", prox.dist = 0,
                        solvR = "glpk", which.DB = "BOTH") {
+
   tstart <- Sys.time()
 
   message("---------------------------------------", "\n")
@@ -409,7 +411,7 @@ OT_outcome <- function(datab, index_DB_Y_Z = 1:3,
 
 
     result <- ompr::MIPModel() %>%
-      ompr::add_variable(transport[y, z], y = Y, z = Z, type = "continuous") %>%
+      ompr::add_variable(transport[y, z], y = Y, z = Z, type = "continuous", lb = 0, ub = 1) %>%
       ompr::add_variable(deviationA[y], y = Y, type = "continuous") %>%
       ompr::add_variable(absdevA[y], y = Y, type = "continuous") %>%
       ompr::add_variable(deviationB[z], z = Z, type = "continuous") %>%
@@ -432,10 +434,15 @@ OT_outcome <- function(datab, index_DB_Y_Z = 1:3,
     solution <- ompr::get_solution(result, transport[y, z])
 
     # Extract the values of the solution
-
-    transportA_val <- matrix(solution[, 4], length(Y), length(Z))
+    solution <- solution[order(solution$z, solution$y),]
+    transportA_val <- matrix(solution$value, length(Y), length(Z))
     transportB_val <- transportA_val
+
+    colnames(transportA_val)  = colnames(transportB_val)  = levels(dataB[,3])
+    row.names(transportA_val) = row.names(transportB_val) = levels(dataB[,2])
+
   } else {
+
     b2 <- numeric(length(Z))
 
     for (z in Z) {
@@ -446,11 +453,12 @@ OT_outcome <- function(datab, index_DB_Y_Z = 1:3,
       }
       b2[z] <- sum(stc_sum2)
     }
+
     b2 <- b2 / sum(b2)
 
 
     result <- MIPModel() %>%
-      ompr::add_variable(transportA[y, z], y = Y, z = Z, type = "continuous", lb = 0) %>%
+      ompr::add_variable(transportA[y, z], y = Y, z = Z, type = "continuous", lb = 0, ub = 1) %>%
       ompr::add_variable(deviationB[z], z = Z, type = "continuous") %>%
       ompr::add_variable(absdevB[z], z = Z, type = "continuous", lb = 0) %>%
       ompr::set_objective(sum_expr(C[y, z] * transportA[y, z], y = Y, z = Z), "min") %>%
@@ -463,8 +471,11 @@ OT_outcome <- function(datab, index_DB_Y_Z = 1:3,
       ompr::solve_model(with_ROI(solver = solvR))
 
     solution <- ompr::get_solution(result, transportA[y, z])
-
+    solution <- solution[order(solution$z, solution$y),]
     transportA_val <- matrix(solution$value, length(Y), length(Z))
+
+    colnames(transportA_val)  = levels(dataB[,3])
+    row.names(transportA_val) = levels(dataB[,2])
 
 
     b1 <- numeric(length(Y))
@@ -481,7 +492,7 @@ OT_outcome <- function(datab, index_DB_Y_Z = 1:3,
     b1 <- b1 / sum(b1)
 
     result <- MIPModel() %>%
-      ompr::add_variable(transportB[y, z], y = Y, z = Z, type = "continuous", lb = 0) %>%
+      ompr::add_variable(transportB[y, z], y = Y, z = Z, type = "continuous", lb = 0, ub = 1) %>%
       ompr::add_variable(deviationA[y], y = Y, type = "continuous") %>%
       ompr::add_variable(absdevA[y], y = Y, type = "continuous", lb = 0) %>%
       ompr::set_objective(sum_expr(C[y, z] * transportB[y, z], y = Y, z = Z), "min") %>%
@@ -495,7 +506,12 @@ OT_outcome <- function(datab, index_DB_Y_Z = 1:3,
 
 
     solution <- ompr::get_solution(result, transportB[y, z])
+    solution <- solution[order(solution$z, solution$y),]
     transportB_val <- matrix(solution$value, length(Y), length(Z))
+
+    colnames(transportB_val)  = levels(dataB[, 3])
+    row.names(transportB_val) = levels(dataB[, 2])
+
   }
 
   ####

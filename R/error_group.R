@@ -60,19 +60,19 @@
 #' @examples
 #'
 #' # Basic examples:
-#' Z1 <- as.factor(sample(1:3, 50, replace = TRUE))
-#' length(Z1)
-#' Z3 <- as.factor(sample(1:2, 50, replace = TRUE))
-#' length(Z3)
-#' Z2 <- as.factor(sample(c("A", "B", "C", "D"), 50, replace = TRUE))
-#' length(Z2)
-#' Z4 <- as.factor(sample(c("A", "B", "C", "D", "E"), 50, replace = TRUE))
-#' length(Z4)
+#' sample1 <- as.factor(sample(1:3, 50, replace = TRUE))
+#' length(sample1)
+#' sample2 <- as.factor(sample(1:2, 50, replace = TRUE))
+#' length(sample2)
+#' sample3 <- as.factor(sample(c("A", "B", "C", "D"), 50, replace = TRUE))
+#' length(sample3)
+#' sample4 <- as.factor(sample(c("A", "B", "C", "D", "E"), 50, replace = TRUE))
+#' length(sample4)
 #'
-#' # By only grouping consecutive levels of Z1:
-#' error_group(Z1, Z4)
-#' # By only all possible levels of Z1, consecutive or not:
-#' error_group(Z3, Z1, FALSE)
+#' # By only grouping consecutive levels of sample1:
+#' error_group(sample1, sample4)
+#' # By only all possible levels of sample1, consecutive or not:
+#' error_group(sample2, sample1, ord = FALSE)
 #'
 #' \donttest{
 #'
@@ -98,7 +98,7 @@
 #' }
 #'
 error_group <- function(REF, Z, ord = TRUE) {
-  if ((is.null(levels(REF))) | (is.null(levels(Z)))) {
+  if ((is.null(levels(REF))) || (is.null(levels(Z)))) {
     stop("REF and Z must be factors")
   } else {}
 

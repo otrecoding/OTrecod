@@ -105,7 +105,7 @@
 #' data(simu_data)
 #'
 #' # 1. the Euclidean distance (same output with Manhattan distance),
-#' try1 <- transfo_dist(simu_data,
+#' eucl1 <- transfo_dist(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7),
 #'   ordinal = c(2, 6), logic = NULL, prep_choice = "E"
 #' )
@@ -114,14 +114,14 @@
 #' # You can also convert beforehand Yb2 in ordered factor by example:
 #' sim_data <- simu_data
 #' sim_data$Yb2 <- as.ordered(sim_data$Yb2)
-#' try1 <- transfo_dist(sim_data,
+#' eucl2 <- transfo_dist(sim_data,
 #'   quanti = 8, nominal = c(1, 4:5, 7),
 #'   ordinal = c(2, 3, 6), logic = NULL, prep_choice = "E"
 #' )
 #'
 #' # 2. The Euclidean distance generated on principal components
 #' #    by a factor analysis for mixed data (FAMD):
-#' try2 <- transfo_dist(simu_data,
+#' eucl_famd <- transfo_dist(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7),
 #'   ordinal = c(2, 6), logic = NULL, prep_choice = "FAMD"
 #' )
@@ -130,7 +130,7 @@
 #' # information on covariates.
 #'
 #' # 3. The Gower distance for mixed data:
-#' try3 <- transfo_dist(simu_data,
+#' gow1 <- transfo_dist(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7),
 #'   ordinal = c(2, 6), logic = NULL, prep_choice = "G"
 #' )
@@ -142,7 +142,7 @@
 #' # So in simu_data, the discretization of the variable age is required (index=8),
 #' # using the convert_num and convert_class arguments (for tertiles = 3):
 #'
-#' try4 <- transfo_dist(simu_data,
+#' ham1 <- transfo_dist(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
 #'   convert_num = 8, convert_class = 3, prep_choice = "H"
 #' )
@@ -154,7 +154,7 @@
 #'
 #' # By changing the corresponding indexes in the index_DB_Y_Z argument,
 #' # we observe the desired output:
-#' try5 <- transfo_dist(simu_data2,
+#' eucl3 <- transfo_dist(simu_data2,
 #'   index_DB_Y_Z = c(8, 1, 6), quanti = 6:7, nominal = c(2:3, 5, 8),
 #'   ordinal = c(1, 4), logic = NULL, prep_choice = "E"
 #' )
@@ -218,11 +218,11 @@ transfo_dist <- function(DB, index_DB_Y_Z = 1:3,
   } else {}
 
 
-  if ((length(quanti) > ncol(DB)) | (length(nominal) > ncol(DB)) | (length(ordinal) > ncol(DB)) | (length(logic) > ncol(DB))) {
+  if ((length(quanti) > ncol(DB)) || (length(nominal) > ncol(DB)) || (length(ordinal) > ncol(DB)) || (length(logic) > ncol(DB))) {
     stop("The number of at least one type of variables declared exceeds the number of columns of DB")
   } else {}
 
-  if (length(setdiff(quanti, c(index_DB_Y_Z, convert_num)) != 0) & (prep_choice == "H")) {
+  if (length(setdiff(quanti, c(index_DB_Y_Z, convert_num)) != 0) && (prep_choice == "H")) {
     stop("Incompatible type(s) of covariate(s) with distance chosen: No numeric variable with Hamming distance.
          If your variable is binary or has a finite number of values, please put its corresponding index of column
          in the ordinal option, rather than in the quanti option.If not, categorize it, or change distance function.")
@@ -236,7 +236,7 @@ transfo_dist <- function(DB, index_DB_Y_Z = 1:3,
     stop("Inconsistencies between convert_num and convert_class")
   } else {}
 
-  if ((length(convert_class) > 1) & (length(convert_class) != length(convert_num))) {
+  if ((length(convert_class) > 1) && (length(convert_class) != length(convert_num))) {
     stop("Inconsistencies between convert_num and convert_class")
   } else {}
 
@@ -378,7 +378,7 @@ transfo_dist <- function(DB, index_DB_Y_Z = 1:3,
       } else {}
 
 
-      if ((length(quanti2) != 0) | (length(ordinal2) != 0)) {
+      if ((length(quanti2) != 0) || (length(ordinal2) != 0)) {
         DB_NEW <- data.frame(DB[, index_DB_Y_Z], bin_quali, DB[, sort(unique(c(quanti2, ordinal2)))])
         colnames(DB_NEW) <- c(colnames(DB)[index_DB_Y_Z], name_col_quali, colnames(DB)[sort(unique(c(quanti2, ordinal2)))])
       } else {

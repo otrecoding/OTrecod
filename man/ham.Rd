@@ -41,11 +41,11 @@ If \code{mat_1} is a vector and \code{mat_2} is a matrix (or data.frame) or vice
 }
 \examples{
 set.seed(3010)
-aaa <- sample(c(0, 1), 12, replace = TRUE)
+sample_A <- sample(c(0, 1), 12, replace = TRUE)
 set.seed(3007)
-bbb <- sample(c(0, 1), 15, replace = TRUE)
-A <- matrix(aaa, ncol = 3)
-B <- matrix(bbb, ncol = 3)
+sample_B <- sample(c(0, 1), 15, replace = TRUE)
+A <- matrix(sample_A, ncol = 3)
+B <- matrix(sample_B, ncol = 3)
 
 # These 2 matrices have no missing values
 

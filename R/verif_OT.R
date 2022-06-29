@@ -99,15 +99,15 @@
 #' # - Using an outcome model (individual assignment with knn)
 #' #-----
 #' data(simu_data)
-#' try1 <- OT_outcome(simu_data,
+#' outc1 <- OT_outcome(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
 #'   dist.choice = "G", percent.knn = 0.90, maxrelax = 0,
 #'   convert.num = 8, convert.class = 3,
 #'   indiv.method = "sequential", which.DB = "BOTH", prox.dist = 0.30
 #' )
 #'
-#' ver1 <- verif_OT(try1)
-#' ver1
+#' verif_outc1 <- verif_OT(outc1)
+#' verif_outc1
 #'
 #' \donttest{
 #'
@@ -122,15 +122,15 @@
 #' #-----
 #'
 #' data(simu_data)
-#' try2 <- OT_outcome(simu_data,
+#' outc2 <- OT_outcome(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
 #'   dist.choice = "G", percent.knn = 0.90, maxrelax = 0, prox.dist = 0.3,
 #'   convert.num = 8, convert.class = 3,
 #'   indiv.method = "sequential", which.DB = "B"
 #' )
 #'
-#' ver2 <- verif_OT(try2, group.class = TRUE, ordinal = TRUE)
-#' ver2
+#' verif_outc2 <- verif_OT(outc2, group.class = TRUE, ordinal = TRUE)
+#' verif_outc2
 #'
 #'
 #' ### Example 3
@@ -143,11 +143,12 @@
 #' # - Using an outcome model (individual assignment with knn)
 #' #-----
 #'
-#' ver3 <- verif_OT(try2, group.class = TRUE, ordinal = TRUE, stab.prob = TRUE, min.neigb = 5)
-#' ver3
+#' verif_outc2b <- verif_OT(outc2, group.class = TRUE, ordinal = TRUE, stab.prob = TRUE, min.neigb = 5)
+#' verif_outc2b
 #' }
 #'
 verif_OT <- function(ot_out, group.class = FALSE, ordinal = TRUE, stab.prob = FALSE, min.neigb = 1) {
+
   if (class(ot_out) != "otres") {
     stop("ot_out must be an otres object: output from OT_outcome or OT_joint")
   } else {}
@@ -227,7 +228,7 @@ verif_OT <- function(ot_out, group.class = FALSE, ordinal = TRUE, stab.prob = FA
     }
   }
 
-  if ((!is.null(DATA1_OT)) & (!is.null(DATA2_OT))) {
+  if ((!is.null(DATA1_OT)) && (!is.null(DATA2_OT))) {
     if (is.ordered(DATA1_OT[, 2])) {
       predY <- ordered(c(as.character(DATA1_OT[, 2]), as.character(DATA2_OT$OTpred)), levels = lev1)
     } else {
@@ -249,7 +250,7 @@ verif_OT <- function(ot_out, group.class = FALSE, ordinal = TRUE, stab.prob = FA
   ID.DB <- c(as.character(DATA1_OT[, 1]), as.character(DATA2_OT[, 1]))
 
 
-  if ((!is.null(DATA1_OT)) & (!is.null(DATA2_OT))) {
+  if ((!is.null(DATA1_OT)) && (!is.null(DATA2_OT))) {
 
     # Using standard criterions: Global
 

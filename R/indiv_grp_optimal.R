@@ -88,9 +88,9 @@
 #' # Because all covariates are ordered in numeric form,
 #' # the transfo_dist function is not required here
 #'
-#' res3 <- proxim_dist(tab_test2, norm = "M")
+#' mat_testm <- proxim_dist(tab_test2, norm = "M")
 #'
-#' #' ### Y(Y1) and Z(Y2) are a same variable encoded in 2 different forms:
+#' ### Y(Y1) and Z(Y2) are a same variable encoded in 2 different forms:
 #' ### 4 levels for Y1 and 3 levels for Y2
 #' ### ... Stored in two distinct databases, A and B, respectively
 #' ### The marginal distribution of Y in B is unknown,
@@ -104,14 +104,14 @@
 #' # By supposing:
 #'
 #' val_trans <- c(0.275, 0.115, 0, 0, 0, 0.085, 0.165, 0, 0, 0, 0.095, 0.265)
-#' transport2 <- matrix(val_trans, ncol = 3, byrow = FALSE)
+#' mat_trans <- matrix(val_trans, ncol = 3, byrow = FALSE)
 #'
 #' # Getting the individual predictions of Z in A (only)
 #' # by computing average distances on 90% of the nearest neighbors of
 #' # each modality of Z in B
-#' res4 <- indiv_grp_optimal(res3,
-#'   jointprobaA = transport2,
-#'   jointprobaB = transport2, percent_closest = 0.90,
+#' predopt_A <- indiv_grp_optimal(mat_testm,
+#'   jointprobaA = mat_trans,
+#'   jointprobaB = mat_trans, percent_closest = 0.90,
 #'   which.DB = "A"
 #' )
 #'
@@ -119,11 +119,11 @@
 #' ### Example 2 using The Manhattan distance with incomplete covariates
 #' data(simu_data)
 #'
-#' try1 <- transfo_dist(simu_data,
+#' man1 <- transfo_dist(simu_data,
 #'   quanti = c(3, 8), nominal = c(1, 4:5, 7),
 #'   ordinal = c(2, 6), logic = NULL, prep_choice = "M"
 #' )
-#' res1 <- proxim_dist(try1, norm = "M")
+#' mat_man1 <- proxim_dist(man1, norm = "M")
 #'
 #'
 #' ### Y and Z are a same variable encoded in 2 different forms:
@@ -132,39 +132,40 @@
 #' ### The marginal distribution of Y in B is unknown,
 #' ### as the marginal distribution of Z in A ...
 #'
+#'
 #' # By supposing that the following matrix called transport symbolizes
 #' # an estimation of the joint distribution L(Y,Z) ...
 #' # Note that, in reality this distribution is UNKNOWN and is
 #' # estimated in the OT function by resolving an optimisation problem.
 #'
-#' transport1 <- matrix(c(
-#'   0, 0.35285714, 0, 0.09142857, 0, 0.03571429,
-#'   0, 0, 0.08285714, 0, 0.07857143, 0.03142857,
-#'   0.32714286, 0, 0
-#' ), ncol = 5, byrow = FALSE)
+#' mat_trans2 <- matrix(c(0.3625, 0, 0, 0.07083333, 0.05666667,
+#'                        0, 0, 0.0875, 0, 0, 0.1075, 0,
+#'                        0, 0.17166667, 0.1433333),
+#'                      ncol = 5, byrow = FALSE)
 #'
 #'
 #' # The predicted values of Y in database B and Z in
 #' # database A are stored in the following object:
 #'
-#' res2 <- indiv_grp_optimal(res1,
-#'   jointprobaA = transport1,
-#'   jointprobaB = transport1,
+#' predopt2 <- indiv_grp_optimal(mat_man1,
+#'   jointprobaA = mat_trans2,
+#'   jointprobaB = mat_trans2,
 #'   percent_closest = 0.90
 #' )
-#' summary(res2)
+#' summary(predopt2)
 #' }
 #'
 indiv_grp_optimal <- function(proxim, jointprobaA, jointprobaB, percent_closest = 1.0, solvr = "glpk", which.DB = "BOTH") {
+
   if (!is.list(proxim)) {
     stop("This object must be a list returned by the proxim_dist function")
   } else {}
 
-  if ((!is.matrix(jointprobaA)) | (!is.matrix(jointprobaA))) {
+  if ((!is.matrix(jointprobaA)) || (!is.matrix(jointprobaA))) {
     stop("The joint distributions must be store in matrix objects")
   } else {}
 
-  if ((ncol(jointprobaA) != ncol(jointprobaB)) | (nrow(jointprobaA) != nrow(jointprobaB))) {
+  if ((ncol(jointprobaA) != ncol(jointprobaB)) || (nrow(jointprobaA) != nrow(jointprobaB))) {
     stop("The joint distributions must be store in matrix of same size")
   } else {}
 
@@ -175,12 +176,12 @@ indiv_grp_optimal <- function(proxim, jointprobaA, jointprobaB, percent_closest 
   # } else {}
 
 
-  if ((format(sum(jointprobaA)) != "1") | (format(sum(jointprobaB)) != "1")) {
+  if ((format(sum(jointprobaA)) != "1") || (format(sum(jointprobaB)) != "1")) {
     stop("The sum of the jointprobaA matrix or the sum of the jointprobaB matrix differs from 1 !")
   } else {}
 
 
-  if ((percent_closest > 1) | (percent_closest <= 0)) {
+  if ((percent_closest > 1) || (percent_closest <= 0)) {
     stop("Incorrect value for the percent_closest option")
   } else {}
 
@@ -248,8 +249,8 @@ indiv_grp_optimal <- function(proxim, jointprobaA, jointprobaB, percent_closest 
   }
 
   result <- MIPModel() %>%
-    add_variable(assignA[i, z], i = A, z = Z, type = "continuous", lb = 0) %>%
-    add_variable(assignB[j, y], j = B, y = Y, type = "continuous", lb = 0) %>%
+    add_variable(assignA[i, z], i = A, z = Z, type = "continuous", lb = 0, ub = 1) %>%
+    add_variable(assignB[j, y], j = B, y = Y, type = "continuous", lb = 0, ub = 1) %>%
     set_objective(sum_expr(CAf(i, z) * assignA[i, z], i = A, z = Z) + sum_expr(CBf(j, y) * assignB[j, y], j = B, y = Y), "min") %>%
     add_constraint(sum_expr(assignA[i, z], i = indY[[y]]) == jointprobaA[y, z], z = Z, y = Y) %>%
     add_constraint(sum_expr(assignB[j, y], j = indZ[[z]]) == jointprobaB[y, z], z = Z, y = Y) %>%
@@ -258,10 +259,12 @@ indiv_grp_optimal <- function(proxim, jointprobaA, jointprobaB, percent_closest 
     solve_model(with_ROI(solver = solvr))
 
   solution <- get_solution(result, assignA[i, z])
-  assignA <- matrix(solution$value, length(A), length(Z))
+  solutionA <- solution[order(solution$z, solution$i),]
+  assignA <- matrix(solutionA$value, length(A), length(Z))
 
   solution <- get_solution(result, assignB[j, y])
-  assignB <- matrix(solution$value, length(B), length(Y))
+  solutionB <- solution[order(solution$y, solution$j),]
+  assignB <- matrix(solutionB$value, length(B), length(Y))
 
 
   # Extract the values of the solution

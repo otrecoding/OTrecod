@@ -54,7 +54,7 @@
 #' @param impute a character equals to "NO" when missing data on covariates are kept (Default option), "CC" for Complete Case by keeping only covariates with no missing information , "MICE" for MICE multiple imputation approach, "FAMD" for single imputation approach using Factorial Analysis for Mixed Data
 #' @param R_MICE the chosen number of multiple imputations required for the  MICE approach (5 by default)
 #' @param NCP_FAMD an integer corresponding to the number of components used to predict missing values in FAMD imputation (3 by default)
-#' @param seed_func an integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default, only useful with MICE)
+#' @param seed_choice an integer used as argument by the set.seed() for offsetting the random number generator (Random integer by default, only useful with MICE)
 #'
 #' @return A list containing 12 elements (13 when \code{impute} equals "MICE"):
 #' \item{DB_READY}{the database matched from the two initial databases with common covariates and imputed or not according to the impute option}
@@ -119,33 +119,33 @@
 #' data_B <- data_B[, c(1:3, 5, 6, 4)]
 #'
 #' # Ex 1: The two databases are merged and incomplete covariates are imputed using MICE
-#' soluc1 <- merge_dbs(data_A, data_B,
+#' merged_ex1 <- merge_dbs(data_A, data_B,
 #'   NAME_Y = "Yb1", NAME_Z = "Yb2",
 #'   ordinal_DB1 = c(1, 4), ordinal_DB2 = c(1, 6),
-#'   impute = "MICE", R_MICE = 2, seed_func = 3011
-#' )
-#' summary(soluc1$DB_READY)
+#'   impute = "MICE", R_MICE = 2, seed_choice = 3011)
+#'
+#' summary(merged_ex1$DB_READY)
 #'
 #'
 #' # Ex 2: The two databases are merged and missing values are kept
-#' soluc2 <- merge_dbs(data_A, data_B,
+#' merged_ex2 <- merge_dbs(data_A, data_B,
 #'   NAME_Y = "Yb1", NAME_Z = "Yb2",
 #'   ordinal_DB1 = c(1, 4), ordinal_DB2 = c(1, 6),
-#'   impute = "NO", seed_func = 3011
+#'   impute = "NO", seed_choice = 3011
 #' )
 #'
 #' # Ex 3: The two databases are merged by only keeping the complete cases
-#' soluc3 <- merge_dbs(data_A, data_B,
+#' merged_ex3 <- merge_dbs(data_A, data_B,
 #'   NAME_Y = "Yb1", NAME_Z = "Yb2",
 #'   ordinal_DB1 = c(1, 4), ordinal_DB2 = c(1, 6),
-#'   impute = "CC", seed_func = 3011
+#'   impute = "CC", seed_choice = 3011
 #' )
 #'
 #' # Ex 4: The two databases are merged and incomplete covariates are imputed using FAMD
-#' soluc4 <- merge_dbs(data_A, data_B,
+#' merged_ex4 <- merge_dbs(data_A, data_B,
 #'   NAME_Y = "Yb1", NAME_Z = "Yb2",
 #'   ordinal_DB1 = c(1, 4), ordinal_DB2 = c(1, 6),
-#'   impute = "FAMD", NCP_FAMD = 4, seed_func = 2096
+#'   impute = "FAMD", NCP_FAMD = 4, seed_choice = 2096
 #' )
 #'
 #' # Conclusion:
@@ -166,14 +166,15 @@ merge_dbs <- function(DB1,
                       impute = "NO",
                       R_MICE = 5,
                       NCP_FAMD = 3,
-                      seed_func = sample(1:1000000, 1)) {
+                      seed_choice = sample(1:1000000, 1)) {
+
   message("DBS MERGING in progress. Please wait ...", "\n")
 
-  if ((length(row_ID1) > 1) | (length(row_ID2) > 1)) {
+  if ((length(row_ID1) > 1) || (length(row_ID2) > 1)) {
     stop("Improper argument for row_IDs")
   } else {}
 
-  if ((is.character(row_ID1)) | (is.character(row_ID2))) {
+  if ((is.character(row_ID1)) || (is.character(row_ID2))) {
     stop("Improper argument for row_IDs")
   } else {}
 
@@ -204,27 +205,27 @@ merge_dbs <- function(DB1,
   # Constraints on the 2 databases
   #--------------------------------
 
-  if ((!is.data.frame(DB1)) | (!is.data.frame(DB2))) {
+  if ((!is.data.frame(DB1)) || (!is.data.frame(DB2))) {
     stop("At least one of your two objects is not a data.frame!")
   } else {}
 
 
-  if ((is.character(NAME_Y) != TRUE) |
+  if ((is.character(NAME_Y) != TRUE) ||
     (is.character(NAME_Z) != TRUE)) {
     stop("NAME_Y and NAME_Z must be declared as strings of characters with quotes")
   } else {}
 
 
-  if ((length(NAME_Y) != 1) | (length(NAME_Z) != 1)) {
+  if ((length(NAME_Y) != 1) || (length(NAME_Z) != 1)) {
     stop("No or more than one target declared by DB !")
   } else {}
 
-  if ((is.null(levels(DB1[, NAME_Y]))) | (is.null(levels(DB2[, NAME_Z])))) {
+  if ((is.null(levels(DB1[, NAME_Y]))) || (is.null(levels(DB2[, NAME_Z])))) {
     stop("Your target variable must be a factor in the 2 databases")
   } else {}
 
 
-  if ((!(is.numeric(R_MICE))) | (!(is.numeric(NCP_FAMD)))) {
+  if ((!(is.numeric(R_MICE))) || (!(is.numeric(NCP_FAMD)))) {
     stop("The options R_MICE and NCP_FAMD must contain numeric values")
   } else {}
 
@@ -232,7 +233,7 @@ merge_dbs <- function(DB1,
     stop("Invalid character in the impute option: You must choose between NO, FAMD, CC and MICE")
   } else {}
 
-  if ((length(ordinal_DB1) > ncol(DB1)) | (length(ordinal_DB2) > ncol(DB2))) {
+  if ((length(ordinal_DB1) > ncol(DB1)) || (length(ordinal_DB2) > ncol(DB2))) {
     stop("The number of column indexes exceeds the number of columns of your DB")
   } else {}
 
@@ -299,8 +300,8 @@ merge_dbs <- function(DB1,
   typ_cov_DB2b <- typ_cov_DB2[setdiff(names(DB2), NAME_Z)]
 
 
-  if ((setequal(DB1, stats::na.omit(DB1))) &
-    (setequal(DB2, stats::na.omit(DB2))) & (impute != "NO")) {
+  if ((setequal(DB1, stats::na.omit(DB1))) &&
+    (setequal(DB2, stats::na.omit(DB2))) && (impute != "NO")) {
     message("No missing values in covariates: No imputation methods required", "\n")
     impute <- "NO"
   } else {
@@ -319,14 +320,14 @@ merge_dbs <- function(DB1,
       R_mice = R_MICE,
       meth = typ_cov_DB1b,
       missMDA = FALSE,
-      seed_choice = seed_func
+      seed_choice = seed_choice
     )
     DB2bis <- imput_cov(
       DB2[, setdiff(names(DB2), NAME_Z)],
       R_mice = R_MICE,
       meth = typ_cov_DB2b,
       missMDA = FALSE,
-      seed_choice = seed_func
+      seed_choice = seed_choice
     )
   } else if (impute == "FAMD") {
     DB1bis <- imput_cov(
@@ -334,14 +335,14 @@ merge_dbs <- function(DB1,
       meth = typ_cov_DB1b,
       missMDA = TRUE,
       NB_COMP = NCP_FAMD,
-      seed_choice = seed_func
+      seed_choice = seed_choice
     )
     DB2bis <- imput_cov(
       DB2[, setdiff(names(DB2), NAME_Z)],
       meth = typ_cov_DB2b,
       missMDA = TRUE,
       NB_COMP = NCP_FAMD,
-      seed_choice = seed_func
+      seed_choice = seed_choice
     )
   } else if (impute == "NO") {
     DB1_new <- DB1[, setdiff(names(DB1), NAME_Y)]
@@ -498,7 +499,7 @@ merge_dbs <- function(DB1,
         IMPUTE_TYPE = impute,
         DB1_raw = DB1_row,
         DB2_raw = DB2_row,
-        SEED = seed_func
+        SEED = seed_choice
       )
     )
   } else if (impute == "MICE") {
@@ -518,7 +519,7 @@ merge_dbs <- function(DB1,
         ),
         DB1_raw = DB1_row,
         DB2_raw = DB2_row,
-        SEED = seed_func
+        SEED = seed_choice
       )
     )
   }

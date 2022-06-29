@@ -179,9 +179,9 @@ data(tab_test)
 tab_test2 <- tab_test[c(1:40, 5001:5040), 1:5]
 
 
-try1J <- OT_joint(tab_test2,
-  nominal = c(1, 4:5), ordinal = c(2, 3),
-  dist.choice = "G", which.DB = "B"
+OUTJ1_B <- OT_joint(tab_test2,
+                    nominal = c(1, 4:5), ordinal = c(2, 3),
+                    dist.choice = "G", which.DB = "B"
 )
 
 \donttest{
@@ -195,10 +195,10 @@ try1J <- OT_joint(tab_test2,
 # Predictions are assessed for Y1 AND Y2 in A and B respectively
 #-----
 
-try1RJ <- OT_joint(tab_test2,
-  nominal = c(1, 4:5), ordinal = c(2, 3),
-  dist.choice = "G", maxrelax = 0.4,
-  which.DB = "BOTH"
+R_OUTJ1 <- OT_joint(tab_test2,
+                    nominal = c(1, 4:5), ordinal = c(2, 3),
+                    dist.choice = "G", maxrelax = 0.4,
+                    which.DB = "BOTH"
 )
 
 ### The previous example of R-JOINT algorithm with:
@@ -206,10 +206,10 @@ try1RJ <- OT_joint(tab_test2,
 # Predictions are assessed for Y1 and Y2 in A and B respectively
 #-----
 
-try2RJ <- OT_joint(tab_test2,
-  nominal = c(1, 4:5), ordinal = c(2, 3),
-  dist.choice = "G", maxrelax = 0.4, lambda.reg = 0.9,
-  which.DB = "BOTH"
+R_OUTJ2 <- OT_joint(tab_test2,
+                    nominal = c(1, 4:5), ordinal = c(2, 3),
+                    dist.choice = "G", maxrelax = 0.4, lambda.reg = 0.9,
+                    which.DB = "BOTH"
 )
 
 
@@ -230,10 +230,10 @@ data(simu_data)
 simu_data2 <- simu_data[c(1:100, 401:500), c(1:4, 7:8)]
 simu_data3 <- simu_data2[!is.na(simu_data2$Age), ]
 
-try2J <- OT_joint(simu_data3,
-  convert.num = 6, convert.class = 3,
-  nominal = c(1, 4:5), ordinal = 2:3,
-  dist.choice = "H", which.DB = "BOTH"
+OUTJ2 <- OT_joint(simu_data3,
+                  convert.num = 6, convert.class = 3,
+                  nominal = c(1, 4:5), ordinal = 2:3,
+                  dist.choice = "H", which.DB = "BOTH"
 )
 }
 
