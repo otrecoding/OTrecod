@@ -230,10 +230,10 @@ data(simu_data)
 simu_data2 <- simu_data[c(1:100, 401:500), c(1:4, 7:8)]
 simu_data3 <- simu_data2[!is.na(simu_data2$Age), ]
 
-OUTJ2 <- OT_joint(simu_data3,
+OUTJ2 <- OT_joint(simu_data3, prox.X = 0.10,
                   convert.num = 6, convert.class = 3,
                   nominal = c(1, 4:5), ordinal = 2:3,
-                  dist.choice = "H", which.DB = "BOTH"
+                  dist.choice = "H", which.DB = "B"
 )
 }
 
