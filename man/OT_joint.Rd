@@ -16,7 +16,7 @@ OT_joint(
   percent.knn = 1,
   maxrelax = 0,
   lambda.reg = 0,
-  prox.X = 0.1,
+  prox.X = 0.3,
   solvR = "glpk",
   which.DB = "BOTH"
 )
