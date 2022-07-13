@@ -305,7 +305,7 @@ select_pred <- function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
   stopifnot(is.logical(RF_condi))
   stopifnot(is.numeric(ID))
 
-
+  mat_cor4 <- NULL; tab_cor4_X <- NULL
 
   # Inconsistencies options
 
@@ -409,10 +409,10 @@ select_pred <- function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
     for (k in convert_num) {
       tt <- tt + 1
       databa[, k] <- cut(databa[, k],
-        breaks = stats::quantile(databa[, k],
-          probs = seq(0, 1, by = 1 / convert_class[tt]), na.rm = TRUE
-        ),
-        include.lowest = TRUE, ordered_result = TRUE
+                         breaks = stats::quantile(databa[, k],
+                                                  probs = seq(0, 1, by = 1 / convert_class[tt]), na.rm = TRUE
+                         ),
+                         include.lowest = TRUE, ordered_result = TRUE
       )
     }
 
@@ -563,7 +563,7 @@ select_pred <- function(databa, Y = NULL, Z = NULL, ID = 1, OUT = "Y",
     tab_cor5_X <- NULL
   }
 
-  if (OUT == "Z") {
+  if ((OUT == "Z") && (!is.null(tab_cor4_Y)) && (!is.null(tab_cor2_Y))) {
     tab_cor2_Y[, 1] <- rep("Z", nrow(tab_cor2_Y))
     tab_cor4_Y[, 1] <- rep("Z", nrow(tab_cor4_Y))
   } else {}

@@ -329,9 +329,10 @@ In output, these two models provides lists of same structure:
 
 For our example, the corresponding R code for the prediction of *c.neti.bis* in *data1* is: </p>
 
-```{r}
+```{r joint}
 # Algorithms with no enrichments
-mod3_joint = OT_joint(match_var, nominal = c(1,5), ordinal = c(2:4,6), dist.choice = "E", which.DB = "A")
+mod3_joint = OT_joint(match_var, nominal = c(1,5), ordinal = c(2:4,6), dist.choice = "E", 
+                      prox.X = 0.10, which.DB = "A")
 summary(mod3_joint)
 ```
 

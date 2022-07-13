@@ -225,17 +225,17 @@
 #' simu_data2 <- simu_data[c(1:100, 401:500), c(1:4, 7:8)]
 #' simu_data3 <- simu_data2[!is.na(simu_data2$Age), ]
 #'
-#' OUTJ2 <- OT_joint(simu_data3,
+#' OUTJ2 <- OT_joint(simu_data3, prox.X = 0.10,
 #'                   convert.num = 6, convert.class = 3,
 #'                   nominal = c(1, 4:5), ordinal = 2:3,
-#'                   dist.choice = "H", which.DB = "BOTH"
+#'                   dist.choice = "H", which.DB = "B"
 #' )
 #' }
 #'
 OT_joint <- function(datab, index_DB_Y_Z = 1:3,
                      nominal = NULL, ordinal = NULL, logic = NULL,
                      convert.num = NULL, convert.class = NULL, dist.choice = "E", percent.knn = 1,
-                     maxrelax = 0, lambda.reg = 0.0, prox.X = 0.10, solvR = "glpk", which.DB = "BOTH") {
+                     maxrelax = 0, lambda.reg = 0.0, prox.X = 0.30, solvR = "glpk", which.DB = "BOTH") {
 
   if (dist.choice %in% c("M", "Manhattan", "manhattan")) {
     dist.choice <- "M"

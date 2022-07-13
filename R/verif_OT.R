@@ -256,8 +256,9 @@ verif_OT <- function(ot_out, group.class = FALSE, ordinal = TRUE, stab.prob = FA
 
     stoc <- data.frame(predY, predZ)
     N <- nrow(stoc)
-    vcram <- round(suppressWarnings(StatMatch::pw.assoc(predY ~ predZ, data = stoc)$V), 2)
-    # chisqT    = suppressWarnings(stats::chisq.test(table(predY,predZ))$p.value)
+    stocb <- stoc; stocb$predY <- as.factor(as.character(stocb$predY))
+    stocb$predZ <- as.factor(as.character(stocb$predZ))
+    vcram <- round(suppressWarnings(StatMatch::pw.assoc(predY ~ predZ, data = stocb)$V), 2)
     rankor <- round(stats::cor(rank(predY), rank(predZ)), 3)
 
 
@@ -265,8 +266,9 @@ verif_OT <- function(ot_out, group.class = FALSE, ordinal = TRUE, stab.prob = FA
 
     stoc1 <- stoc[ID.DB == ID.DB1, ]
     N1 <- nrow(stoc1)
-    vcram1 <- round(suppressWarnings(StatMatch::pw.assoc(predY ~ predZ, data = stoc1)$V), 2)
-    # chisqT1   = suppressWarnings(stats::chisq.test(table(stoc1$predY,stoc1$predZ))$p.value)
+    stoc1b <- stoc1; stoc1b$predY <- as.factor(as.character(stoc1b$predY))
+    stoc1b$predZ <- as.factor(as.character(stoc1b$predZ))
+    vcram1 <- round(suppressWarnings(StatMatch::pw.assoc(predY ~ predZ, data = stoc1b)$V), 2)
     rankor1 <- round(stats::cor(rank(stoc1$predY), rank(stoc1$predZ)), 3)
 
 
@@ -274,8 +276,9 @@ verif_OT <- function(ot_out, group.class = FALSE, ordinal = TRUE, stab.prob = FA
 
     stoc2 <- stoc[ID.DB == ID.DB2, ]
     N2 <- nrow(stoc2)
-    vcram2 <- round(suppressWarnings(StatMatch::pw.assoc(predY ~ predZ, data = stoc2)$V), 2)
-    # chisqT2   = suppressWarnings(chisq.test(table(stoc2$predY,stoc2$predZ))$p.value)
+    stoc2b <- stoc2; stoc2b$predY <- as.factor(as.character(stoc2b$predY))
+    stoc2b$predZ <- as.factor(as.character(stoc2b$predZ))
+    vcram2 <- round(suppressWarnings(StatMatch::pw.assoc(predY ~ predZ, data = stoc2b)$V), 2)
     rankor2 <- round(stats::cor(rank(stoc2$predY), rank(stoc2$predZ)), 3)
 
 
@@ -288,10 +291,11 @@ verif_OT <- function(ot_out, group.class = FALSE, ordinal = TRUE, stab.prob = FA
     colnames(restand)[2] <- "V_cram"
     row.names(restand) <- c("Global", "1st DB", "2nd DB")
   } else {
-    stoc <- data.frame(predY, predZ)
+    stoc <- data.frame(predY = predY, predZ)
     N <- nrow(stoc)
-    vcram <- round(suppressWarnings(StatMatch::pw.assoc(predY ~ predZ, data = stoc)$V), 2)
-    # chisqT    = suppressWarnings(stats::chisq.test(table(predY,predZ))$p.value)
+    stocb <- stoc; stocb$predY <- as.factor(as.character(stocb$predY))
+    stocb$predZ <- as.factor(as.character(stocb$predZ))
+    vcram <- round(suppressWarnings(StatMatch::pw.assoc(predY ~ predZ, data = stocb)$V), 2)
     rankor <- round(stats::cor(rank(predY), rank(predZ)), 3)
 
     restand <- c(N = N, vcram = vcram, rank_cor = rankor)
