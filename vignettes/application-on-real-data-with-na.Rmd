@@ -50,7 +50,7 @@ when including new participants in cohort studies, especially because there is a
 
 **Question: how to work with the greatest number of participants encountered in the study without losing the information related to the individual social level?**
 
-Answer: We will see in this vignette how the use of the *OTrecod** functions can provide a concrete answer to this question.
+Answer: We will see in this vignette how the use of the **OTrecod** functions can provide a concrete answer to this question.
 
 
 &nbsp;
