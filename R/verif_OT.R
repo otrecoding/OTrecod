@@ -149,7 +149,7 @@
 #'
 verif_OT <- function(ot_out, group.class = FALSE, ordinal = TRUE, stab.prob = FALSE, min.neigb = 1) {
 
-  if (class(ot_out) != "otres") {
+  if (!inherits(ot_out, "otres")) {
     stop("ot_out must be an otres object: output from OT_outcome or OT_joint")
   } else {}
 
