@@ -139,7 +139,7 @@
 <li>excluding a priori shared variables with different types.</li>
 <li>excluding a priori shared factors with different levels.</li>
 </ul>The actual form of the function does not propose automatic reconciliation actions to reintroduce the problematic variables but gives user enough information in output to do it by himself if necessary. The call of the <strong>merge_dbs</strong> function is actually:<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>merge_dbs =<span class="st"> </span><span class="cf">function</span>(DB1, DB2, <span class="dt">row_ID1 =</span> <span class="ot">NULL</span>, <span class="dt">row_ID2 =</span> <span class="ot">NULL</span>, NAME_Y, NAME_Z, <span class="dt">order_levels_Y =</span> <span class="kw">levels</span>(DB1[, NAME_Y]), <span class="dt">order_levels_Z =</span> <span class="kw">levels</span>(DB2[, NAME_Z]), <span class="dt">ordinal_DB1 =</span> <span class="ot">NULL</span>, <span class="dt">ordinal_DB2 =</span> <span class="ot">NULL</span>,</span>
-<span id="cb5-2"><a href="#cb5-2"></a>                     <span class="dt">impute =</span> <span class="st">"NO"</span>, <span class="dt">R_MICE =</span> <span class="dv">5</span>, <span class="dt">NCP_FAMD =</span> <span class="dv">3</span>, <span class="dt">seed_func =</span> <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">1000000</span>, <span class="dv">1</span>))</span></code></pre></div>
+<span id="cb5-2"><a href="#cb5-2"></a>                     <span class="dt">impute =</span> <span class="st">"NO"</span>, <span class="dt">R_MICE =</span> <span class="dv">5</span>, <span class="dt">NCP_FAMD =</span> <span class="dv">3</span>, <span class="dt">seed_choice =</span> <span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">1000000</span>, <span class="dv">1</span>))</span></code></pre></div>
 <p align="justify">The <strong>merge_dbs</strong> function notably provides in output an unique database, result of the overlayed of the two initial data sources, in the structure expected by the <strong>OT_outcome</strong> and <strong>OT_joint</strong> functions.</p>
 <p> </p>
 </div>
@@ -234,9 +234,9 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/otrecoding/OTrecod" class="external-link"><img src="https://travis-ci.org/otrecoding/OTrecod.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://github.com/otrecoding/OTrecod/actions/workflows/check-release.yaml" class="external-link"><img src="https://github.com/otrecoding/OTrecod/workflows/R-CMD-check/badge.svg" alt="build status"></a></li>
 <li><a href="https://cran.r-project.org/package=OTrecod" class="external-link"><img src="https://www.r-pkg.org/badges/version/OTrecod" alt="CRAN status"></a></li>
-<li><a href="https://codecov.io/gh/otrecoding/OTrecod" class="external-link"><img src="https://codecov.io/gh/otrecoding/OTrecod/branch/master/graph/badge.svg" alt="codecov"></a></li>
+<li><a href="https://app.codecov.io/gh/otrecoding/OTrecod" class="external-link"><img src="https://codecov.io/gh/otrecoding/OTrecod/branch/master/graph/badge.svg" alt="codecov"></a></li>
 <li><a href="https://mybinder.org/v2/gh/otrecoding/OTrecod/master" class="external-link"><img src="http://mybinder.org/badge.svg" alt="Launch binder"></a></li>
 <li><a href="https://otrecoding.github.io/OTrecod/"><img src="https://img.shields.io/website?url=https%3A%2F%2Fotrecoding.github.io%2FOTrecod%2F" alt="Website"></a></li>
 </ul>
