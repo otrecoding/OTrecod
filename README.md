@@ -7,14 +7,15 @@ OTrecod package
 
 <!-- badges: start -->
 
-[![Travis build
-status](https://travis-ci.org/otrecoding/OTrecod.svg?branch=master)](https://travis-ci.org/otrecoding/OTrecod)
+[![build
+status](https://github.com/otrecoding/OTrecod/workflows/R-CMD-check/badge.svg)](https://github.com/otrecoding/OTrecod/actions/workflows/check-release.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/OTrecod)](https://cran.r-project.org/package=OTrecod)
-[![codecov](https://codecov.io/gh/otrecoding/OTrecod/branch/master/graph/badge.svg)](https://codecov.io/gh/otrecoding/OTrecod)
 [![Launch
 binder](http://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/otrecoding/OTrecod/master)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fotrecoding.github.io%2FOTrecod%2F)](https://otrecoding.github.io/OTrecod/)
+[![Codecov test
+coverage](https://codecov.io/gh/otrecoding/OTrecod/branch/master/graph/badge.svg)](https://app.codecov.io/gh/otrecoding/OTrecod?branch=master)
 <!-- badges: end -->
 
 The **OTrecod** package gives access to a set of original functions
@@ -158,7 +159,7 @@ necessary. The call of the **merge_dbs** function is actually:
 
 ``` r
 merge_dbs = function(DB1, DB2, row_ID1 = NULL, row_ID2 = NULL, NAME_Y, NAME_Z, order_levels_Y = levels(DB1[, NAME_Y]), order_levels_Z = levels(DB2[, NAME_Z]), ordinal_DB1 = NULL, ordinal_DB2 = NULL,
-                     impute = "NO", R_MICE = 5, NCP_FAMD = 3, seed_func = sample(1:1000000, 1))
+                     impute = "NO", R_MICE = 5, NCP_FAMD = 3, seed_choice = sample(1:1000000, 1))
 ```
 
 <p align="justify">

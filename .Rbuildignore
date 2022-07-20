@@ -14,3 +14,4 @@ _pkgdown.yaml
 ^\.github$
 ^cran-comments\.md$
 ^CRAN-RELEASE$
+^codecov\.yml$
