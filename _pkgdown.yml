@@ -1,5 +1,6 @@
 title: OTrecod
 url: https://otrecoding.github.io/OTrecod
 template:
+  bootstrap: 5
   params:
     bootswatch: sandstone
