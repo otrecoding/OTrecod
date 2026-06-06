@@ -1,0 +1,313 @@
+# transfo_dist()
+
+This function prepares an overlayed database for data fusion according
+to the distance function chosen to evaluate the proximities between
+units.
+
+## Usage
+
+``` r
+transfo_dist(
+  DB,
+  index_DB_Y_Z = 1:3,
+  quanti = NULL,
+  nominal = NULL,
+  ordinal = NULL,
+  logic = NULL,
+  convert_num = NULL,
+  convert_class = NULL,
+  prep_choice = "E",
+  info = 0.8
+)
+```
+
+## Arguments
+
+- DB:
+
+  a data.frame composed of exactly two overlayed databases with a column
+  of database identifier, two columns corresponding to a same
+  information differently encoded in the two databases and covariates.
+  The order of the variables have no importance.
+
+- index_DB_Y_Z:
+
+  a vector of exactly three integers. The first integer must correspond
+  to the column index of the database identifier. The second integer
+  corresponds to the index of the target variable in the first database
+  while the third integer corresponds to the index of column related to
+  the target variable in the second database.
+
+- quanti:
+
+  the column indexes of all the quantitative variables (database
+  identificatier and target variables included) stored in a vector.
+
+- nominal:
+
+  the column indexes of all the nominal (not ordered) variables (DB
+  identification and target variables included) stored in a vector.
+
+- ordinal:
+
+  the column indexes of all the ordinal variables (DB identification and
+  target variables included) stored in a vector.
+
+- logic:
+
+  the column indexes of all the boolean variables stored in a vector.
+
+- convert_num:
+
+  the column indexes of the continuous (quantitative) variables to
+  convert in ordered factors. All indexes declared in this argument must
+  have been declared in the argument `quanti` (no conversion by
+  default).
+
+- convert_class:
+
+  according to the argument `convert_num`, a vector indicating for each
+  continuous variable to convert the corresponding desired number of
+  levels. If the length of the argument `convert_num` exceeds 1 while
+  the length of `convert_class` is equal to 1 (only one integer), each
+  discretization will count the same number of levels.
+
+- prep_choice:
+
+  a character string corresponding to the distance function chosen
+  between: the euclidean distance ("E", by default), the Manhattan
+  distance ("M"), the Gower distance ("G"), the Hamming (also called
+  binary) distance ("H"), and a distance computed from principal
+  components of a factor analysis of mixed data ("FAMD").
+
+- info:
+
+  a ratio (between 0 and 1, 0.8 is the default value) that corresponds
+  to the minimal part of variability that must be taken into account by
+  the remaining principal components of the FAMD when this approach is
+  required. This ratio will fix the number of components that will be
+  kept with this approach. When the argument is set to 1, all the
+  variability is considered.
+
+## Value
+
+A data.frame whose covariates have been transformed according to the
+distance function or approach (for FAMD) chosen. The columns of the
+data.frame could have been reordered so that the database identifier,
+\\Y\\ and \\Z\\ correspond to the first three columns respectively.
+Moreover the order of rows remains unchanged during the process.
+
+## Details
+
+A. EXPECTED STRUCTURE FOR THE INPUT DATABASE
+
+In input of this function, the expected database is the result of an
+overlay between two databases A and B. This structure can be guaranteed
+using the specific outputs of the functions
+[`merge_dbs`](https://otrecoding.github.io/OTrecod/reference/merge_dbs.md)
+or
+[`select_pred`](https://otrecoding.github.io/OTrecod/reference/select_pred.md).
+Nevertheless, it is also possible to apply directly the function
+`transfo_dist` on a raw database provided that a specific structure is
+respected in input. The overlayed database (A placed on top of B) must
+count at least four columns (in an a unspecified order of appearance in
+the database):
+
+- A column indicating the database identifier (two classes or levels if
+  factor: A and B, 1 and 2, ...)
+
+- A column dedicated to the outcome (or target variable) of the first
+  database and denoted \\Y\\ for example. This variable can be of
+  categorical (nominal or ordinal factor) or continuous type.
+  Nevertheless, in this last case, a warning will appear and the
+  variable will be automatically converted in ordered factors as a
+  prerequisite format of the database before using data fusion
+  algorithms.
+
+- A column dedicated to the outcome (or target variable) of the second
+  database and denoted \\Z\\ for example. As before, this variable can
+  be of categorical (nominal or ordinal factor) or continuous type, and
+  the variable will be automatically converted in ordered factors as a
+  prerequisite format of the database before using data fusion
+  algorithms.
+
+- At least one shared variable (same encoding in the two databases).
+  Incomplete information is possible on shared covariates only with more
+  than one shared covariate in the final database.
+
+In this context, the two databases are overlayed and the information
+related to \\Y\\ in the second database must be missing as well as the
+information related to \\Z\\ in the first one. The column indexes
+related to the database identifier, \\Y\\ and \\Z\\ must be specified in
+this order in the argument `index_DB_Y_Z`. Moreover, all column indexes
+(including those related to identifier and target variables \\Y\\ and
+\\Z\\) of the overlayed database (DB) must be declared once (and only
+once), among the arguments `quanti`, `nominal`, `ordinal`, and `logic`.
+
+B. TRANSFORMATIONS OF CONTINUOUS COVARIATES
+
+Because some algorithms dedicated to solving recoding problems like
+`JOINT` and `R-JOINT` (see (1) and/or the documentation of
+[`OT_joint`](https://otrecoding.github.io/OTrecod/reference/OT_joint.md))
+requires the use of no continuous covariates, the function
+`transfo_dist` integrates in is syntax a process dedicated to the
+categorization of continuous variables. For this, it is necessary to
+rigorously fill in the arguments `convert_num` and `convert_class`. The
+first one specifies the indexes of continuous variables to transform in
+ordered factors while the second one assigns the corresponding desired
+number of levels. Only covariates should be transformed (not outcomes)
+and missing informations are not taken into account for the
+transformations. Notice that all the indexes informed in the argument
+`convert_num` must also be informed in the argument `quanti`.
+
+C. TRANSFORMATIONS ON THE DATABASE ACCORDING TO THE CHOSEN DISTANCE
+FUNCTION
+
+These necessary transformations are related to the type of each
+covariate. It depends on the distance function chosen by user in the
+`prep_choice` argument.
+
+1\. For the Euclidean ("E") and Manhattan ("M") distances (see (2) and
+(3)): all the remaining continuous variables are standardized. The
+related recoding to a boolean variable is 1 for `TRUE` and 0 for
+`FALSE`. The recoding of a nominal variable of k classes corresponds to
+its related disjunctive table (of (k-1) binary variables)). The ordinal
+variables are all converted to numeric variables (please take care that
+the order of the classes of each of these variables is well specified at
+the beginning).
+
+2\. For the Hamming ("H") distance (see (2) and (3)): all the continuous
+variables must be transformed beforehand in categorical forms using the
+internal process described in section B or via another external
+approach. The boolean variables are all converted in ordinal forms and
+then turned into binaries. The recoding for nominal or ordinal variable
+of k classes corresponds to its related disjunctive table (i.e (k-1)
+binary variables)).
+
+3\. For the Gower ("G") distance (see (4)): all covariates remain
+unchanged
+
+4\. Using the principal components from a factor analysis for mixed data
+(FAMD (5)): a factor analysis for mixed data is applied on the
+covariates of the database and a specific number of the related
+principal components is remained (depending on the minimal part of
+variability explained by the covariates that the user wishes to keep by
+varying the `info` option). The function integrates in its syntax the
+function [`FAMD`](https://rdrr.io/pkg/FactoMineR/man/FAMD.html) of the
+package FactoMiner (6) using default parameters. After this step, the
+covariates are replaced by the remaining principal components of the
+FAMD, and each value corresponds to coordinates linked to each
+component. Please notice that this method supposed complete covariates
+in input, nevertheless in presence of incomplete covariates, each
+corresponding rows will be dropped from the study, a warning will appear
+and the number of remaining rows will be indicated.
+
+## References
+
+1.  Gares V, Omer J (2020) Regularized optimal transport of covariates
+    and outcomes in data recoding. Journal of the American Statistical
+    Association.
+    [doi:10.1080/01621459.2020.1775615](https://doi.org/10.1080/01621459.2020.1775615)
+
+2.  Anderberg, M.R. (1973). Cluster analysis for applications, 359 pp.,
+    Academic Press, New York, NY, USA.
+
+3.  Borg, I. and Groenen, P. (1997). Modern Multidimensional Scaling.
+    Theory and Applications. Springer.
+
+4.  Gower, J. C. (1971). A general coefficient of similarity and some of
+    its properties. Biometrics, 27, 623–637.
+
+5.  Pages J. (2004). Analyse factorielle de donnees mixtes. Revue
+    Statistique Appliquee. LII (4). pp. 93-111.
+
+6.  Lê S, Josse J, Husson, F. (2008). FactoMineR: An R Package for
+    Multivariate Analysis. Journal of Statistical Software. 25(1). pp.
+    1-18.
+
+## See also
+
+[`transfo_quali`](https://otrecoding.github.io/OTrecod/reference/transfo_quali.md),[`merge_dbs`](https://otrecoding.github.io/OTrecod/reference/merge_dbs.md)
+
+## Author
+
+Gregory Guernec
+
+<otrecod.pkg@gmail.com>
+
+## Examples
+
+``` r
+
+### Using the table simu_data:
+
+data(simu_data)
+
+# 1. the Euclidean distance (same output with Manhattan distance),
+eucl1 <- transfo_dist(simu_data,
+  quanti = c(3, 8), nominal = c(1, 4:5, 7),
+  ordinal = c(2, 6), logic = NULL, prep_choice = "E"
+)
+#> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers
+#> 5 remaining levels
+# Here Yb2 was stored in numeric: It has been automatically converted in factor
+
+# You can also convert beforehand Yb2 in ordered factor by example:
+sim_data <- simu_data
+sim_data$Yb2 <- as.ordered(sim_data$Yb2)
+eucl2 <- transfo_dist(sim_data,
+  quanti = 8, nominal = c(1, 4:5, 7),
+  ordinal = c(2, 3, 6), logic = NULL, prep_choice = "E"
+)
+
+# 2. The Euclidean distance generated on principal components
+#    by a factor analysis for mixed data (FAMD):
+eucl_famd <- transfo_dist(simu_data,
+  quanti = c(3, 8), nominal = c(1, 4:5, 7),
+  ordinal = c(2, 6), logic = NULL, prep_choice = "FAMD"
+)
+#> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers
+#> 5 remaining levels
+#> Warning: Presence of NA on covariates. You should work with complete or imputed DB before using this method.
+#>               By default, only rows with no NA on covariates have been kept.
+#> Only 528 rows (75%)are kept here corresponding to complete cases
+
+# Please notice that this method works only with rows that have complete
+# information on covariates.
+
+# 3. The Gower distance for mixed data:
+gow1 <- transfo_dist(simu_data,
+  quanti = c(3, 8), nominal = c(1, 4:5, 7),
+  ordinal = c(2, 6), logic = NULL, prep_choice = "G"
+)
+#> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers
+#> 5 remaining levels
+
+# 4. The Hamming distance:
+# Here the quanti option could only contain indexes related to targets.
+# Column indexes related to potential binary covariates or covariates with
+# finite number of values must be include in the ordinal option.
+# So in simu_data, the discretization of the variable age is required (index=8),
+# using the convert_num and convert_class arguments (for tertiles = 3):
+
+ham1 <- transfo_dist(simu_data,
+  quanti = c(3, 8), nominal = c(1, 4:5, 7), ordinal = c(2, 6),
+  convert_num = 8, convert_class = 3, prep_choice = "H"
+)
+#> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers
+#> 5 remaining levels
+
+
+### This function works whatever the order of your columns in your database:
+# Suppose that we re-order columns in simu_data:
+simu_data2 <- simu_data[, c(2, 4:7, 3, 8, 1)]
+
+# By changing the corresponding indexes in the index_DB_Y_Z argument,
+# we observe the desired output:
+eucl3 <- transfo_dist(simu_data2,
+  index_DB_Y_Z = c(8, 1, 6), quanti = 6:7, nominal = c(2:3, 5, 8),
+  ordinal = c(1, 4), logic = NULL, prep_choice = "E"
+)
+#> Your target DB[, "Z"] was numeric ... By default, it has been converted in factor of integers
+#> 5 remaining levels
+```
