@@ -14,7 +14,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-### The NCDS project
+## The NCDS project
+
+### DISCLAIMER
+
+The data owner is the ‘University of London, Institute of Education, Centre for Longitudinal Studies’ and those safeguarded CLS data are available to UK Data Service users subject to the End User Licence Agreement.
+Clause 4 of the agreement states:
+
+“Not to give access to the Data Collection(s), in whole or in part, or to any Dataset(s) derived from the Data Collection(s) (including synthetic Dataset(s)), except to Registered Users for use in accordance with clause 2 and subject to the EUL Agreement, any relevant Special Conditions or additional agreements, save where Data Collection(s) or derived material are supplied for the stated purpose of teaching as described in the Project Information and shared solely in accordance with the Access Agreement for Teaching.”
 
 &nbsp;
 
@@ -97,14 +104,13 @@ devtools::install_github("otrecoding/OTrecod")
 
 <p align="justify">  Participants from waves 1 to 4 were stored in a database called *ncds\_14* provided in the **OTrecod** package. In the same way, informations related to new participants included in the study from the wave 5 were stored in the *ncds\_5* database. These two base are available in **OTrecod** and can be simply loaded as follows: </p>
 
-```{r,results='hide',message=FALSE,warning=FALSE}
-# load("C:\\Users\\secr\\Desktop\\newpack\\datas_vignet2.RData")
+```{r,results='hide',message=FALSE,warning=FALSE, eval=FALSE}
 data(ncds_14); data(ncds_5)
 ```
 
 Here is the description of all the variables contained in each of the databases:
 
-```{r summa}
+```{r summa, eval = FALSE}
 summary(ncds_14); summary(ncds_5)
 ```
 
@@ -138,7 +144,7 @@ The **merge\_dbs** function can solve problems 2 and 3 introduced in the previou
 <p align="justify"> In situation where this hypothesis does not hold but imputation still appear as necessary, the imputation of missing values will have to be done through another function (not provided by the package). </p>
 
 
-```{r merg}
+```{r merg, eval = FALSE}
 merged_tab <- merge_dbs(ncds_14, ncds_5,
                         row_ID1 = 1, row_ID2 = 1,
                         NAME_Y = "GO90", NAME_Z = "RG91",
@@ -153,7 +159,7 @@ Process details indicate here that 806 participants have been deleted from the d
 
 In the output list, The *DB\_READY* object provides the overlayed database with the shared predictors imputed as described by:
 
-```{r summa2}
+```{r summa2, eval = FALSE}
 head(merged_tab$DB_READY); dim(merged_tab$DB_READY)
 ```
 
@@ -176,7 +182,7 @@ Let's use the results of the **select\_pred** function to only keep 3 predictors
 Here is the related R code taking the database obtained after executing **merge\_dbs** as argument, and the variables **GO90** and **RG91** as respective outcomes in the two datasets:
 
 
-```{r selec1}
+```{r selec1, eval = FALSE}
 # ncds_14
 sel_pred_GO90 <- select_pred(merged_tab$DB_READY,
                              Y = "Y", Z = "Z",
@@ -188,7 +194,7 @@ sel_pred_GO90 <- select_pred(merged_tab$DB_READY,
 
 
 
-```{r selec2}
+```{r selec2, eval = FALSE}
 # ncds_5
 sel_pred_RG91 <- select_pred(merged_tab$DB_READY, Y = "Y", Z = "Z",
                              ID = 1, OUT = "Z",
@@ -201,7 +207,7 @@ Automatic exits inform the user about the state of the process and assist him in
 
 <p align="justify"> We first study the existence of potential collinearity between the predictors. At the acceptability thresholds set by default as input to the **merge\_dbs** function, and in particular, the one associated with the V-Cramer criterion, we detect collinearity in the two bases, between the variables *employ* and *gender*, as described below: </p>
 
-```{r resel1}
+```{r resel1, eval = FALSE}
 ## ncds_14
 sel_pred_GO90$collinear_PB$VCRAM
 
@@ -214,7 +220,7 @@ This result suggests that we should keep only one of these two predictors. But w
 
 To help us decide, we can simply observe the ability of the two variables to predict the target variables in the two databases:
 
-```{r resel2}
+```{r resel2, eval = FALSE}
 ## ncds_14
 sel_pred_GO90$vcrm_OUTC_cat
 
@@ -225,7 +231,7 @@ sel_pred_RG91$vcrm_OUTC_cat
 
 These results present two variables whose ability to predict the target variable is equivalent in the two databases. How do these variables interact with the other predictors?
 
-```{r resel3}
+```{r resel3, eval = FALSE}
 ## ncds_14
 sel_pred_GO90$vcrm_X_cat
 
@@ -238,7 +244,7 @@ sel_pred_RG91$vcrm_X_cat
 
 We therefore decide to keep the *study*, *gender* and *health* predictors to solve our recoding problem.
 
-```{r readydata}
+```{r readydata, eval = FALSE}
 merged_fin = merged_tab$DB_READY[, -4]
 head(merged_fin, 3)
 
@@ -259,7 +265,7 @@ determine which one provides the better set of **GO90** predictions in *ncds\_5*
 
 Here is the R commands to fit an **OUTCOME** model and a **JOINT** model with no relaxation and regularization parameter.
 
-```{r outc11}
+```{r outc11, eval = FALSE}
 outc1 = OT_outcome(merged_fin, nominal = c(1:4), ordinal = 5:6,
                    dist.choice = "E", indiv.method = "sequential",
                    which.DB = "B")
@@ -267,7 +273,7 @@ outc1 = OT_outcome(merged_fin, nominal = c(1:4), ordinal = 5:6,
 
 
 
-```{r joint1}
+```{r joint1, eval = FALSE}
 outj1 = OT_joint(merged_fin, nominal = 1:4, ordinal = 5:6,
                  dist.choice = "E", which.DB = "B")
 
@@ -279,7 +285,7 @@ outj1 = OT_joint(merged_fin, nominal = 1:4, ordinal = 5:6,
 <p align="justify"> Now let's see the validity criteria of the two models using the **verif\_OT** function.
 we simply want to retrieve the stability criteria and Cramer's V which compares the association of the two different (unordered) scales and so complete the arguments according to this choice: </p>
 
-```{r verif1}
+```{r verif1, eval = FALSE}
 
 ### For the model outc1
 verif_outc1   = verif_OT(outc1, ordinal = FALSE, 
@@ -295,7 +301,7 @@ verif_outj1   = verif_OT(outj1, ordinal = FALSE,
 Consequently, there is no need here to add relaxation parameters in the models to have
 acceptable predictions of **GO90** in *ncds\_5*. </p>
 
-```{r verif2}
+```{r verif2, eval = FALSE}
 
 ### For the model outc1: Hellinger distance
 verif_outc1$hell
@@ -307,7 +313,7 @@ verif_outj1$hell
 
 <p align="justify"> The V Cramer criterion informs about the strength of the association between the two scales. Even if they have specific encodings, **GO90** and **RG91** summarize a same information: the social class of the participant. Therefore, we can reasonably think that the stronger will be the association, the more reliable  will be the predictions. </p>
 
-```{r verif3}
+```{r verif3, eval = FALSE}
 
 ### For the model outc1: Hellinger distance
 verif_outc1$res.prox
@@ -320,7 +326,7 @@ verif_outj1$res.prox
 
 The large number of modalities of **GO90** explains the relative stability observed for the predictions:
 
-```{r verif4}
+```{r verif4, eval = FALSE}
 
 ### For the model outc1: Hellinger distance
 verif_outc1$res.stab
@@ -335,13 +341,3 @@ verif_outj1$res.stab
 ### Conclusion
 
 <p align="justify"> The two models provide acceptable predictions of **GO90** in *ncds\_5*. Nevertheless, the **JOINT** algorithm is here prefered for the reasons previously exposed (no relaxation and regularization parameters required, better reliability of predictions with this specific database). </p>
-
-
-
-
-
-
-
-
-
-
