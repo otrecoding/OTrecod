@@ -20,8 +20,8 @@ with the Access Agreement for Teaching.”
 
  
 
-The National Child Development Study project also called NCDS project
-(<https://cls.ucl.ac.uk/cls-studies/1958-national-child-development-study/>)
+The National Child Development Study project also called [NCDS
+project](https://cls.ucl.ac.uk/cls-studies/1958-national-child-development-study)
 is a continuing survey which follows the lives of over 17,000 people
 born in England, Scotland and Wales in a same week of the year 1958.
 
@@ -115,23 +115,11 @@ devtools::install_github("otrecoding/OTrecod")
  
 
 Participants from waves 1 to 4 were stored in a database called
-*ncds_14* provided in the **OTrecod** package. In the same way,
+*ncds_14* not provided in the **OTrecod** package. In the same way,
 informations related to new participants included in the study from the
-wave 5 were stored in the *ncds_5* database. These two base are
-available in **OTrecod** and can be simply loaded as follows:
-
-``` r
-
-data(ncds_14); data(ncds_5)
-```
-
-Here is the description of all the variables contained in each of the
-databases:
-
-``` r
-
-summary(ncds_14); summary(ncds_5)
-```
+wave 5 were stored in the *ncds_5* database. These two bases are not
+available in **OTrecod** and must be downnloaded
+[here](https://datacatalogue.ukdataservice.ac.uk/series/series/2000032#abstract):
 
 From these descriptive statistics, we can make the following remarks:
 
